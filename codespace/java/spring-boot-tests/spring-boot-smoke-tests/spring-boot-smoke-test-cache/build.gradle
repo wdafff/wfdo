@@ -1,0 +1,42 @@
+plugins {
+	id "java"
+	id "org.springframework.boot.conventions"
+}
+
+description = "Spring Boot cache smoke test"
+
+def caches = [
+	"caffeine": [
+		"com.github.ben-manes.caffeine:caffeine"
+	],
+	"couchbase": [
+			project(":spring-boot-project:spring-boot-starters:spring-boot-starter-data-couchbase")
+	],
+	"ehcache": [
+		"javax.cache:cache-api",
+		dependencies.create("org.ehcache:ehcache") {
+			artifact {
+				classifier = 'jakarta'
+			}
+		}
+	],
+	"hazelcast": [
+		"com.hazelcast:hazelcast",
+		"com.hazelcast:hazelcast-spring"
+	],
+	"redis": [
+		project(":spring-boot-project:spring-boot-starters:spring-boot-starter-data-redis")
+	]
+]
+
+dependencies {
+	implementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-actuator"))
+	implementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-cache"))
+	implementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-web"))
+
+	testImplementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-test"))
+
+	if (project.hasProperty("cache")) {
+		caches[project.getProperty("cache")].each { runtimeOnly it }
+	}
+}

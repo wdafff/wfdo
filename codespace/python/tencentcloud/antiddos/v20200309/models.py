@@ -277,6 +277,9 @@ class BGPIPInstance(AbstractModel):
         :param V6Flag: 是否Ipv6版本的IP, 是为1，否为0
 注意：此字段可能返回 null，表示取不到有效值。
         :type V6Flag: int
+        :param BGPIPChannelFlag: 是否渠道版高防IP，是为1，否为0
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BGPIPChannelFlag: int
         """
         self.InstanceDetail = None
         self.SpecificationLimit = None
@@ -297,6 +300,7 @@ class BGPIPInstance(AbstractModel):
         self.Domain = None
         self.DamDDoSStatus = None
         self.V6Flag = None
+        self.BGPIPChannelFlag = None
 
 
     def _deserialize(self, params):
@@ -335,6 +339,7 @@ class BGPIPInstance(AbstractModel):
         self.Domain = params.get("Domain")
         self.DamDDoSStatus = params.get("DamDDoSStatus")
         self.V6Flag = params.get("V6Flag")
+        self.BGPIPChannelFlag = params.get("BGPIPChannelFlag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -562,6 +567,12 @@ class BGPInstanceSpecification(AbstractModel):
         :param ChannelEditionFlag: 渠道版标记，0表示普通高防包，1表示渠道版高防包
 注意：此字段可能返回 null，表示取不到有效值。
         :type ChannelEditionFlag: int
+        :param EnterpriseFlag: 高防包企业版标记，0表示普通高防包；1表示企业版高防包
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EnterpriseFlag: int
+        :param ElasticLimit: 高防包企业版弹性阈值，0表示未开启；大于0为弹性防护阈值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ElasticLimit: int
         """
         self.ProtectBandwidth = None
         self.ProtectCountLimit = None
@@ -571,6 +582,8 @@ class BGPInstanceSpecification(AbstractModel):
         self.ServiceBandWidth = None
         self.BattleEditionFlag = None
         self.ChannelEditionFlag = None
+        self.EnterpriseFlag = None
+        self.ElasticLimit = None
 
 
     def _deserialize(self, params):
@@ -582,6 +595,8 @@ class BGPInstanceSpecification(AbstractModel):
         self.ServiceBandWidth = params.get("ServiceBandWidth")
         self.BattleEditionFlag = params.get("BattleEditionFlag")
         self.ChannelEditionFlag = params.get("ChannelEditionFlag")
+        self.EnterpriseFlag = params.get("EnterpriseFlag")
+        self.ElasticLimit = params.get("ElasticLimit")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4468,6 +4483,10 @@ class DescribeListBGPIPInstancesRequest(AbstractModel):
         :type FilterDamDDoSStatus: int
         :param FilterStatus: 获取特定状态的资源，运行中填idle，攻击中填attacking，封堵中填blocking
         :type FilterStatus: str
+        :param FilterCname: 获取特定的实例Cname
+        :type FilterCname: str
+        :param FilterInstanceIdList: 批量查询实例ID对应的高防IP实例资源
+        :type FilterInstanceIdList: list of str
         """
         self.Offset = None
         self.Limit = None
@@ -4480,6 +4499,8 @@ class DescribeListBGPIPInstancesRequest(AbstractModel):
         self.FilterEipEipAddressStatus = None
         self.FilterDamDDoSStatus = None
         self.FilterStatus = None
+        self.FilterCname = None
+        self.FilterInstanceIdList = None
 
 
     def _deserialize(self, params):
@@ -4494,6 +4515,8 @@ class DescribeListBGPIPInstancesRequest(AbstractModel):
         self.FilterEipEipAddressStatus = params.get("FilterEipEipAddressStatus")
         self.FilterDamDDoSStatus = params.get("FilterDamDDoSStatus")
         self.FilterStatus = params.get("FilterStatus")
+        self.FilterCname = params.get("FilterCname")
+        self.FilterInstanceIdList = params.get("FilterInstanceIdList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4907,12 +4930,15 @@ class DescribeListIPAlarmConfigRequest(AbstractModel):
         :type FilterAlarmType: int
         :param FilterIp: IP搜索
         :type FilterIp: str
+        :param FilterCname: 高防IP实例资源的cname
+        :type FilterCname: str
         """
         self.Offset = None
         self.Limit = None
         self.FilterInstanceId = None
         self.FilterAlarmType = None
         self.FilterIp = None
+        self.FilterCname = None
 
 
     def _deserialize(self, params):
@@ -4921,6 +4947,7 @@ class DescribeListIPAlarmConfigRequest(AbstractModel):
         self.FilterInstanceId = params.get("FilterInstanceId")
         self.FilterAlarmType = params.get("FilterAlarmType")
         self.FilterIp = params.get("FilterIp")
+        self.FilterCname = params.get("FilterCname")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5555,6 +5582,76 @@ class DescribeOverviewCCTrendResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeOverviewDDoSEventListRequest(AbstractModel):
+    """DescribeOverviewDDoSEventList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 起始时间
+        :type StartTime: str
+        :param EndTime: 结束时间
+        :type EndTime: str
+        :param AttackStatus: 可选按攻击状态过滤，start：攻击中；end：攻击结束
+        :type AttackStatus: str
+        :param Offset: 偏移量
+        :type Offset: int
+        :param Limit: 记录条数
+        :type Limit: int
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.AttackStatus = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.AttackStatus = params.get("AttackStatus")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOverviewDDoSEventListResponse(AbstractModel):
+    """DescribeOverviewDDoSEventList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Total: 记录总数
+        :type Total: int
+        :param EventList: 事件列表
+        :type EventList: list of OverviewDDoSEvent
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Total = None
+        self.EventList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Total = params.get("Total")
+        if params.get("EventList") is not None:
+            self.EventList = []
+            for item in params.get("EventList"):
+                obj = OverviewDDoSEvent()
+                obj._deserialize(item)
+                self.EventList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeOverviewDDoSTrendRequest(AbstractModel):
     """DescribeOverviewDDoSTrend请求参数结构体
 
@@ -5973,14 +6070,22 @@ class IPLineInfo(AbstractModel):
         :type Type: str
         :param Eip: 线路IP
         :type Eip: str
+        :param Cname: 实例对应的cname
+        :type Cname: str
+        :param ResourceFlag: 资源flag，0：高防包资源，1：高防IP资源，2：非高防资源IP
+        :type ResourceFlag: int
         """
         self.Type = None
         self.Eip = None
+        self.Cname = None
+        self.ResourceFlag = None
 
 
     def _deserialize(self, params):
         self.Type = params.get("Type")
         self.Eip = params.get("Eip")
+        self.Cname = params.get("Cname")
+        self.ResourceFlag = params.get("ResourceFlag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6284,14 +6389,17 @@ UDP(UDP协议)
         :type Protocol: str
         :param RealServers: 源站列表
         :type RealServers: list of SourceServer
-        :param InstanceDetails: 规则所属的资源实例
+        :param InstanceDetails: 资源实例
         :type InstanceDetails: list of InstanceRelation
+        :param InstanceDetailRule: 规则所属的资源实例
+        :type InstanceDetailRule: list of RuleInstanceRelation
         """
         self.BackendPort = None
         self.FrontendPort = None
         self.Protocol = None
         self.RealServers = None
         self.InstanceDetails = None
+        self.InstanceDetailRule = None
 
 
     def _deserialize(self, params):
@@ -6310,6 +6418,12 @@ UDP(UDP协议)
                 obj = InstanceRelation()
                 obj._deserialize(item)
                 self.InstanceDetails.append(obj)
+        if params.get("InstanceDetailRule") is not None:
+            self.InstanceDetailRule = []
+            for item in params.get("InstanceDetailRule"):
+                obj = RuleInstanceRelation()
+                obj._deserialize(item)
+                self.InstanceDetailRule.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6332,13 +6446,16 @@ class Layer7Rule(AbstractModel):
         :type ProxyTypeList: list of ProxyTypeInfo
         :param RealServers: 源站列表
         :type RealServers: list of SourceServer
-        :param InstanceDetails: 规则所属的资源实例
+        :param InstanceDetails: 资源实例
         :type InstanceDetails: list of InstanceRelation
+        :param InstanceDetailRule: 规则所属的资源实例
+        :type InstanceDetailRule: list of RuleInstanceRelation
         """
         self.Domain = None
         self.ProxyTypeList = None
         self.RealServers = None
         self.InstanceDetails = None
+        self.InstanceDetailRule = None
 
 
     def _deserialize(self, params):
@@ -6361,6 +6478,12 @@ class Layer7Rule(AbstractModel):
                 obj = InstanceRelation()
                 obj._deserialize(item)
                 self.InstanceDetails.append(obj)
+        if params.get("InstanceDetailRule") is not None:
+            self.InstanceDetailRule = []
+            for item in params.get("InstanceDetailRule"):
+                obj = RuleInstanceRelation()
+                obj._deserialize(item)
+                self.InstanceDetailRule.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7348,6 +7471,70 @@ class NewL7RuleEntry(AbstractModel):
         
 
 
+class OverviewDDoSEvent(AbstractModel):
+    """防护概览DDoS攻击事件
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 事件Id
+        :type Id: str
+        :param Vip: ip
+        :type Vip: str
+        :param StartTime: 开始时间
+        :type StartTime: str
+        :param EndTime: 结束时间
+        :type EndTime: str
+        :param AttackType: 攻击类型
+        :type AttackType: str
+        :param AttackStatus: 攻击状态，0：攻击中；1：攻击结束
+        :type AttackStatus: int
+        :param Mbps: 攻击流量，单位Mbps
+        :type Mbps: int
+        :param Pps: 攻击包量，单位pps
+        :type Pps: int
+        :param Business: 业务类型，bgp-multip：高防包；bgpip：高防ip；basic：基础防护
+        :type Business: str
+        :param InstanceId: 高防实例Id
+        :type InstanceId: str
+        :param InstanceName: 高防实例名称
+        :type InstanceName: str
+        """
+        self.Id = None
+        self.Vip = None
+        self.StartTime = None
+        self.EndTime = None
+        self.AttackType = None
+        self.AttackStatus = None
+        self.Mbps = None
+        self.Pps = None
+        self.Business = None
+        self.InstanceId = None
+        self.InstanceName = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.Vip = params.get("Vip")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.AttackType = params.get("AttackType")
+        self.AttackStatus = params.get("AttackStatus")
+        self.Mbps = params.get("Mbps")
+        self.Pps = params.get("Pps")
+        self.Business = params.get("Business")
+        self.InstanceId = params.get("InstanceId")
+        self.InstanceName = params.get("InstanceName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class PackInfo(AbstractModel):
     """套餐包信息
 
@@ -7803,6 +7990,38 @@ class RegionInfo(AbstractModel):
 
     def _deserialize(self, params):
         self.Region = params.get("Region")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RuleInstanceRelation(AbstractModel):
+    """四七层规则的
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EipList: 资源实例的IP
+        :type EipList: list of str
+        :param InstanceId: 资源实例的ID
+        :type InstanceId: str
+        :param Cname: 资源实例的Cname
+        :type Cname: str
+        """
+        self.EipList = None
+        self.InstanceId = None
+        self.Cname = None
+
+
+    def _deserialize(self, params):
+        self.EipList = params.get("EipList")
+        self.InstanceId = params.get("InstanceId")
+        self.Cname = params.get("Cname")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

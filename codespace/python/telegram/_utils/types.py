@@ -24,12 +24,12 @@ Warning:
     the changelog.
 """
 from pathlib import Path
-from typing import IO, TYPE_CHECKING, Any, Dict, List, Optional, Tuple, TypeVar, Union
+from typing import IO, TYPE_CHECKING, Any, Dict, Optional, Tuple, TypeVar, Union, Collection
 
 if TYPE_CHECKING:
-    from telegram import InputFile  # noqa: F401
+    from telegram import InputFile
     from telegram import ForceReply, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove
-    from telegram._utils.defaultvalue import DefaultValue  # noqa: F401
+    from telegram._utils.defaultvalue import DefaultValue
 
 FileLike = Union[IO[bytes], "InputFile"]
 """Either a bytes-stream (e.g. open file handler) or a :class:`telegram.InputFile`."""
@@ -54,8 +54,8 @@ DVInput = Union["DefaultValue[DVType]", DVType]
 as ``Union[DefaultValue, type]``."""
 
 RT = TypeVar("RT")
-SLT = Union[RT, List[RT], Tuple[RT, ...]]
-"""Single instance or list/tuple of instances."""
+SCT = Union[RT, Collection[RT]]
+"""Single instance or collection of instances."""
 
 ReplyMarkup = Union[
     "InlineKeyboardMarkup", "ReplyKeyboardMarkup", "ReplyKeyboardRemove", "ForceReply"

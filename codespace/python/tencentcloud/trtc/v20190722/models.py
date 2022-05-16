@@ -1435,7 +1435,7 @@ class PresetLayoutConfig(AbstractModel):
         :type RenderMode: int
         :param MixInputType: 该当前位置用户混入的流类型：0为混入音视频，1为只混入视频，2为只混入音频。默认为0，建议配合指定用户ID使用。
         :type MixInputType: int
-        :param PlaceImageId: 占位图ID。启用占位图功能时，在当前位置的用户没有上行视频时显示占位图。占位图在实时音视频控制台上传并生成，https://cloud.tencent.com/document/product/647/50769
+        :param PlaceImageId: 占位图ID。启用占位图功能时，在当前位置的用户没有上行视频时显示占位图。占位图大小不能超过2M，在实时音视频控制台上传并生成，https://cloud.tencent.com/document/product/647/50769
         :type PlaceImageId: int
         """
         self.UserId = None
@@ -2196,13 +2196,13 @@ class WaterMarkParams(AbstractModel):
         r"""
         :param WaterMarkId: 混流-水印图片ID。取值为实时音视频控制台上传的图片ID。
         :type WaterMarkId: int
-        :param WaterMarkWidth: 混流-水印宽。单位为像素值。
+        :param WaterMarkWidth: 混流-水印宽。单位为像素值。水印宽+X偏移不能超过整个画布宽。
         :type WaterMarkWidth: int
-        :param WaterMarkHeight: 混流-水印高。单位为像素值。
+        :param WaterMarkHeight: 混流-水印高。单位为像素值。水印高+Y偏移不能超过整个画布高。
         :type WaterMarkHeight: int
-        :param LocationX: 水印在输出时的X偏移。单位为像素值。
+        :param LocationX: 水印在输出时的X偏移。单位为像素值。水印宽+X偏移不能超过整个画布宽。
         :type LocationX: int
-        :param LocationY: 水印在输出时的Y偏移。单位为像素值。
+        :param LocationY: 水印在输出时的Y偏移。单位为像素值。水印高+Y偏移不能超过整个画布高。
         :type LocationY: int
         :param WaterMarkUrl: 混流-水印图片URL地址，支持png、jpg、jpeg、bmp格式，暂不支持透明通道。URL链接长度限制为512字节。WaterMarkUrl和WaterMarkId参数都填时，以WaterMarkUrl为准。图片大小限制不超过2MB。
         :type WaterMarkUrl: str

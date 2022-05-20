@@ -1986,6 +1986,8 @@ class DescribeInstancesRequest(AbstractModel):
 <p style="padding-left: 30px;">按照【<strong>项目ID</strong>】进行过滤，可通过调用[DescribeProject](https://cloud.tencent.com/document/api/378/4400)查询已创建的项目列表或登录[控制台](https://console.cloud.tencent.com/cvm/index)进行查看；也可以调用[AddProject](https://cloud.tencent.com/document/api/378/4398)创建新的项目。项目ID形如：1002189。</p><p style="padding-left: 30px;">类型：Integer</p><p style="padding-left: 30px;">必选：否</p>
 <li><strong>host-id</strong></li>
 <p style="padding-left: 30px;">按照【<strong>[CDH](https://cloud.tencent.com/document/product/416) ID</strong>】进行过滤。[CDH](https://cloud.tencent.com/document/product/416) ID形如：host-xxxxxxxx。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>dedicated-cluster-id</strong></li>
+<p style="padding-left: 30px;">按照【<strong>[CDC](https://cloud.tencent.com/document/product/1346) ID</strong>】进行过滤。[CDC](https://cloud.tencent.com/document/product/1346) ID形如：cluster-xxxxxxx。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 <li><strong>vpc-id</strong></li>
 <p style="padding-left: 30px;">按照【<strong>VPC ID</strong>】进行过滤。VPC ID形如：vpc-xxxxxxxx。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 <li><strong>subnet-id</strong></li>
@@ -7302,6 +7304,8 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         :type HpcClusterId: str
         :param LaunchTemplate: 实例启动模板。
         :type LaunchTemplate: :class:`tencentcloud.cvm.v20170312.models.LaunchTemplate`
+        :param DedicatedClusterId: 指定专用集群创建。
+        :type DedicatedClusterId: str
         :param ChcIds: 指定CHC物理服务器来创建CHC云主机。
         :type ChcIds: list of str
         :param DisableApiTermination: 实例销毁保护标志，表示是否允许通过api接口删除实例。取值范围：<br><li>TRUE：表示开启实例保护，不允许通过api接口删除实例<br><li>FALSE：表示关闭实例保护，允许通过api接口删除实例<br><br>默认取值：FALSE。
@@ -7332,6 +7336,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         self.CamRoleName = None
         self.HpcClusterId = None
         self.LaunchTemplate = None
+        self.DedicatedClusterId = None
         self.ChcIds = None
         self.DisableApiTermination = None
 
@@ -7392,6 +7397,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         if params.get("LaunchTemplate") is not None:
             self.LaunchTemplate = LaunchTemplate()
             self.LaunchTemplate._deserialize(params.get("LaunchTemplate"))
+        self.DedicatedClusterId = params.get("DedicatedClusterId")
         self.ChcIds = params.get("ChcIds")
         self.DisableApiTermination = params.get("DisableApiTermination")
         memeber_set = set(params.keys())

@@ -11211,8 +11211,8 @@ overseas：预热至境外节点
 global：预热全球节点
 不填充情况下，默认为 mainland， URL 中域名必须在对应区域启用了加速服务才能提交对应区域的预热任务
         :type Area: str
-        :param Layer: 填写"middle"或不填充时预热至中间层节点。
-注意：中国境外区域预热，资源默认加载至中国境外边缘节点，所产生的边缘层流量会计入计费流量。
+        :param Layer: 中国境内区域默认预热至中间层节点，中国境外区域默认预热至边缘节点。预热至边缘产生的边缘层流量会计入计费流量。
+填写"middle"或不填充时，可指定预热至中间层节点。
         :type Layer: str
         :param ParseM3U8: 是否递归解析m3u8文件中的ts分片预热
 注意事项：
@@ -15054,7 +15054,7 @@ class WebSocket(AbstractModel):
         r"""
         :param Switch: WebSocket 超时配置开关, 开关为off时，平台仍支持WebSocket连接，此时超时时间默认为15秒，若需要调整超时时间，将开关置为on.
 
-* WebSocket 为内测功能,如需使用,请联系腾讯云工程师开白.
+* WebSocket 为ECDN产品功能，如需使用请通过ECDN域名配置.
         :type Switch: str
         :param Timeout: 设置超时时间，单位为秒，最大超时时间65秒。
 注意：此字段可能返回 null，表示取不到有效值。

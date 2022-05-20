@@ -9693,6 +9693,69 @@ class DescribeImageSpriteTemplatesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeLicenseUsageDataRequest(AbstractModel):
+    """DescribeLicenseUsageData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 起始日期。使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#52)。
+        :type StartTime: str
+        :param EndTime: 结束日期，需大于等于起始日期。使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#52)。
+        :type EndTime: str
+        :param LicenseType: License 类型，默认为 DRM 。目前支持的 License 类型包括：
+<li> DRM: DRM 加密播放 License</li>
+        :type LicenseType: str
+        :param SubAppId: 点播 [子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。
+        :type SubAppId: int
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.LicenseType = None
+        self.SubAppId = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.LicenseType = params.get("LicenseType")
+        self.SubAppId = params.get("SubAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeLicenseUsageDataResponse(AbstractModel):
+    """DescribeLicenseUsageData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LicenseUsageDataSet: License 查询次数统计数据，展示所查询 License 次数的明细数据。
+        :type LicenseUsageDataSet: list of LicenseUsageDataItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.LicenseUsageDataSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("LicenseUsageDataSet") is not None:
+            self.LicenseUsageDataSet = []
+            for item in params.get("LicenseUsageDataSet"):
+                obj = LicenseUsageDataItem()
+                obj._deserialize(item)
+                self.LicenseUsageDataSet.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeMediaInfosRequest(AbstractModel):
     """DescribeMediaInfos请求参数结构体
 
@@ -13093,6 +13156,34 @@ class ImageWatermarkTemplate(AbstractModel):
         self.Width = params.get("Width")
         self.Height = params.get("Height")
         self.RepeatType = params.get("RepeatType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class LicenseUsageDataItem(AbstractModel):
+    """License 请求次数统计数据。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Time: 数据所在时间区间的开始时间，使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#52)。如：当时间粒度为天，2018-12-01T00:00:00+08:00，表示2018年12月1日（含）到2018年12月2日（不含）区间。
+        :type Time: str
+        :param Count: License 请求次数。
+        :type Count: int
+        """
+        self.Time = None
+        self.Count = None
+
+
+    def _deserialize(self, params):
+        self.Time = params.get("Time")
+        self.Count = params.get("Count")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -22962,10 +23053,13 @@ class VideoTemplateInfoForUpdate(AbstractModel):
     def __init__(self):
         r"""
         :param Codec: 视频流的编码格式，可选值：
-<li>libx264：H.264 编码</li>
-<li>libx265：H.265 编码</li>
-<li>av1：AOMedia Video 1 编码</li>
-目前 H.265 编码必须指定分辨率，并且需要在 640*480 以内。av1 编码容器目前只支持 mp4 。
+<li>libx264：H.264 编码；</li>
+<li>libx265：H.265 编码；</li>
+<li>av1：AOMedia Video 1 编码；</li>
+<li>H.266：H.266 编码。</li>
+<font color=red>注意：</font>
+<li> av1，H.266 编码容器目前只支持 mp4 ；</li>
+<li> H.266 目前只支持恒定 CRF 码率控制方式。 </li>
         :type Codec: str
         :param Fps: 视频帧率，取值范围：[0, 100]，单位：Hz。
 当取值为 0，表示帧率和原始视频保持一致。
@@ -22991,8 +23085,12 @@ class VideoTemplateInfoForUpdate(AbstractModel):
 <li>white：留白，保持视频宽高比不变，边缘剩余部分使用白色填充。</li>
 <li>gauss：高斯模糊，保持视频宽高比不变，边缘剩余部分使用高斯模糊填充。</li>
         :type FillType: str
-        :param Vcrf: 视频恒定码率控制因子。取值范围为[0, 51]，填0表示禁用该参数。
-如果没有特殊需求，不建议指定该参数。
+        :param Vcrf: 视频恒定码率控制因子，取值范围为[1, 51]，填 0 表示禁用该参数。
+
+<font color=red>注意：</font>
+<li>如果指定该参数，将使用 CRF 的码率控制方式做转码（视频码率将不再生效）；</li>
+<li>当指定视频流编码格式为 H.266 时，该字段必填，推荐值为 28；</li>
+<li>如果没有特殊需求，不建议指定该参数。</li>
         :type Vcrf: int
         :param Gop: 关键帧 I 帧之间的间隔，取值范围：0 和 [1, 100000]，单位：帧数。
 当填 0 或不填时，系统将自动设置 gop 长度。

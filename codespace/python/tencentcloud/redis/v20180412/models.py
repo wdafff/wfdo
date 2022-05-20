@@ -676,6 +676,8 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
         :type ZoneName: str
         :param TemplateId: 创建实例需要应用的参数模板ID，不传则应用默认的参数模板
         :type TemplateId: str
+        :param DryRun: false ：默认值,发送正常请求，通过检查后直接创建实例 true：发送检查请求，不会创建实例。
+        :type DryRun: bool
         """
         self.TypeId = None
         self.MemSize = None
@@ -699,6 +701,7 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
         self.ResourceTags = None
         self.ZoneName = None
         self.TemplateId = None
+        self.DryRun = None
 
 
     def _deserialize(self, params):
@@ -734,6 +737,7 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
                 self.ResourceTags.append(obj)
         self.ZoneName = params.get("ZoneName")
         self.TemplateId = params.get("TemplateId")
+        self.DryRun = params.get("DryRun")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5425,6 +5429,55 @@ class ModifyInstanceParamsResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.Changed = params.get("Changed")
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyInstanceReadOnlyRequest(AbstractModel):
+    """ModifyInstanceReadOnly请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param InputMode: 实例输入模式，0：读写 1：只读
+        :type InputMode: str
+        """
+        self.InstanceId = None
+        self.InputMode = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.InputMode = params.get("InputMode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyInstanceReadOnlyResponse(AbstractModel):
+    """ModifyInstanceReadOnly返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务ID
+        :type TaskId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.TaskId = params.get("TaskId")
         self.RequestId = params.get("RequestId")
 

@@ -1131,6 +1131,8 @@ class ClusterCIDRSettings(AbstractModel):
         :type EniSubnetIds: list of str
         :param ClaimExpiredSeconds: VPC-CNI网络模式下，弹性网卡IP的回收时间，取值范围[300,15768000)
         :type ClaimExpiredSeconds: int
+        :param IgnoreServiceCIDRConflict: 是否忽略 ServiceCIDR 冲突错误, 仅在 VPC-CNI 模式生效，默认不忽略
+        :type IgnoreServiceCIDRConflict: bool
         """
         self.ClusterCIDR = None
         self.IgnoreClusterCIDRConflict = None
@@ -1139,6 +1141,7 @@ class ClusterCIDRSettings(AbstractModel):
         self.ServiceCIDR = None
         self.EniSubnetIds = None
         self.ClaimExpiredSeconds = None
+        self.IgnoreServiceCIDRConflict = None
 
 
     def _deserialize(self, params):
@@ -1149,6 +1152,7 @@ class ClusterCIDRSettings(AbstractModel):
         self.ServiceCIDR = params.get("ServiceCIDR")
         self.EniSubnetIds = params.get("EniSubnetIds")
         self.ClaimExpiredSeconds = params.get("ClaimExpiredSeconds")
+        self.IgnoreServiceCIDRConflict = params.get("IgnoreServiceCIDRConflict")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1441,6 +1445,9 @@ class ClusterNetworkSettings(AbstractModel):
         :param Subnets: 集群关联的容器子网
 注意：此字段可能返回 null，表示取不到有效值。
         :type Subnets: list of str
+        :param IgnoreServiceCIDRConflict: 是否忽略 ServiceCIDR 冲突错误, 仅在 VPC-CNI 模式生效，默认不忽略
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IgnoreServiceCIDRConflict: bool
         """
         self.ClusterCIDR = None
         self.IgnoreClusterCIDRConflict = None
@@ -1452,6 +1459,7 @@ class ClusterNetworkSettings(AbstractModel):
         self.KubeProxyMode = None
         self.ServiceCIDR = None
         self.Subnets = None
+        self.IgnoreServiceCIDRConflict = None
 
 
     def _deserialize(self, params):
@@ -1465,6 +1473,7 @@ class ClusterNetworkSettings(AbstractModel):
         self.KubeProxyMode = params.get("KubeProxyMode")
         self.ServiceCIDR = params.get("ServiceCIDR")
         self.Subnets = params.get("Subnets")
+        self.IgnoreServiceCIDRConflict = params.get("IgnoreServiceCIDRConflict")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2484,6 +2493,8 @@ class CreateEKSClusterRequest(AbstractModel):
         :type EnableVpcCoreDNS: bool
         :param TagSpecification: 标签描述列表。通过指定该参数可以同时绑定标签到相应的资源实例，当前仅支持绑定标签到集群实例。
         :type TagSpecification: list of TagSpecification
+        :param SubnetInfos: 子网信息列表
+        :type SubnetInfos: list of SubnetInfos
         """
         self.K8SVersion = None
         self.VpcId = None
@@ -2495,6 +2506,7 @@ class CreateEKSClusterRequest(AbstractModel):
         self.ExtraParam = None
         self.EnableVpcCoreDNS = None
         self.TagSpecification = None
+        self.SubnetInfos = None
 
 
     def _deserialize(self, params):
@@ -2518,6 +2530,12 @@ class CreateEKSClusterRequest(AbstractModel):
                 obj = TagSpecification()
                 obj._deserialize(item)
                 self.TagSpecification.append(obj)
+        if params.get("SubnetInfos") is not None:
+            self.SubnetInfos = []
+            for item in params.get("SubnetInfos"):
+                obj = SubnetInfos()
+                obj._deserialize(item)
+                self.SubnetInfos.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13855,6 +13873,34 @@ class SetNodePoolNodeProtectionResponse(AbstractModel):
         self.SucceedInstanceIds = params.get("SucceedInstanceIds")
         self.FailedInstanceIds = params.get("FailedInstanceIds")
         self.RequestId = params.get("RequestId")
+
+
+class SubnetInfos(AbstractModel):
+    """子网信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SubnetId: 子网id
+        :type SubnetId: str
+        :param Name: 子网节点名称
+        :type Name: str
+        """
+        self.SubnetId = None
+        self.Name = None
+
+
+    def _deserialize(self, params):
+        self.SubnetId = params.get("SubnetId")
+        self.Name = params.get("Name")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class SyncPrometheusTempRequest(AbstractModel):

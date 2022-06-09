@@ -648,9 +648,9 @@ class DeployApplicationRequest(AbstractModel):
         :type Readiness: :class:`tencentcloud.tem.v20210701.models.HealthCheckConfig`
         :param DeployStrategyConf: 分批发布策略配置
         :type DeployStrategyConf: :class:`tencentcloud.tem.v20210701.models.DeployStrategyConf`
-        :param HorizontalAutoscaler: 弹性策略
+        :param HorizontalAutoscaler: 弹性策略（已弃用，请使用弹性伸缩策略组合相关接口）
         :type HorizontalAutoscaler: list of HorizontalAutoscaler
-        :param CronHorizontalAutoscaler: 定时弹性策略
+        :param CronHorizontalAutoscaler: 定时弹性策略（已弃用，请使用弹性伸缩策略组合相关接口）
         :type CronHorizontalAutoscaler: list of CronHorizontalAutoscaler
         :param LogEnable: 是否启用log，1为启用，0为不启用
         :type LogEnable: int
@@ -670,6 +670,8 @@ class DeployApplicationRequest(AbstractModel):
         :type OsFlavour: str
         :param EnablePrometheusConf: 是否开启prometheus 业务指标监控
         :type EnablePrometheusConf: :class:`tencentcloud.tem.v20210701.models.EnablePrometheusConf`
+        :param EnableTracing: 1：开始apm采集；0：关闭apm采集
+        :type EnableTracing: int
         """
         self.ApplicationId = None
         self.InitPodNum = None
@@ -711,6 +713,7 @@ class DeployApplicationRequest(AbstractModel):
         self.StartupProbe = None
         self.OsFlavour = None
         self.EnablePrometheusConf = None
+        self.EnableTracing = None
 
 
     def _deserialize(self, params):
@@ -800,6 +803,7 @@ class DeployApplicationRequest(AbstractModel):
         if params.get("EnablePrometheusConf") is not None:
             self.EnablePrometheusConf = EnablePrometheusConf()
             self.EnablePrometheusConf._deserialize(params.get("EnablePrometheusConf"))
+        self.EnableTracing = params.get("EnableTracing")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1677,19 +1681,22 @@ class HorizontalAutoscaler(AbstractModel):
 
     def __init__(self):
         r"""
-        :param MinReplicas: 最小实例数
+        :param MinReplicas: 最小实例数（可以不传）
         :type MinReplicas: int
-        :param MaxReplicas: 最大实例数
+        :param MaxReplicas: 最大实例数（可以不传）
         :type MaxReplicas: int
         :param Metrics: 指标度量（CPU or MEMORY）
         :type Metrics: str
         :param Threshold: 阈值（百分比）
         :type Threshold: int
+        :param Enabled: 是否启用
+        :type Enabled: bool
         """
         self.MinReplicas = None
         self.MaxReplicas = None
         self.Metrics = None
         self.Threshold = None
+        self.Enabled = None
 
 
     def _deserialize(self, params):
@@ -1697,6 +1704,7 @@ class HorizontalAutoscaler(AbstractModel):
         self.MaxReplicas = params.get("MaxReplicas")
         self.Metrics = params.get("Metrics")
         self.Threshold = params.get("Threshold")
+        self.Enabled = params.get("Enabled")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

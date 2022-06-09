@@ -56,8 +56,14 @@ INVALIDPARAMETER_DOMAINNOTFOUND = 'InvalidParameter.DomainNotFound'
 # 证书信息错误。
 INVALIDPARAMETER_INVALIDCERTINFO = 'InvalidParameter.InvalidCertInfo'
 
+# 无效的请求头header。
+INVALIDPARAMETER_INVALIDREQUESTHEADERNAME = 'InvalidParameter.InvalidRequestHeaderName'
+
 # 参数错误。
 INVALIDPARAMETER_PARAMETERERROR = 'InvalidParameter.ParameterError'
+
+# 安全参数错误。
+INVALIDPARAMETER_SECURITY = 'InvalidParameter.Security'
 
 # 域名配置错误。
 INVALIDPARAMETER_SETTINGINVALIDPARAM = 'InvalidParameter.SettingInvalidParam'

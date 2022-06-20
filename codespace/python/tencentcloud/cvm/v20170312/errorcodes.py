@@ -29,6 +29,9 @@ FAILEDOPERATION_ACCOUNTALREADYEXISTS = 'FailedOperation.AccountAlreadyExists'
 # 账号为当前用户
 FAILEDOPERATION_ACCOUNTISYOURSELF = 'FailedOperation.AccountIsYourSelf'
 
+# 自带许可镜像暂时不支持共享。
+FAILEDOPERATION_BYOLIMAGESHAREFAILED = 'FailedOperation.BYOLImageShareFailed'
+
 # 未找到指定的容灾组
 FAILEDOPERATION_DISASTERRECOVERGROUPNOTFOUND = 'FailedOperation.DisasterRecoverGroupNotFound'
 
@@ -566,6 +569,9 @@ LIMITEXCEEDED_SINGLEUSGQUOTA = 'LimitExceeded.SingleUSGQuota'
 # 竞价实例类型配额不足
 LIMITEXCEEDED_SPOTQUOTA = 'LimitExceeded.SpotQuota'
 
+# 标签绑定的资源数量已达到配额限制。
+LIMITEXCEEDED_TAGRESOURCEQUOTA = 'LimitExceeded.TagResourceQuota'
+
 # 退还失败，退还配额已达上限。
 LIMITEXCEEDED_USERRETURNQUOTA = 'LimitExceeded.UserReturnQuota'
 
@@ -763,6 +769,9 @@ UNSUPPORTEDOPERATION_INVALIDDATADISK = 'UnsupportedOperation.InvalidDataDisk'
 
 # 不支持指定的磁盘
 UNSUPPORTEDOPERATION_INVALIDDISK = 'UnsupportedOperation.InvalidDisk'
+
+# 镜像许可类型与实例不符，请选择其他镜像。
+UNSUPPORTEDOPERATION_INVALIDIMAGELICENSETYPEFORRESET = 'UnsupportedOperation.InvalidImageLicenseTypeForReset'
 
 # 不支持已经设置了释放时间的实例，请在实例详情页撤销实例定时销毁后再试。
 UNSUPPORTEDOPERATION_INVALIDINSTANCENOTSUPPORTEDPROTECTEDINSTANCE = 'UnsupportedOperation.InvalidInstanceNotSupportedProtectedInstance'

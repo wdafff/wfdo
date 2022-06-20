@@ -3691,9 +3691,11 @@ FailedOperation.UnKnowError：表示识别失败；
 8：通用机打发票
 9：汽车票
 10：轮船票
-11：增值税发票（卷票 ）
+11：增值税发票（卷票）
 12：购车发票
 13：过路过桥费发票
+15：非税发票
+16：全电发票
         :type Type: int
         :param Rect: 识别出的图片在混贴票据图片中的位置信息。与Angel结合可以得出原图位置，组成RotatedRect((X+0.5\*Width,Y+0.5\*Height), (Width, Height), Angle)，详情可参考OpenCV文档。
         :type Rect: :class:`tencentcloud.ocr.v20181119.models.Rect`
@@ -4923,6 +4925,8 @@ class RecognizeHealthCodeOCRResponse(AbstractModel):
         :type TestingResult: str
         :param TestingTime: 核酸检测时间（允许返回空值）
         :type TestingTime: str
+        :param Vaccination: 疫苗接种信息，返回接种针数或接种情况（允许返回空值）
+        :type Vaccination: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4933,6 +4937,7 @@ class RecognizeHealthCodeOCRResponse(AbstractModel):
         self.TestingInterval = None
         self.TestingResult = None
         self.TestingTime = None
+        self.Vaccination = None
         self.RequestId = None
 
 
@@ -4944,6 +4949,7 @@ class RecognizeHealthCodeOCRResponse(AbstractModel):
         self.TestingInterval = params.get("TestingInterval")
         self.TestingResult = params.get("TestingResult")
         self.TestingTime = params.get("TestingTime")
+        self.Vaccination = params.get("Vaccination")
         self.RequestId = params.get("RequestId")
 
 
@@ -5952,6 +5958,40 @@ class RideHailingTransportLicenseOCRResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class SealInfo(AbstractModel):
+    """印章信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SealBody: 印章主体内容
+        :type SealBody: str
+        :param Location: 印章坐标
+        :type Location: :class:`tencentcloud.ocr.v20181119.models.Rect`
+        :param OtherTexts: 印章其它文本内容
+        :type OtherTexts: list of str
+        """
+        self.SealBody = None
+        self.Location = None
+        self.OtherTexts = None
+
+
+    def _deserialize(self, params):
+        self.SealBody = params.get("SealBody")
+        if params.get("Location") is not None:
+            self.Location = Rect()
+            self.Location._deserialize(params.get("Location"))
+        self.OtherTexts = params.get("OtherTexts")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class SealOCRRequest(AbstractModel):
     """SealOCR请求参数结构体
 
@@ -5995,12 +6035,15 @@ class SealOCRResponse(AbstractModel):
         :type Location: :class:`tencentcloud.ocr.v20181119.models.Rect`
         :param OtherTexts: 其它文本内容
         :type OtherTexts: list of str
+        :param SealInfos: 全部印章信息
+        :type SealInfos: list of SealInfo
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.SealBody = None
         self.Location = None
         self.OtherTexts = None
+        self.SealInfos = None
         self.RequestId = None
 
 
@@ -6010,6 +6053,12 @@ class SealOCRResponse(AbstractModel):
             self.Location = Rect()
             self.Location._deserialize(params.get("Location"))
         self.OtherTexts = params.get("OtherTexts")
+        if params.get("SealInfos") is not None:
+            self.SealInfos = []
+            for item in params.get("SealInfos"):
+                obj = SealInfo()
+                obj._deserialize(item)
+                self.SealInfos.append(obj)
         self.RequestId = params.get("RequestId")
 
 

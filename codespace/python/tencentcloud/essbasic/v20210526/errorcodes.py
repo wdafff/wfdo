@@ -20,16 +20,19 @@ AUTHFAILURE = 'AuthFailure'
 # 操作失败。
 FAILEDOPERATION = 'FailedOperation'
 
+# 签署人未达到合法年龄。
+FAILEDOPERATION_AGENOTACHIEVENORMALLEGAL = 'FailedOperation.AgeNotAchieveNormalLegal'
+
 # 鉴权失败。
 FAILEDOPERATION_AUTHFAIL = 'FailedOperation.AuthFail'
 
 # 发起签署存在填写控件。
 FAILEDOPERATION_QRCODECREATORSIGNCOMPONENTS = 'FailedOperation.QrCodeCreatorSignComponents'
 
-# 模版签署人不存在。
+# 模板签署人不存在。
 FAILEDOPERATION_QRCODESIGNUSERS = 'FailedOperation.QrCodeSignUsers'
 
-# 一码多人二维码模版有误。
+# 一码多人二维码模板有误。
 FAILEDOPERATION_QRCODETEMPLATEID = 'FailedOperation.QrCodeTemplateId'
 
 # 员工已实名。
@@ -119,7 +122,7 @@ OPERATIONDENIED_NOIDENTITYVERIFY = 'OperationDenied.NoIdentityVerify'
 # 流程配额不足。
 OPERATIONDENIED_NOQUOTA = 'OperationDenied.NoQuota'
 
-# 用户与企业不对应。
+# 用户不在当前企业中。
 OPERATIONDENIED_USERNOTINORGANIZATION = 'OperationDenied.UserNotInOrganization'
 
 # 资源不存在。

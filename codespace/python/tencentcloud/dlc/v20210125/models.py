@@ -350,6 +350,9 @@ string|tinyint|smallint|int|bigint|boolean|float|double|decimal|timestamp|date|b
         :param ModifiedTime: 字段修改时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type ModifiedTime: str
+        :param IsPartition: 是否为分区字段
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsPartition: bool
         """
         self.Name = None
         self.Type = None
@@ -360,6 +363,7 @@ string|tinyint|smallint|int|bigint|boolean|float|double|decimal|timestamp|date|b
         self.Position = None
         self.CreateTime = None
         self.ModifiedTime = None
+        self.IsPartition = None
 
 
     def _deserialize(self, params):
@@ -372,6 +376,7 @@ string|tinyint|smallint|int|bigint|boolean|float|double|decimal|timestamp|date|b
         self.Position = params.get("Position")
         self.CreateTime = params.get("CreateTime")
         self.ModifiedTime = params.get("ModifiedTime")
+        self.IsPartition = params.get("IsPartition")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1648,7 +1653,7 @@ class DescribeScriptsRequest(AbstractModel):
         :type Offset: int
         :param SortBy: 按字段排序，支持如下字段类型，update-time
         :type SortBy: str
-        :param Sorting: 排序方式，desc表示正序，asc表示反序
+        :param Sorting: 排序方式，desc表示正序，asc表示反序，默认asc
         :type Sorting: str
         :param Filters: 过滤条件，如下支持的过滤类型，传参Name应为其一
 script-id - String - （过滤条件）script-id取值形如：157de0d1-26b4-4df2-a2d0-b64afc406c25。
@@ -2030,7 +2035,7 @@ table-id - String - （过滤条件）table id形如：12342。
         :type EndTime: str
         :param Sort: 排序字段，支持：ModifiedTime（默认）；CreateTime
         :type Sort: str
-        :param Asc: 排序字段，false：降序（默认）；true
+        :param Asc: 排序字段，false：降序（默认）；true：升序
         :type Asc: bool
         :param TableType: table type，表类型查询,可用值:EXTERNAL_TABLE,INDEX_TABLE,MANAGED_TABLE,MATERIALIZED_VIEW,TABLE,VIEW,VIRTUAL_VIEW
         :type TableType: str
@@ -2354,11 +2359,11 @@ view-id - String - （过滤条件）view id形如：12342。
         :type DatasourceConnectionName: str
         :param Sort: 排序字段
         :type Sort: str
-        :param Asc: 排序规则
+        :param Asc: 排序规则，true:升序；false:降序
         :type Asc: bool
-        :param StartTime: 开始时间
+        :param StartTime: 按视图更新时间筛选，开始时间，如2021-11-11 00:00:00
         :type StartTime: str
-        :param EndTime: 结束时间
+        :param EndTime: 按视图更新时间筛选，结束时间，如2021-11-12 00:00:00
         :type EndTime: str
         """
         self.DatabaseName = None
@@ -2657,6 +2662,46 @@ class Filter(AbstractModel):
         
 
 
+class JobLogResult(AbstractModel):
+    """日志详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Time: 日志时间戳，毫秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Time: int
+        :param TopicId: 日志topic id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TopicId: str
+        :param TopicName: 日志topic name
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TopicName: str
+        :param LogJson: 日志内容，json字符串
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogJson: str
+        """
+        self.Time = None
+        self.TopicId = None
+        self.TopicName = None
+        self.LogJson = None
+
+
+    def _deserialize(self, params):
+        self.Time = params.get("Time")
+        self.TopicId = params.get("TopicId")
+        self.TopicName = params.get("TopicName")
+        self.LogJson = params.get("LogJson")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class KVPair(AbstractModel):
     """配置格式
 
@@ -2685,6 +2730,83 @@ class KVPair(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class ListTaskJobLogDetailRequest(AbstractModel):
+    """ListTaskJobLogDetail请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 列表返回的Id
+        :type TaskId: str
+        :param StartTime: 开始运行时间，unix时间戳（毫秒）
+        :type StartTime: int
+        :param EndTime: 结束运行时间，unix时间戳（毫秒）
+        :type EndTime: int
+        :param Limit: 分页大小，最大100，配合Context一起使用
+        :type Limit: int
+        :param Context: 下一次分页参数，第一次传空
+        :type Context: str
+        """
+        self.TaskId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Limit = None
+        self.Context = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Limit = params.get("Limit")
+        self.Context = params.get("Context")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ListTaskJobLogDetailResponse(AbstractModel):
+    """ListTaskJobLogDetail返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Context: 下一次分页参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Context: str
+        :param ListOver: 是否获取完结
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ListOver: bool
+        :param Results: 日志详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Results: list of JobLogResult
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Context = None
+        self.ListOver = None
+        self.Results = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Context = params.get("Context")
+        self.ListOver = params.get("ListOver")
+        if params.get("Results") is not None:
+            self.Results = []
+            for item in params.get("Results"):
+                obj = JobLogResult()
+                obj._deserialize(item)
+                self.Results.append(obj)
+        self.RequestId = params.get("RequestId")
 
 
 class ModifySparkAppRequest(AbstractModel):
@@ -2720,11 +2842,11 @@ class ModifySparkAppRequest(AbstractModel):
         :type MainClass: str
         :param AppConf: spark配置，以换行符分隔
         :type AppConf: str
-        :param IsLocalJars: 是否本地上传，可去cos,lakefs
+        :param IsLocalJars: jar资源依赖上传方式，1、cos；2、lakefs（控制台使用，该方式不支持直接接口调用）
         :type IsLocalJars: str
         :param AppJars: spark jar作业依赖jars，以逗号分隔
         :type AppJars: str
-        :param IsLocalFiles: 是否本地上传，可去cos,lakefs
+        :param IsLocalFiles: file资源依赖上传方式，1、cos；2、lakefs（控制台使用，该方式不支持直接接口调用）
         :type IsLocalFiles: str
         :param AppFiles: spark作业依赖资源，以逗号分隔
         :type AppFiles: str

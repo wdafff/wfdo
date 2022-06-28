@@ -9339,8 +9339,8 @@ class DescribeImportMachineInfoRequest(AbstractModel):
         :type ImportType: str
         :param IsQueryProMachine: 该参数已作废.
         :type IsQueryProMachine: bool
-        :param Filters: 过滤条件。
-<li>Version - String  是否必填：否 - 当前防护版本（ PRO_VERSION：专业版 | BASIC_VERSION：基础版 | Flagship : 旗舰版 | ProtectedMachines: 专业版+旗舰版）</li>
+        :param Filters: 过滤条件：
+<li>Version - String  是否必填：否 - 当前防护版本（ PRO_VERSION：专业版 | BASIC_VERSION：基础版 | Flagship：旗舰版 | ProtectedMachines：专业版+旗舰版） | BASIC_PROPOST_GENERAL_DISCOUNT：普惠版+专业版按量计费+基础版主机 | UnFlagship：专业版预付费+专业版后付费+基础版+普惠版</li>
         :type Filters: list of Filters
         """
         self.MachineList = None
@@ -12878,11 +12878,13 @@ class DescribeVulEffectHostListRequest(AbstractModel):
         :type Offset: int
         :param VulId: 漏洞id
         :type VulId: int
-        :param Filters: 过滤条件。
+        :param Filters: 过滤条件：
 <li>AliasName - String - 主机名筛选</li>
-<li>TagIds - String - 主机标签id串，多个用英文逗号分隔</li>
-<li>Status - String - 状态,0: 待处理 1:忽略  3:已修复  5:检测中  6:修复中  8=:修复失败.</li>
+<li>TagIds - String - 主机标签id串，多个用英文用逗号分隔</li>
+<li>Status - String - 状态：0-待处理 1-忽略  3-已修复  5-检测中  6-修复中  8-修复失败</li>
 <li>Uuid - String数组 - Uuid串数组</li>
+<li>Version - String数组 - 付费版本数组："Flagship"-旗舰版 "PRO_VERSION"-专业版 "BASIC_VERSION"-基础版</li>
+<li>InstanceState - String数组 - 实例状态数组："PENDING"-创建中 "LAUNCH_FAILED"-创建失败 "RUNNING"-运行中 "STOPPED"-关机 "STARTING"-开机中 "STOPPING"-关机中 "REBOOTING"-重启中 "SHUTDOWN"-待销毁 "TERMINATING"-销毁中 "UNKNOWN"-未知（针对非腾讯云机器，且客户端离线的场景） </li>
         :type Filters: list of Filter
         """
         self.Limit = None
@@ -13771,6 +13773,9 @@ class EffectiveMachineInfo(AbstractModel):
         :param MachineStatus: 在线状态 OFFLINE，ONLINE
 注意：此字段可能返回 null，表示取不到有效值。
         :type MachineStatus: str
+        :param LicenseOrder: 授权订单对象
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LicenseOrder: :class:`tencentcloud.cwp.v20180228.models.LicenseOrder`
         """
         self.MachineName = None
         self.MachinePublicIp = None
@@ -13780,6 +13785,7 @@ class EffectiveMachineInfo(AbstractModel):
         self.Uuid = None
         self.KernelVersion = None
         self.MachineStatus = None
+        self.LicenseOrder = None
 
 
     def _deserialize(self, params):
@@ -13796,6 +13802,9 @@ class EffectiveMachineInfo(AbstractModel):
         self.Uuid = params.get("Uuid")
         self.KernelVersion = params.get("KernelVersion")
         self.MachineStatus = params.get("MachineStatus")
+        if params.get("LicenseOrder") is not None:
+            self.LicenseOrder = LicenseOrder()
+            self.LicenseOrder._deserialize(params.get("LicenseOrder"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15734,6 +15743,46 @@ class IgnoreRuleEffectHostInfo(AbstractModel):
         self.LastScanTime = params.get("LastScanTime")
         self.EventId = params.get("EventId")
         self.Quuid = params.get("Quuid")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class LicenseOrder(AbstractModel):
+    """授权订单对象内容
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LicenseId: 授权ID
+        :type LicenseId: int
+        :param LicenseType: 授权类型
+        :type LicenseType: int
+        :param Status: 授权订单资源状态
+        :type Status: int
+        :param SourceType: 订单类型
+        :type SourceType: int
+        :param ResourceId: 资源ID
+        :type ResourceId: str
+        """
+        self.LicenseId = None
+        self.LicenseType = None
+        self.Status = None
+        self.SourceType = None
+        self.ResourceId = None
+
+
+    def _deserialize(self, params):
+        self.LicenseId = params.get("LicenseId")
+        self.LicenseType = params.get("LicenseType")
+        self.Status = params.get("Status")
+        self.SourceType = params.get("SourceType")
+        self.ResourceId = params.get("ResourceId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

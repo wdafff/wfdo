@@ -1042,7 +1042,7 @@ class ClusterBasicSettings(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ClusterOs: 集群系统。centos7.2x86_64 或者 ubuntu16.04.1 LTSx86_64，默认取值为ubuntu16.04.1 LTSx86_64
+        :param ClusterOs: 集群操作系统，支持设置公共镜像(字段传相应镜像ID)和自定义镜像(字段传相应镜像Name)，详情参考：https://cloud.tencent.com/document/product/457/68289
         :type ClusterOs: str
         :param ClusterVersion: 集群版本,默认值为1.10.5
         :type ClusterVersion: str
@@ -2080,7 +2080,7 @@ class CreateClusterNodePoolRequest(AbstractModel):
         :type ContainerRuntime: str
         :param RuntimeVersion: 运行时版本
         :type RuntimeVersion: str
-        :param NodePoolOs: 节点池os
+        :param NodePoolOs: 节点池os，当为自定义镜像时，传镜像id；否则为公共镜像的osName
         :type NodePoolOs: str
         :param OsCustomizeType: 容器的镜像版本，"DOCKER_CUSTOMIZE"(容器定制版),"GENERAL"(普通版本，默认值)
         :type OsCustomizeType: str
@@ -5577,7 +5577,7 @@ class DescribeEKSClusterCredentialResponse(AbstractModel):
         r"""
         :param Addresses: 集群的接入地址信息
         :type Addresses: list of IPAddress
-        :param Credential: 集群的认证信息
+        :param Credential: 集群的认证信息（token只有请求是主账号才返回，子账户请使用返回的kubeconfig）
         :type Credential: :class:`tencentcloud.tke.v20180525.models.ClusterCredential`
         :param PublicLB: 集群的公网访问信息
         :type PublicLB: :class:`tencentcloud.tke.v20180525.models.ClusterPublicLB`
@@ -9663,6 +9663,75 @@ class ForwardApplicationRequestV3Request(AbstractModel):
 
 class ForwardApplicationRequestV3Response(AbstractModel):
     """ForwardApplicationRequestV3返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResponseBody: 请求集群addon后返回的数据
+        :type ResponseBody: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ResponseBody = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ResponseBody = params.get("ResponseBody")
+        self.RequestId = params.get("RequestId")
+
+
+class ForwardTKEEdgeApplicationRequestV3Request(AbstractModel):
+    """ForwardTKEEdgeApplicationRequestV3请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Method: 请求集群addon的访问
+        :type Method: str
+        :param Path: 请求集群addon的路径
+        :type Path: str
+        :param Accept: 请求集群addon后允许接收的数据格式
+        :type Accept: str
+        :param ContentType: 请求集群addon的数据格式
+        :type ContentType: str
+        :param RequestBody: 请求集群addon的数据
+        :type RequestBody: str
+        :param ClusterName: 集群名称，例如cls-1234abcd
+        :type ClusterName: str
+        :param EncodedBody: 是否编码请求内容
+        :type EncodedBody: str
+        """
+        self.Method = None
+        self.Path = None
+        self.Accept = None
+        self.ContentType = None
+        self.RequestBody = None
+        self.ClusterName = None
+        self.EncodedBody = None
+
+
+    def _deserialize(self, params):
+        self.Method = params.get("Method")
+        self.Path = params.get("Path")
+        self.Accept = params.get("Accept")
+        self.ContentType = params.get("ContentType")
+        self.RequestBody = params.get("RequestBody")
+        self.ClusterName = params.get("ClusterName")
+        self.EncodedBody = params.get("EncodedBody")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ForwardTKEEdgeApplicationRequestV3Response(AbstractModel):
+    """ForwardTKEEdgeApplicationRequestV3返回参数结构体
 
     """
 

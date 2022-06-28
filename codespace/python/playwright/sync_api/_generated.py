@@ -286,7 +286,7 @@ class Request(SyncBase):
         {requestBodySize: int, requestHeadersSize: int, responseBodySize: int, responseHeadersSize: int}
         """
 
-        return mapping.from_impl(self._sync("request.sizes", self._impl_obj.sizes()))
+        return mapping.from_impl(self._sync(self._impl_obj.sizes()))
 
     def response(self) -> typing.Optional["Response"]:
         """Request.response
@@ -298,9 +298,7 @@ class Request(SyncBase):
         Union[Response, NoneType]
         """
 
-        return mapping.from_impl_nullable(
-            self._sync("request.response", self._impl_obj.response())
-        )
+        return mapping.from_impl_nullable(self._sync(self._impl_obj.response()))
 
     def is_navigation_request(self) -> bool:
         """Request.is_navigation_request
@@ -324,9 +322,7 @@ class Request(SyncBase):
         Dict[str, str]
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("request.all_headers", self._impl_obj.all_headers())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.all_headers()))
 
     def headers_array(self) -> typing.List[NameValue]:
         """Request.headers_array
@@ -339,9 +335,7 @@ class Request(SyncBase):
         List[{name: str, value: str}]
         """
 
-        return mapping.from_impl_list(
-            self._sync("request.headers_array", self._impl_obj.headers_array())
-        )
+        return mapping.from_impl_list(self._sync(self._impl_obj.headers_array()))
 
     def header_value(self, name: str) -> typing.Optional[str]:
         """Request.header_value
@@ -359,7 +353,7 @@ class Request(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("request.header_value", self._impl_obj.header_value(name=name))
+            self._sync(self._impl_obj.header_value(name=name))
         )
 
 
@@ -428,6 +422,19 @@ class Response(SyncBase):
         return mapping.from_maybe_impl(self._impl_obj.headers)
 
     @property
+    def from_service_worker(self) -> bool:
+        """Response.from_service_worker
+
+        Indicates whether this Response was fullfilled by a Service Worker's Fetch Handler (i.e. via
+        [FetchEvent.respondWith](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith)).
+
+        Returns
+        -------
+        bool
+        """
+        return mapping.from_maybe_impl(self._impl_obj.from_service_worker)
+
+    @property
     def request(self) -> "Request":
         """Response.request
 
@@ -461,9 +468,7 @@ class Response(SyncBase):
         Dict[str, str]
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("response.all_headers", self._impl_obj.all_headers())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.all_headers()))
 
     def headers_array(self) -> typing.List[NameValue]:
         """Response.headers_array
@@ -476,9 +481,7 @@ class Response(SyncBase):
         List[{name: str, value: str}]
         """
 
-        return mapping.from_impl_list(
-            self._sync("response.headers_array", self._impl_obj.headers_array())
-        )
+        return mapping.from_impl_list(self._sync(self._impl_obj.headers_array()))
 
     def header_value(self, name: str) -> typing.Optional[str]:
         """Response.header_value
@@ -498,7 +501,7 @@ class Response(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("response.header_value", self._impl_obj.header_value(name=name))
+            self._sync(self._impl_obj.header_value(name=name))
         )
 
     def header_values(self, name: str) -> typing.List[str]:
@@ -517,9 +520,7 @@ class Response(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "response.header_values", self._impl_obj.header_values(name=name)
-            )
+            self._sync(self._impl_obj.header_values(name=name))
         )
 
     def server_addr(self) -> typing.Optional[RemoteAddr]:
@@ -532,9 +533,7 @@ class Response(SyncBase):
         Union[{ipAddress: str, port: int}, NoneType]
         """
 
-        return mapping.from_impl_nullable(
-            self._sync("response.server_addr", self._impl_obj.server_addr())
-        )
+        return mapping.from_impl_nullable(self._sync(self._impl_obj.server_addr()))
 
     def security_details(self) -> typing.Optional[SecurityDetails]:
         """Response.security_details
@@ -546,9 +545,7 @@ class Response(SyncBase):
         Union[{issuer: Union[str, NoneType], protocol: Union[str, NoneType], subjectName: Union[str, NoneType], validFrom: Union[float, NoneType], validTo: Union[float, NoneType]}, NoneType]
         """
 
-        return mapping.from_impl_nullable(
-            self._sync("response.security_details", self._impl_obj.security_details())
-        )
+        return mapping.from_impl_nullable(self._sync(self._impl_obj.security_details()))
 
     def finished(self) -> NoneType:
         """Response.finished
@@ -556,9 +553,7 @@ class Response(SyncBase):
         Waits for this response to finish, returns always `null`.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("response.finished", self._impl_obj.finished())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.finished()))
 
     def body(self) -> bytes:
         """Response.body
@@ -570,9 +565,7 @@ class Response(SyncBase):
         bytes
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("response.body", self._impl_obj.body())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.body()))
 
     def text(self) -> str:
         """Response.text
@@ -584,9 +577,7 @@ class Response(SyncBase):
         str
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("response.text", self._impl_obj.text())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.text()))
 
     def json(self) -> typing.Any:
         """Response.json
@@ -600,9 +591,7 @@ class Response(SyncBase):
         Any
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("response.json", self._impl_obj.json())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.json()))
 
 
 mapping.register(ResponseImpl, Response)
@@ -649,7 +638,7 @@ class Route(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("route.abort", self._impl_obj.abort(errorCode=error_code))
+            self._sync(self._impl_obj.abort(errorCode=error_code))
         )
 
     def fulfill(
@@ -701,7 +690,6 @@ class Route(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "route.fulfill",
                 self._impl_obj.fulfill(
                     status=status,
                     headers=mapping.to_impl(headers),
@@ -709,7 +697,92 @@ class Route(SyncBase):
                     path=path,
                     contentType=content_type,
                     response=response._impl_obj if response else None,
-                ),
+                )
+            )
+        )
+
+    def fallback(
+        self,
+        *,
+        url: str = None,
+        method: str = None,
+        headers: typing.Optional[typing.Dict[str, str]] = None,
+        post_data: typing.Union[str, bytes] = None
+    ) -> NoneType:
+        """Route.fallback
+
+        When several routes match the given pattern, they run in the order opposite to their registration. That way the last
+        registered route can always override all the previos ones. In the example below, request will be handled by the
+        bottom-most handler first, then it'll fall back to the previous one and in the end will be aborted by the first
+        registered route.
+
+        ```py
+        page.route(\"**/*\", lambda route: route.abort())  # Runs last.
+        page.route(\"**/*\", lambda route: route.fallback())  # Runs second.
+        page.route(\"**/*\", lambda route: route.fallback())  # Runs first.
+        ```
+
+        Registering multiple routes is useful when you want separate handlers to handle different kinds of requests, for example
+        API calls vs page resources or GET requests vs POST requests as in the example below.
+
+        ```py
+        # Handle GET requests.
+        def handle_post(route):
+            if route.request.method != \"GET\":
+                route.fallback()
+                return
+          # Handling GET only.
+          # ...
+
+        # Handle POST requests.
+        def handle_post(route):
+            if route.request.method != \"POST\":
+                route.fallback()
+                return
+          # Handling POST only.
+          # ...
+
+        page.route(\"**/*\", handle_get)
+        page.route(\"**/*\", handle_post)
+        ```
+
+        One can also modify request while falling back to the subsequent handler, that way intermediate route handler can modify
+        url, method, headers and postData of the request.
+
+        ```py
+        def handle(route, request):
+            # override headers
+            headers = {
+                **request.headers,
+                \"foo\": \"foo-value\" # set \"foo\" header
+                \"bar\": None # remove \"bar\" header
+            }
+            route.fallback(headers=headers)
+        }
+        page.route(\"**/*\", handle)
+        ```
+
+        Parameters
+        ----------
+        url : Union[str, NoneType]
+            If set changes the request URL. New URL must have same protocol as original one. Changing the URL won't affect the route
+            matching, all the routes are matched using the original request URL.
+        method : Union[str, NoneType]
+            If set changes the request method (e.g. GET or POST)
+        headers : Union[Dict[str, str], NoneType]
+            If set changes the request HTTP headers. Header values will be converted to a string.
+        post_data : Union[bytes, str, NoneType]
+            If set changes the post data of request
+        """
+
+        return mapping.from_maybe_impl(
+            self._sync(
+                self._impl_obj.fallback(
+                    url=url,
+                    method=method,
+                    headers=mapping.to_impl(headers),
+                    postData=post_data,
+                )
             )
         )
 
@@ -730,8 +803,8 @@ class Route(SyncBase):
             # override headers
             headers = {
                 **request.headers,
-                \"foo\": \"bar\" # set \"foo\" header
-                \"origin\": None # remove \"origin\" header
+                \"foo\": \"foo-value\" # set \"foo\" header
+                \"bar\": None # remove \"bar\" header
             }
             route.continue_(headers=headers)
         }
@@ -752,13 +825,12 @@ class Route(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "route.continue_",
                 self._impl_obj.continue_(
                     url=url,
                     method=method,
                     headers=mapping.to_impl(headers),
                     postData=post_data,
-                ),
+                )
             )
         )
 
@@ -902,12 +974,11 @@ class WebSocket(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "web_socket.wait_for_event",
                 self._impl_obj.wait_for_event(
                     event=event,
                     predicate=self._wrap_handler(predicate),
                     timeout=timeout,
-                ),
+                )
             )
         )
 
@@ -962,9 +1033,7 @@ class Keyboard(SyncBase):
             Name of the key to press or a character to generate, such as `ArrowLeft` or `a`.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("keyboard.down", self._impl_obj.down(key=key))
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.down(key=key)))
 
     def up(self, key: str) -> NoneType:
         """Keyboard.up
@@ -977,9 +1046,7 @@ class Keyboard(SyncBase):
             Name of the key to press or a character to generate, such as `ArrowLeft` or `a`.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("keyboard.up", self._impl_obj.up(key=key))
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.up(key=key)))
 
     def insert_text(self, text: str) -> NoneType:
         """Keyboard.insert_text
@@ -999,7 +1066,7 @@ class Keyboard(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("keyboard.insert_text", self._impl_obj.insert_text(text=text))
+            self._sync(self._impl_obj.insert_text(text=text))
         )
 
     def type(self, text: str, *, delay: float = None) -> NoneType:
@@ -1026,7 +1093,7 @@ class Keyboard(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("keyboard.type", self._impl_obj.type(text=text, delay=delay))
+            self._sync(self._impl_obj.type(text=text, delay=delay))
         )
 
     def press(self, key: str, *, delay: float = None) -> NoneType:
@@ -1072,7 +1139,7 @@ class Keyboard(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("keyboard.press", self._impl_obj.press(key=key, delay=delay))
+            self._sync(self._impl_obj.press(key=key, delay=delay))
         )
 
 
@@ -1094,7 +1161,7 @@ class Mouse(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("mouse.move", self._impl_obj.move(x=x, y=y, steps=steps))
+            self._sync(self._impl_obj.move(x=x, y=y, steps=steps))
         )
 
     def down(
@@ -1116,9 +1183,7 @@ class Mouse(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "mouse.down", self._impl_obj.down(button=button, clickCount=click_count)
-            )
+            self._sync(self._impl_obj.down(button=button, clickCount=click_count))
         )
 
     def up(
@@ -1140,9 +1205,7 @@ class Mouse(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "mouse.up", self._impl_obj.up(button=button, clickCount=click_count)
-            )
+            self._sync(self._impl_obj.up(button=button, clickCount=click_count))
         )
 
     def click(
@@ -1172,10 +1235,9 @@ class Mouse(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "mouse.click",
                 self._impl_obj.click(
                     x=x, y=y, delay=delay, button=button, clickCount=click_count
-                ),
+                )
             )
         )
 
@@ -1203,10 +1265,7 @@ class Mouse(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "mouse.dblclick",
-                self._impl_obj.dblclick(x=x, y=y, delay=delay, button=button),
-            )
+            self._sync(self._impl_obj.dblclick(x=x, y=y, delay=delay, button=button))
         )
 
     def wheel(self, delta_x: float, delta_y: float) -> NoneType:
@@ -1226,9 +1285,7 @@ class Mouse(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "mouse.wheel", self._impl_obj.wheel(deltaX=delta_x, deltaY=delta_y)
-            )
+            self._sync(self._impl_obj.wheel(deltaX=delta_x, deltaY=delta_y))
         )
 
 
@@ -1247,9 +1304,7 @@ class Touchscreen(SyncBase):
         y : float
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("touchscreen.tap", self._impl_obj.tap(x=x, y=y))
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.tap(x=x, y=y)))
 
 
 mapping.register(TouchscreenImpl, Touchscreen)
@@ -1287,10 +1342,7 @@ class JSHandle(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "js_handle.evaluate",
-                self._impl_obj.evaluate(
-                    expression=expression, arg=mapping.to_impl(arg)
-                ),
+                self._impl_obj.evaluate(expression=expression, arg=mapping.to_impl(arg))
             )
         )
 
@@ -1324,10 +1376,9 @@ class JSHandle(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "js_handle.evaluate_handle",
                 self._impl_obj.evaluate_handle(
                     expression=expression, arg=mapping.to_impl(arg)
-                ),
+                )
             )
         )
 
@@ -1347,10 +1398,7 @@ class JSHandle(SyncBase):
         """
 
         return mapping.from_impl(
-            self._sync(
-                "js_handle.get_property",
-                self._impl_obj.get_property(propertyName=property_name),
-            )
+            self._sync(self._impl_obj.get_property(propertyName=property_name))
         )
 
     def get_properties(self) -> typing.Dict[str, "JSHandle"]:
@@ -1371,9 +1419,7 @@ class JSHandle(SyncBase):
         Dict[str, JSHandle]
         """
 
-        return mapping.from_impl_dict(
-            self._sync("js_handle.get_properties", self._impl_obj.get_properties())
-        )
+        return mapping.from_impl_dict(self._sync(self._impl_obj.get_properties()))
 
     def as_element(self) -> typing.Optional["ElementHandle"]:
         """JSHandle.as_element
@@ -1393,9 +1439,7 @@ class JSHandle(SyncBase):
         The `jsHandle.dispose` method stops referencing the element handle.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("js_handle.dispose", self._impl_obj.dispose())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.dispose()))
 
     def json_value(self) -> typing.Any:
         """JSHandle.json_value
@@ -1410,9 +1454,7 @@ class JSHandle(SyncBase):
         Any
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("js_handle.json_value", self._impl_obj.json_value())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.json_value()))
 
 
 mapping.register(JSHandleImpl, JSHandle)
@@ -1441,9 +1483,7 @@ class ElementHandle(JSHandle):
         Union[Frame, NoneType]
         """
 
-        return mapping.from_impl_nullable(
-            self._sync("element_handle.owner_frame", self._impl_obj.owner_frame())
-        )
+        return mapping.from_impl_nullable(self._sync(self._impl_obj.owner_frame()))
 
     def content_frame(self) -> typing.Optional["Frame"]:
         """ElementHandle.content_frame
@@ -1455,9 +1495,7 @@ class ElementHandle(JSHandle):
         Union[Frame, NoneType]
         """
 
-        return mapping.from_impl_nullable(
-            self._sync("element_handle.content_frame", self._impl_obj.content_frame())
-        )
+        return mapping.from_impl_nullable(self._sync(self._impl_obj.content_frame()))
 
     def get_attribute(self, name: str) -> typing.Optional[str]:
         """ElementHandle.get_attribute
@@ -1475,9 +1513,7 @@ class ElementHandle(JSHandle):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "element_handle.get_attribute", self._impl_obj.get_attribute(name=name)
-            )
+            self._sync(self._impl_obj.get_attribute(name=name))
         )
 
     def text_content(self) -> typing.Optional[str]:
@@ -1490,9 +1526,7 @@ class ElementHandle(JSHandle):
         Union[str, NoneType]
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("element_handle.text_content", self._impl_obj.text_content())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.text_content()))
 
     def inner_text(self) -> str:
         """ElementHandle.inner_text
@@ -1504,9 +1538,7 @@ class ElementHandle(JSHandle):
         str
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("element_handle.inner_text", self._impl_obj.inner_text())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.inner_text()))
 
     def inner_html(self) -> str:
         """ElementHandle.inner_html
@@ -1518,9 +1550,7 @@ class ElementHandle(JSHandle):
         str
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("element_handle.inner_html", self._impl_obj.inner_html())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.inner_html()))
 
     def is_checked(self) -> bool:
         """ElementHandle.is_checked
@@ -1532,9 +1562,7 @@ class ElementHandle(JSHandle):
         bool
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("element_handle.is_checked", self._impl_obj.is_checked())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.is_checked()))
 
     def is_disabled(self) -> bool:
         """ElementHandle.is_disabled
@@ -1546,9 +1574,7 @@ class ElementHandle(JSHandle):
         bool
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("element_handle.is_disabled", self._impl_obj.is_disabled())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.is_disabled()))
 
     def is_editable(self) -> bool:
         """ElementHandle.is_editable
@@ -1560,9 +1586,7 @@ class ElementHandle(JSHandle):
         bool
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("element_handle.is_editable", self._impl_obj.is_editable())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.is_editable()))
 
     def is_enabled(self) -> bool:
         """ElementHandle.is_enabled
@@ -1574,9 +1598,7 @@ class ElementHandle(JSHandle):
         bool
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("element_handle.is_enabled", self._impl_obj.is_enabled())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.is_enabled()))
 
     def is_hidden(self) -> bool:
         """ElementHandle.is_hidden
@@ -1588,9 +1610,7 @@ class ElementHandle(JSHandle):
         bool
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("element_handle.is_hidden", self._impl_obj.is_hidden())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.is_hidden()))
 
     def is_visible(self) -> bool:
         """ElementHandle.is_visible
@@ -1602,9 +1622,7 @@ class ElementHandle(JSHandle):
         bool
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("element_handle.is_visible", self._impl_obj.is_visible())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.is_visible()))
 
     def dispatch_event(self, type: str, event_init: typing.Dict = None) -> NoneType:
         """ElementHandle.dispatch_event
@@ -1647,10 +1665,9 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.dispatch_event",
                 self._impl_obj.dispatch_event(
                     type=type, eventInit=mapping.to_impl(event_init)
-                ),
+                )
             )
         )
 
@@ -1672,10 +1689,7 @@ class ElementHandle(JSHandle):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "element_handle.scroll_into_view_if_needed",
-                self._impl_obj.scroll_into_view_if_needed(timeout=timeout),
-            )
+            self._sync(self._impl_obj.scroll_into_view_if_needed(timeout=timeout))
         )
 
     def hover(
@@ -1722,14 +1736,13 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.hover",
                 self._impl_obj.hover(
                     modifiers=mapping.to_impl(modifiers),
                     position=position,
                     timeout=timeout,
                     force=force,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -1791,7 +1804,6 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.click",
                 self._impl_obj.click(
                     modifiers=mapping.to_impl(modifiers),
                     position=position,
@@ -1802,7 +1814,7 @@ class ElementHandle(JSHandle):
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -1864,7 +1876,6 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.dblclick",
                 self._impl_obj.dblclick(
                     modifiers=mapping.to_impl(modifiers),
                     position=position,
@@ -1874,7 +1885,7 @@ class ElementHandle(JSHandle):
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -1911,17 +1922,6 @@ class ElementHandle(JSHandle):
         handle.select_option(value=[\"red\", \"green\", \"blue\"])
         ```
 
-        ```py
-        # single selection matching the value
-        handle.select_option(\"blue\")
-        # single selection matching both the value and the label
-        handle.select_option(label=\"blue\")
-        # multiple selection
-        handle.select_option(\"red\", \"green\", \"blue\")
-        # multiple selection for blue, red and second option
-        handle.select_option(value=\"blue\", { index: 2 }, \"red\")
-        ```
-
         Parameters
         ----------
         value : Union[List[str], str, NoneType]
@@ -1951,7 +1951,6 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.select_option",
                 self._impl_obj.select_option(
                     value=mapping.to_impl(value),
                     index=mapping.to_impl(index),
@@ -1960,7 +1959,7 @@ class ElementHandle(JSHandle):
                     timeout=timeout,
                     force=force,
                     noWaitAfter=no_wait_after,
-                ),
+                )
             )
         )
 
@@ -2015,7 +2014,6 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.tap",
                 self._impl_obj.tap(
                     modifiers=mapping.to_impl(modifiers),
                     position=position,
@@ -2023,7 +2021,7 @@ class ElementHandle(JSHandle):
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -2064,10 +2062,9 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.fill",
                 self._impl_obj.fill(
                     value=value, timeout=timeout, noWaitAfter=no_wait_after, force=force
-                ),
+                )
             )
         )
 
@@ -2091,10 +2088,7 @@ class ElementHandle(JSHandle):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "element_handle.select_text",
-                self._impl_obj.select_text(force=force, timeout=timeout),
-            )
+            self._sync(self._impl_obj.select_text(force=force, timeout=timeout))
         )
 
     def input_value(self, *, timeout: float = None) -> str:
@@ -2117,10 +2111,7 @@ class ElementHandle(JSHandle):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "element_handle.input_value",
-                self._impl_obj.input_value(timeout=timeout),
-            )
+            self._sync(self._impl_obj.input_value(timeout=timeout))
         )
 
     def set_input_files(
@@ -2160,12 +2151,11 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.set_input_files",
                 self._impl_obj.set_input_files(
                     files=mapping.to_impl(files),
                     timeout=timeout,
                     noWaitAfter=no_wait_after,
-                ),
+                )
             )
         )
 
@@ -2175,9 +2165,7 @@ class ElementHandle(JSHandle):
         Calls [focus](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus) on the element.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("element_handle.focus", self._impl_obj.focus())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.focus()))
 
     def type(
         self,
@@ -2223,10 +2211,9 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.type",
                 self._impl_obj.type(
                     text=text, delay=delay, timeout=timeout, noWaitAfter=no_wait_after
-                ),
+                )
             )
         )
 
@@ -2276,10 +2263,9 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.press",
                 self._impl_obj.press(
                     key=key, delay=delay, timeout=timeout, noWaitAfter=no_wait_after
-                ),
+                )
             )
         )
 
@@ -2331,7 +2317,6 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.set_checked",
                 self._impl_obj.set_checked(
                     checked=checked,
                     position=position,
@@ -2339,7 +2324,7 @@ class ElementHandle(JSHandle):
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -2389,14 +2374,13 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.check",
                 self._impl_obj.check(
                     position=position,
                     timeout=timeout,
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -2446,14 +2430,13 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.uncheck",
                 self._impl_obj.uncheck(
                     position=position,
                     timeout=timeout,
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -2483,9 +2466,7 @@ class ElementHandle(JSHandle):
         Union[{x: float, y: float, width: float, height: float}, NoneType]
         """
 
-        return mapping.from_impl_nullable(
-            self._sync("element_handle.bounding_box", self._impl_obj.bounding_box())
-        )
+        return mapping.from_impl_nullable(self._sync(self._impl_obj.bounding_box()))
 
     def screenshot(
         self,
@@ -2554,7 +2535,6 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.screenshot",
                 self._impl_obj.screenshot(
                     timeout=timeout,
                     type=type,
@@ -2565,7 +2545,7 @@ class ElementHandle(JSHandle):
                     caret=caret,
                     scale=scale,
                     mask=mapping.to_impl(mask),
-                ),
+                )
             )
         )
 
@@ -2586,10 +2566,7 @@ class ElementHandle(JSHandle):
         """
 
         return mapping.from_impl_nullable(
-            self._sync(
-                "element_handle.query_selector",
-                self._impl_obj.query_selector(selector=selector),
-            )
+            self._sync(self._impl_obj.query_selector(selector=selector))
         )
 
     def query_selector_all(self, selector: str) -> typing.List["ElementHandle"]:
@@ -2609,10 +2586,7 @@ class ElementHandle(JSHandle):
         """
 
         return mapping.from_impl_list(
-            self._sync(
-                "element_handle.query_selector_all",
-                self._impl_obj.query_selector_all(selector=selector),
-            )
+            self._sync(self._impl_obj.query_selector_all(selector=selector))
         )
 
     def eval_on_selector(
@@ -2654,10 +2628,9 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.eval_on_selector",
                 self._impl_obj.eval_on_selector(
                     selector=selector, expression=expression, arg=mapping.to_impl(arg)
-                ),
+                )
             )
         )
 
@@ -2705,10 +2678,9 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.eval_on_selector_all",
                 self._impl_obj.eval_on_selector_all(
                     selector=selector, expression=expression, arg=mapping.to_impl(arg)
-                ),
+                )
             )
         )
 
@@ -2748,8 +2720,7 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "element_handle.wait_for_element_state",
-                self._impl_obj.wait_for_element_state(state=state, timeout=timeout),
+                self._impl_obj.wait_for_element_state(state=state, timeout=timeout)
             )
         )
 
@@ -2806,10 +2777,9 @@ class ElementHandle(JSHandle):
 
         return mapping.from_impl_nullable(
             self._sync(
-                "element_handle.wait_for_selector",
                 self._impl_obj.wait_for_selector(
                     selector=selector, state=state, timeout=timeout, strict=strict
-                ),
+                )
             )
         )
 
@@ -2868,10 +2838,9 @@ class Accessibility(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "accessibility.snapshot",
                 self._impl_obj.snapshot(
                     interestingOnly=interesting_only, root=mapping.to_impl(root)
-                ),
+                )
             )
         )
 
@@ -2948,12 +2917,11 @@ class FileChooser(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "file_chooser.set_files",
                 self._impl_obj.set_files(
                     files=mapping.to_impl(files),
                     timeout=timeout,
                     noWaitAfter=no_wait_after,
-                ),
+                )
             )
         )
 
@@ -3079,10 +3047,9 @@ class Frame(SyncBase):
 
         return mapping.from_impl_nullable(
             self._sync(
-                "frame.goto",
                 self._impl_obj.goto(
                     url=url, timeout=timeout, waitUntil=wait_until, referer=referer
-                ),
+                )
             )
         )
 
@@ -3177,10 +3144,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.wait_for_url",
                 self._impl_obj.wait_for_url(
                     url=self._wrap_handler(url), wait_until=wait_until, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -3218,10 +3184,7 @@ class Frame(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "frame.wait_for_load_state",
-                self._impl_obj.wait_for_load_state(state=state, timeout=timeout),
-            )
+            self._sync(self._impl_obj.wait_for_load_state(state=state, timeout=timeout))
         )
 
     def frame_element(self) -> "ElementHandle":
@@ -3245,9 +3208,7 @@ class Frame(SyncBase):
         ElementHandle
         """
 
-        return mapping.from_impl(
-            self._sync("frame.frame_element", self._impl_obj.frame_element())
-        )
+        return mapping.from_impl(self._sync(self._impl_obj.frame_element()))
 
     def evaluate(self, expression: str, arg: typing.Any = None) -> typing.Any:
         """Frame.evaluate
@@ -3297,10 +3258,7 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.evaluate",
-                self._impl_obj.evaluate(
-                    expression=expression, arg=mapping.to_impl(arg)
-                ),
+                self._impl_obj.evaluate(expression=expression, arg=mapping.to_impl(arg))
             )
         )
 
@@ -3350,10 +3308,9 @@ class Frame(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "frame.evaluate_handle",
                 self._impl_obj.evaluate_handle(
                     expression=expression, arg=mapping.to_impl(arg)
-                ),
+                )
             )
         )
 
@@ -3383,10 +3340,7 @@ class Frame(SyncBase):
         """
 
         return mapping.from_impl_nullable(
-            self._sync(
-                "frame.query_selector",
-                self._impl_obj.query_selector(selector=selector, strict=strict),
-            )
+            self._sync(self._impl_obj.query_selector(selector=selector, strict=strict))
         )
 
     def query_selector_all(self, selector: str) -> typing.List["ElementHandle"]:
@@ -3410,10 +3364,7 @@ class Frame(SyncBase):
         """
 
         return mapping.from_impl_list(
-            self._sync(
-                "frame.query_selector_all",
-                self._impl_obj.query_selector_all(selector=selector),
-            )
+            self._sync(self._impl_obj.query_selector_all(selector=selector))
         )
 
     def wait_for_selector(
@@ -3481,10 +3432,9 @@ class Frame(SyncBase):
 
         return mapping.from_impl_nullable(
             self._sync(
-                "frame.wait_for_selector",
                 self._impl_obj.wait_for_selector(
                     selector=selector, strict=strict, timeout=timeout, state=state
-                ),
+                )
             )
         )
 
@@ -3514,10 +3464,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.is_checked",
                 self._impl_obj.is_checked(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -3547,10 +3496,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.is_disabled",
                 self._impl_obj.is_disabled(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -3580,10 +3528,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.is_editable",
                 self._impl_obj.is_editable(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -3613,10 +3560,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.is_enabled",
                 self._impl_obj.is_enabled(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -3647,10 +3593,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.is_hidden",
                 self._impl_obj.is_hidden(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -3681,10 +3626,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.is_visible",
                 self._impl_obj.is_visible(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -3746,14 +3690,13 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.dispatch_event",
                 self._impl_obj.dispatch_event(
                     selector=selector,
                     type=type,
                     eventInit=mapping.to_impl(event_init),
                     strict=strict,
                     timeout=timeout,
-                ),
+                )
             )
         )
 
@@ -3807,13 +3750,12 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.eval_on_selector",
                 self._impl_obj.eval_on_selector(
                     selector=selector,
                     expression=expression,
                     arg=mapping.to_impl(arg),
                     strict=strict,
-                ),
+                )
             )
         )
 
@@ -3856,10 +3798,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.eval_on_selector_all",
                 self._impl_obj.eval_on_selector_all(
                     selector=selector, expression=expression, arg=mapping.to_impl(arg)
-                ),
+                )
             )
         )
 
@@ -3873,9 +3814,7 @@ class Frame(SyncBase):
         str
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("frame.content", self._impl_obj.content())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.content()))
 
     def set_content(
         self,
@@ -3905,10 +3844,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.set_content",
                 self._impl_obj.set_content(
                     html=html, timeout=timeout, waitUntil=wait_until
-                ),
+                )
             )
         )
 
@@ -3958,10 +3896,9 @@ class Frame(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "frame.add_script_tag",
                 self._impl_obj.add_script_tag(
                     url=url, path=path, content=content, type=type
-                ),
+                )
             )
         )
 
@@ -3996,8 +3933,7 @@ class Frame(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "frame.add_style_tag",
-                self._impl_obj.add_style_tag(url=url, path=path, content=content),
+                self._impl_obj.add_style_tag(url=url, path=path, content=content)
             )
         )
 
@@ -4067,7 +4003,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.click",
                 self._impl_obj.click(
                     selector=selector,
                     modifiers=mapping.to_impl(modifiers),
@@ -4080,7 +4015,7 @@ class Frame(SyncBase):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -4150,7 +4085,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.dblclick",
                 self._impl_obj.dblclick(
                     selector=selector,
                     modifiers=mapping.to_impl(modifiers),
@@ -4162,7 +4096,7 @@ class Frame(SyncBase):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -4225,7 +4159,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.tap",
                 self._impl_obj.tap(
                     selector=selector,
                     modifiers=mapping.to_impl(modifiers),
@@ -4235,7 +4168,7 @@ class Frame(SyncBase):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -4285,7 +4218,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.fill",
                 self._impl_obj.fill(
                     selector=selector,
                     value=value,
@@ -4293,7 +4225,7 @@ class Frame(SyncBase):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     force=force,
-                ),
+                )
             )
         )
 
@@ -4384,8 +4316,7 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.focus",
-                self._impl_obj.focus(selector=selector, strict=strict, timeout=timeout),
+                self._impl_obj.focus(selector=selector, strict=strict, timeout=timeout)
             )
         )
 
@@ -4415,10 +4346,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.text_content",
                 self._impl_obj.text_content(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -4448,10 +4378,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.inner_text",
                 self._impl_obj.inner_text(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -4481,10 +4410,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.inner_html",
                 self._impl_obj.inner_html(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -4516,10 +4444,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.get_attribute",
                 self._impl_obj.get_attribute(
                     selector=selector, name=name, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -4575,7 +4502,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.hover",
                 self._impl_obj.hover(
                     selector=selector,
                     modifiers=mapping.to_impl(modifiers),
@@ -4584,7 +4510,7 @@ class Frame(SyncBase):
                     force=force,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -4632,7 +4558,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.drag_and_drop",
                 self._impl_obj.drag_and_drop(
                     source=source,
                     target=target,
@@ -4643,7 +4568,7 @@ class Frame(SyncBase):
                     strict=strict,
                     timeout=timeout,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -4716,7 +4641,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.select_option",
                 self._impl_obj.select_option(
                     selector=selector,
                     value=mapping.to_impl(value),
@@ -4727,7 +4651,7 @@ class Frame(SyncBase):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     force=force,
-                ),
+                )
             )
         )
 
@@ -4760,10 +4684,9 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.input_value",
                 self._impl_obj.input_value(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -4812,14 +4735,13 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.set_input_files",
                 self._impl_obj.set_input_files(
                     selector=selector,
                     files=mapping.to_impl(files),
                     strict=strict,
                     timeout=timeout,
                     noWaitAfter=no_wait_after,
-                ),
+                )
             )
         )
 
@@ -4868,7 +4790,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.type",
                 self._impl_obj.type(
                     selector=selector,
                     text=text,
@@ -4876,7 +4797,7 @@ class Frame(SyncBase):
                     strict=strict,
                     timeout=timeout,
                     noWaitAfter=no_wait_after,
-                ),
+                )
             )
         )
 
@@ -4932,7 +4853,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.press",
                 self._impl_obj.press(
                     selector=selector,
                     key=key,
@@ -4940,7 +4860,7 @@ class Frame(SyncBase):
                     strict=strict,
                     timeout=timeout,
                     noWaitAfter=no_wait_after,
-                ),
+                )
             )
         )
 
@@ -4998,7 +4918,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.check",
                 self._impl_obj.check(
                     selector=selector,
                     position=position,
@@ -5007,7 +4926,7 @@ class Frame(SyncBase):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -5065,7 +4984,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.uncheck",
                 self._impl_obj.uncheck(
                     selector=selector,
                     position=position,
@@ -5074,7 +4992,7 @@ class Frame(SyncBase):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -5093,10 +5011,7 @@ class Frame(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "frame.wait_for_timeout",
-                self._impl_obj.wait_for_timeout(timeout=timeout),
-            )
+            self._sync(self._impl_obj.wait_for_timeout(timeout=timeout))
         )
 
     def wait_for_function(
@@ -5156,13 +5071,12 @@ class Frame(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "frame.wait_for_function",
                 self._impl_obj.wait_for_function(
                     expression=expression,
                     arg=mapping.to_impl(arg),
                     timeout=timeout,
                     polling=polling,
-                ),
+                )
             )
         )
 
@@ -5176,9 +5090,7 @@ class Frame(SyncBase):
         str
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("frame.title", self._impl_obj.title())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.title()))
 
     def set_checked(
         self,
@@ -5237,7 +5149,6 @@ class Frame(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "frame.set_checked",
                 self._impl_obj.set_checked(
                     selector=selector,
                     checked=checked,
@@ -5247,7 +5158,7 @@ class Frame(SyncBase):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -5406,10 +5317,7 @@ class Worker(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "worker.evaluate",
-                self._impl_obj.evaluate(
-                    expression=expression, arg=mapping.to_impl(arg)
-                ),
+                self._impl_obj.evaluate(expression=expression, arg=mapping.to_impl(arg))
             )
         )
 
@@ -5439,10 +5347,9 @@ class Worker(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "worker.evaluate_handle",
                 self._impl_obj.evaluate_handle(
                     expression=expression, arg=mapping.to_impl(arg)
-                ),
+                )
             )
         )
 
@@ -5516,10 +5423,9 @@ class Selectors(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "selectors.register",
                 self._impl_obj.register(
                     name=name, script=script, path=path, contentScript=content_script
-                ),
+                )
             )
         )
 
@@ -5629,7 +5535,7 @@ class Dialog(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("dialog.accept", self._impl_obj.accept(promptText=prompt_text))
+            self._sync(self._impl_obj.accept(promptText=prompt_text))
         )
 
     def dismiss(self) -> NoneType:
@@ -5638,9 +5544,7 @@ class Dialog(SyncBase):
         Returns when the dialog has been dismissed.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("dialog.dismiss", self._impl_obj.dismiss())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.dismiss()))
 
 
 mapping.register(DialogImpl, Dialog)
@@ -5692,9 +5596,7 @@ class Download(SyncBase):
         Deletes the downloaded file. Will wait for the download to finish if necessary.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("download.delete", self._impl_obj.delete())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.delete()))
 
     def failure(self) -> typing.Optional[str]:
         """Download.failure
@@ -5706,9 +5608,7 @@ class Download(SyncBase):
         Union[str, NoneType]
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("download.failure", self._impl_obj.failure())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.failure()))
 
     def path(self) -> typing.Optional[pathlib.Path]:
         """Download.path
@@ -5724,9 +5624,7 @@ class Download(SyncBase):
         Union[pathlib.Path, NoneType]
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("download.path", self._impl_obj.path())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.path()))
 
     def save_as(self, path: typing.Union[str, pathlib.Path]) -> NoneType:
         """Download.save_as
@@ -5740,9 +5638,7 @@ class Download(SyncBase):
             Path where the download should be copied.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("download.save_as", self._impl_obj.save_as(path=path))
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.save_as(path=path)))
 
     def cancel(self) -> NoneType:
         """Download.cancel
@@ -5751,9 +5647,7 @@ class Download(SyncBase):
         `download.failure()` would resolve to `'canceled'`.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("download.cancel", self._impl_obj.cancel())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.cancel()))
 
 
 mapping.register(DownloadImpl, Download)
@@ -5771,7 +5665,7 @@ class Video(SyncBase):
         pathlib.Path
         """
 
-        return mapping.from_maybe_impl(self._sync("video.path", self._impl_obj.path()))
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.path()))
 
     def save_as(self, path: typing.Union[str, pathlib.Path]) -> NoneType:
         """Video.save_as
@@ -5785,9 +5679,7 @@ class Video(SyncBase):
             Path where the video should be saved.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("video.save_as", self._impl_obj.save_as(path=path))
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.save_as(path=path)))
 
     def delete(self) -> NoneType:
         """Video.delete
@@ -5795,9 +5687,7 @@ class Video(SyncBase):
         Deletes the video file. Will wait for the video to finish if necessary.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("video.delete", self._impl_obj.delete())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.delete()))
 
 
 mapping.register(VideoImpl, Video)
@@ -6374,9 +6264,7 @@ class Page(SyncContextManager):
         Union[Page, NoneType]
         """
 
-        return mapping.from_impl_nullable(
-            self._sync("page.opener", self._impl_obj.opener())
-        )
+        return mapping.from_impl_nullable(self._sync(self._impl_obj.opener()))
 
     def frame(
         self,
@@ -6480,10 +6368,7 @@ class Page(SyncContextManager):
         """
 
         return mapping.from_impl_nullable(
-            self._sync(
-                "page.query_selector",
-                self._impl_obj.query_selector(selector=selector, strict=strict),
-            )
+            self._sync(self._impl_obj.query_selector(selector=selector, strict=strict))
         )
 
     def query_selector_all(self, selector: str) -> typing.List["ElementHandle"]:
@@ -6507,10 +6392,7 @@ class Page(SyncContextManager):
         """
 
         return mapping.from_impl_list(
-            self._sync(
-                "page.query_selector_all",
-                self._impl_obj.query_selector_all(selector=selector),
-            )
+            self._sync(self._impl_obj.query_selector_all(selector=selector))
         )
 
     def wait_for_selector(
@@ -6578,10 +6460,9 @@ class Page(SyncContextManager):
 
         return mapping.from_impl_nullable(
             self._sync(
-                "page.wait_for_selector",
                 self._impl_obj.wait_for_selector(
                     selector=selector, timeout=timeout, state=state, strict=strict
-                ),
+                )
             )
         )
 
@@ -6611,10 +6492,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.is_checked",
                 self._impl_obj.is_checked(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -6644,10 +6524,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.is_disabled",
                 self._impl_obj.is_disabled(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -6677,10 +6556,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.is_editable",
                 self._impl_obj.is_editable(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -6710,10 +6588,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.is_enabled",
                 self._impl_obj.is_enabled(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -6744,10 +6621,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.is_hidden",
                 self._impl_obj.is_hidden(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -6778,10 +6654,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.is_visible",
                 self._impl_obj.is_visible(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -6843,14 +6718,13 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.dispatch_event",
                 self._impl_obj.dispatch_event(
                     selector=selector,
                     type=type,
                     eventInit=mapping.to_impl(event_init),
                     timeout=timeout,
                     strict=strict,
-                ),
+                )
             )
         )
 
@@ -6906,10 +6780,7 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.evaluate",
-                self._impl_obj.evaluate(
-                    expression=expression, arg=mapping.to_impl(arg)
-                ),
+                self._impl_obj.evaluate(expression=expression, arg=mapping.to_impl(arg))
             )
         )
 
@@ -6959,10 +6830,9 @@ class Page(SyncContextManager):
 
         return mapping.from_impl(
             self._sync(
-                "page.evaluate_handle",
                 self._impl_obj.evaluate_handle(
                     expression=expression, arg=mapping.to_impl(arg)
-                ),
+                )
             )
         )
 
@@ -7015,13 +6885,12 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.eval_on_selector",
                 self._impl_obj.eval_on_selector(
                     selector=selector,
                     expression=expression,
                     arg=mapping.to_impl(arg),
                     strict=strict,
-                ),
+                )
             )
         )
 
@@ -7062,10 +6931,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.eval_on_selector_all",
                 self._impl_obj.eval_on_selector_all(
                     selector=selector, expression=expression, arg=mapping.to_impl(arg)
-                ),
+                )
             )
         )
 
@@ -7104,10 +6972,9 @@ class Page(SyncContextManager):
 
         return mapping.from_impl(
             self._sync(
-                "page.add_script_tag",
                 self._impl_obj.add_script_tag(
                     url=url, path=path, content=content, type=type
-                ),
+                )
             )
         )
 
@@ -7142,8 +7009,7 @@ class Page(SyncContextManager):
 
         return mapping.from_impl(
             self._sync(
-                "page.add_style_tag",
-                self._impl_obj.add_style_tag(url=url, path=path, content=content),
+                self._impl_obj.add_style_tag(url=url, path=path, content=content)
             )
         )
 
@@ -7200,10 +7066,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.expose_function",
                 self._impl_obj.expose_function(
                     name=name, callback=self._wrap_handler(callback)
-                ),
+                )
             )
         )
 
@@ -7278,10 +7143,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.expose_binding",
                 self._impl_obj.expose_binding(
                     name=name, callback=self._wrap_handler(callback), handle=handle
-                ),
+                )
             )
         )
 
@@ -7300,8 +7164,7 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.set_extra_http_headers",
-                self._impl_obj.set_extra_http_headers(headers=mapping.to_impl(headers)),
+                self._impl_obj.set_extra_http_headers(headers=mapping.to_impl(headers))
             )
         )
 
@@ -7315,9 +7178,7 @@ class Page(SyncContextManager):
         str
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("page.content", self._impl_obj.content())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.content()))
 
     def set_content(
         self,
@@ -7347,10 +7208,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.set_content",
                 self._impl_obj.set_content(
                     html=html, timeout=timeout, waitUntil=wait_until
-                ),
+                )
             )
         )
 
@@ -7413,10 +7273,9 @@ class Page(SyncContextManager):
 
         return mapping.from_impl_nullable(
             self._sync(
-                "page.goto",
                 self._impl_obj.goto(
                     url=url, timeout=timeout, waitUntil=wait_until, referer=referer
-                ),
+                )
             )
         )
 
@@ -7451,10 +7310,7 @@ class Page(SyncContextManager):
         """
 
         return mapping.from_impl_nullable(
-            self._sync(
-                "page.reload",
-                self._impl_obj.reload(timeout=timeout, waitUntil=wait_until),
-            )
+            self._sync(self._impl_obj.reload(timeout=timeout, waitUntil=wait_until))
         )
 
     def wait_for_load_state(
@@ -7502,10 +7358,7 @@ class Page(SyncContextManager):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "page.wait_for_load_state",
-                self._impl_obj.wait_for_load_state(state=state, timeout=timeout),
-            )
+            self._sync(self._impl_obj.wait_for_load_state(state=state, timeout=timeout))
         )
 
     def wait_for_url(
@@ -7547,10 +7400,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.wait_for_url",
                 self._impl_obj.wait_for_url(
                     url=self._wrap_handler(url), wait_until=wait_until, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -7582,12 +7434,11 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.wait_for_event",
                 self._impl_obj.wait_for_event(
                     event=event,
                     predicate=self._wrap_handler(predicate),
                     timeout=timeout,
-                ),
+                )
             )
         )
 
@@ -7624,10 +7475,7 @@ class Page(SyncContextManager):
         """
 
         return mapping.from_impl_nullable(
-            self._sync(
-                "page.go_back",
-                self._impl_obj.go_back(timeout=timeout, waitUntil=wait_until),
-            )
+            self._sync(self._impl_obj.go_back(timeout=timeout, waitUntil=wait_until))
         )
 
     def go_forward(
@@ -7663,10 +7511,7 @@ class Page(SyncContextManager):
         """
 
         return mapping.from_impl_nullable(
-            self._sync(
-                "page.go_forward",
-                self._impl_obj.go_forward(timeout=timeout, waitUntil=wait_until),
-            )
+            self._sync(self._impl_obj.go_forward(timeout=timeout, waitUntil=wait_until))
         )
 
     def emulate_media(
@@ -7730,13 +7575,12 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.emulate_media",
                 self._impl_obj.emulate_media(
                     media=media,
                     colorScheme=color_scheme,
                     reducedMotion=reduced_motion,
                     forcedColors=forced_colors,
-                ),
+                )
             )
         )
 
@@ -7763,10 +7607,7 @@ class Page(SyncContextManager):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "page.set_viewport_size",
-                self._impl_obj.set_viewport_size(viewportSize=viewport_size),
-            )
+            self._sync(self._impl_obj.set_viewport_size(viewportSize=viewport_size))
         )
 
     def bring_to_front(self) -> NoneType:
@@ -7775,9 +7616,7 @@ class Page(SyncContextManager):
         Brings page to front (activates tab).
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("page.bring_to_front", self._impl_obj.bring_to_front())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.bring_to_front()))
 
     def add_init_script(
         self, script: str = None, *, path: typing.Union[str, pathlib.Path] = None
@@ -7812,10 +7651,7 @@ class Page(SyncContextManager):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "page.add_init_script",
-                self._impl_obj.add_init_script(script=script, path=path),
-            )
+            self._sync(self._impl_obj.add_init_script(script=script, path=path))
         )
 
     def route(
@@ -7837,7 +7673,7 @@ class Page(SyncContextManager):
         > NOTE: The handler will only be called for the first url if the response is a redirect.
         > NOTE: `page.route()` will not intercept requests intercepted by Service Worker. See
         [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using
-        request interception. Via `await context.addInitScript(() => delete window.navigator.serviceWorker);`
+        request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
 
         An example of a naive handler that aborts all image requests:
 
@@ -7890,12 +7726,11 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.route",
                 self._impl_obj.route(
                     url=self._wrap_handler(url),
                     handler=self._wrap_handler(handler),
                     times=times,
-                ),
+                )
             )
         )
 
@@ -7921,10 +7756,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.unroute",
                 self._impl_obj.unroute(
                     url=self._wrap_handler(url), handler=self._wrap_handler(handler)
-                ),
+                )
             )
         )
 
@@ -7995,7 +7829,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.screenshot",
                 self._impl_obj.screenshot(
                     timeout=timeout,
                     type=type,
@@ -8008,7 +7841,7 @@ class Page(SyncContextManager):
                     caret=caret,
                     scale=scale,
                     mask=mapping.to_impl(mask),
-                ),
+                )
             )
         )
 
@@ -8022,7 +7855,7 @@ class Page(SyncContextManager):
         str
         """
 
-        return mapping.from_maybe_impl(self._sync("page.title", self._impl_obj.title()))
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.title()))
 
     def close(self, *, run_before_unload: bool = None) -> NoneType:
         """Page.close
@@ -8043,9 +7876,7 @@ class Page(SyncContextManager):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "page.close", self._impl_obj.close(runBeforeUnload=run_before_unload)
-            )
+            self._sync(self._impl_obj.close(runBeforeUnload=run_before_unload))
         )
 
     def is_closed(self) -> bool:
@@ -8128,7 +7959,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.click",
                 self._impl_obj.click(
                     selector=selector,
                     modifiers=mapping.to_impl(modifiers),
@@ -8141,7 +7971,7 @@ class Page(SyncContextManager):
                     noWaitAfter=no_wait_after,
                     trial=trial,
                     strict=strict,
-                ),
+                )
             )
         )
 
@@ -8213,7 +8043,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.dblclick",
                 self._impl_obj.dblclick(
                     selector=selector,
                     modifiers=mapping.to_impl(modifiers),
@@ -8225,7 +8054,7 @@ class Page(SyncContextManager):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -8290,7 +8119,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.tap",
                 self._impl_obj.tap(
                     selector=selector,
                     modifiers=mapping.to_impl(modifiers),
@@ -8300,7 +8128,7 @@ class Page(SyncContextManager):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -8352,7 +8180,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.fill",
                 self._impl_obj.fill(
                     selector=selector,
                     value=value,
@@ -8360,7 +8187,7 @@ class Page(SyncContextManager):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     force=force,
-                ),
+                )
             )
         )
 
@@ -8455,8 +8282,7 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.focus",
-                self._impl_obj.focus(selector=selector, strict=strict, timeout=timeout),
+                self._impl_obj.focus(selector=selector, strict=strict, timeout=timeout)
             )
         )
 
@@ -8486,10 +8312,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.text_content",
                 self._impl_obj.text_content(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -8519,10 +8344,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.inner_text",
                 self._impl_obj.inner_text(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -8552,10 +8376,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.inner_html",
                 self._impl_obj.inner_html(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -8587,10 +8410,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.get_attribute",
                 self._impl_obj.get_attribute(
                     selector=selector, name=name, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -8648,7 +8470,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.hover",
                 self._impl_obj.hover(
                     selector=selector,
                     modifiers=mapping.to_impl(modifiers),
@@ -8657,7 +8478,7 @@ class Page(SyncContextManager):
                     force=force,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -8705,7 +8526,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.drag_and_drop",
                 self._impl_obj.drag_and_drop(
                     source=source,
                     target=target,
@@ -8716,7 +8536,7 @@ class Page(SyncContextManager):
                     timeout=timeout,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -8792,7 +8612,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.select_option",
                 self._impl_obj.select_option(
                     selector=selector,
                     value=mapping.to_impl(value),
@@ -8803,7 +8622,7 @@ class Page(SyncContextManager):
                     noWaitAfter=no_wait_after,
                     force=force,
                     strict=strict,
-                ),
+                )
             )
         )
 
@@ -8836,10 +8655,9 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.input_value",
                 self._impl_obj.input_value(
                     selector=selector, strict=strict, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -8888,14 +8706,13 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.set_input_files",
                 self._impl_obj.set_input_files(
                     selector=selector,
                     files=mapping.to_impl(files),
                     timeout=timeout,
                     strict=strict,
                     noWaitAfter=no_wait_after,
-                ),
+                )
             )
         )
 
@@ -8946,7 +8763,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.type",
                 self._impl_obj.type(
                     selector=selector,
                     text=text,
@@ -8954,7 +8770,7 @@ class Page(SyncContextManager):
                     timeout=timeout,
                     noWaitAfter=no_wait_after,
                     strict=strict,
-                ),
+                )
             )
         )
 
@@ -9024,7 +8840,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.press",
                 self._impl_obj.press(
                     selector=selector,
                     key=key,
@@ -9032,7 +8847,7 @@ class Page(SyncContextManager):
                     timeout=timeout,
                     noWaitAfter=no_wait_after,
                     strict=strict,
-                ),
+                )
             )
         )
 
@@ -9092,7 +8907,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.check",
                 self._impl_obj.check(
                     selector=selector,
                     position=position,
@@ -9101,7 +8915,7 @@ class Page(SyncContextManager):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -9161,7 +8975,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.uncheck",
                 self._impl_obj.uncheck(
                     selector=selector,
                     position=position,
@@ -9170,7 +8983,7 @@ class Page(SyncContextManager):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -9196,10 +9009,7 @@ class Page(SyncContextManager):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "page.wait_for_timeout",
-                self._impl_obj.wait_for_timeout(timeout=timeout),
-            )
+            self._sync(self._impl_obj.wait_for_timeout(timeout=timeout))
         )
 
     def wait_for_function(
@@ -9261,13 +9071,12 @@ class Page(SyncContextManager):
 
         return mapping.from_impl(
             self._sync(
-                "page.wait_for_function",
                 self._impl_obj.wait_for_function(
                     expression=expression,
                     arg=mapping.to_impl(arg),
                     timeout=timeout,
                     polling=polling,
-                ),
+                )
             )
         )
 
@@ -9284,7 +9093,7 @@ class Page(SyncContextManager):
         `browser_type.launch()`.
         """
 
-        return mapping.from_maybe_impl(self._sync("page.pause", self._impl_obj.pause()))
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.pause()))
 
     def pdf(
         self,
@@ -9395,7 +9204,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.pdf",
                 self._impl_obj.pdf(
                     scale=scale,
                     displayHeaderFooter=display_header_footer,
@@ -9410,7 +9218,7 @@ class Page(SyncContextManager):
                     preferCSSPageSize=prefer_css_page_size,
                     margin=margin,
                     path=path,
-                ),
+                )
             )
         )
 
@@ -9873,7 +9681,6 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page.set_checked",
                 self._impl_obj.set_checked(
                     selector=selector,
                     checked=checked,
@@ -9883,7 +9690,7 @@ class Page(SyncContextManager):
                     noWaitAfter=no_wait_after,
                     strict=strict,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -10208,9 +10015,7 @@ class BrowserContext(SyncContextManager):
         Page
         """
 
-        return mapping.from_impl(
-            self._sync("browser_context.new_page", self._impl_obj.new_page())
-        )
+        return mapping.from_impl(self._sync(self._impl_obj.new_page()))
 
     def cookies(
         self, urls: typing.Union[str, typing.List[str]] = None
@@ -10231,10 +10036,7 @@ class BrowserContext(SyncContextManager):
         """
 
         return mapping.from_impl_list(
-            self._sync(
-                "browser_context.cookies",
-                self._impl_obj.cookies(urls=mapping.to_impl(urls)),
-            )
+            self._sync(self._impl_obj.cookies(urls=mapping.to_impl(urls)))
         )
 
     def add_cookies(self, cookies: typing.List[SetCookieParam]) -> NoneType:
@@ -10253,10 +10055,7 @@ class BrowserContext(SyncContextManager):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "browser_context.add_cookies",
-                self._impl_obj.add_cookies(cookies=mapping.to_impl(cookies)),
-            )
+            self._sync(self._impl_obj.add_cookies(cookies=mapping.to_impl(cookies)))
         )
 
     def clear_cookies(self) -> NoneType:
@@ -10265,9 +10064,7 @@ class BrowserContext(SyncContextManager):
         Clears context cookies.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("browser_context.clear_cookies", self._impl_obj.clear_cookies())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.clear_cookies()))
 
     def grant_permissions(
         self, permissions: typing.List[str], *, origin: str = None
@@ -10302,10 +10099,9 @@ class BrowserContext(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "browser_context.grant_permissions",
                 self._impl_obj.grant_permissions(
                     permissions=mapping.to_impl(permissions), origin=origin
-                ),
+                )
             )
         )
 
@@ -10322,11 +10118,7 @@ class BrowserContext(SyncContextManager):
         ```
         """
 
-        return mapping.from_maybe_impl(
-            self._sync(
-                "browser_context.clear_permissions", self._impl_obj.clear_permissions()
-            )
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.clear_permissions()))
 
     def set_geolocation(self, geolocation: Geolocation = None) -> NoneType:
         """BrowserContext.set_geolocation
@@ -10346,10 +10138,7 @@ class BrowserContext(SyncContextManager):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "browser_context.set_geolocation",
-                self._impl_obj.set_geolocation(geolocation=geolocation),
-            )
+            self._sync(self._impl_obj.set_geolocation(geolocation=geolocation))
         )
 
     def set_extra_http_headers(self, headers: typing.Dict[str, str]) -> NoneType:
@@ -10369,8 +10158,7 @@ class BrowserContext(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "browser_context.set_extra_http_headers",
-                self._impl_obj.set_extra_http_headers(headers=mapping.to_impl(headers)),
+                self._impl_obj.set_extra_http_headers(headers=mapping.to_impl(headers))
             )
         )
 
@@ -10384,10 +10172,7 @@ class BrowserContext(SyncContextManager):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "browser_context.set_offline",
-                self._impl_obj.set_offline(offline=offline),
-            )
+            self._sync(self._impl_obj.set_offline(offline=offline))
         )
 
     def add_init_script(
@@ -10423,10 +10208,7 @@ class BrowserContext(SyncContextManager):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "browser_context.add_init_script",
-                self._impl_obj.add_init_script(script=script, path=path),
-            )
+            self._sync(self._impl_obj.add_init_script(script=script, path=path))
         )
 
     def expose_binding(
@@ -10498,10 +10280,9 @@ class BrowserContext(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "browser_context.expose_binding",
                 self._impl_obj.expose_binding(
                     name=name, callback=self._wrap_handler(callback), handle=handle
-                ),
+                )
             )
         )
 
@@ -10557,10 +10338,9 @@ class BrowserContext(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "browser_context.expose_function",
                 self._impl_obj.expose_function(
                     name=name, callback=self._wrap_handler(callback)
-                ),
+                )
             )
         )
 
@@ -10579,9 +10359,9 @@ class BrowserContext(SyncContextManager):
         Routing provides the capability to modify network requests that are made by any page in the browser context. Once route
         is enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.
 
-        > NOTE: `page.route()` will not intercept requests intercepted by Service Worker. See
+        > NOTE: `browser_context.route()` will not intercept requests intercepted by Service Worker. See
         [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using
-        request interception. Via `await context.addInitScript(() => delete window.navigator.serviceWorker);`
+        request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
 
         An example of a naive handler that aborts all image requests:
 
@@ -10638,12 +10418,11 @@ class BrowserContext(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "browser_context.route",
                 self._impl_obj.route(
                     url=self._wrap_handler(url),
                     handler=self._wrap_handler(handler),
                     times=times,
-                ),
+                )
             )
         )
 
@@ -10671,10 +10450,9 @@ class BrowserContext(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "browser_context.unroute",
                 self._impl_obj.unroute(
                     url=self._wrap_handler(url), handler=self._wrap_handler(handler)
-                ),
+                )
             )
         )
 
@@ -10721,9 +10499,7 @@ class BrowserContext(SyncContextManager):
         > NOTE: The default browser context cannot be closed.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("browser_context.close", self._impl_obj.close())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.close()))
 
     def storage_state(
         self, *, path: typing.Union[str, pathlib.Path] = None
@@ -10743,11 +10519,7 @@ class BrowserContext(SyncContextManager):
         {cookies: List[{name: str, value: str, domain: str, path: str, expires: float, httpOnly: bool, secure: bool, sameSite: Union["Lax", "None", "Strict"]}], origins: List[{origin: str, localStorage: List[{name: str, value: str}]}]}
         """
 
-        return mapping.from_impl(
-            self._sync(
-                "browser_context.storage_state", self._impl_obj.storage_state(path=path)
-            )
-        )
+        return mapping.from_impl(self._sync(self._impl_obj.storage_state(path=path)))
 
     def wait_for_event(
         self, event: str, predicate: typing.Callable = None, *, timeout: float = None
@@ -10777,12 +10549,11 @@ class BrowserContext(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "browser_context.wait_for_event",
                 self._impl_obj.wait_for_event(
                     event=event,
                     predicate=self._wrap_handler(predicate),
                     timeout=timeout,
-                ),
+                )
             )
         )
 
@@ -10835,12 +10606,7 @@ class BrowserContext(SyncContextManager):
         CDPSession
         """
 
-        return mapping.from_impl(
-            self._sync(
-                "browser_context.new_cdp_session",
-                self._impl_obj.new_cdp_session(page=page),
-            )
-        )
+        return mapping.from_impl(self._sync(self._impl_obj.new_cdp_session(page=page)))
 
 
 mapping.register(BrowserContextImpl, BrowserContext)
@@ -10864,8 +10630,7 @@ class CDPSession(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "cdp_session.send",
-                self._impl_obj.send(method=method, params=mapping.to_impl(params)),
+                self._impl_obj.send(method=method, params=mapping.to_impl(params))
             )
         )
 
@@ -10876,9 +10641,7 @@ class CDPSession(SyncBase):
         send messages.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("cdp_session.detach", self._impl_obj.detach())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.detach()))
 
 
 mapping.register(CDPSessionImpl, CDPSession)
@@ -10921,6 +10684,18 @@ class Browser(SyncContextManager):
         List[BrowserContext]
         """
         return mapping.from_impl_list(self._impl_obj.contexts)
+
+    @property
+    def browser_type(self) -> "BrowserType":
+        """Browser.browser_type
+
+        Get the browser type (chromium, firefox or webkit) that the browser belongs to.
+
+        Returns
+        -------
+        BrowserType
+        """
+        return mapping.from_impl(self._impl_obj.browser_type)
 
     @property
     def version(self) -> str:
@@ -10978,7 +10753,11 @@ class Browser(SyncContextManager):
         record_video_size: ViewportSize = None,
         storage_state: typing.Union[StorageState, str, pathlib.Path] = None,
         base_url: str = None,
-        strict_selectors: bool = None
+        strict_selectors: bool = None,
+        service_workers: Literal["allow", "block"] = None,
+        record_har_url_filter: typing.Union[str, typing.Pattern] = None,
+        record_har_mode: Literal["full", "minimal"] = None,
+        record_har_content: Literal["attach", "embed", "omit"] = None
     ) -> "BrowserContext":
         """Browser.new_context
 
@@ -11080,9 +10859,21 @@ class Browser(SyncContextManager):
             - baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in
               `http://localhost:3000/bar.html`
         strict_selectors : Union[bool, NoneType]
-            It specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors
+            If specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors
             that imply single target DOM element will throw when more than one element matches the selector. See `Locator` to learn
             more about the strict mode.
+        service_workers : Union["allow", "block", NoneType]
+            Whether to allow sites to register Service workers. Defaults to `'allow'`.
+            - `'allow'`: [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) can be registered.
+            - `'block'`: Playwright will block all registration of Service Workers.
+        record_har_url_filter : Union[Pattern, str, NoneType]
+        record_har_mode : Union["full", "minimal", NoneType]
+            When set to `minimal`, only record information necessary for routing from HAR. This omits sizes, timing, page, cookies,
+            security and other types of HAR information that are not used when replaying from HAR. Defaults to `full`.
+        record_har_content : Union["attach", "embed", "omit", NoneType]
+            Optional setting to control resource content management. If `omit` is specified, content is not persisted. If `attach`
+            is specified, resources are persistet as separate files and all of these files are archived along with the HAR file.
+            Defaults to `embed`, which stores content inline the HAR file as per HAR specification.
 
         Returns
         -------
@@ -11091,7 +10882,6 @@ class Browser(SyncContextManager):
 
         return mapping.from_impl(
             self._sync(
-                "browser.new_context",
                 self._impl_obj.new_context(
                     viewport=viewport,
                     screen=screen,
@@ -11123,7 +10913,11 @@ class Browser(SyncContextManager):
                     storageState=storage_state,
                     baseURL=base_url,
                     strictSelectors=strict_selectors,
-                ),
+                    serviceWorkers=service_workers,
+                    recordHarUrlFilter=record_har_url_filter,
+                    recordHarMode=record_har_mode,
+                    recordHarContent=record_har_content,
+                )
             )
         )
 
@@ -11159,7 +10953,11 @@ class Browser(SyncContextManager):
         record_video_size: ViewportSize = None,
         storage_state: typing.Union[StorageState, str, pathlib.Path] = None,
         base_url: str = None,
-        strict_selectors: bool = None
+        strict_selectors: bool = None,
+        service_workers: Literal["allow", "block"] = None,
+        record_har_url_filter: typing.Union[str, typing.Pattern] = None,
+        record_har_mode: Literal["full", "minimal"] = None,
+        record_har_content: Literal["attach", "embed", "omit"] = None
     ) -> "Page":
         """Browser.new_page
 
@@ -11256,9 +11054,21 @@ class Browser(SyncContextManager):
             - baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in
               `http://localhost:3000/bar.html`
         strict_selectors : Union[bool, NoneType]
-            It specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors
+            If specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors
             that imply single target DOM element will throw when more than one element matches the selector. See `Locator` to learn
             more about the strict mode.
+        service_workers : Union["allow", "block", NoneType]
+            Whether to allow sites to register Service workers. Defaults to `'allow'`.
+            - `'allow'`: [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) can be registered.
+            - `'block'`: Playwright will block all registration of Service Workers.
+        record_har_url_filter : Union[Pattern, str, NoneType]
+        record_har_mode : Union["full", "minimal", NoneType]
+            When set to `minimal`, only record information necessary for routing from HAR. This omits sizes, timing, page, cookies,
+            security and other types of HAR information that are not used when replaying from HAR. Defaults to `full`.
+        record_har_content : Union["attach", "embed", "omit", NoneType]
+            Optional setting to control resource content management. If `omit` is specified, content is not persisted. If `attach`
+            is specified, resources are persistet as separate files and all of these files are archived along with the HAR file.
+            Defaults to `embed`, which stores content inline the HAR file as per HAR specification.
 
         Returns
         -------
@@ -11267,7 +11077,6 @@ class Browser(SyncContextManager):
 
         return mapping.from_impl(
             self._sync(
-                "browser.new_page",
                 self._impl_obj.new_page(
                     viewport=viewport,
                     screen=screen,
@@ -11299,7 +11108,11 @@ class Browser(SyncContextManager):
                     storageState=storage_state,
                     baseURL=base_url,
                     strictSelectors=strict_selectors,
-                ),
+                    serviceWorkers=service_workers,
+                    recordHarUrlFilter=record_har_url_filter,
+                    recordHarMode=record_har_mode,
+                    recordHarContent=record_har_content,
+                )
             )
         )
 
@@ -11315,9 +11128,7 @@ class Browser(SyncContextManager):
         The `Browser` object itself is considered to be disposed and cannot be used anymore.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("browser.close", self._impl_obj.close())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.close()))
 
     def new_browser_cdp_session(self) -> "CDPSession":
         """Browser.new_browser_cdp_session
@@ -11331,12 +11142,7 @@ class Browser(SyncContextManager):
         CDPSession
         """
 
-        return mapping.from_impl(
-            self._sync(
-                "browser.new_browser_cdp_session",
-                self._impl_obj.new_browser_cdp_session(),
-            )
-        )
+        return mapping.from_impl(self._sync(self._impl_obj.new_browser_cdp_session()))
 
     def start_tracing(
         self,
@@ -11375,13 +11181,12 @@ class Browser(SyncContextManager):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "browser.start_tracing",
                 self._impl_obj.start_tracing(
                     page=page._impl_obj if page else None,
                     path=path,
                     screenshots=screenshots,
                     categories=mapping.to_impl(categories),
-                ),
+                )
             )
         )
 
@@ -11399,9 +11204,7 @@ class Browser(SyncContextManager):
         bytes
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("browser.stop_tracing", self._impl_obj.stop_tracing())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.stop_tracing()))
 
 
 mapping.register(BrowserImpl, Browser)
@@ -11540,7 +11343,6 @@ class BrowserType(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "browser_type.launch",
                 self._impl_obj.launch(
                     executablePath=executable_path,
                     channel=channel,
@@ -11559,7 +11361,7 @@ class BrowserType(SyncBase):
                     tracesDir=traces_dir,
                     chromiumSandbox=chromium_sandbox,
                     firefoxUserPrefs=mapping.to_impl(firefox_user_prefs),
-                ),
+                )
             )
         )
 
@@ -11609,7 +11411,11 @@ class BrowserType(SyncBase):
         record_video_dir: typing.Union[str, pathlib.Path] = None,
         record_video_size: ViewportSize = None,
         base_url: str = None,
-        strict_selectors: bool = None
+        strict_selectors: bool = None,
+        service_workers: Literal["allow", "block"] = None,
+        record_har_url_filter: typing.Union[str, typing.Pattern] = None,
+        record_har_mode: Literal["full", "minimal"] = None,
+        record_har_content: Literal["attach", "embed", "omit"] = None
     ) -> "BrowserContext":
         """BrowserType.launch_persistent_context
 
@@ -11746,9 +11552,21 @@ class BrowserType(SyncBase):
             - baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in
               `http://localhost:3000/bar.html`
         strict_selectors : Union[bool, NoneType]
-            It specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors
+            If specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors
             that imply single target DOM element will throw when more than one element matches the selector. See `Locator` to learn
             more about the strict mode.
+        service_workers : Union["allow", "block", NoneType]
+            Whether to allow sites to register Service workers. Defaults to `'allow'`.
+            - `'allow'`: [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) can be registered.
+            - `'block'`: Playwright will block all registration of Service Workers.
+        record_har_url_filter : Union[Pattern, str, NoneType]
+        record_har_mode : Union["full", "minimal", NoneType]
+            When set to `minimal`, only record information necessary for routing from HAR. This omits sizes, timing, page, cookies,
+            security and other types of HAR information that are not used when replaying from HAR. Defaults to `full`.
+        record_har_content : Union["attach", "embed", "omit", NoneType]
+            Optional setting to control resource content management. If `omit` is specified, content is not persisted. If `attach`
+            is specified, resources are persistet as separate files and all of these files are archived along with the HAR file.
+            Defaults to `embed`, which stores content inline the HAR file as per HAR specification.
 
         Returns
         -------
@@ -11757,7 +11575,6 @@ class BrowserType(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "browser_type.launch_persistent_context",
                 self._impl_obj.launch_persistent_context(
                     userDataDir=user_data_dir,
                     channel=channel,
@@ -11803,7 +11620,11 @@ class BrowserType(SyncBase):
                     recordVideoSize=record_video_size,
                     baseURL=base_url,
                     strictSelectors=strict_selectors,
-                ),
+                    serviceWorkers=service_workers,
+                    recordHarUrlFilter=record_har_url_filter,
+                    recordHarMode=record_har_mode,
+                    recordHarContent=record_har_content,
+                )
             )
         )
 
@@ -11844,13 +11665,12 @@ class BrowserType(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "browser_type.connect_over_cdp",
                 self._impl_obj.connect_over_cdp(
                     endpointURL=endpoint_url,
                     timeout=timeout,
                     slow_mo=slow_mo,
                     headers=mapping.to_impl(headers),
-                ),
+                )
             )
         )
 
@@ -11885,13 +11705,12 @@ class BrowserType(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "browser_type.connect",
                 self._impl_obj.connect(
                     ws_endpoint=ws_endpoint,
                     timeout=timeout,
                     slow_mo=slow_mo,
                     headers=mapping.to_impl(headers),
-                ),
+                )
             )
         )
 
@@ -12061,14 +11880,13 @@ class Tracing(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "tracing.start",
                 self._impl_obj.start(
                     name=name,
                     title=title,
                     snapshots=snapshots,
                     screenshots=screenshots,
                     sources=sources,
-                ),
+                )
             )
         )
 
@@ -12102,7 +11920,7 @@ class Tracing(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("tracing.start_chunk", self._impl_obj.start_chunk(title=title))
+            self._sync(self._impl_obj.start_chunk(title=title))
         )
 
     def stop_chunk(self, *, path: typing.Union[str, pathlib.Path] = None) -> NoneType:
@@ -12116,9 +11934,7 @@ class Tracing(SyncBase):
             Export trace collected since the last `tracing.start_chunk()` call into the file with the given path.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("tracing.stop_chunk", self._impl_obj.stop_chunk(path=path))
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.stop_chunk(path=path)))
 
     def stop(self, *, path: typing.Union[str, pathlib.Path] = None) -> NoneType:
         """Tracing.stop
@@ -12131,9 +11947,7 @@ class Tracing(SyncBase):
             Export trace into the file with the given path.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("tracing.stop", self._impl_obj.stop(path=path))
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.stop(path=path)))
 
 
 mapping.register(TracingImpl, Tracing)
@@ -12209,9 +12023,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_impl_nullable(
-            self._sync(
-                "locator.bounding_box", self._impl_obj.bounding_box(timeout=timeout)
-            )
+            self._sync(self._impl_obj.bounding_box(timeout=timeout))
         )
 
     def check(
@@ -12260,14 +12072,13 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.check",
                 self._impl_obj.check(
                     position=position,
                     timeout=timeout,
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -12329,7 +12140,6 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.click",
                 self._impl_obj.click(
                     modifiers=mapping.to_impl(modifiers),
                     position=position,
@@ -12340,7 +12150,7 @@ class Locator(SyncBase):
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -12402,7 +12212,6 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.dblclick",
                 self._impl_obj.dblclick(
                     modifiers=mapping.to_impl(modifiers),
                     position=position,
@@ -12412,7 +12221,7 @@ class Locator(SyncBase):
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -12462,10 +12271,9 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.dispatch_event",
                 self._impl_obj.dispatch_event(
                     type=type, eventInit=mapping.to_impl(event_init), timeout=timeout
-                ),
+                )
             )
         )
 
@@ -12505,10 +12313,9 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.evaluate",
                 self._impl_obj.evaluate(
                     expression=expression, arg=mapping.to_impl(arg), timeout=timeout
-                ),
+                )
             )
         )
 
@@ -12543,10 +12350,9 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.evaluate_all",
                 self._impl_obj.evaluate_all(
                     expression=expression, arg=mapping.to_impl(arg)
-                ),
+                )
             )
         )
 
@@ -12585,10 +12391,9 @@ class Locator(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "locator.evaluate_handle",
                 self._impl_obj.evaluate_handle(
                     expression=expression, arg=mapping.to_impl(arg), timeout=timeout
-                ),
+                )
             )
         )
 
@@ -12629,10 +12434,9 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.fill",
                 self._impl_obj.fill(
                     value=value, timeout=timeout, noWaitAfter=no_wait_after, force=force
-                ),
+                )
             )
         )
 
@@ -12714,9 +12518,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_impl(
-            self._sync(
-                "locator.element_handle", self._impl_obj.element_handle(timeout=timeout)
-            )
+            self._sync(self._impl_obj.element_handle(timeout=timeout))
         )
 
     def element_handles(self) -> typing.List["ElementHandle"]:
@@ -12729,9 +12531,7 @@ class Locator(SyncBase):
         List[ElementHandle]
         """
 
-        return mapping.from_impl_list(
-            self._sync("locator.element_handles", self._impl_obj.element_handles())
-        )
+        return mapping.from_impl_list(self._sync(self._impl_obj.element_handles()))
 
     def nth(self, index: int) -> "Locator":
         """Locator.nth
@@ -12757,7 +12557,17 @@ class Locator(SyncBase):
     ) -> "Locator":
         """Locator.filter
 
-        This method narrows existing locator according to the options, for example filters by text.
+        This method narrows existing locator according to the options, for example filters by text. It can be chained to filter
+        multiple times.
+
+        ```py
+        row_locator = page.lsocator(\"tr\")
+        # ...
+        row_locator
+            .filter(has_text=\"text in column 1\")
+            .filter(has=page.locator(\"tr\", has_text=\"column 2 button\"))
+            .screenshot()
+        ```
 
         Parameters
         ----------
@@ -12793,7 +12603,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("locator.focus", self._impl_obj.focus(timeout=timeout))
+            self._sync(self._impl_obj.focus(timeout=timeout))
         )
 
     def count(self) -> int:
@@ -12806,9 +12616,7 @@ class Locator(SyncBase):
         int
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("locator.count", self._impl_obj.count())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.count()))
 
     def drag_to(
         self,
@@ -12849,7 +12657,6 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.drag_to",
                 self._impl_obj.drag_to(
                     target=target._impl_obj,
                     force=force,
@@ -12858,7 +12665,7 @@ class Locator(SyncBase):
                     trial=trial,
                     sourcePosition=source_position,
                     targetPosition=target_position,
-                ),
+                )
             )
         )
 
@@ -12883,10 +12690,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator.get_attribute",
-                self._impl_obj.get_attribute(name=name, timeout=timeout),
-            )
+            self._sync(self._impl_obj.get_attribute(name=name, timeout=timeout))
         )
 
     def hover(
@@ -12933,14 +12737,13 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.hover",
                 self._impl_obj.hover(
                     modifiers=mapping.to_impl(modifiers),
                     position=position,
                     timeout=timeout,
                     force=force,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -12961,7 +12764,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("locator.inner_html", self._impl_obj.inner_html(timeout=timeout))
+            self._sync(self._impl_obj.inner_html(timeout=timeout))
         )
 
     def inner_text(self, *, timeout: float = None) -> str:
@@ -12981,7 +12784,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("locator.inner_text", self._impl_obj.inner_text(timeout=timeout))
+            self._sync(self._impl_obj.inner_text(timeout=timeout))
         )
 
     def input_value(self, *, timeout: float = None) -> str:
@@ -13004,9 +12807,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator.input_value", self._impl_obj.input_value(timeout=timeout)
-            )
+            self._sync(self._impl_obj.input_value(timeout=timeout))
         )
 
     def is_checked(self, *, timeout: float = None) -> bool:
@@ -13026,7 +12827,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("locator.is_checked", self._impl_obj.is_checked(timeout=timeout))
+            self._sync(self._impl_obj.is_checked(timeout=timeout))
         )
 
     def is_disabled(self, *, timeout: float = None) -> bool:
@@ -13046,9 +12847,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator.is_disabled", self._impl_obj.is_disabled(timeout=timeout)
-            )
+            self._sync(self._impl_obj.is_disabled(timeout=timeout))
         )
 
     def is_editable(self, *, timeout: float = None) -> bool:
@@ -13068,9 +12867,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator.is_editable", self._impl_obj.is_editable(timeout=timeout)
-            )
+            self._sync(self._impl_obj.is_editable(timeout=timeout))
         )
 
     def is_enabled(self, *, timeout: float = None) -> bool:
@@ -13090,7 +12887,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("locator.is_enabled", self._impl_obj.is_enabled(timeout=timeout))
+            self._sync(self._impl_obj.is_enabled(timeout=timeout))
         )
 
     def is_hidden(self, *, timeout: float = None) -> bool:
@@ -13110,7 +12907,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("locator.is_hidden", self._impl_obj.is_hidden(timeout=timeout))
+            self._sync(self._impl_obj.is_hidden(timeout=timeout))
         )
 
     def is_visible(self, *, timeout: float = None) -> bool:
@@ -13130,7 +12927,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync("locator.is_visible", self._impl_obj.is_visible(timeout=timeout))
+            self._sync(self._impl_obj.is_visible(timeout=timeout))
         )
 
     def press(
@@ -13179,10 +12976,9 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.press",
                 self._impl_obj.press(
                     key=key, delay=delay, timeout=timeout, noWaitAfter=no_wait_after
-                ),
+                )
             )
         )
 
@@ -13253,7 +13049,6 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.screenshot",
                 self._impl_obj.screenshot(
                     timeout=timeout,
                     type=type,
@@ -13264,7 +13059,7 @@ class Locator(SyncBase):
                     caret=caret,
                     scale=scale,
                     mask=mapping.to_impl(mask),
-                ),
+                )
             )
         )
 
@@ -13283,10 +13078,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator.scroll_into_view_if_needed",
-                self._impl_obj.scroll_into_view_if_needed(timeout=timeout),
-            )
+            self._sync(self._impl_obj.scroll_into_view_if_needed(timeout=timeout))
         )
 
     def select_option(
@@ -13322,17 +13114,6 @@ class Locator(SyncBase):
         element.select_option(value=[\"red\", \"green\", \"blue\"])
         ```
 
-        ```py
-        # single selection matching the value
-        element.select_option(\"blue\")
-        # single selection matching both the value and the label
-        element.select_option(label=\"blue\")
-        # multiple selection
-        element.select_option(\"red\", \"green\", \"blue\")
-        # multiple selection for blue, red and second option
-        element.select_option(value=\"blue\", { index: 2 }, \"red\")
-        ```
-
         Parameters
         ----------
         value : Union[List[str], str, NoneType]
@@ -13362,7 +13143,6 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.select_option",
                 self._impl_obj.select_option(
                     value=mapping.to_impl(value),
                     index=mapping.to_impl(index),
@@ -13371,7 +13151,7 @@ class Locator(SyncBase):
                     timeout=timeout,
                     noWaitAfter=no_wait_after,
                     force=force,
-                ),
+                )
             )
         )
 
@@ -13395,10 +13175,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator.select_text",
-                self._impl_obj.select_text(force=force, timeout=timeout),
-            )
+            self._sync(self._impl_obj.select_text(force=force, timeout=timeout))
         )
 
     def set_input_files(
@@ -13438,12 +13215,11 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.set_input_files",
                 self._impl_obj.set_input_files(
                     files=mapping.to_impl(files),
                     timeout=timeout,
                     noWaitAfter=no_wait_after,
-                ),
+                )
             )
         )
 
@@ -13498,7 +13274,6 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.tap",
                 self._impl_obj.tap(
                     modifiers=mapping.to_impl(modifiers),
                     position=position,
@@ -13506,7 +13281,7 @@ class Locator(SyncBase):
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -13527,9 +13302,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator.text_content", self._impl_obj.text_content(timeout=timeout)
-            )
+            self._sync(self._impl_obj.text_content(timeout=timeout))
         )
 
     def type(
@@ -13576,10 +13349,9 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.type",
                 self._impl_obj.type(
                     text=text, delay=delay, timeout=timeout, noWaitAfter=no_wait_after
-                ),
+                )
             )
         )
 
@@ -13629,14 +13401,13 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.uncheck",
                 self._impl_obj.uncheck(
                     position=position,
                     timeout=timeout,
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -13650,9 +13421,7 @@ class Locator(SyncBase):
         List[str]
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("locator.all_inner_texts", self._impl_obj.all_inner_texts())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.all_inner_texts()))
 
     def all_text_contents(self) -> typing.List[str]:
         """Locator.all_text_contents
@@ -13664,9 +13433,7 @@ class Locator(SyncBase):
         List[str]
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("locator.all_text_contents", self._impl_obj.all_text_contents())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.all_text_contents()))
 
     def wait_for(
         self,
@@ -13702,10 +13469,7 @@ class Locator(SyncBase):
         """
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator.wait_for",
-                self._impl_obj.wait_for(timeout=timeout, state=state),
-            )
+            self._sync(self._impl_obj.wait_for(timeout=timeout, state=state))
         )
 
     def set_checked(
@@ -13756,7 +13520,6 @@ class Locator(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator.set_checked",
                 self._impl_obj.set_checked(
                     checked=checked,
                     position=position,
@@ -13764,7 +13527,7 @@ class Locator(SyncBase):
                     force=force,
                     noWaitAfter=no_wait_after,
                     trial=trial,
-                ),
+                )
             )
         )
 
@@ -13775,9 +13538,7 @@ class Locator(SyncBase):
         `locator.highlight()`.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("locator.highlight", self._impl_obj.highlight())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.highlight()))
 
 
 mapping.register(LocatorImpl, Locator)
@@ -13867,9 +13628,7 @@ class APIResponse(SyncBase):
         bytes
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("api_response.body", self._impl_obj.body())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.body()))
 
     def text(self) -> str:
         """APIResponse.text
@@ -13881,9 +13640,7 @@ class APIResponse(SyncBase):
         str
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("api_response.text", self._impl_obj.text())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.text()))
 
     def json(self) -> typing.Any:
         """APIResponse.json
@@ -13897,9 +13654,7 @@ class APIResponse(SyncBase):
         Any
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("api_response.json", self._impl_obj.json())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.json()))
 
     def dispose(self) -> NoneType:
         """APIResponse.dispose
@@ -13907,9 +13662,7 @@ class APIResponse(SyncBase):
         Disposes the body of this response. If not called then the body will stay in memory until the context closes.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("api_response.dispose", self._impl_obj.dispose())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.dispose()))
 
 
 mapping.register(APIResponseImpl, APIResponse)
@@ -13924,9 +13677,7 @@ class APIRequestContext(SyncBase):
         `a_pi_response.body()` throw \"Response disposed\" error.
         """
 
-        return mapping.from_maybe_impl(
-            self._sync("api_request_context.dispose", self._impl_obj.dispose())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.dispose()))
 
     def delete(
         self,
@@ -13986,7 +13737,6 @@ class APIRequestContext(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "api_request_context.delete",
                 self._impl_obj.delete(
                     url=url,
                     params=mapping.to_impl(params),
@@ -13997,7 +13747,7 @@ class APIRequestContext(SyncBase):
                     timeout=timeout,
                     failOnStatusCode=fail_on_status_code,
                     ignoreHTTPSErrors=ignore_https_errors,
-                ),
+                )
             )
         )
 
@@ -14041,7 +13791,6 @@ class APIRequestContext(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "api_request_context.head",
                 self._impl_obj.head(
                     url=url,
                     params=mapping.to_impl(params),
@@ -14049,7 +13798,7 @@ class APIRequestContext(SyncBase):
                     timeout=timeout,
                     failOnStatusCode=fail_on_status_code,
                     ignoreHTTPSErrors=ignore_https_errors,
-                ),
+                )
             )
         )
 
@@ -14093,7 +13842,6 @@ class APIRequestContext(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "api_request_context.get",
                 self._impl_obj.get(
                     url=url,
                     params=mapping.to_impl(params),
@@ -14101,7 +13849,7 @@ class APIRequestContext(SyncBase):
                     timeout=timeout,
                     failOnStatusCode=fail_on_status_code,
                     ignoreHTTPSErrors=ignore_https_errors,
-                ),
+                )
             )
         )
 
@@ -14163,7 +13911,6 @@ class APIRequestContext(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "api_request_context.patch",
                 self._impl_obj.patch(
                     url=url,
                     params=mapping.to_impl(params),
@@ -14174,7 +13921,7 @@ class APIRequestContext(SyncBase):
                     timeout=timeout,
                     failOnStatusCode=fail_on_status_code,
                     ignoreHTTPSErrors=ignore_https_errors,
-                ),
+                )
             )
         )
 
@@ -14236,7 +13983,6 @@ class APIRequestContext(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "api_request_context.put",
                 self._impl_obj.put(
                     url=url,
                     params=mapping.to_impl(params),
@@ -14247,7 +13993,7 @@ class APIRequestContext(SyncBase):
                     timeout=timeout,
                     failOnStatusCode=fail_on_status_code,
                     ignoreHTTPSErrors=ignore_https_errors,
-                ),
+                )
             )
         )
 
@@ -14309,7 +14055,6 @@ class APIRequestContext(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "api_request_context.post",
                 self._impl_obj.post(
                     url=url,
                     params=mapping.to_impl(params),
@@ -14320,7 +14065,7 @@ class APIRequestContext(SyncBase):
                     timeout=timeout,
                     failOnStatusCode=fail_on_status_code,
                     ignoreHTTPSErrors=ignore_https_errors,
-                ),
+                )
             )
         )
 
@@ -14385,7 +14130,6 @@ class APIRequestContext(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "api_request_context.fetch",
                 self._impl_obj.fetch(
                     urlOrRequest=url_or_request,
                     params=mapping.to_impl(params),
@@ -14397,7 +14141,7 @@ class APIRequestContext(SyncBase):
                     timeout=timeout,
                     failOnStatusCode=fail_on_status_code,
                     ignoreHTTPSErrors=ignore_https_errors,
-                ),
+                )
             )
         )
 
@@ -14420,12 +14164,7 @@ class APIRequestContext(SyncBase):
         {cookies: List[{name: str, value: str, domain: str, path: str, expires: float, httpOnly: bool, secure: bool, sameSite: Union["Lax", "None", "Strict"]}], origins: List[{origin: str, localStorage: List[{name: str, value: str}]}]}
         """
 
-        return mapping.from_impl(
-            self._sync(
-                "api_request_context.storage_state",
-                self._impl_obj.storage_state(path=path),
-            )
-        )
+        return mapping.from_impl(self._sync(self._impl_obj.storage_state(path=path)))
 
 
 mapping.register(APIRequestContextImpl, APIRequestContext)
@@ -14484,7 +14223,6 @@ class APIRequest(SyncBase):
 
         return mapping.from_impl(
             self._sync(
-                "api_request.new_context",
                 self._impl_obj.new_context(
                     baseURL=base_url,
                     extraHTTPHeaders=mapping.to_impl(extra_http_headers),
@@ -14494,7 +14232,7 @@ class APIRequest(SyncBase):
                     userAgent=user_agent,
                     timeout=timeout,
                     storageState=storage_state,
-                ),
+                )
             )
         )
 
@@ -14532,10 +14270,9 @@ class PageAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page_assertions.to_have_title",
                 self._impl_obj.to_have_title(
                     title_or_reg_exp=title_or_reg_exp, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -14560,10 +14297,9 @@ class PageAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page_assertions.not_to_have_title",
                 self._impl_obj.not_to_have_title(
                     title_or_reg_exp=title_or_reg_exp, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -14596,10 +14332,9 @@ class PageAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page_assertions.to_have_url",
                 self._impl_obj.to_have_url(
                     url_or_reg_exp=url_or_reg_exp, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -14624,10 +14359,9 @@ class PageAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "page_assertions.not_to_have_url",
                 self._impl_obj.not_to_have_url(
                     url_or_reg_exp=url_or_reg_exp, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -14643,7 +14377,8 @@ class LocatorAssertions(SyncBase):
         ],
         *,
         use_inner_text: bool = None,
-        timeout: float = None
+        timeout: float = None,
+        ignore_case: bool = None
     ) -> NoneType:
         """LocatorAssertions.to_contain_text
 
@@ -14677,17 +14412,20 @@ class LocatorAssertions(SyncBase):
             Whether to use `element.innerText` instead of `element.textContent` when retrieving DOM node text.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
+        ignore_case : Union[bool, NoneType]
+            Whether to perform case-insensitive match. `ignoreCase` option takes precedence over the corresponding regular
+            expression flag if specified.
         """
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.to_contain_text",
                 self._impl_obj.to_contain_text(
                     expected=mapping.to_impl(expected),
                     use_inner_text=use_inner_text,
                     timeout=timeout,
-                ),
+                    ignore_case=ignore_case,
+                )
             )
         )
 
@@ -14698,7 +14436,8 @@ class LocatorAssertions(SyncBase):
         ],
         *,
         use_inner_text: bool = None,
-        timeout: float = None
+        timeout: float = None,
+        ignore_case: bool = None
     ) -> NoneType:
         """LocatorAssertions.not_to_contain_text
 
@@ -14712,17 +14451,20 @@ class LocatorAssertions(SyncBase):
             Whether to use `element.innerText` instead of `element.textContent` when retrieving DOM node text.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
+        ignore_case : Union[bool, NoneType]
+            Whether to perform case-insensitive match. `ignoreCase` option takes precedence over the corresponding regular
+            expression flag if specified.
         """
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.not_to_contain_text",
                 self._impl_obj.not_to_contain_text(
                     expected=mapping.to_impl(expected),
                     use_inner_text=use_inner_text,
                     timeout=timeout,
-                ),
+                    ignore_case=ignore_case,
+                )
             )
         )
 
@@ -14757,10 +14499,9 @@ class LocatorAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.to_have_attribute",
                 self._impl_obj.to_have_attribute(
                     name=name, value=value, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -14788,10 +14529,9 @@ class LocatorAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.not_to_have_attribute",
                 self._impl_obj.not_to_have_attribute(
                     name=name, value=value, timeout=timeout
-                ),
+                )
             )
         )
 
@@ -14834,10 +14574,9 @@ class LocatorAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.to_have_class",
                 self._impl_obj.to_have_class(
                     expected=mapping.to_impl(expected), timeout=timeout
-                ),
+                )
             )
         )
 
@@ -14864,10 +14603,9 @@ class LocatorAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.not_to_have_class",
                 self._impl_obj.not_to_have_class(
                     expected=mapping.to_impl(expected), timeout=timeout
-                ),
+                )
             )
         )
 
@@ -14893,10 +14631,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.to_have_count",
-                self._impl_obj.to_have_count(count=count, timeout=timeout),
-            )
+            self._sync(self._impl_obj.to_have_count(count=count, timeout=timeout))
         )
 
     def not_to_have_count(self, count: int, *, timeout: float = None) -> NoneType:
@@ -14914,10 +14649,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.not_to_have_count",
-                self._impl_obj.not_to_have_count(count=count, timeout=timeout),
-            )
+            self._sync(self._impl_obj.not_to_have_count(count=count, timeout=timeout))
         )
 
     def to_have_css(
@@ -14951,8 +14683,7 @@ class LocatorAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.to_have_css",
-                self._impl_obj.to_have_css(name=name, value=value, timeout=timeout),
+                self._impl_obj.to_have_css(name=name, value=value, timeout=timeout)
             )
         )
 
@@ -14980,8 +14711,7 @@ class LocatorAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.not_to_have_css",
-                self._impl_obj.not_to_have_css(name=name, value=value, timeout=timeout),
+                self._impl_obj.not_to_have_css(name=name, value=value, timeout=timeout)
             )
         )
 
@@ -15009,10 +14739,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.to_have_id",
-                self._impl_obj.to_have_id(id=id, timeout=timeout),
-            )
+            self._sync(self._impl_obj.to_have_id(id=id, timeout=timeout))
         )
 
     def not_to_have_id(
@@ -15032,10 +14759,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.not_to_have_id",
-                self._impl_obj.not_to_have_id(id=id, timeout=timeout),
-            )
+            self._sync(self._impl_obj.not_to_have_id(id=id, timeout=timeout))
         )
 
     def to_have_js_property(
@@ -15066,10 +14790,9 @@ class LocatorAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.to_have_js_property",
                 self._impl_obj.to_have_js_property(
                     name=name, value=mapping.to_impl(value), timeout=timeout
-                ),
+                )
             )
         )
 
@@ -15093,10 +14816,9 @@ class LocatorAssertions(SyncBase):
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.not_to_have_js_property",
                 self._impl_obj.not_to_have_js_property(
                     name=name, value=mapping.to_impl(value), timeout=timeout
-                ),
+                )
             )
         )
 
@@ -15126,10 +14848,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.to_have_value",
-                self._impl_obj.to_have_value(value=value, timeout=timeout),
-            )
+            self._sync(self._impl_obj.to_have_value(value=value, timeout=timeout))
         )
 
     def not_to_have_value(
@@ -15149,9 +14868,80 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
+            self._sync(self._impl_obj.not_to_have_value(value=value, timeout=timeout))
+        )
+
+    def to_have_values(
+        self,
+        values: typing.List[typing.Union[typing.Pattern, str]],
+        *,
+        timeout: float = None
+    ) -> NoneType:
+        """LocatorAssertions.to_have_values
+
+        Ensures the `Locator` points to multi-select/combobox (i.e. a `select` with the `multiple` attribute) and the specified
+        values are selected.
+
+        For example, given the following element:
+
+        ```html
+        <select id=\"favorite-colors\" multiple>
+          <option value=\"R\">Red</option>
+          <option value=\"G\">Green</option>
+          <option value=\"B\">Blue</option>
+        </select>
+        ```
+
+        ```py
+        import re
+        from playwright.sync_api import expect
+
+        locator = page.locator(\"id=favorite-colors\")
+        locator.select_option([\"R\", \"G\"])
+        expect(locator).to_have_values([re.compile(r\"R\"), re.compile(r\"G\")])
+        ```
+
+        Parameters
+        ----------
+        values : List[Union[Pattern, str]]
+            Expected options currently selected.
+        timeout : Union[float, NoneType]
+            Time to retry the assertion for.
+        """
+        __tracebackhide__ = True
+
+        return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.not_to_have_value",
-                self._impl_obj.not_to_have_value(value=value, timeout=timeout),
+                self._impl_obj.to_have_values(
+                    values=mapping.to_impl(values), timeout=timeout
+                )
+            )
+        )
+
+    def not_to_have_values(
+        self,
+        values: typing.List[typing.Union[typing.Pattern, str]],
+        *,
+        timeout: float = None
+    ) -> NoneType:
+        """LocatorAssertions.not_to_have_values
+
+        The opposite of `locator_assertions.to_have_values()`.
+
+        Parameters
+        ----------
+        values : List[Union[Pattern, str]]
+            Expected options currently selected.
+        timeout : Union[float, NoneType]
+            Time to retry the assertion for.
+        """
+        __tracebackhide__ = True
+
+        return mapping.from_maybe_impl(
+            self._sync(
+                self._impl_obj.not_to_have_values(
+                    values=mapping.to_impl(values), timeout=timeout
+                )
             )
         )
 
@@ -15162,7 +14952,8 @@ class LocatorAssertions(SyncBase):
         ],
         *,
         use_inner_text: bool = None,
-        timeout: float = None
+        timeout: float = None,
+        ignore_case: bool = None
     ) -> NoneType:
         """LocatorAssertions.to_have_text
 
@@ -15194,17 +14985,20 @@ class LocatorAssertions(SyncBase):
             Whether to use `element.innerText` instead of `element.textContent` when retrieving DOM node text.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
+        ignore_case : Union[bool, NoneType]
+            Whether to perform case-insensitive match. `ignoreCase` option takes precedence over the corresponding regular
+            expression flag if specified.
         """
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.to_have_text",
                 self._impl_obj.to_have_text(
                     expected=mapping.to_impl(expected),
                     use_inner_text=use_inner_text,
                     timeout=timeout,
-                ),
+                    ignore_case=ignore_case,
+                )
             )
         )
 
@@ -15215,7 +15009,8 @@ class LocatorAssertions(SyncBase):
         ],
         *,
         use_inner_text: bool = None,
-        timeout: float = None
+        timeout: float = None,
+        ignore_case: bool = None
     ) -> NoneType:
         """LocatorAssertions.not_to_have_text
 
@@ -15229,17 +15024,20 @@ class LocatorAssertions(SyncBase):
             Whether to use `element.innerText` instead of `element.textContent` when retrieving DOM node text.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
+        ignore_case : Union[bool, NoneType]
+            Whether to perform case-insensitive match. `ignoreCase` option takes precedence over the corresponding regular
+            expression flag if specified.
         """
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
             self._sync(
-                "locator_assertions.not_to_have_text",
                 self._impl_obj.not_to_have_text(
                     expected=mapping.to_impl(expected),
                     use_inner_text=use_inner_text,
                     timeout=timeout,
-                ),
+                    ignore_case=ignore_case,
+                )
             )
         )
 
@@ -15264,10 +15062,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.to_be_checked",
-                self._impl_obj.to_be_checked(timeout=timeout, checked=checked),
-            )
+            self._sync(self._impl_obj.to_be_checked(timeout=timeout, checked=checked))
         )
 
     def not_to_be_checked(self, *, timeout: float = None) -> NoneType:
@@ -15283,10 +15078,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.not_to_be_checked",
-                self._impl_obj.not_to_be_checked(timeout=timeout),
-            )
+            self._sync(self._impl_obj.not_to_be_checked(timeout=timeout))
         )
 
     def to_be_disabled(self, *, timeout: float = None) -> NoneType:
@@ -15312,10 +15104,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.to_be_disabled",
-                self._impl_obj.to_be_disabled(timeout=timeout),
-            )
+            self._sync(self._impl_obj.to_be_disabled(timeout=timeout))
         )
 
     def not_to_be_disabled(self, *, timeout: float = None) -> NoneType:
@@ -15331,10 +15120,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.not_to_be_disabled",
-                self._impl_obj.not_to_be_disabled(timeout=timeout),
-            )
+            self._sync(self._impl_obj.not_to_be_disabled(timeout=timeout))
         )
 
     def to_be_editable(self, *, timeout: float = None) -> NoneType:
@@ -15357,10 +15143,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.to_be_editable",
-                self._impl_obj.to_be_editable(timeout=timeout),
-            )
+            self._sync(self._impl_obj.to_be_editable(timeout=timeout))
         )
 
     def not_to_be_editable(self, *, timeout: float = None) -> NoneType:
@@ -15376,10 +15159,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.not_to_be_editable",
-                self._impl_obj.not_to_be_editable(timeout=timeout),
-            )
+            self._sync(self._impl_obj.not_to_be_editable(timeout=timeout))
         )
 
     def to_be_empty(self, *, timeout: float = None) -> NoneType:
@@ -15402,10 +15182,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.to_be_empty",
-                self._impl_obj.to_be_empty(timeout=timeout),
-            )
+            self._sync(self._impl_obj.to_be_empty(timeout=timeout))
         )
 
     def not_to_be_empty(self, *, timeout: float = None) -> NoneType:
@@ -15421,10 +15198,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.not_to_be_empty",
-                self._impl_obj.not_to_be_empty(timeout=timeout),
-            )
+            self._sync(self._impl_obj.not_to_be_empty(timeout=timeout))
         )
 
     def to_be_enabled(self, *, timeout: float = None) -> NoneType:
@@ -15447,10 +15221,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.to_be_enabled",
-                self._impl_obj.to_be_enabled(timeout=timeout),
-            )
+            self._sync(self._impl_obj.to_be_enabled(timeout=timeout))
         )
 
     def not_to_be_enabled(self, *, timeout: float = None) -> NoneType:
@@ -15466,10 +15237,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.not_to_be_enabled",
-                self._impl_obj.not_to_be_enabled(timeout=timeout),
-            )
+            self._sync(self._impl_obj.not_to_be_enabled(timeout=timeout))
         )
 
     def to_be_hidden(self, *, timeout: float = None) -> NoneType:
@@ -15492,10 +15260,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.to_be_hidden",
-                self._impl_obj.to_be_hidden(timeout=timeout),
-            )
+            self._sync(self._impl_obj.to_be_hidden(timeout=timeout))
         )
 
     def not_to_be_hidden(self, *, timeout: float = None) -> NoneType:
@@ -15511,10 +15276,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.not_to_be_hidden",
-                self._impl_obj.not_to_be_hidden(timeout=timeout),
-            )
+            self._sync(self._impl_obj.not_to_be_hidden(timeout=timeout))
         )
 
     def to_be_visible(self, *, timeout: float = None) -> NoneType:
@@ -15537,10 +15299,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.to_be_visible",
-                self._impl_obj.to_be_visible(timeout=timeout),
-            )
+            self._sync(self._impl_obj.to_be_visible(timeout=timeout))
         )
 
     def not_to_be_visible(self, *, timeout: float = None) -> NoneType:
@@ -15556,10 +15315,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.not_to_be_visible",
-                self._impl_obj.not_to_be_visible(timeout=timeout),
-            )
+            self._sync(self._impl_obj.not_to_be_visible(timeout=timeout))
         )
 
     def to_be_focused(self, *, timeout: float = None) -> NoneType:
@@ -15582,10 +15338,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.to_be_focused",
-                self._impl_obj.to_be_focused(timeout=timeout),
-            )
+            self._sync(self._impl_obj.to_be_focused(timeout=timeout))
         )
 
     def not_to_be_focused(self, *, timeout: float = None) -> NoneType:
@@ -15601,10 +15354,7 @@ class LocatorAssertions(SyncBase):
         __tracebackhide__ = True
 
         return mapping.from_maybe_impl(
-            self._sync(
-                "locator_assertions.not_to_be_focused",
-                self._impl_obj.not_to_be_focused(timeout=timeout),
-            )
+            self._sync(self._impl_obj.not_to_be_focused(timeout=timeout))
         )
 
 
@@ -15627,9 +15377,7 @@ class APIResponseAssertions(SyncBase):
         """
         __tracebackhide__ = True
 
-        return mapping.from_maybe_impl(
-            self._sync("api_response_assertions.to_be_ok", self._impl_obj.to_be_ok())
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.to_be_ok()))
 
     def not_to_be_ok(self) -> NoneType:
         """APIResponseAssertions.not_to_be_ok
@@ -15638,11 +15386,7 @@ class APIResponseAssertions(SyncBase):
         """
         __tracebackhide__ = True
 
-        return mapping.from_maybe_impl(
-            self._sync(
-                "api_response_assertions.not_to_be_ok", self._impl_obj.not_to_be_ok()
-            )
-        )
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.not_to_be_ok()))
 
 
 mapping.register(APIResponseAssertionsImpl, APIResponseAssertions)

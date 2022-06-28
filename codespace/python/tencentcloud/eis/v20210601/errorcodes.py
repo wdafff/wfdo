@@ -14,6 +14,9 @@
 # limitations under the License.
 
 
+# 操作失败。
+FAILEDOPERATION = 'FailedOperation'
+
 # 鉴权失败。
 FAILEDOPERATION_AUTHENTICATIONFAILED = 'FailedOperation.AuthenticationFailed'
 
@@ -67,3 +70,6 @@ INVALIDPARAMETERVALUE_RUNTIMENAMESPACEINVALID = 'InvalidParameterValue.RuntimeNa
 
 # 运行时地域不存在。
 INVALIDPARAMETERVALUE_RUNTIMEZONENOTEXISTED = 'InvalidParameterValue.RuntimeZoneNotExisted'
+
+# 资源不可用。
+RESOURCEUNAVAILABLE = 'ResourceUnavailable'

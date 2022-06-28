@@ -427,11 +427,15 @@ class DescribeCloudRunServerDetailResponse(AbstractModel):
         :param ServerConfig: 服务配置信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type ServerConfig: :class:`tencentcloud.tcbr.v20220217.models.ServerBaseConfig`
+        :param OnlineVersionInfos: 在线版本信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OnlineVersionInfos: list of OnlineVersionInfo
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.BaseInfo = None
         self.ServerConfig = None
+        self.OnlineVersionInfos = None
         self.RequestId = None
 
 
@@ -442,6 +446,12 @@ class DescribeCloudRunServerDetailResponse(AbstractModel):
         if params.get("ServerConfig") is not None:
             self.ServerConfig = ServerBaseConfig()
             self.ServerConfig._deserialize(params.get("ServerConfig"))
+        if params.get("OnlineVersionInfos") is not None:
+            self.OnlineVersionInfos = []
+            for item in params.get("OnlineVersionInfos"):
+                obj = OnlineVersionInfo()
+                obj._deserialize(item)
+                self.OnlineVersionInfos.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -539,6 +549,69 @@ class DescribeEnvBaseInfoResponse(AbstractModel):
         if params.get("EnvBaseInfo") is not None:
             self.EnvBaseInfo = EnvBaseInfo()
             self.EnvBaseInfo._deserialize(params.get("EnvBaseInfo"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeServerManageTaskRequest(AbstractModel):
+    """DescribeServerManageTask请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EnvId: 环境Id
+        :type EnvId: str
+        :param ServerName: 服务名
+        :type ServerName: str
+        :param TaskId: 任务Id
+        :type TaskId: int
+        :param OperatorRemark: 操作标识
+        :type OperatorRemark: str
+        """
+        self.EnvId = None
+        self.ServerName = None
+        self.TaskId = None
+        self.OperatorRemark = None
+
+
+    def _deserialize(self, params):
+        self.EnvId = params.get("EnvId")
+        self.ServerName = params.get("ServerName")
+        self.TaskId = params.get("TaskId")
+        self.OperatorRemark = params.get("OperatorRemark")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeServerManageTaskResponse(AbstractModel):
+    """DescribeServerManageTask返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IsExist: 是否存在
+        :type IsExist: bool
+        :param Task: 任务信息
+        :type Task: :class:`tencentcloud.tcbr.v20220217.models.ServerManageTaskInfo`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.IsExist = None
+        self.Task = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.IsExist = params.get("IsExist")
+        if params.get("Task") is not None:
+            self.Task = ServerManageTaskInfo()
+            self.Task._deserialize(params.get("Task"))
         self.RequestId = params.get("RequestId")
 
 
@@ -848,6 +921,196 @@ class LogServiceInfo(AbstractModel):
         
 
 
+class ObjectKV(AbstractModel):
+    """通用Key Value
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Key: 键值对Key
+        :type Key: str
+        :param Value: 键值对Value
+        :type Value: str
+        """
+        self.Key = None
+        self.Value = None
+
+
+    def _deserialize(self, params):
+        self.Key = params.get("Key")
+        self.Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class OnlineVersionInfo(AbstractModel):
+    """在线版本信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param VersionName: 版本名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VersionName: str
+        :param ImageUrl: 镜像url
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ImageUrl: str
+        :param FlowRatio: 流量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FlowRatio: str
+        """
+        self.VersionName = None
+        self.ImageUrl = None
+        self.FlowRatio = None
+
+
+    def _deserialize(self, params):
+        self.VersionName = params.get("VersionName")
+        self.ImageUrl = params.get("ImageUrl")
+        self.FlowRatio = params.get("FlowRatio")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class OperateServerManageRequest(AbstractModel):
+    """OperateServerManage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EnvId: 环境Id
+        :type EnvId: str
+        :param ServerName: 服务名
+        :type ServerName: str
+        :param TaskId: 任报Id
+        :type TaskId: int
+        :param OperateType: 操作类型:cancel | go_back | done
+        :type OperateType: str
+        :param OperatorRemark: 操作标识
+        :type OperatorRemark: str
+        """
+        self.EnvId = None
+        self.ServerName = None
+        self.TaskId = None
+        self.OperateType = None
+        self.OperatorRemark = None
+
+
+    def _deserialize(self, params):
+        self.EnvId = params.get("EnvId")
+        self.ServerName = params.get("ServerName")
+        self.TaskId = params.get("TaskId")
+        self.OperateType = params.get("OperateType")
+        self.OperatorRemark = params.get("OperatorRemark")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class OperateServerManageResponse(AbstractModel):
+    """OperateServerManage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ReleaseGrayRequest(AbstractModel):
+    """ReleaseGray请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EnvId: 环境Id
+        :type EnvId: str
+        :param ServerName: 服务名
+        :type ServerName: str
+        :param GrayType: 灰度类型
+        :type GrayType: str
+        :param TrafficType: 流量类型
+        :type TrafficType: str
+        :param VersionFlowItems: 流量策略
+        :type VersionFlowItems: list of VersionFlowInfo
+        :param OperatorRemark: 操作标识
+        :type OperatorRemark: str
+        :param GrayFlowRatio: 流量比例
+        :type GrayFlowRatio: int
+        """
+        self.EnvId = None
+        self.ServerName = None
+        self.GrayType = None
+        self.TrafficType = None
+        self.VersionFlowItems = None
+        self.OperatorRemark = None
+        self.GrayFlowRatio = None
+
+
+    def _deserialize(self, params):
+        self.EnvId = params.get("EnvId")
+        self.ServerName = params.get("ServerName")
+        self.GrayType = params.get("GrayType")
+        self.TrafficType = params.get("TrafficType")
+        if params.get("VersionFlowItems") is not None:
+            self.VersionFlowItems = []
+            for item in params.get("VersionFlowItems"):
+                obj = VersionFlowInfo()
+                obj._deserialize(item)
+                self.VersionFlowItems.append(obj)
+        self.OperatorRemark = params.get("OperatorRemark")
+        self.GrayFlowRatio = params.get("GrayFlowRatio")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ReleaseGrayResponse(AbstractModel):
+    """ReleaseGray返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class RepositoryInfo(AbstractModel):
     """代码仓库信息
 
@@ -859,7 +1122,7 @@ class RepositoryInfo(AbstractModel):
         :type Source: str
         :param Repo: 仓库名
         :type Repo: str
-        :param Branch: 分之名
+        :param Branch: 分支名
         :type Branch: str
         """
         self.Source = None
@@ -1025,6 +1288,95 @@ class ServerBaseInfo(AbstractModel):
         
 
 
+class ServerManageTaskInfo(AbstractModel):
+    """服务管理任务信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 任务Id
+        :type Id: int
+        :param EnvId: 环境Id
+        :type EnvId: str
+        :param ServerName: 服务名
+        :type ServerName: str
+        :param CreateTime: 创建时间
+        :type CreateTime: str
+        :param ChangeType: 变更类型
+        :type ChangeType: str
+        :param ReleaseType: 发布类型
+        :type ReleaseType: str
+        :param DeployType: 部署类型
+        :type DeployType: str
+        :param PreVersionName: 上一个版本名
+        :type PreVersionName: str
+        :param VersionName: 版本名
+        :type VersionName: str
+        :param PipelineId: 流水线Id
+        :type PipelineId: int
+        :param PipelineTaskId: 流水线任务Id
+        :type PipelineTaskId: int
+        :param ReleaseId: 发布单Id
+        :type ReleaseId: int
+        :param Status: 状态
+        :type Status: str
+        :param Steps: 步骤信息
+        :type Steps: list of TaskStepInfo
+        :param FailReason: 失败原因
+        :type FailReason: str
+        :param OperatorRemark: 操作标识
+        :type OperatorRemark: str
+        """
+        self.Id = None
+        self.EnvId = None
+        self.ServerName = None
+        self.CreateTime = None
+        self.ChangeType = None
+        self.ReleaseType = None
+        self.DeployType = None
+        self.PreVersionName = None
+        self.VersionName = None
+        self.PipelineId = None
+        self.PipelineTaskId = None
+        self.ReleaseId = None
+        self.Status = None
+        self.Steps = None
+        self.FailReason = None
+        self.OperatorRemark = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.EnvId = params.get("EnvId")
+        self.ServerName = params.get("ServerName")
+        self.CreateTime = params.get("CreateTime")
+        self.ChangeType = params.get("ChangeType")
+        self.ReleaseType = params.get("ReleaseType")
+        self.DeployType = params.get("DeployType")
+        self.PreVersionName = params.get("PreVersionName")
+        self.VersionName = params.get("VersionName")
+        self.PipelineId = params.get("PipelineId")
+        self.PipelineTaskId = params.get("PipelineTaskId")
+        self.ReleaseId = params.get("ReleaseId")
+        self.Status = params.get("Status")
+        if params.get("Steps") is not None:
+            self.Steps = []
+            for item in params.get("Steps"):
+                obj = TaskStepInfo()
+                obj._deserialize(item)
+                self.Steps.append(obj)
+        self.FailReason = params.get("FailReason")
+        self.OperatorRemark = params.get("OperatorRemark")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class StaticStorageInfo(AbstractModel):
     """静态CDN资源信息
 
@@ -1130,6 +1482,53 @@ class Tag(AbstractModel):
         
 
 
+class TaskStepInfo(AbstractModel):
+    """任务步骤信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 步骤名
+        :type Name: str
+        :param Status: 未启动："todo"
+运行中："running"
+失败："failed"
+成功结束："finished"
+        :type Status: str
+        :param StartTime: 开始时间
+        :type StartTime: str
+        :param EndTime: 结束时间
+        :type EndTime: str
+        :param CostTime: 消耗时间：秒
+        :type CostTime: int
+        :param FailReason: 失败原因
+        :type FailReason: str
+        """
+        self.Name = None
+        self.Status = None
+        self.StartTime = None
+        self.EndTime = None
+        self.CostTime = None
+        self.FailReason = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Status = params.get("Status")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.CostTime = params.get("CostTime")
+        self.FailReason = params.get("FailReason")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class UpdateCloudRunServerRequest(AbstractModel):
     """UpdateCloudRunServer请求参数结构体
 
@@ -1193,3 +1592,45 @@ class UpdateCloudRunServerResponse(AbstractModel):
         self.EnvId = params.get("EnvId")
         self.TaskId = params.get("TaskId")
         self.RequestId = params.get("RequestId")
+
+
+class VersionFlowInfo(AbstractModel):
+    """版本流量信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param VersionName: 版本名
+        :type VersionName: str
+        :param IsDefaultPriority: 是否默认版本
+        :type IsDefaultPriority: bool
+        :param FlowRatio: 流量比例
+        :type FlowRatio: int
+        :param UrlParam: 测试KV值
+        :type UrlParam: :class:`tencentcloud.tcbr.v20220217.models.ObjectKV`
+        :param Priority: 权重
+        :type Priority: int
+        """
+        self.VersionName = None
+        self.IsDefaultPriority = None
+        self.FlowRatio = None
+        self.UrlParam = None
+        self.Priority = None
+
+
+    def _deserialize(self, params):
+        self.VersionName = params.get("VersionName")
+        self.IsDefaultPriority = params.get("IsDefaultPriority")
+        self.FlowRatio = params.get("FlowRatio")
+        if params.get("UrlParam") is not None:
+            self.UrlParam = ObjectKV()
+            self.UrlParam._deserialize(params.get("UrlParam"))
+        self.Priority = params.get("Priority")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        

@@ -116,7 +116,7 @@ FAILEDOPERATION_MASTERINSTANCEQUERYERROR = 'FailedOperation.MasterInstanceQueryE
 # 修改只读组配置失败。
 FAILEDOPERATION_MODIFYROGROUPERROR = 'FailedOperation.ModifyROGroupError'
 
-# 不符合资源所拥有的的网络数量要求。
+# 不符合资源所拥有的网络数量要求。
 FAILEDOPERATION_NETWORKNUMLIMITERROR = 'FailedOperation.NetworkNumLimitError'
 
 # 操作超过频率限制，请稍后重试。如果持续不成功，请联系客服进行处理。
@@ -244,6 +244,9 @@ INTERNALERROR_FLOWERROR = 'InternalError.FlowError'
 
 # 管控系统元数据访问异常，请联系客服处理。
 INTERNALERROR_INSTANCEDATAERROR = 'InternalError.InstanceDataError'
+
+# 请求执行异常。
+INTERNALERROR_INTERNALHTTPSERVERERROR = 'InternalError.InternalHttpServerError'
 
 # 后台数据解析失败，请联系客服进行处理。
 INTERNALERROR_MARSHALERROR = 'InternalError.MarshalError'
@@ -451,6 +454,9 @@ OPERATIONDENIED_ROGROUPSTATUSERROR = 'OperationDenied.ROGroupStatusError'
 
 # 只读实例不支持ipv6。
 OPERATIONDENIED_ROINSTANCEIPV6NOTSUPPORTEDERROR = 'OperationDenied.ROInstanceIpv6NotSupportedError'
+
+# 只读实例状态限制当前操作。
+OPERATIONDENIED_ROINSTANCESTATUSLIMITOPERROR = 'OperationDenied.ROInstanceStatusLimitOpError'
 
 # 只读节点总数不能超过上限值。
 OPERATIONDENIED_ROINSTANCECOUNTEXEEDERROR = 'OperationDenied.RoInstanceCountExeedError'

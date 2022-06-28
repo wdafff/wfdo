@@ -68,6 +68,46 @@ class AcceptAttachCcnInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class AccessPolicy(AbstractModel):
+    """策略信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TargetCidr: 目的CIDR
+        :type TargetCidr: str
+        :param VpnGatewayIdSslAccessPolicyId: 策略ID
+        :type VpnGatewayIdSslAccessPolicyId: str
+        :param ForAllClient: 是否对所有用户都生效。1 生效 0不生效
+        :type ForAllClient: int
+        :param UserGroupIds: 用户组ID
+        :type UserGroupIds: list of str
+        :param UpdateTime: 更新时间
+        :type UpdateTime: str
+        """
+        self.TargetCidr = None
+        self.VpnGatewayIdSslAccessPolicyId = None
+        self.ForAllClient = None
+        self.UserGroupIds = None
+        self.UpdateTime = None
+
+
+    def _deserialize(self, params):
+        self.TargetCidr = params.get("TargetCidr")
+        self.VpnGatewayIdSslAccessPolicyId = params.get("VpnGatewayIdSslAccessPolicyId")
+        self.ForAllClient = params.get("ForAllClient")
+        self.UserGroupIds = params.get("UserGroupIds")
+        self.UpdateTime = params.get("UpdateTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AccountAttribute(AbstractModel):
     """账户属性对象
 
@@ -578,6 +618,55 @@ class AddressTemplateSpecification(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class AdjustPublicAddressRequest(AbstractModel):
+    """AdjustPublicAddress请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 标识CVM实例的唯一 ID。CVM 唯一 ID 形如：`ins-11112222`。
+        :type InstanceId: str
+        :param AddressId: 标识EIP实例的唯一 ID。EIP 唯一 ID 形如：`eip-11112222`。
+        :type AddressId: str
+        """
+        self.InstanceId = None
+        self.AddressId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.AddressId = params.get("AddressId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AdjustPublicAddressResponse(AbstractModel):
+    """AdjustPublicAddress返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 异步任务TaskId。可以使用[DescribeTaskResult](https://cloud.tencent.com/document/api/215/36271)接口查询任务状态。
+        :type TaskId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
 
 
 class AlgType(AbstractModel):
@@ -5008,6 +5097,12 @@ class CreateVpnGatewaySslServerRequest(AbstractModel):
         :type EncryptAlgorithm: str
         :param Compress: 是否支持压缩。当前仅支持不支持压缩。默认False
         :type Compress: bool
+        :param SsoEnabled: 是否开启SSO认证
+        :type SsoEnabled: bool
+        :param AccessPolicyEnabled: 是否开启策略访问控制
+        :type AccessPolicyEnabled: bool
+        :param SamlData: SAML-DATA
+        :type SamlData: str
         """
         self.VpnGatewayId = None
         self.SslVpnServerName = None
@@ -5018,6 +5113,9 @@ class CreateVpnGatewaySslServerRequest(AbstractModel):
         self.IntegrityAlgorithm = None
         self.EncryptAlgorithm = None
         self.Compress = None
+        self.SsoEnabled = None
+        self.AccessPolicyEnabled = None
+        self.SamlData = None
 
 
     def _deserialize(self, params):
@@ -5030,6 +5128,9 @@ class CreateVpnGatewaySslServerRequest(AbstractModel):
         self.IntegrityAlgorithm = params.get("IntegrityAlgorithm")
         self.EncryptAlgorithm = params.get("EncryptAlgorithm")
         self.Compress = params.get("Compress")
+        self.SsoEnabled = params.get("SsoEnabled")
+        self.AccessPolicyEnabled = params.get("AccessPolicyEnabled")
+        self.SamlData = params.get("SamlData")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11131,7 +11232,7 @@ class DescribeVpcsRequest(AbstractModel):
         :type VpcIds: list of str
         :param Filters: 过滤条件，不支持同时指定VpcIds和Filters参数。
 支持的过滤条件如下：
-<li>vpc-name：VPC实例名称。</li>
+<li>vpc-name：VPC实例名称，支持模糊查询。</li>
 <li>is-default ：是否默认VPC。</li>
 <li>vpc-id ：VPC实例ID，例如：vpc-f49l6u0z。</li>
 <li>cidr-block：VPC的CIDR。</li>
@@ -11424,11 +11525,14 @@ class DescribeVpnGatewaySslClientsRequest(AbstractModel):
         :type Limit: int
         :param SslVpnClientIds: SSL-VPN-CLIENT实例ID。形如：vpngwSslClient-f49l6u0z。每次请求的实例的上限为100。参数不支持同时指定SslVpnClientIds和Filters。
         :type SslVpnClientIds: list of str
+        :param IsVpnPortal: VPN门户网站使用。默认是False。
+        :type IsVpnPortal: bool
         """
         self.Filters = None
         self.Offset = None
         self.Limit = None
         self.SslVpnClientIds = None
+        self.IsVpnPortal = None
 
 
     def _deserialize(self, params):
@@ -11441,6 +11545,7 @@ class DescribeVpnGatewaySslClientsRequest(AbstractModel):
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
         self.SslVpnClientIds = params.get("SslVpnClientIds")
+        self.IsVpnPortal = params.get("IsVpnPortal")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11500,11 +11605,14 @@ class DescribeVpnGatewaySslServersRequest(AbstractModel):
 <li>ssl-vpn-server-name - String - （过滤条件）SSL-VPN-SERVER实例名称。</li>
 <li>ssl-vpn-server-id - String - （过滤条件）SSL-VPN-SERVER实例ID形如：vpngwSslServer-123456。</li>
         :type Filters: list of FilterObject
+        :param IsVpnPortal: vpn门户使用。 默认Flase
+        :type IsVpnPortal: bool
         """
         self.Offset = None
         self.Limit = None
         self.SslVpnServerIds = None
         self.Filters = None
+        self.IsVpnPortal = None
 
 
     def _deserialize(self, params):
@@ -11517,6 +11625,7 @@ class DescribeVpnGatewaySslServersRequest(AbstractModel):
                 obj = FilterObject()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        self.IsVpnPortal = params.get("IsVpnPortal")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12693,12 +12802,20 @@ class DownloadVpnGatewaySslClientCertRequest(AbstractModel):
         r"""
         :param SslVpnClientId: SSL-VPN-CLIENT 实例ID。
         :type SslVpnClientId: str
+        :param SamlToken: SAML-TOKEN
+        :type SamlToken: str
+        :param IsVpnPortal: VPN门户网站使用。默认Flase
+        :type IsVpnPortal: bool
         """
         self.SslVpnClientId = None
+        self.SamlToken = None
+        self.IsVpnPortal = None
 
 
     def _deserialize(self, params):
         self.SslVpnClientId = params.get("SslVpnClientId")
+        self.SamlToken = params.get("SamlToken")
+        self.IsVpnPortal = params.get("IsVpnPortal")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12715,17 +12832,30 @@ class DownloadVpnGatewaySslClientCertResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param SslClientConfigsSet: SSL-VPN-CLIENT 证书配置
+        :param SslClientConfigsSet: 无
         :type SslClientConfigsSet: str
+        :param SslClientConfig: SSL-VPN client配置
+        :type SslClientConfig: list of SslClientConfig
+        :param Authenticated: 是否鉴权成功 只有传入SamlToken 才生效
+        :type Authenticated: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.SslClientConfigsSet = None
+        self.SslClientConfig = None
+        self.Authenticated = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.SslClientConfigsSet = params.get("SslClientConfigsSet")
+        if params.get("SslClientConfig") is not None:
+            self.SslClientConfig = []
+            for item in params.get("SslClientConfig"):
+                obj = SslClientConfig()
+                obj._deserialize(item)
+                self.SslClientConfig.append(obj)
+        self.Authenticated = params.get("Authenticated")
         self.RequestId = params.get("RequestId")
 
 
@@ -15951,7 +16081,7 @@ class ModifyNetworkAclEntriesRequest(AbstractModel):
         r"""
         :param NetworkAclId: 网络ACL实例ID。例如：acl-12345678。
         :type NetworkAclId: str
-        :param NetworkAclEntrySet: 网络ACL规则集。
+        :param NetworkAclEntrySet: 网络ACL规则集。NetworkAclEntrySet和NetworkAclQuintupleSet只能输入一个。
         :type NetworkAclEntrySet: :class:`tencentcloud.vpc.v20170312.models.NetworkAclEntrySet`
         """
         self.NetworkAclId = None
@@ -19769,6 +19899,42 @@ class SourceIpTranslationNatRule(AbstractModel):
         
 
 
+class SslClientConfig(AbstractModel):
+    """DownloadVpnGatewaySslClientCert 使用
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SslVpnClientConfiguration: 客户端配置
+        :type SslVpnClientConfiguration: str
+        :param SslVpnRootCert: 更证书
+        :type SslVpnRootCert: str
+        :param SslVpnKey: 客户端密钥
+        :type SslVpnKey: str
+        :param SslVpnCert: 客户端证书
+        :type SslVpnCert: str
+        """
+        self.SslVpnClientConfiguration = None
+        self.SslVpnRootCert = None
+        self.SslVpnKey = None
+        self.SslVpnCert = None
+
+
+    def _deserialize(self, params):
+        self.SslVpnClientConfiguration = params.get("SslVpnClientConfiguration")
+        self.SslVpnRootCert = params.get("SslVpnRootCert")
+        self.SslVpnKey = params.get("SslVpnKey")
+        self.SslVpnCert = params.get("SslVpnCert")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class SslVpnClient(AbstractModel):
     """SSL-VPN-CLIENT 出参
 
@@ -19880,6 +20046,14 @@ class SslVpnSever(AbstractModel):
 6 已连通
 7 未知
         :type State: int
+        :param SsoEnabled: 是否开启SSO认证。1：开启  0： 不开启
+        :type SsoEnabled: int
+        :param EiamApplicationId: EIAM应用ID
+        :type EiamApplicationId: str
+        :param AccessPolicyEnabled: 是否开启策略控制。0：不开启 1： 开启
+        :type AccessPolicyEnabled: int
+        :param AccessPolicy: 策略信息
+        :type AccessPolicy: list of AccessPolicy
         """
         self.VpcId = None
         self.SslVpnServerId = None
@@ -19896,6 +20070,10 @@ class SslVpnSever(AbstractModel):
         self.Compress = None
         self.CreateTime = None
         self.State = None
+        self.SsoEnabled = None
+        self.EiamApplicationId = None
+        self.AccessPolicyEnabled = None
+        self.AccessPolicy = None
 
 
     def _deserialize(self, params):
@@ -19914,6 +20092,15 @@ class SslVpnSever(AbstractModel):
         self.Compress = params.get("Compress")
         self.CreateTime = params.get("CreateTime")
         self.State = params.get("State")
+        self.SsoEnabled = params.get("SsoEnabled")
+        self.EiamApplicationId = params.get("EiamApplicationId")
+        self.AccessPolicyEnabled = params.get("AccessPolicyEnabled")
+        if params.get("AccessPolicy") is not None:
+            self.AccessPolicy = []
+            for item in params.get("AccessPolicy"):
+                obj = AccessPolicy()
+                obj._deserialize(item)
+                self.AccessPolicy.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

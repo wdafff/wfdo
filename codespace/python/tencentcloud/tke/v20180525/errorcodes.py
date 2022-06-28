@@ -56,6 +56,9 @@ FAILEDOPERATION_COMPONENTCLIENTUNPACK = 'FailedOperation.ComponentClientUnpack'
 # 请求(http请求)其他云服务失败。
 FAILEDOPERATION_COMPONENTCLINETHTTP = 'FailedOperation.ComponentClinetHttp'
 
+# 创建CLS日志集失败。
+FAILEDOPERATION_CREATECLSLOGSET = 'FailedOperation.CreateClsLogSet'
+
 # cvm创建节点报错。
 FAILEDOPERATION_CVMCOMMON = 'FailedOperation.CvmCommon'
 
@@ -77,11 +80,17 @@ FAILEDOPERATION_DFWGETUSGQUOTA = 'FailedOperation.DfwGetUSGQuota'
 # 查询主题集失败。
 FAILEDOPERATION_GETCLSLOGSET = 'FailedOperation.GetClsLogSet'
 
+# 获取CLS机器组失败。
+FAILEDOPERATION_GETCLSMACHINEGROUP = 'FailedOperation.GetClsMachineGroup'
+
 # 连接用户Kubernetes集群失败。
 FAILEDOPERATION_KUBECLIENTCONNECTION = 'FailedOperation.KubeClientConnection'
 
 # KubernetesAPI错误。
 FAILEDOPERATION_KUBECOMMON = 'FailedOperation.KubeCommon'
+
+# Kubernetes client建立失败。
+FAILEDOPERATION_KUBERNETESCLIENTBUILDERROR = 'FailedOperation.KubernetesClientBuildError'
 
 # 创建集群Client出错。
 FAILEDOPERATION_KUBERNETESCREATEOPERATIONERROR = 'FailedOperation.KubernetesCreateOperationError'

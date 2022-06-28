@@ -282,11 +282,14 @@ class AdaptiveDynamicStreamingTaskInput(AbstractModel):
         :type Definition: int
         :param WatermarkSet: 水印列表，支持多张图片或文字水印，最大可支持 10 张。
         :type WatermarkSet: list of WatermarkInput
+        :param TraceWatermark: 溯源水印。
+        :type TraceWatermark: :class:`tencentcloud.vod.v20180717.models.TraceWatermarkInput`
         :param SubtitleSet: 字幕列表，元素为字幕 ID，支持多个字幕，最大可支持16个。
         :type SubtitleSet: list of str
         """
         self.Definition = None
         self.WatermarkSet = None
+        self.TraceWatermark = None
         self.SubtitleSet = None
 
 
@@ -298,6 +301,9 @@ class AdaptiveDynamicStreamingTaskInput(AbstractModel):
                 obj = WatermarkInput()
                 obj._deserialize(item)
                 self.WatermarkSet.append(obj)
+        if params.get("TraceWatermark") is not None:
+            self.TraceWatermark = TraceWatermarkInput()
+            self.TraceWatermark._deserialize(params.get("TraceWatermark"))
         self.SubtitleSet = params.get("SubtitleSet")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -15625,18 +15631,19 @@ class MediaTranscodeItem(AbstractModel):
         :type Height: int
         :param Width: 视频流宽度的最大值，单位：px。
         :type Width: int
-        :param Size: 媒体文件总大小（视频为 HLS 时，大小是 m3u8 和 ts 文件大小的总和），单位：字节。
+        :param Size: 媒体文件总大小，单位：字节。
+<li>当媒体文件为 HLS 时，大小是 m3u8 和 ts 文件大小的总和。</li>
         :type Size: int
         :param Duration: 视频时长，单位：秒。
         :type Duration: float
-        :param Container: 容器类型，例如 m4a，mp4 等。
-        :type Container: str
         :param Md5: 视频的 md5 值。
         :type Md5: str
-        :param AudioStreamSet: 音频流信息。
-        :type AudioStreamSet: list of MediaAudioStreamItem
+        :param Container: 容器类型，例如 m4a，mp4 等。
+        :type Container: str
         :param VideoStreamSet: 视频流信息。
         :type VideoStreamSet: list of MediaVideoStreamItem
+        :param AudioStreamSet: 音频流信息。
+        :type AudioStreamSet: list of MediaAudioStreamItem
         """
         self.Url = None
         self.Definition = None
@@ -15645,10 +15652,10 @@ class MediaTranscodeItem(AbstractModel):
         self.Width = None
         self.Size = None
         self.Duration = None
-        self.Container = None
         self.Md5 = None
-        self.AudioStreamSet = None
+        self.Container = None
         self.VideoStreamSet = None
+        self.AudioStreamSet = None
 
 
     def _deserialize(self, params):
@@ -15659,20 +15666,20 @@ class MediaTranscodeItem(AbstractModel):
         self.Width = params.get("Width")
         self.Size = params.get("Size")
         self.Duration = params.get("Duration")
-        self.Container = params.get("Container")
         self.Md5 = params.get("Md5")
-        if params.get("AudioStreamSet") is not None:
-            self.AudioStreamSet = []
-            for item in params.get("AudioStreamSet"):
-                obj = MediaAudioStreamItem()
-                obj._deserialize(item)
-                self.AudioStreamSet.append(obj)
+        self.Container = params.get("Container")
         if params.get("VideoStreamSet") is not None:
             self.VideoStreamSet = []
             for item in params.get("VideoStreamSet"):
                 obj = MediaVideoStreamItem()
                 obj._deserialize(item)
                 self.VideoStreamSet.append(obj)
+        if params.get("AudioStreamSet") is not None:
+            self.AudioStreamSet = []
+            for item in params.get("AudioStreamSet"):
+                obj = MediaAudioStreamItem()
+                obj._deserialize(item)
+                self.AudioStreamSet.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19210,6 +19217,8 @@ class ProcessMediaRequest(AbstractModel):
         r"""
         :param FileId: 媒体文件 ID，即该文件在云点播上的全局唯一标识符，在上传成功后由云点播后台分配。可以在 [视频上传完成事件通知](/document/product/266/7830) 或 [云点播控制台](https://console.cloud.tencent.com/vod/media) 获取该字段。
         :type FileId: str
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
         :param MediaProcessTask: 视频处理类型任务参数。
         :type MediaProcessTask: :class:`tencentcloud.vod.v20180717.models.MediaProcessTaskInput`
         :param AiContentReviewTask: 视频智能识别类型任务参数。
@@ -19228,10 +19237,9 @@ class ProcessMediaRequest(AbstractModel):
         :type SessionId: str
         :param ExtInfo: 保留字段，特殊用途时使用。
         :type ExtInfo: str
-        :param SubAppId: 点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。
-        :type SubAppId: int
         """
         self.FileId = None
+        self.SubAppId = None
         self.MediaProcessTask = None
         self.AiContentReviewTask = None
         self.AiAnalysisTask = None
@@ -19241,11 +19249,11 @@ class ProcessMediaRequest(AbstractModel):
         self.SessionContext = None
         self.SessionId = None
         self.ExtInfo = None
-        self.SubAppId = None
 
 
     def _deserialize(self, params):
         self.FileId = params.get("FileId")
+        self.SubAppId = params.get("SubAppId")
         if params.get("MediaProcessTask") is not None:
             self.MediaProcessTask = MediaProcessTaskInput()
             self.MediaProcessTask._deserialize(params.get("MediaProcessTask"))
@@ -19263,7 +19271,6 @@ class ProcessMediaRequest(AbstractModel):
         self.SessionContext = params.get("SessionContext")
         self.SessionId = params.get("SessionId")
         self.ExtInfo = params.get("ExtInfo")
-        self.SubAppId = params.get("SubAppId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -20397,6 +20404,8 @@ class SearchMediaRequest(AbstractModel):
 
     def __init__(self):
         r"""
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
         :param FileIds: 文件 ID 集合，匹配集合中的任意元素。
 <li>数组长度限制：10。</li>
 <li>单个 ID 长度限制：40个字符。</li>
@@ -20417,7 +20426,7 @@ class SearchMediaRequest(AbstractModel):
 <li>数组长度限制：10。</li>
         :type ClassIds: list of int
         :param Tags: 标签集合，匹配集合中任意元素。
-<li>单个标签长度限制：8个字符。</li>
+<li>单个标签长度限制：16个字符。</li>
 <li>数组长度限制：10。</li>
         :type Tags: list of str
         :param Categories: 文件类型。匹配集合中的任意元素：
@@ -20466,8 +20475,6 @@ class SearchMediaRequest(AbstractModel):
 <li>单个存储地区长度限制：20个字符。</li>
 <li>数组长度限制：20。</li>
         :type StorageRegions: list of str
-        :param SubAppId: 点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。
-        :type SubAppId: int
         :param StorageClasses: 存储类型数组。可选值有：
 <li> STANDARD：标准存储。</li>
 <li> STANDARD_IA：低频存储。</li>
@@ -20499,6 +20506,7 @@ class SearchMediaRequest(AbstractModel):
 <li>格式按照 ISO 8601标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。</li>
         :type EndTime: str
         """
+        self.SubAppId = None
         self.FileIds = None
         self.Names = None
         self.NamePrefixes = None
@@ -20516,7 +20524,6 @@ class SearchMediaRequest(AbstractModel):
         self.Limit = None
         self.Filters = None
         self.StorageRegions = None
-        self.SubAppId = None
         self.StorageClasses = None
         self.Text = None
         self.SourceType = None
@@ -20527,6 +20534,7 @@ class SearchMediaRequest(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.SubAppId = params.get("SubAppId")
         self.FileIds = params.get("FileIds")
         self.Names = params.get("Names")
         self.NamePrefixes = params.get("NamePrefixes")
@@ -20550,7 +20558,6 @@ class SearchMediaRequest(AbstractModel):
         self.Limit = params.get("Limit")
         self.Filters = params.get("Filters")
         self.StorageRegions = params.get("StorageRegions")
-        self.SubAppId = params.get("SubAppId")
         self.StorageClasses = params.get("StorageClasses")
         self.Text = params.get("Text")
         self.SourceType = params.get("SourceType")
@@ -22403,6 +22410,30 @@ class TimeRange(AbstractModel):
         
 
 
+class TraceWatermarkInput(AbstractModel):
+    """溯源水印参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Definition: 水印模板 ID。
+        :type Definition: int
+        """
+        self.Definition = None
+
+
+    def _deserialize(self, params):
+        self.Definition = params.get("Definition")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TranscodePlayInfo2017(AbstractModel):
     """视频转码播放信息（2017 版）
 
@@ -22513,27 +22544,30 @@ class TranscodeTaskInput(AbstractModel):
         :type Definition: int
         :param WatermarkSet: 水印列表，支持多张图片或文字水印，最大可支持 10 张。
         :type WatermarkSet: list of WatermarkInput
-        :param MosaicSet: 马赛克列表，最大可支持 10 张。
-        :type MosaicSet: list of MosaicInput
+        :param TraceWatermark: 溯源水印。
+        :type TraceWatermark: :class:`tencentcloud.vod.v20180717.models.TraceWatermarkInput`
         :param HeadTailSet: 片头片尾列表，支持多片头片尾，最大可支持 10 个。
         :type HeadTailSet: list of HeadTailTaskInput
-        :param StartTimeOffset: 转码后的视频的起始时间偏移，单位：秒。
-<li>不填或填0，表示转码后的视频从原始视频的起始位置开始；</li>
-<li>当数值大于0时（假设为 n），表示转码后的视频从原始视频的第 n 秒位置开始；</li>
-<li>当数值小于0时（假设为 -n），表示转码后的视频从原始视频结束 n 秒前的位置开始。</li>
-        :type StartTimeOffset: float
+        :param MosaicSet: 马赛克列表，最大可支持 10 张。
+        :type MosaicSet: list of MosaicInput
         :param EndTimeOffset: 转码后视频的终止时间偏移，单位：秒。
 <li>不填或填0，表示转码后的视频持续到原始视频的末尾终止；</li>
 <li>当数值大于0时（假设为 n），表示转码后的视频持续到原始视频第 n 秒时终止；</li>
 <li>当数值小于0时（假设为 -n），表示转码后的视频持续到原始视频结束 n 秒前终止。</li>
         :type EndTimeOffset: float
+        :param StartTimeOffset: 转码后的视频的起始时间偏移，单位：秒。
+<li>不填或填0，表示转码后的视频从原始视频的起始位置开始；</li>
+<li>当数值大于0时（假设为 n），表示转码后的视频从原始视频的第 n 秒位置开始；</li>
+<li>当数值小于0时（假设为 -n），表示转码后的视频从原始视频结束 n 秒前的位置开始。</li>
+        :type StartTimeOffset: float
         """
         self.Definition = None
         self.WatermarkSet = None
-        self.MosaicSet = None
+        self.TraceWatermark = None
         self.HeadTailSet = None
-        self.StartTimeOffset = None
+        self.MosaicSet = None
         self.EndTimeOffset = None
+        self.StartTimeOffset = None
 
 
     def _deserialize(self, params):
@@ -22544,20 +22578,23 @@ class TranscodeTaskInput(AbstractModel):
                 obj = WatermarkInput()
                 obj._deserialize(item)
                 self.WatermarkSet.append(obj)
-        if params.get("MosaicSet") is not None:
-            self.MosaicSet = []
-            for item in params.get("MosaicSet"):
-                obj = MosaicInput()
-                obj._deserialize(item)
-                self.MosaicSet.append(obj)
+        if params.get("TraceWatermark") is not None:
+            self.TraceWatermark = TraceWatermarkInput()
+            self.TraceWatermark._deserialize(params.get("TraceWatermark"))
         if params.get("HeadTailSet") is not None:
             self.HeadTailSet = []
             for item in params.get("HeadTailSet"):
                 obj = HeadTailTaskInput()
                 obj._deserialize(item)
                 self.HeadTailSet.append(obj)
-        self.StartTimeOffset = params.get("StartTimeOffset")
+        if params.get("MosaicSet") is not None:
+            self.MosaicSet = []
+            for item in params.get("MosaicSet"):
+                obj = MosaicInput()
+                obj._deserialize(item)
+                self.MosaicSet.append(obj)
         self.EndTimeOffset = params.get("EndTimeOffset")
+        self.StartTimeOffset = params.get("StartTimeOffset")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

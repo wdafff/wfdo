@@ -260,6 +260,9 @@ RESOURCENOTFOUND_TOPICPOLICYNOTEXIST = 'ResourceNotFound.TopicPolicyNotExist'
 # 规则不存在。
 RESOURCENOTFOUND_TOPICRULENOTEXIST = 'ResourceNotFound.TopicRuleNotExist'
 
+# 该产品已存在TID申请，禁止删除。
+UNAUTHORIZEDOPERATION_DELETETIDFAIL = 'UnauthorizedOperation.DeleteTidFail'
+
 # 该设备绑定了网关设备，无法删除。
 UNAUTHORIZEDOPERATION_DEVICEHASALREADYBINDGATEWAY = 'UnauthorizedOperation.DeviceHasAlreadyBindGateway'
 
@@ -292,6 +295,9 @@ UNAUTHORIZEDOPERATION_PRODUCTNOTSUPPORTPSK = 'UnauthorizedOperation.ProductNotSu
 
 # 用户未通过实名认证。
 UNAUTHORIZEDOPERATION_USERNOTAUTHENTICAED = 'UnauthorizedOperation.UserNotAuthenticaed'
+
+# 设备私钥已被获取。
+UNSUPPORTEDOPERATION_CLIENTCERTALREADYGOT = 'UnsupportedOperation.ClientCertAlreadyGot'
 
 # 设备ota升级中。
 UNSUPPORTEDOPERATION_DEVICEOTATASKINPROGRESS = 'UnsupportedOperation.DeviceOtaTaskInProgress'

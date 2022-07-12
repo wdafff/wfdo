@@ -53,13 +53,16 @@ from playwright._impl._element_handle import ElementHandle
 from playwright._impl._event_context_manager import EventContextManagerImpl
 from playwright._impl._file_chooser import FileChooser
 from playwright._impl._frame import Frame
+from playwright._impl._har_router import HarRouter
 from playwright._impl._helper import (
+    BackgroundTaskTracker,
     ColorScheme,
     DocumentLoadState,
     ForcedColors,
     KeyboardModifier,
     MouseButton,
     ReducedMotion,
+    RouteFromHarNotFoundPolicy,
     RouteHandler,
     RouteHandlerCallback,
     TimeoutSettings,
@@ -149,6 +152,7 @@ class Page(ChannelOwner):
             self._browser_context._timeout_settings
         )
         self._video: Optional[Video] = None
+        self._background_task_tracker = BackgroundTaskTracker()
         self._opener = cast("Page", from_nullable_channel(initializer.get("opener")))
 
         self._channel.on(
@@ -190,7 +194,7 @@ class Page(ChannelOwner):
         )
         self._channel.on(
             "route",
-            lambda params: asyncio.create_task(
+            lambda params: self._browser_context._background_task_tracker.create_task(
                 self._on_route(
                     from_channel(params["route"]), from_channel(params["request"])
                 )
@@ -244,7 +248,10 @@ class Page(ChannelOwner):
                 handled = await route_handler.handle(route, request)
             finally:
                 if len(self._routes) == 0:
-                    asyncio.create_task(self._disable_interception())
+                    try:
+                        await self._disable_interception()
+                    except Exception:
+                        pass
             if handled:
                 return
         await self._browser_context._on_route(route, request)
@@ -599,6 +606,24 @@ class Page(ChannelOwner):
         )
         if len(self._routes) == 0:
             await self._disable_interception()
+
+    async def route_from_har(
+        self,
+        har: Union[Path, str],
+        url: Union[Pattern, str] = None,
+        not_found: RouteFromHarNotFoundPolicy = None,
+        update: bool = None,
+    ) -> None:
+        if update:
+            await self._browser_context._record_into_har(har=har, page=self, url=url)
+            return
+        router = await HarRouter.create(
+            local_utils=self._connection.local_utils,
+            file=str(har),
+            not_found_action=not_found or "abort",
+            url_matcher=url,
+        )
+        await router.add_page_route(self)
 
     async def _disable_interception(self) -> None:
         await self._channel.send("setNetworkInterceptionEnabled", dict(enabled=False))

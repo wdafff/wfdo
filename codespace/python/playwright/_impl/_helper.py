@@ -41,6 +41,7 @@ from greenlet import greenlet
 
 from playwright._impl._api_structures import NameValue
 from playwright._impl._api_types import Error, TimeoutError
+from playwright._impl._str_utils import escape_regex_flags
 
 if sys.version_info >= (3, 8):  # pragma: no cover
     from typing import Literal, TypedDict
@@ -49,6 +50,7 @@ else:  # pragma: no cover
 
 
 if TYPE_CHECKING:  # pragma: no cover
+    from playwright._impl._api_structures import HeadersArray
     from playwright._impl._network import Request, Response, Route
 
 URLMatch = Union[str, Pattern, Callable[[str], bool]]
@@ -67,6 +69,7 @@ MouseButton = Literal["left", "middle", "right"]
 ServiceWorkersPolicy = Literal["allow", "block"]
 HarMode = Literal["full", "minimal"]
 HarContentPolicy = Literal["attach", "embed", "omit"]
+RouteFromHarNotFoundPolicy = Literal["abort", "fallback"]
 
 
 class ErrorPayload(TypedDict, total=False):
@@ -81,6 +84,40 @@ class FallbackOverrideParameters(TypedDict, total=False):
     method: Optional[str]
     headers: Optional[Dict[str, str]]
     postData: Optional[Union[str, bytes]]
+
+
+class HarRecordingMetadata(TypedDict, total=False):
+    path: str
+    content: Optional[HarContentPolicy]
+
+
+def prepare_record_har_options(params: Dict) -> Dict[str, Any]:
+    out_params: Dict[str, Any] = {"path": str(params["recordHarPath"])}
+    if "recordHarUrlFilter" in params:
+        opt = params["recordHarUrlFilter"]
+        if isinstance(opt, str):
+            out_params["urlGlob"] = opt
+        if isinstance(opt, Pattern):
+            out_params["urlRegexSource"] = opt.pattern
+            out_params["urlRegexFlags"] = escape_regex_flags(opt)
+        del params["recordHarUrlFilter"]
+    if "recordHarMode" in params:
+        out_params["mode"] = params["recordHarMode"]
+        del params["recordHarMode"]
+
+    new_content_api = None
+    old_content_api = None
+    if "recordHarContent" in params:
+        new_content_api = params["recordHarContent"]
+        del params["recordHarContent"]
+    if "recordHarOmitContent" in params:
+        old_content_api = params["recordHarOmitContent"]
+        del params["recordHarOmitContent"]
+    content = new_content_api or ("omit" if old_content_api else None)
+    if content:
+        out_params["content"] = content
+
+    return out_params
 
 
 class ParsedMessageParams(TypedDict):
@@ -133,6 +170,15 @@ class URLMatcher:
         if self._regex_obj:
             return cast(bool, self._regex_obj.search(url))
         return False
+
+
+class HarLookupResult(TypedDict, total=False):
+    action: Literal["error", "redirect", "fulfill", "noentry"]
+    message: Optional[str]
+    redirectURL: Optional[str]
+    status: Optional[int]
+    headers: Optional["HeadersArray"]
+    body: Optional[str]
 
 
 class TimeoutSettings:
@@ -316,3 +362,19 @@ def is_file_payload(value: Optional[Any]) -> bool:
         and "mimeType" in value
         and "buffer" in value
     )
+
+
+class BackgroundTaskTracker:
+    def __init__(self) -> None:
+        self._pending_tasks: List[asyncio.Task] = []
+
+    def create_task(self, coro: Coroutine) -> asyncio.Task:
+        task = asyncio.create_task(coro)
+        task.add_done_callback(lambda task: self._pending_tasks.remove(task))
+        self._pending_tasks.append(task)
+        return task
+
+    def close(self) -> None:
+        for task in self._pending_tasks:
+            if not task.done():
+                task.cancel()

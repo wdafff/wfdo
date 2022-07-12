@@ -102,6 +102,46 @@ class AclConfigRelation(AbstractModel):
         
 
 
+class AnycastOutPackRelation(AbstractModel):
+    """Anycast转外套餐详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NormalBandwidth: 业务带宽(单位M)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NormalBandwidth: int
+        :param ForwardRulesLimit: 转发规则数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ForwardRulesLimit: int
+        :param AutoRenewFlag: 自动续费标记
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoRenewFlag: int
+        :param CurDeadline: 到期时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CurDeadline: str
+        """
+        self.NormalBandwidth = None
+        self.ForwardRulesLimit = None
+        self.AutoRenewFlag = None
+        self.CurDeadline = None
+
+
+    def _deserialize(self, params):
+        self.NormalBandwidth = params.get("NormalBandwidth")
+        self.ForwardRulesLimit = params.get("ForwardRulesLimit")
+        self.AutoRenewFlag = params.get("AutoRenewFlag")
+        self.CurDeadline = params.get("CurDeadline")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AssociateDDoSEipAddressRequest(AbstractModel):
     """AssociateDDoSEipAddress请求参数结构体
 
@@ -283,6 +323,10 @@ class BGPIPInstance(AbstractModel):
         :param TagInfoList: 资源关联标签
 注意：此字段可能返回 null，表示取不到有效值。
         :type TagInfoList: list of TagInfo
+        :param AnycastOutPackRelation: 资产实例所属的全力防护套餐包详情，
+注意：当资产实例不是全力防护套餐包的实例时，此字段为null
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AnycastOutPackRelation: :class:`tencentcloud.antiddos.v20200309.models.AnycastOutPackRelation`
         """
         self.InstanceDetail = None
         self.SpecificationLimit = None
@@ -305,6 +349,7 @@ class BGPIPInstance(AbstractModel):
         self.V6Flag = None
         self.BGPIPChannelFlag = None
         self.TagInfoList = None
+        self.AnycastOutPackRelation = None
 
 
     def _deserialize(self, params):
@@ -350,6 +395,9 @@ class BGPIPInstance(AbstractModel):
                 obj = TagInfo()
                 obj._deserialize(item)
                 self.TagInfoList.append(obj)
+        if params.get("AnycastOutPackRelation") is not None:
+            self.AnycastOutPackRelation = AnycastOutPackRelation()
+            self.AnycastOutPackRelation._deserialize(params.get("AnycastOutPackRelation"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -495,6 +543,8 @@ class BGPInstance(AbstractModel):
         :type CCEnable: int
         :param TagInfoList: 资源关联标签
         :type TagInfoList: list of TagInfo
+        :param IpCountNewFlag: 新版本1ip高防包
+        :type IpCountNewFlag: int
         """
         self.InstanceDetail = None
         self.SpecificationLimit = None
@@ -510,6 +560,7 @@ class BGPInstance(AbstractModel):
         self.DDoSLevel = None
         self.CCEnable = None
         self.TagInfoList = None
+        self.IpCountNewFlag = None
 
 
     def _deserialize(self, params):
@@ -547,6 +598,7 @@ class BGPInstance(AbstractModel):
                 obj = TagInfo()
                 obj._deserialize(item)
                 self.TagInfoList.append(obj)
+        self.IpCountNewFlag = params.get("IpCountNewFlag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -715,7 +767,7 @@ class BoundIpInfo(AbstractModel):
         :type BizType: str
         :param InstanceId: IP所属的资源实例ID，绑定操作为必填项，解绑操作可不填。例如是弹性网卡的IP，则InstanceId填写弹性网卡的ID(eni-*); 如果绑定的是托管IP没有对应的资源实例ID，请填写"none";
         :type InstanceId: str
-        :param DeviceType: 产品分类下的子类型，绑定操作为必填项，解绑操作可不填。取值[cvm（CVM），lb（负载均衡器），eni（弹性网卡），vpngw（VPN），natgw（NAT），waf（WAF），fpc（金融），gaap（GAAP），other（托管IP），eip（黑石弹性IP）]
+        :param DeviceType: 产品分类下的子类型，绑定操作为必填项，解绑操作可不填。取值[cvm（CVM），lb（负载均衡器），eni（弹性网卡），vpngw（VPN），natgw（NAT），waf（WAF），fpc（金融），gaap（GAAP），other（托管IP），eip（弹性公网常规IP）]
         :type DeviceType: str
         :param IspCode: 运营商，绑定操作为必填项，解绑操作可不填。0：电信；1：联通；2：移动；5：BGP
         :type IspCode: int
@@ -2078,6 +2130,70 @@ class CreateL7RuleCertsRequest(AbstractModel):
 
 class CreateL7RuleCertsResponse(AbstractModel):
     """CreateL7RuleCerts返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Success: 成功码
+        :type Success: :class:`tencentcloud.antiddos.v20200309.models.SuccessCode`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Success = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Success") is not None:
+            self.Success = SuccessCode()
+            self.Success._deserialize(params.get("Success"))
+        self.RequestId = params.get("RequestId")
+
+
+class CreateNewL7RulesRequest(AbstractModel):
+    """CreateNewL7Rules请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Rules: 规则列表
+        :type Rules: list of L7RuleEntry
+        :param Business: 大禹子产品代号（bgpip表示高防IP）
+        :type Business: str
+        :param IdList: 资源ID列表
+        :type IdList: list of str
+        :param VipList: 资源IP列表
+        :type VipList: list of str
+        """
+        self.Rules = None
+        self.Business = None
+        self.IdList = None
+        self.VipList = None
+
+
+    def _deserialize(self, params):
+        if params.get("Rules") is not None:
+            self.Rules = []
+            for item in params.get("Rules"):
+                obj = L7RuleEntry()
+                obj._deserialize(item)
+                self.Rules.append(obj)
+        self.Business = params.get("Business")
+        self.IdList = params.get("IdList")
+        self.VipList = params.get("VipList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateNewL7RulesResponse(AbstractModel):
+    """CreateNewL7Rules返回参数结构体
 
     """
 
@@ -4516,6 +4632,8 @@ class DescribeListBGPIPInstancesRequest(AbstractModel):
         :type FilterInstanceIdList: list of str
         :param FilterTag: 标签搜索
         :type FilterTag: :class:`tencentcloud.antiddos.v20200309.models.TagFilter`
+        :param FilterPackType: 按照套餐类型进行过滤
+        :type FilterPackType: list of str
         """
         self.Offset = None
         self.Limit = None
@@ -4531,6 +4649,7 @@ class DescribeListBGPIPInstancesRequest(AbstractModel):
         self.FilterCname = None
         self.FilterInstanceIdList = None
         self.FilterTag = None
+        self.FilterPackType = None
 
 
     def _deserialize(self, params):
@@ -4550,6 +4669,7 @@ class DescribeListBGPIPInstancesRequest(AbstractModel):
         if params.get("FilterTag") is not None:
             self.FilterTag = TagFilter()
             self.FilterTag._deserialize(params.get("FilterTag"))
+        self.FilterPackType = params.get("FilterPackType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5468,6 +5588,97 @@ class DescribeListWaterPrintConfigResponse(AbstractModel):
                 obj = WaterPrintRelation()
                 obj._deserialize(item)
                 self.ConfigList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeNewL7RulesRequest(AbstractModel):
+    """DescribeNewL7Rules请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Business: 大禹子产品代号（bgpip表示高防IP）
+        :type Business: str
+        :param StatusList: 状态搜索，选填，取值[0(规则配置成功)，1(规则配置生效中)，2(规则配置失败)，3(规则删除生效中)，5(规则删除失败)，6(规则等待配置)，7(规则等待删除)，8(规则待配置证书)]
+        :type StatusList: list of int non-negative
+        :param Domain: 域名搜索，选填，当需要搜索域名请填写
+        :type Domain: str
+        :param Ip: IP搜索，选填，当需要搜索IP请填写
+        :type Ip: str
+        :param Limit: 一页条数，填0表示不分页
+        :type Limit: int
+        :param Offset: 页起始偏移，取值为(页码-1)*一页条数
+        :type Offset: int
+        :param ProtocolList: 转发协议搜索，选填，取值[http, https, http/https]
+        :type ProtocolList: list of str
+        :param Cname: 高防IP实例的Cname
+        :type Cname: str
+        """
+        self.Business = None
+        self.StatusList = None
+        self.Domain = None
+        self.Ip = None
+        self.Limit = None
+        self.Offset = None
+        self.ProtocolList = None
+        self.Cname = None
+
+
+    def _deserialize(self, params):
+        self.Business = params.get("Business")
+        self.StatusList = params.get("StatusList")
+        self.Domain = params.get("Domain")
+        self.Ip = params.get("Ip")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.ProtocolList = params.get("ProtocolList")
+        self.Cname = params.get("Cname")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeNewL7RulesResponse(AbstractModel):
+    """DescribeNewL7Rules返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Rules: 转发规则列表
+        :type Rules: list of NewL7RuleEntry
+        :param Healths: 健康检查配置列表
+        :type Healths: list of L7RuleHealth
+        :param Total: 总规则数
+        :type Total: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Rules = None
+        self.Healths = None
+        self.Total = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Rules") is not None:
+            self.Rules = []
+            for item in params.get("Rules"):
+                obj = NewL7RuleEntry()
+                obj._deserialize(item)
+                self.Rules.append(obj)
+        if params.get("Healths") is not None:
+            self.Healths = []
+            for item in params.get("Healths"):
+                obj = L7RuleHealth()
+                obj._deserialize(item)
+                self.Healths.append(obj)
+        self.Total = params.get("Total")
         self.RequestId = params.get("RequestId")
 
 
@@ -6405,6 +6616,62 @@ class L7RuleEntry(AbstractModel):
         self.VirtualPort = params.get("VirtualPort")
         self.SSLId = params.get("SSLId")
         self.Id = params.get("Id")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class L7RuleHealth(AbstractModel):
+    """L7规则健康检查参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Status: 配置状态，0： 正常，1：配置中，2：配置失败
+        :type Status: int
+        :param Enable: =1表示开启；=0表示关闭
+        :type Enable: int
+        :param RuleId: 规则ID
+        :type RuleId: str
+        :param Url: 检查目录的URL，默认为/
+        :type Url: str
+        :param Interval: 检测间隔时间，单位秒
+        :type Interval: int
+        :param AliveNum: 健康阈值，单位次
+        :type AliveNum: int
+        :param KickNum: 不健康阈值，单位次
+        :type KickNum: int
+        :param Method: HTTP请求方式，取值[HEAD,GET]
+        :type Method: str
+        :param StatusCode: 健康检查判定正常状态码，1xx =1, 2xx=2, 3xx=4, 4xx=8,5xx=16，多个状态码值加和
+        :type StatusCode: int
+        """
+        self.Status = None
+        self.Enable = None
+        self.RuleId = None
+        self.Url = None
+        self.Interval = None
+        self.AliveNum = None
+        self.KickNum = None
+        self.Method = None
+        self.StatusCode = None
+
+
+    def _deserialize(self, params):
+        self.Status = params.get("Status")
+        self.Enable = params.get("Enable")
+        self.RuleId = params.get("RuleId")
+        self.Url = params.get("Url")
+        self.Interval = params.get("Interval")
+        self.AliveNum = params.get("AliveNum")
+        self.KickNum = params.get("KickNum")
+        self.Method = params.get("Method")
+        self.StatusCode = params.get("StatusCode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

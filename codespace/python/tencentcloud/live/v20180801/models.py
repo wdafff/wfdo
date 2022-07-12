@@ -347,55 +347,6 @@ class BillDataInfo(AbstractModel):
         
 
 
-class BindLiveDomainCertRequest(AbstractModel):
-    """BindLiveDomainCert请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param CertId: 证书Id。使用添加证书接口获取证书Id。
-        :type CertId: int
-        :param DomainName: 播放域名。
-        :type DomainName: str
-        :param Status: HTTPS开启状态，0： 关闭  1：打开。
-        :type Status: int
-        """
-        self.CertId = None
-        self.DomainName = None
-        self.Status = None
-
-
-    def _deserialize(self, params):
-        self.CertId = params.get("CertId")
-        self.DomainName = params.get("DomainName")
-        self.Status = params.get("Status")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class BindLiveDomainCertResponse(AbstractModel):
-    """BindLiveDomainCert返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
 class CallBackRuleInfo(AbstractModel):
     """规则信息
 
@@ -1219,73 +1170,6 @@ class CreateLiveCallbackTemplateResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.TemplateId = params.get("TemplateId")
-        self.RequestId = params.get("RequestId")
-
-
-class CreateLiveCertRequest(AbstractModel):
-    """CreateLiveCert请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param CertType: 证书类型。0-用户添加证书；1-腾讯云托管证书。
-注意：当证书类型为0时，HttpsCrt和HttpsKey必选；
-当证书类型为1时，优先使用CloudCertId对应证书，若CloudCertId为空则使用HttpsCrt和HttpsKey。
-        :type CertType: int
-        :param CertName: 证书名称。
-        :type CertName: str
-        :param HttpsCrt: 证书内容，即公钥。
-        :type HttpsCrt: str
-        :param HttpsKey: 私钥。
-        :type HttpsKey: str
-        :param Description: 描述。
-        :type Description: str
-        :param CloudCertId: 腾讯云证书托管ID。
-        :type CloudCertId: str
-        """
-        self.CertType = None
-        self.CertName = None
-        self.HttpsCrt = None
-        self.HttpsKey = None
-        self.Description = None
-        self.CloudCertId = None
-
-
-    def _deserialize(self, params):
-        self.CertType = params.get("CertType")
-        self.CertName = params.get("CertName")
-        self.HttpsCrt = params.get("HttpsCrt")
-        self.HttpsKey = params.get("HttpsKey")
-        self.Description = params.get("Description")
-        self.CloudCertId = params.get("CloudCertId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CreateLiveCertResponse(AbstractModel):
-    """CreateLiveCert返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param CertId: 证书ID
-        :type CertId: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.CertId = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.CertId = params.get("CertId")
         self.RequestId = params.get("RequestId")
 
 
@@ -2540,47 +2424,6 @@ class DeleteLiveCallbackTemplateRequest(AbstractModel):
 
 class DeleteLiveCallbackTemplateResponse(AbstractModel):
     """DeleteLiveCallbackTemplate返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class DeleteLiveCertRequest(AbstractModel):
-    """DeleteLiveCert请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param CertId: DescribeLiveCerts接口获取到的证书Id。
-        :type CertId: int
-        """
-        self.CertId = None
-
-
-    def _deserialize(self, params):
-        self.CertId = params.get("CertId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DeleteLiveCertResponse(AbstractModel):
-    """DeleteLiveCert返回参数结构体
 
     """
 
@@ -6427,6 +6270,9 @@ South America 南美
 Middle East 中东
 Africa 非洲。
         :type RegionNames: list of str
+        :param CountryNames: 国家，映射表参照如下文档：
+https://cloud.tencent.com/document/product/267/34019。
+        :type CountryNames: list of str
         """
         self.StartTime = None
         self.EndTime = None
@@ -6434,6 +6280,7 @@ Africa 非洲。
         self.MainlandOrOversea = None
         self.Granularity = None
         self.RegionNames = None
+        self.CountryNames = None
 
 
     def _deserialize(self, params):
@@ -6443,6 +6290,7 @@ Africa 非洲。
         self.MainlandOrOversea = params.get("MainlandOrOversea")
         self.Granularity = params.get("Granularity")
         self.RegionNames = params.get("RegionNames")
+        self.CountryNames = params.get("CountryNames")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8041,116 +7889,6 @@ class ModifyLiveCallbackTemplateRequest(AbstractModel):
 
 class ModifyLiveCallbackTemplateResponse(AbstractModel):
     """ModifyLiveCallbackTemplate返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class ModifyLiveCertRequest(AbstractModel):
-    """ModifyLiveCert请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param CertId: 证书Id。
-        :type CertId: str
-        :param CertType: 证书类型。0-用户添加证书；1-腾讯云托管证书。
-        :type CertType: int
-        :param CertName: 证书名称。
-        :type CertName: str
-        :param HttpsCrt: 证书内容，即公钥。
-        :type HttpsCrt: str
-        :param HttpsKey: 私钥。
-        :type HttpsKey: str
-        :param Description: 描述信息。
-        :type Description: str
-        """
-        self.CertId = None
-        self.CertType = None
-        self.CertName = None
-        self.HttpsCrt = None
-        self.HttpsKey = None
-        self.Description = None
-
-
-    def _deserialize(self, params):
-        self.CertId = params.get("CertId")
-        self.CertType = params.get("CertType")
-        self.CertName = params.get("CertName")
-        self.HttpsCrt = params.get("HttpsCrt")
-        self.HttpsKey = params.get("HttpsKey")
-        self.Description = params.get("Description")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyLiveCertResponse(AbstractModel):
-    """ModifyLiveCert返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class ModifyLiveDomainCertRequest(AbstractModel):
-    """ModifyLiveDomainCert请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param DomainName: 播放域名。
-        :type DomainName: str
-        :param CertId: 证书Id。
-        :type CertId: int
-        :param Status: 状态，0：关闭  1：打开。
-        :type Status: int
-        """
-        self.DomainName = None
-        self.CertId = None
-        self.Status = None
-
-
-    def _deserialize(self, params):
-        self.DomainName = params.get("DomainName")
-        self.CertId = params.get("CertId")
-        self.Status = params.get("Status")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyLiveDomainCertResponse(AbstractModel):
-    """ModifyLiveDomainCert返回参数结构体
 
     """
 

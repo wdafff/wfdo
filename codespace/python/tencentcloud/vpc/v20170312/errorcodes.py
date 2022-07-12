@@ -26,11 +26,20 @@ AUTHFAILURE = 'AuthFailure'
 # 地址没有弹性网卡信息。
 FAILEDOPERATION_ADDRESSENIINFONOTFOUND = 'FailedOperation.AddressEniInfoNotFound'
 
+# 账户余额不足。
+FAILEDOPERATION_BALANCEINSUFFICIENT = 'FailedOperation.BalanceInsufficient'
+
 # 不支持的地域。
 FAILEDOPERATION_INVALIDREGION = 'FailedOperation.InvalidRegion'
 
+# 未找到实例的主网卡。
+FAILEDOPERATION_MASTERENINOTFOUND = 'FailedOperation.MasterEniNotFound'
+
 # 网络探测超时，请稍后重试。
 FAILEDOPERATION_NETDETECTTIMEOUT = 'FailedOperation.NetDetectTimeOut'
+
+# 任务执行失败。
+FAILEDOPERATION_TASKFAILED = 'FailedOperation.TaskFailed'
 
 # 内部错误。
 INTERNALERROR = 'InternalError'
@@ -461,6 +470,12 @@ LIMITEXCEEDED_TAGTAGSEXCEEDED = 'LimitExceeded.TagTagsExceeded'
 # 缺少参数错误。
 MISSINGPARAMETER = 'MissingParameter'
 
+# 指定公网IP处于隔离状态。
+OPERATIONDENIED_ADDRESSINARREARS = 'OperationDenied.AddressInArrears'
+
+# 互斥的任务正在执行。
+OPERATIONDENIED_MUTEXTASKRUNNING = 'OperationDenied.MutexTaskRunning'
+
 # 资源被占用。
 RESOURCEINUSE = 'ResourceInUse'
 
@@ -487,6 +502,9 @@ RESOURCEUNAVAILABLE_SERVICEWHITELISTNOTADDED = 'ResourceUnavailable.ServiceWhite
 
 # 未授权操作。
 UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'
+
+# 无权限申请AnycastEip资源。
+UNAUTHORIZEDOPERATION_ANYCASTEIP = 'UnauthorizedOperation.AnycastEip'
 
 # 绑定关系不存在。
 UNAUTHORIZEDOPERATION_ATTACHMENTNOTFOUND = 'UnauthorizedOperation.AttachmentNotFound'
@@ -662,6 +680,9 @@ UNSUPPORTEDOPERATION_ISPNOTSUPPORTED = 'UnsupportedOperation.IspNotSupported'
 # 指定的CDC已存在本地网关。
 UNSUPPORTEDOPERATION_LOCALGATEWAYALREADYEXISTS = 'UnsupportedOperation.LocalGatewayAlreadyExists'
 
+# 账户不支持修改公网IP的该属性。
+UNSUPPORTEDOPERATION_MODIFYADDRESSATTRIBUTE = 'UnsupportedOperation.ModifyAddressAttribute'
+
 # 资源互斥操作任务正在执行。
 UNSUPPORTEDOPERATION_MUTEXOPERATIONTASKRUNNING = 'UnsupportedOperation.MutexOperationTaskRunning'
 
@@ -695,6 +716,9 @@ UNSUPPORTEDOPERATION_NOTSUPPORTEDUPDATECCNROUTEPUBLISH = 'UnsupportedOperation.N
 # 指定的路由策略不支持发布或撤销至云联网。
 UNSUPPORTEDOPERATION_NOTIFYCCN = 'UnsupportedOperation.NotifyCcn'
 
+# 此产品计费方式已下线，请尝试其他计费方式。
+UNSUPPORTEDOPERATION_OFFLINECHARGETYPE = 'UnsupportedOperation.OfflineChargeType'
+
 # 仅支持专业版Ckafka。
 UNSUPPORTEDOPERATION_ONLYSUPPORTPROFESSIONKAFKA = 'UnsupportedOperation.OnlySupportProfessionKafka'
 
@@ -722,8 +746,14 @@ UNSUPPORTEDOPERATION_PURCHASELIMIT = 'UnsupportedOperation.PurchaseLimit'
 # 输入的资源ID与IP绑定的资源不匹配，请检查。
 UNSUPPORTEDOPERATION_RESOURCEMISMATCH = 'UnsupportedOperation.ResourceMismatch'
 
+# 未找到相关角色，请确认角色是否授权。
+UNSUPPORTEDOPERATION_ROLENOTFOUND = 'UnsupportedOperation.RoleNotFound'
+
 # 指定的终端节点服务所创建的终端节点不支持绑定安全组。
 UNSUPPORTEDOPERATION_SPECIALENDPOINTSERVICE = 'UnsupportedOperation.SpecialEndPointService'
+
+# SslVpnClientId 不存在。
+UNSUPPORTEDOPERATION_SSLVPNCLIENTIDNOTFOUND = 'UnsupportedOperation.SslVpnClientIdNotFound'
 
 # 中继网卡不支持该操作。
 UNSUPPORTEDOPERATION_SUBENINOTSUPPORTTRUNKING = 'UnsupportedOperation.SubEniNotSupportTrunking'

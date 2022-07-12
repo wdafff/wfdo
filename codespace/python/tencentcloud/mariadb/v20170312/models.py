@@ -453,6 +453,10 @@ class CreateAccountRequest(AbstractModel):
         :type Description: str
         :param DelayThresh: 根据传入时间判断备机不可用
         :type DelayThresh: int
+        :param SlaveConst: 针对只读账号，设置策略是否固定备机，0：不固定备机，即备机不满足条件与客户端不断开连接，Proxy选择其他可用备机，1：备机不满足条件断开连接，确保一个连接固定备机。
+        :type SlaveConst: int
+        :param MaxUserConnections: 用户最大连接数限制参数。不传或者传0表示为不限制，对应max_user_connections参数，目前10.1内核版本不支持设置。
+        :type MaxUserConnections: int
         """
         self.InstanceId = None
         self.UserName = None
@@ -461,6 +465,8 @@ class CreateAccountRequest(AbstractModel):
         self.ReadOnly = None
         self.Description = None
         self.DelayThresh = None
+        self.SlaveConst = None
+        self.MaxUserConnections = None
 
 
     def _deserialize(self, params):
@@ -471,6 +477,8 @@ class CreateAccountRequest(AbstractModel):
         self.ReadOnly = params.get("ReadOnly")
         self.Description = params.get("Description")
         self.DelayThresh = params.get("DelayThresh")
+        self.SlaveConst = params.get("SlaveConst")
+        self.MaxUserConnections = params.get("MaxUserConnections")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1003,6 +1011,8 @@ class DBAccount(AbstractModel):
         :param DelayThresh: 该字段对只读帐号有意义，表示选择主备延迟小于该值的备机
 注意：此字段可能返回 null，表示取不到有效值。
         :type DelayThresh: int
+        :param SlaveConst: 针对只读账号，设置策略是否固定备机，0：不固定备机，即备机不满足条件与客户端不断开连接，Proxy选择其他可用备机，1：备机不满足条件断开连接，确保一个连接固定备机。
+        :type SlaveConst: int
         """
         self.UserName = None
         self.Host = None
@@ -1011,6 +1021,7 @@ class DBAccount(AbstractModel):
         self.UpdateTime = None
         self.ReadOnly = None
         self.DelayThresh = None
+        self.SlaveConst = None
 
 
     def _deserialize(self, params):
@@ -1021,6 +1032,7 @@ class DBAccount(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.ReadOnly = params.get("ReadOnly")
         self.DelayThresh = params.get("DelayThresh")
+        self.SlaveConst = params.get("SlaveConst")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3525,6 +3537,55 @@ class DescribeUpgradePriceResponse(AbstractModel):
         self.OriginalPrice = params.get("OriginalPrice")
         self.Price = params.get("Price")
         self.Formula = params.get("Formula")
+        self.RequestId = params.get("RequestId")
+
+
+class DestroyDBInstanceRequest(AbstractModel):
+    """DestroyDBInstance请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例 ID，格式如：tdsqlshard-c1nl9rpv，与云数据库控制台页面中显示的实例 ID 相同。
+        :type InstanceId: str
+        """
+        self.InstanceId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DestroyDBInstanceResponse(AbstractModel):
+    """DestroyDBInstance返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例 ID，与入参InstanceId一致。
+        :type InstanceId: str
+        :param FlowId: 异步任务的请求 ID，可使用此 ID [查询异步任务的执行结果](https://cloud.tencent.com/document/product/237/16177)。
+        :type FlowId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.InstanceId = None
+        self.FlowId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.FlowId = params.get("FlowId")
         self.RequestId = params.get("RequestId")
 
 

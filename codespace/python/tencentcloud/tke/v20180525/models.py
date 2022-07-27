@@ -2746,6 +2746,55 @@ class CreateEKSContainerInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateEdgeLogConfigRequest(AbstractModel):
+    """CreateEdgeLogConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param LogConfig: 日志采集配置的json表达
+        :type LogConfig: str
+        :param LogsetId: CLS日志集ID
+        :type LogsetId: str
+        """
+        self.ClusterId = None
+        self.LogConfig = None
+        self.LogsetId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.LogConfig = params.get("LogConfig")
+        self.LogsetId = params.get("LogsetId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateEdgeLogConfigResponse(AbstractModel):
+    """CreateEdgeLogConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class CreateImageCacheRequest(AbstractModel):
     """CreateImageCache请求参数结构体
 
@@ -5077,6 +5126,69 @@ class DescribeClusterEndpointVipStatusResponse(AbstractModel):
     def _deserialize(self, params):
         self.Status = params.get("Status")
         self.ErrorMsg = params.get("ErrorMsg")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeClusterEndpointsRequest(AbstractModel):
+    """DescribeClusterEndpoints请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeClusterEndpointsResponse(AbstractModel):
+    """DescribeClusterEndpoints返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CertificationAuthority: 集群APIServer的CA证书
+        :type CertificationAuthority: str
+        :param ClusterExternalEndpoint: 集群APIServer的外网访问地址
+        :type ClusterExternalEndpoint: str
+        :param ClusterIntranetEndpoint: 集群APIServer的内网访问地址
+        :type ClusterIntranetEndpoint: str
+        :param ClusterDomain: 集群APIServer的域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterDomain: str
+        :param ClusterExternalACL: 集群APIServer的外网访问ACL列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterExternalACL: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.CertificationAuthority = None
+        self.ClusterExternalEndpoint = None
+        self.ClusterIntranetEndpoint = None
+        self.ClusterDomain = None
+        self.ClusterExternalACL = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.CertificationAuthority = params.get("CertificationAuthority")
+        self.ClusterExternalEndpoint = params.get("ClusterExternalEndpoint")
+        self.ClusterIntranetEndpoint = params.get("ClusterIntranetEndpoint")
+        self.ClusterDomain = params.get("ClusterDomain")
+        self.ClusterExternalACL = params.get("ClusterExternalACL")
         self.RequestId = params.get("RequestId")
 
 
@@ -9947,6 +10059,10 @@ class ExistedInstance(AbstractModel):
         :param InstanceChargeType: 实例计费模式。取值范围： PREPAID：表示预付费，即包年包月 POSTPAID_BY_HOUR：表示后付费，即按量计费 CDHPAID：CDH付费，即只对CDH计费，不对CDH上的实例计费。
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceChargeType: str
+        :param IPv6Addresses: 实例的IPv6地址。
+注意：此字段可能返回 null，表示取不到有效值。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IPv6Addresses: list of str
         """
         self.Usable = None
         self.UnusableReason = None
@@ -9962,6 +10078,7 @@ class ExistedInstance(AbstractModel):
         self.InstanceType = None
         self.AutoscalingGroupId = None
         self.InstanceChargeType = None
+        self.IPv6Addresses = None
 
 
     def _deserialize(self, params):
@@ -9979,6 +10096,7 @@ class ExistedInstance(AbstractModel):
         self.InstanceType = params.get("InstanceType")
         self.AutoscalingGroupId = params.get("AutoscalingGroupId")
         self.InstanceChargeType = params.get("InstanceChargeType")
+        self.IPv6Addresses = params.get("IPv6Addresses")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10770,6 +10888,47 @@ class ImageRegistryCredential(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class InstallEdgeLogAgentRequest(AbstractModel):
+    """InstallEdgeLogAgent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InstallEdgeLogAgentResponse(AbstractModel):
+    """InstallEdgeLogAgent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class InstallLogAgentRequest(AbstractModel):
@@ -15111,6 +15270,47 @@ class Toleration(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class UninstallEdgeLogAgentRequest(AbstractModel):
+    """UninstallEdgeLogAgent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UninstallEdgeLogAgentResponse(AbstractModel):
+    """UninstallEdgeLogAgent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class UninstallLogAgentRequest(AbstractModel):

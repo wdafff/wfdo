@@ -3224,6 +3224,44 @@ class ItemCoord(AbstractModel):
         
 
 
+class LicensePlateInfo(AbstractModel):
+    """全部车牌信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Number: 识别出的车牌号码。
+        :type Number: str
+        :param Confidence: 置信度，0 - 100 之间。
+        :type Confidence: int
+        :param Rect: 文本行在原图片中的像素坐标框。
+        :type Rect: :class:`tencentcloud.ocr.v20181119.models.Rect`
+        :param Color: 识别出的车牌颜色，目前支持颜色包括 “白”、“黑”、“蓝”、“绿“、“黄”、“黄绿”、“临牌”。
+        :type Color: str
+        """
+        self.Number = None
+        self.Confidence = None
+        self.Rect = None
+        self.Color = None
+
+
+    def _deserialize(self, params):
+        self.Number = params.get("Number")
+        self.Confidence = params.get("Confidence")
+        if params.get("Rect") is not None:
+            self.Rect = Rect()
+            self.Rect._deserialize(params.get("Rect"))
+        self.Color = params.get("Color")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class LicensePlateOCRRequest(AbstractModel):
     """LicensePlateOCR请求参数结构体
 
@@ -3274,6 +3312,8 @@ class LicensePlateOCRResponse(AbstractModel):
         :type Rect: :class:`tencentcloud.ocr.v20181119.models.Rect`
         :param Color: 识别出的车牌颜色，目前支持颜色包括 “白”、“黑”、“蓝”、“绿“、“黄”、“黄绿”、“临牌”。
         :type Color: str
+        :param LicensePlateInfos: 全部车牌信息。
+        :type LicensePlateInfos: list of LicensePlateInfo
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -3281,6 +3321,7 @@ class LicensePlateOCRResponse(AbstractModel):
         self.Confidence = None
         self.Rect = None
         self.Color = None
+        self.LicensePlateInfos = None
         self.RequestId = None
 
 
@@ -3291,6 +3332,12 @@ class LicensePlateOCRResponse(AbstractModel):
             self.Rect = Rect()
             self.Rect._deserialize(params.get("Rect"))
         self.Color = params.get("Color")
+        if params.get("LicensePlateInfos") is not None:
+            self.LicensePlateInfos = []
+            for item in params.get("LicensePlateInfos"):
+                obj = LicensePlateInfo()
+                obj._deserialize(item)
+                self.LicensePlateInfos.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -8150,9 +8197,9 @@ class VatInvoiceVerifyRequest(AbstractModel):
         r"""
         :param InvoiceCode: 发票代码， 一张发票一天只能查询5次。
         :type InvoiceCode: str
-        :param InvoiceNo: 发票号码（8位）。
+        :param InvoiceNo: 发票号码（8位）
         :type InvoiceNo: str
-        :param InvoiceDate: 开票日期（不支持当天发票查询，支持五年以内开具的发票），如：2019-12-20。
+        :param InvoiceDate: 开票日期（不支持当天发票查询，支持五年以内开具的发票），格式：“YYYY-MM-DD”，如：2019-12-20。
         :type InvoiceDate: str
         :param Additional: 根据票种传递对应值，如果报参数错误，请仔细检查每个票种对应的值
 
@@ -8363,6 +8410,10 @@ class VehicleInvoiceInfo(AbstractModel):
         :type MotorBankName: str
         :param MotorBankAccount: 账号
         :type MotorBankAccount: str
+        :param SellerAddress: 销售地址
+        :type SellerAddress: str
+        :param SellerTel: 销售电话
+        :type SellerTel: str
         """
         self.CarType = None
         self.PlateModel = None
@@ -8380,6 +8431,8 @@ class VehicleInvoiceInfo(AbstractModel):
         self.MotorTaxRate = None
         self.MotorBankName = None
         self.MotorBankAccount = None
+        self.SellerAddress = None
+        self.SellerTel = None
 
 
     def _deserialize(self, params):
@@ -8399,6 +8452,8 @@ class VehicleInvoiceInfo(AbstractModel):
         self.MotorTaxRate = params.get("MotorTaxRate")
         self.MotorBankName = params.get("MotorBankName")
         self.MotorBankAccount = params.get("MotorBankAccount")
+        self.SellerAddress = params.get("SellerAddress")
+        self.SellerTel = params.get("SellerTel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

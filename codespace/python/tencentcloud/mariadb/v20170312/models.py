@@ -714,6 +714,10 @@ class CreateDedicatedClusterDBInstanceRequest(AbstractModel):
         :type MasterHostId: str
         :param SlaveHostIds: 指定从节点uuid，不填随机分配
         :type SlaveHostIds: list of str
+        :param RollbackInstanceId: 需要回档的源实例ID
+        :type RollbackInstanceId: str
+        :param RollbackTime: 回档时间
+        :type RollbackTime: str
         """
         self.GoodsNum = None
         self.Memory = None
@@ -738,6 +742,8 @@ class CreateDedicatedClusterDBInstanceRequest(AbstractModel):
         self.NodeNum = None
         self.MasterHostId = None
         self.SlaveHostIds = None
+        self.RollbackInstanceId = None
+        self.RollbackTime = None
 
 
     def _deserialize(self, params):
@@ -774,6 +780,8 @@ class CreateDedicatedClusterDBInstanceRequest(AbstractModel):
         self.NodeNum = params.get("NodeNum")
         self.MasterHostId = params.get("MasterHostId")
         self.SlaveHostIds = params.get("SlaveHostIds")
+        self.RollbackInstanceId = params.get("RollbackInstanceId")
+        self.RollbackTime = params.get("RollbackTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -926,17 +934,22 @@ class CreateHourDBInstanceResponse(AbstractModel):
         :param InstanceIds: 订单对应的实例 ID 列表，如果此处没有返回实例 ID，可以通过订单查询接口获取。还可通过实例查询接口查询实例是否创建完成。
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceIds: list of str
+        :param FlowId: 异步任务的请求 ID，可使用此 ID [查询异步任务的执行结果](https://cloud.tencent.com/document/product/237/16177)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FlowId: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.DealName = None
         self.InstanceIds = None
+        self.FlowId = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.DealName = params.get("DealName")
         self.InstanceIds = params.get("InstanceIds")
+        self.FlowId = params.get("FlowId")
         self.RequestId = params.get("RequestId")
 
 
@@ -1198,6 +1211,9 @@ class DBInstance(AbstractModel):
         :param ResourceTags: 实例标签信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type ResourceTags: list of ResourceTag
+        :param DbVersionId: 数据库版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DbVersionId: str
         """
         self.InstanceId = None
         self.InstanceName = None
@@ -1250,6 +1266,7 @@ class DBInstance(AbstractModel):
         self.DcnDstNum = None
         self.InstanceType = None
         self.ResourceTags = None
+        self.DbVersionId = None
 
 
     def _deserialize(self, params):
@@ -1309,6 +1326,7 @@ class DBInstance(AbstractModel):
                 obj = ResourceTag()
                 obj._deserialize(item)
                 self.ResourceTags.append(obj)
+        self.DbVersionId = params.get("DbVersionId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

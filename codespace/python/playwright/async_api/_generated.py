@@ -706,7 +706,7 @@ class Route(AsyncBase):
         """Route.fallback
 
         When several routes match the given pattern, they run in the order opposite to their registration. That way the last
-        registered route can always override all the previos ones. In the example below, request will be handled by the
+        registered route can always override all the previous ones. In the example below, request will be handled by the
         bottom-most handler first, then it'll fall back to the previous one and in the end will be aborted by the first
         registered route.
 
@@ -2426,7 +2426,7 @@ class ElementHandle(JSHandle):
         This method returns the bounding box of the element, or `null` if the element is not visible. The bounding box is
         calculated relative to the main frame viewport - which is usually the same as the browser window.
 
-        Scrolling affects the returned bonding box, similarly to
+        Scrolling affects the returned bounding box, similarly to
         [Element.getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect). That
         means `x` and/or `y` may be negative.
 
@@ -3018,7 +3018,9 @@ class Frame(AsyncBase):
     def expect_navigation(
         self,
         *,
-        url: typing.Union[str, typing.Pattern, typing.Callable[[str], bool]] = None,
+        url: typing.Union[
+            str, typing.Pattern[str], typing.Callable[[str], bool]
+        ] = None,
         wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None,
         timeout: float = None
     ) -> AsyncEventContextManager["Response"]:
@@ -3042,7 +3044,7 @@ class Frame(AsyncBase):
 
         Parameters
         ----------
-        url : Union[Callable[[str], bool], Pattern, str, NoneType]
+        url : Union[Callable[[str], bool], Pattern[str], str, NoneType]
             A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the
             parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to
             the string.
@@ -3071,7 +3073,7 @@ class Frame(AsyncBase):
 
     async def wait_for_url(
         self,
-        url: typing.Union[str, typing.Pattern, typing.Callable[[str], bool]],
+        url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]],
         *,
         wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None,
         timeout: float = None
@@ -3087,7 +3089,7 @@ class Frame(AsyncBase):
 
         Parameters
         ----------
-        url : Union[Callable[[str], bool], Pattern, str]
+        url : Union[Callable[[str], bool], Pattern[str], str]
             A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the
             parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to
             the string.
@@ -4162,7 +4164,7 @@ class Frame(AsyncBase):
         self,
         selector: str,
         *,
-        has_text: typing.Union[str, typing.Pattern] = None,
+        has_text: typing.Union[str, typing.Pattern[str]] = None,
         has: "Locator" = None
     ) -> "Locator":
         """Frame.locator
@@ -4177,7 +4179,7 @@ class Frame(AsyncBase):
         ----------
         selector : str
             A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
-        has_text : Union[Pattern, str, NoneType]
+        has_text : Union[Pattern[str], str, NoneType]
             Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. When passed a
             [string], matching is case-insensitive and searches for a substring. For example, `"Playwright"` matches
             `<article><div>Playwright</div></article>`.
@@ -4451,7 +4453,11 @@ class Frame(AsyncBase):
         Parameters
         ----------
         source : str
+            A selector to search for an element to drag. If there are multiple elements satisfying the selector, the first will be
+            used. See [working with selectors](../selectors.md) for more details.
         target : str
+            A selector to search for an element to drop onto. If there are multiple elements satisfying the selector, the first will
+            be used. See [working with selectors](../selectors.md) for more details.
         source_position : Union[{x: float, y: float}, NoneType]
             Clicks on the source element at this point relative to the top-left corner of the element's padding box. If not
             specified, some visible point of the element is used.
@@ -5097,7 +5103,7 @@ class FrameLocator(AsyncBase):
         self,
         selector: str,
         *,
-        has_text: typing.Union[str, typing.Pattern] = None,
+        has_text: typing.Union[str, typing.Pattern[str]] = None,
         has: "Locator" = None
     ) -> "Locator":
         """FrameLocator.locator
@@ -5108,7 +5114,7 @@ class FrameLocator(AsyncBase):
         ----------
         selector : str
             A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
-        has_text : Union[Pattern, str, NoneType]
+        has_text : Union[Pattern[str], str, NoneType]
             Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. When passed a
             [string], matching is case-insensitive and searches for a substring. For example, `"Playwright"` matches
             `<article><div>Playwright</div></article>`.
@@ -5302,7 +5308,7 @@ class Selectors(AsyncBase):
             # Use the selector prefixed with its name.
             button = await page.query_selector('tag=button')
             # Combine it with other selector engines.
-            await page.click('tag=div >> text=\"Click me\"')
+            await page.locator('tag=div >> text=\"Click me\"').click()
             # Can use it in any methods supporting selectors.
             button_count = await page.locator('tag=button').count()
             print(button_count)
@@ -6282,7 +6288,7 @@ class Page(AsyncContextManager):
         self,
         name: str = None,
         *,
-        url: typing.Union[str, typing.Pattern, typing.Callable[[str], bool]] = None
+        url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]] = None
     ) -> typing.Optional["Frame"]:
         """Page.frame
 
@@ -6300,7 +6306,7 @@ class Page(AsyncContextManager):
         ----------
         name : Union[str, NoneType]
             Frame name specified in the `iframe`'s `name` attribute. Optional.
-        url : Union[Callable[[str], bool], Pattern, str, NoneType]
+        url : Union[Callable[[str], bool], Pattern[str], str, NoneType]
             A glob pattern, regex pattern or predicate receiving frame's `url` as a [URL] object. Optional.
 
         Returns
@@ -7352,7 +7358,7 @@ class Page(AsyncContextManager):
 
     async def wait_for_url(
         self,
-        url: typing.Union[str, typing.Pattern, typing.Callable[[str], bool]],
+        url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]],
         *,
         wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None,
         timeout: float = None
@@ -7370,7 +7376,7 @@ class Page(AsyncContextManager):
 
         Parameters
         ----------
-        url : Union[Callable[[str], bool], Pattern, str]
+        url : Union[Callable[[str], bool], Pattern[str], str]
             A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the
             parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to
             the string.
@@ -7638,7 +7644,7 @@ class Page(AsyncContextManager):
 
     async def route(
         self,
-        url: typing.Union[str, typing.Pattern, typing.Callable[[str], bool]],
+        url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]],
         handler: typing.Union[
             typing.Callable[["Route"], typing.Any],
             typing.Callable[["Route", "Request"], typing.Any],
@@ -7696,7 +7702,7 @@ class Page(AsyncContextManager):
 
         Parameters
         ----------
-        url : Union[Callable[[str], bool], Pattern, str]
+        url : Union[Callable[[str], bool], Pattern[str], str]
             A glob pattern, regex pattern or predicate receiving [URL] to match while routing. When a `baseURL` via the context
             options was provided and the passed URL is a path, it gets merged via the
             [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
@@ -7716,7 +7722,7 @@ class Page(AsyncContextManager):
 
     async def unroute(
         self,
-        url: typing.Union[str, typing.Pattern, typing.Callable[[str], bool]],
+        url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]],
         handler: typing.Union[
             typing.Callable[["Route"], typing.Any],
             typing.Callable[["Route", "Request"], typing.Any],
@@ -7728,7 +7734,7 @@ class Page(AsyncContextManager):
 
         Parameters
         ----------
-        url : Union[Callable[[str], bool], Pattern, str]
+        url : Union[Callable[[str], bool], Pattern[str], str]
             A glob pattern, regex pattern or predicate receiving [URL] to match while routing.
         handler : Union[Callable[[Route, Request], Any], Callable[[Route], Any], NoneType]
             Optional handler function to route the request.
@@ -7744,7 +7750,7 @@ class Page(AsyncContextManager):
         self,
         har: typing.Union[pathlib.Path, str],
         *,
-        url: typing.Union[str, typing.Pattern] = None,
+        url: typing.Union[str, typing.Pattern[str]] = None,
         not_found: Literal["abort", "fallback"] = None,
         update: bool = None
     ) -> NoneType:
@@ -7762,9 +7768,9 @@ class Page(AsyncContextManager):
         har : Union[pathlib.Path, str]
             Path to a [HAR](http://www.softwareishard.com/blog/har-12-spec) file with prerecorded network data. If `path` is a
             relative path, then it is resolved relative to the current working directory.
-        url : Union[Pattern, str, NoneType]
+        url : Union[Pattern[str], str, NoneType]
             A glob pattern, regular expression or predicate to match the request URL. Only requests with URL matching the pattern
-            will be surved from the HAR file. If not specified, all requests are served from the HAR file.
+            will be served from the HAR file. If not specified, all requests are served from the HAR file.
         not_found : Union["abort", "fallback", NoneType]
             - If set to 'abort' any request not found in the HAR file will be aborted.
             - If set to 'fallback' missing requests will be sent to the network.
@@ -8203,7 +8209,7 @@ class Page(AsyncContextManager):
         self,
         selector: str,
         *,
-        has_text: typing.Union[str, typing.Pattern] = None,
+        has_text: typing.Union[str, typing.Pattern[str]] = None,
         has: "Locator" = None
     ) -> "Locator":
         """Page.locator
@@ -8220,7 +8226,7 @@ class Page(AsyncContextManager):
         ----------
         selector : str
             A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
-        has_text : Union[Pattern, str, NoneType]
+        has_text : Union[Pattern[str], str, NoneType]
             Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. When passed a
             [string], matching is case-insensitive and searches for a substring. For example, `"Playwright"` matches
             `<article><div>Playwright</div></article>`.
@@ -8498,7 +8504,11 @@ class Page(AsyncContextManager):
         Parameters
         ----------
         source : str
+            A selector to search for an element to drag. If there are multiple elements satisfying the selector, the first will be
+            used. See [working with selectors](../selectors.md) for more details.
         target : str
+            A selector to search for an element to drop onto. If there are multiple elements satisfying the selector, the first will
+            be used. See [working with selectors](../selectors.md) for more details.
         source_position : Union[{x: float, y: float}, NoneType]
             Clicks on the source element at this point relative to the top-left corner of the element's padding box. If not
             specified, some visible point of the element is used.
@@ -9334,7 +9344,9 @@ class Page(AsyncContextManager):
     def expect_navigation(
         self,
         *,
-        url: typing.Union[str, typing.Pattern, typing.Callable[[str], bool]] = None,
+        url: typing.Union[
+            str, typing.Pattern[str], typing.Callable[[str], bool]
+        ] = None,
         wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None,
         timeout: float = None
     ) -> AsyncEventContextManager["Response"]:
@@ -9361,7 +9373,7 @@ class Page(AsyncContextManager):
 
         Parameters
         ----------
-        url : Union[Callable[[str], bool], Pattern, str, NoneType]
+        url : Union[Callable[[str], bool], Pattern[str], str, NoneType]
             A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the
             parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to
             the string.
@@ -9422,7 +9434,7 @@ class Page(AsyncContextManager):
     def expect_request(
         self,
         url_or_predicate: typing.Union[
-            str, typing.Pattern, typing.Callable[["Request"], bool]
+            str, typing.Pattern[str], typing.Callable[["Request"], bool]
         ],
         *,
         timeout: float = None
@@ -9445,7 +9457,7 @@ class Page(AsyncContextManager):
 
         Parameters
         ----------
-        url_or_predicate : Union[Callable[[Request], bool], Pattern, str]
+        url_or_predicate : Union[Callable[[Request], bool], Pattern[str], str]
             Request URL string, regex or predicate receiving `Request` object. When a `baseURL` via the context options was provided
             and the passed URL is a path, it gets merged via the
             [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
@@ -9498,7 +9510,7 @@ class Page(AsyncContextManager):
     def expect_response(
         self,
         url_or_predicate: typing.Union[
-            str, typing.Pattern, typing.Callable[["Response"], bool]
+            str, typing.Pattern[str], typing.Callable[["Response"], bool]
         ],
         *,
         timeout: float = None
@@ -9522,7 +9534,7 @@ class Page(AsyncContextManager):
 
         Parameters
         ----------
-        url_or_predicate : Union[Callable[[Response], bool], Pattern, str]
+        url_or_predicate : Union[Callable[[Response], bool], Pattern[str], str]
             Request URL string, regex or predicate receiving `Response` object. When a `baseURL` via the context options was
             provided and the passed URL is a path, it gets merged via the
             [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
@@ -9723,7 +9735,7 @@ class BrowserContext(AsyncContextManager):
 
         ```py
         async with context.expect_page() as page_info:
-            await page.click(\"a[target=_blank]\"),
+            await page.locator(\"a[target=_blank]\").click(),
         page = await page_info.value
         print(await page.evaluate(\"location.href\"))
         ```
@@ -9841,7 +9853,7 @@ class BrowserContext(AsyncContextManager):
 
         ```py
         async with context.expect_page() as page_info:
-            await page.click(\"a[target=_blank]\"),
+            await page.locator(\"a[target=_blank]\").click(),
         page = await page_info.value
         print(await page.evaluate(\"location.href\"))
         ```
@@ -10269,7 +10281,7 @@ class BrowserContext(AsyncContextManager):
             <button onclick=\"onClick()\">Click me</button>
             <div></div>
             \"\"\")
-            await page.click(\"button\")
+            await page.locator(\"button\").click()
 
         async def main():
             async with async_playwright() as playwright:
@@ -10347,7 +10359,7 @@ class BrowserContext(AsyncContextManager):
                 <button onclick=\"onClick()\">Click me</button>
                 <div></div>
             \"\"\")
-            await page.click(\"button\")
+            await page.locator(\"button\").click()
 
         async def main():
             async with async_playwright() as playwright:
@@ -10371,7 +10383,7 @@ class BrowserContext(AsyncContextManager):
 
     async def route(
         self,
-        url: typing.Union[str, typing.Pattern, typing.Callable[[str], bool]],
+        url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]],
         handler: typing.Union[
             typing.Callable[["Route"], typing.Any],
             typing.Callable[["Route", "Request"], typing.Any],
@@ -10430,7 +10442,7 @@ class BrowserContext(AsyncContextManager):
 
         Parameters
         ----------
-        url : Union[Callable[[str], bool], Pattern, str]
+        url : Union[Callable[[str], bool], Pattern[str], str]
             A glob pattern, regex pattern or predicate receiving [URL] to match while routing. When a `baseURL` via the context
             options was provided and the passed URL is a path, it gets merged via the
             [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
@@ -10450,7 +10462,7 @@ class BrowserContext(AsyncContextManager):
 
     async def unroute(
         self,
-        url: typing.Union[str, typing.Pattern, typing.Callable[[str], bool]],
+        url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]],
         handler: typing.Union[
             typing.Callable[["Route"], typing.Any],
             typing.Callable[["Route", "Request"], typing.Any],
@@ -10463,7 +10475,7 @@ class BrowserContext(AsyncContextManager):
 
         Parameters
         ----------
-        url : Union[Callable[[str], bool], Pattern, str]
+        url : Union[Callable[[str], bool], Pattern[str], str]
             A glob pattern, regex pattern or predicate receiving [URL] used to register a routing with
             `browser_context.route()`.
         handler : Union[Callable[[Route, Request], Any], Callable[[Route], Any], NoneType]
@@ -10480,7 +10492,7 @@ class BrowserContext(AsyncContextManager):
         self,
         har: typing.Union[pathlib.Path, str],
         *,
-        url: typing.Union[str, typing.Pattern] = None,
+        url: typing.Union[str, typing.Pattern[str]] = None,
         not_found: Literal["abort", "fallback"] = None,
         update: bool = None
     ) -> NoneType:
@@ -10498,9 +10510,9 @@ class BrowserContext(AsyncContextManager):
         har : Union[pathlib.Path, str]
             Path to a [HAR](http://www.softwareishard.com/blog/har-12-spec) file with prerecorded network data. If `path` is a
             relative path, then it is resolved relative to the current working directory.
-        url : Union[Pattern, str, NoneType]
+        url : Union[Pattern[str], str, NoneType]
             A glob pattern, regular expression or predicate to match the request URL. Only requests with URL matching the pattern
-            will be surved from the HAR file. If not specified, all requests are served from the HAR file.
+            will be served from the HAR file. If not specified, all requests are served from the HAR file.
         not_found : Union["abort", "fallback", NoneType]
             - If set to 'abort' any request not found in the HAR file will be aborted.
             - If set to 'fallback' falls through to the next route handler in the handler chain.
@@ -10526,7 +10538,7 @@ class BrowserContext(AsyncContextManager):
 
         ```py
         async with context.expect_event(\"page\") as event_info:
-            await page.click(\"button\")
+            await page.locator(\"button\").click()
         page = await event_info.value
         ```
 
@@ -10815,13 +10827,18 @@ class Browser(AsyncContextManager):
         base_url: str = None,
         strict_selectors: bool = None,
         service_workers: Literal["allow", "block"] = None,
-        record_har_url_filter: typing.Union[str, typing.Pattern] = None,
+        record_har_url_filter: typing.Union[str, typing.Pattern[str]] = None,
         record_har_mode: Literal["full", "minimal"] = None,
         record_har_content: Literal["attach", "embed", "omit"] = None
     ) -> "BrowserContext":
         """Browser.new_context
 
         Creates a new browser context. It won't share cookies/cache with other browser contexts.
+
+        > NOTE: If directly using this method to create `BrowserContext`s, it is best practice to explicilty close the returned
+        context via `browser_context.close()` when your code is done with the `BrowserContext`, and before calling
+        `browser.close()`. This will ensure the `context` is closed gracefully and any artifacts—like HARs and
+        videos—are fully flushed and saved.
 
         ```py
         browser = await playwright.firefox.launch() # or \"chromium\" or \"webkit\".
@@ -10830,6 +10847,10 @@ class Browser(AsyncContextManager):
         # create a new page in a pristine context.
         page = await context.new_page()
         await page.goto(\"https://example.com\")
+
+        # gracefully close up everything
+        await context.close()
+        await browser.close()
         ```
 
         Parameters
@@ -10926,7 +10947,7 @@ class Browser(AsyncContextManager):
             Whether to allow sites to register Service workers. Defaults to `'allow'`.
             - `'allow'`: [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) can be registered.
             - `'block'`: Playwright will block all registration of Service Workers.
-        record_har_url_filter : Union[Pattern, str, NoneType]
+        record_har_url_filter : Union[Pattern[str], str, NoneType]
         record_har_mode : Union["full", "minimal", NoneType]
             When set to `minimal`, only record information necessary for routing from HAR. This omits sizes, timing, page, cookies,
             security and other types of HAR information that are not used when replaying from HAR. Defaults to `full`.
@@ -11013,7 +11034,7 @@ class Browser(AsyncContextManager):
         base_url: str = None,
         strict_selectors: bool = None,
         service_workers: Literal["allow", "block"] = None,
-        record_har_url_filter: typing.Union[str, typing.Pattern] = None,
+        record_har_url_filter: typing.Union[str, typing.Pattern[str]] = None,
         record_har_mode: Literal["full", "minimal"] = None,
         record_har_content: Literal["attach", "embed", "omit"] = None
     ) -> "Page":
@@ -11119,7 +11140,7 @@ class Browser(AsyncContextManager):
             Whether to allow sites to register Service workers. Defaults to `'allow'`.
             - `'allow'`: [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) can be registered.
             - `'block'`: Playwright will block all registration of Service Workers.
-        record_har_url_filter : Union[Pattern, str, NoneType]
+        record_har_url_filter : Union[Pattern[str], str, NoneType]
         record_har_mode : Union["full", "minimal", NoneType]
             When set to `minimal`, only record information necessary for routing from HAR. This omits sizes, timing, page, cookies,
             security and other types of HAR information that are not used when replaying from HAR. Defaults to `full`.
@@ -11180,6 +11201,10 @@ class Browser(AsyncContextManager):
 
         In case this browser is connected to, clears all created contexts belonging to this browser and disconnects from the
         browser server.
+
+        > NOTE: This is similar to force quitting the browser. Therefore, you should call `browser_context.close()` on
+        any `BrowserContext`'s you explicitly created earlier with `browser.new_context()` **before** calling
+        `browser.close()`.
 
         The `Browser` object itself is considered to be disposed and cannot be used anymore.
         """
@@ -11465,7 +11490,7 @@ class BrowserType(AsyncBase):
         base_url: str = None,
         strict_selectors: bool = None,
         service_workers: Literal["allow", "block"] = None,
-        record_har_url_filter: typing.Union[str, typing.Pattern] = None,
+        record_har_url_filter: typing.Union[str, typing.Pattern[str]] = None,
         record_har_mode: Literal["full", "minimal"] = None,
         record_har_content: Literal["attach", "embed", "omit"] = None
     ) -> "BrowserContext":
@@ -11611,7 +11636,7 @@ class BrowserType(AsyncBase):
             Whether to allow sites to register Service workers. Defaults to `'allow'`.
             - `'allow'`: [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) can be registered.
             - `'block'`: Playwright will block all registration of Service Workers.
-        record_har_url_filter : Union[Pattern, str, NoneType]
+        record_har_url_filter : Union[Pattern[str], str, NoneType]
         record_har_mode : Union["full", "minimal", NoneType]
             When set to `minimal`, only record information necessary for routing from HAR. This omits sizes, timing, page, cookies,
             security and other types of HAR information that are not used when replaying from HAR. Defaults to `full`.
@@ -11950,7 +11975,7 @@ class Tracing(AsyncBase):
         await page.goto(\"https://playwright.dev\")
 
         await context.tracing.start_chunk()
-        await page.click(\"text=Get Started\")
+        await page.locator(\"text=Get Started\").click()
         # Everything between start_chunk and stop_chunk will be recorded in the trace.
         await context.tracing.stop_chunk(path = \"trace1.zip\")
 
@@ -12045,7 +12070,7 @@ class Locator(AsyncBase):
         This method returns the bounding box of the element, or `null` if the element is not visible. The bounding box is
         calculated relative to the main frame viewport - which is usually the same as the browser window.
 
-        Scrolling affects the returned bonding box, similarly to
+        Scrolling affects the returned bounding box, similarly to
         [Element.getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect). That
         means `x` and/or `y` may be negative.
 
@@ -12477,7 +12502,7 @@ class Locator(AsyncBase):
         self,
         selector: str,
         *,
-        has_text: typing.Union[str, typing.Pattern] = None,
+        has_text: typing.Union[str, typing.Pattern[str]] = None,
         has: "Locator" = None
     ) -> "Locator":
         """Locator.locator
@@ -12489,7 +12514,7 @@ class Locator(AsyncBase):
         ----------
         selector : str
             A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
-        has_text : Union[Pattern, str, NoneType]
+        has_text : Union[Pattern[str], str, NoneType]
             Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. When passed a
             [string], matching is case-insensitive and searches for a substring. For example, `"Playwright"` matches
             `<article><div>Playwright</div></article>`.
@@ -12583,7 +12608,7 @@ class Locator(AsyncBase):
     def filter(
         self,
         *,
-        has_text: typing.Union[str, typing.Pattern] = None,
+        has_text: typing.Union[str, typing.Pattern[str]] = None,
         has: "Locator" = None
     ) -> "Locator":
         """Locator.filter
@@ -12592,7 +12617,7 @@ class Locator(AsyncBase):
         multiple times.
 
         ```py
-        row_locator = page.lsocator(\"tr\")
+        row_locator = page.locator(\"tr\")
         # ...
         await row_locator
             .filter(has_text=\"text in column 1\")
@@ -12602,7 +12627,7 @@ class Locator(AsyncBase):
 
         Parameters
         ----------
-        has_text : Union[Pattern, str, NoneType]
+        has_text : Union[Pattern[str], str, NoneType]
             Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. When passed a
             [string], matching is case-insensitive and searches for a substring. For example, `"Playwright"` matches
             `<article><div>Playwright</div></article>`.
@@ -14224,7 +14249,7 @@ mapping.register(APIRequestImpl, APIRequest)
 class PageAssertions(AsyncBase):
     async def to_have_title(
         self,
-        title_or_reg_exp: typing.Union[typing.Pattern, str],
+        title_or_reg_exp: typing.Union[typing.Pattern[str], str],
         *,
         timeout: float = None
     ) -> NoneType:
@@ -14242,7 +14267,7 @@ class PageAssertions(AsyncBase):
 
         Parameters
         ----------
-        title_or_reg_exp : Union[Pattern, str]
+        title_or_reg_exp : Union[Pattern[str], str]
             Expected title or RegExp.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14257,7 +14282,7 @@ class PageAssertions(AsyncBase):
 
     async def not_to_have_title(
         self,
-        title_or_reg_exp: typing.Union[typing.Pattern, str],
+        title_or_reg_exp: typing.Union[typing.Pattern[str], str],
         *,
         timeout: float = None
     ) -> NoneType:
@@ -14267,7 +14292,7 @@ class PageAssertions(AsyncBase):
 
         Parameters
         ----------
-        title_or_reg_exp : Union[Pattern, str]
+        title_or_reg_exp : Union[Pattern[str], str]
             Expected title or RegExp.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14282,7 +14307,7 @@ class PageAssertions(AsyncBase):
 
     async def to_have_url(
         self,
-        url_or_reg_exp: typing.Union[str, typing.Pattern],
+        url_or_reg_exp: typing.Union[str, typing.Pattern[str]],
         *,
         timeout: float = None
     ) -> NoneType:
@@ -14300,8 +14325,8 @@ class PageAssertions(AsyncBase):
 
         Parameters
         ----------
-        url_or_reg_exp : Union[Pattern, str]
-            Expected substring or RegExp.
+        url_or_reg_exp : Union[Pattern[str], str]
+            Expected URL string or RegExp.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
         """
@@ -14315,7 +14340,7 @@ class PageAssertions(AsyncBase):
 
     async def not_to_have_url(
         self,
-        url_or_reg_exp: typing.Union[typing.Pattern, str],
+        url_or_reg_exp: typing.Union[typing.Pattern[str], str],
         *,
         timeout: float = None
     ) -> NoneType:
@@ -14325,8 +14350,8 @@ class PageAssertions(AsyncBase):
 
         Parameters
         ----------
-        url_or_reg_exp : Union[Pattern, str]
-            Expected substring or RegExp.
+        url_or_reg_exp : Union[Pattern[str], str]
+            Expected URL string or RegExp.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
         """
@@ -14346,7 +14371,9 @@ class LocatorAssertions(AsyncBase):
     async def to_contain_text(
         self,
         expected: typing.Union[
-            typing.List[typing.Union[typing.Pattern, str]], typing.Pattern, str
+            typing.List[typing.Union[typing.Pattern[str], str]],
+            typing.Pattern[str],
+            str,
         ],
         *,
         use_inner_text: bool = None,
@@ -14379,7 +14406,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        expected : Union[List[Union[Pattern, str]], Pattern, str]
+        expected : Union[List[Union[Pattern[str], str]], Pattern[str], str]
             Expected substring or RegExp or a list of those.
         use_inner_text : Union[bool, NoneType]
             Whether to use `element.innerText` instead of `element.textContent` when retrieving DOM node text.
@@ -14403,7 +14430,9 @@ class LocatorAssertions(AsyncBase):
     async def not_to_contain_text(
         self,
         expected: typing.Union[
-            typing.List[typing.Union[typing.Pattern, str]], typing.Pattern, str
+            typing.List[typing.Union[typing.Pattern[str], str]],
+            typing.Pattern[str],
+            str,
         ],
         *,
         use_inner_text: bool = None,
@@ -14416,7 +14445,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        expected : Union[List[Union[Pattern, str]], Pattern, str]
+        expected : Union[List[Union[Pattern[str], str]], Pattern[str], str]
             Expected substring or RegExp or a list of those.
         use_inner_text : Union[bool, NoneType]
             Whether to use `element.innerText` instead of `element.textContent` when retrieving DOM node text.
@@ -14440,7 +14469,7 @@ class LocatorAssertions(AsyncBase):
     async def to_have_attribute(
         self,
         name: str,
-        value: typing.Union[str, typing.Pattern],
+        value: typing.Union[str, typing.Pattern[str]],
         *,
         timeout: float = None
     ) -> NoneType:
@@ -14459,7 +14488,7 @@ class LocatorAssertions(AsyncBase):
         ----------
         name : str
             Attribute name.
-        value : Union[Pattern, str]
+        value : Union[Pattern[str], str]
             Expected attribute value.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14475,7 +14504,7 @@ class LocatorAssertions(AsyncBase):
     async def not_to_have_attribute(
         self,
         name: str,
-        value: typing.Union[str, typing.Pattern],
+        value: typing.Union[str, typing.Pattern[str]],
         *,
         timeout: float = None
     ) -> NoneType:
@@ -14487,7 +14516,7 @@ class LocatorAssertions(AsyncBase):
         ----------
         name : str
             Attribute name.
-        value : Union[Pattern, str]
+        value : Union[Pattern[str], str]
             Expected attribute value.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14503,20 +14532,28 @@ class LocatorAssertions(AsyncBase):
     async def to_have_class(
         self,
         expected: typing.Union[
-            typing.List[typing.Union[typing.Pattern, str]], typing.Pattern, str
+            typing.List[typing.Union[typing.Pattern[str], str]],
+            typing.Pattern[str],
+            str,
         ],
         *,
         timeout: float = None
     ) -> NoneType:
         """LocatorAssertions.to_have_class
 
-        Ensures the `Locator` points to an element with given CSS class.
+        Ensures the `Locator` points to an element with given CSS classes. This needs to be a full match or using a relaxed
+        regular expression.
+
+        ```html
+        <div class='selected row' id='component'></div>
+        ```
 
         ```py
         from playwright.async_api import expect
 
         locator = page.locator(\"#component\")
         await expect(locator).to_have_class(re.compile(r\"selected\"))
+        await expect(locator).to_have_class(\"selected row\")
         ```
 
         Note that if array is passed as an expected value, entire lists of elements can be asserted:
@@ -14530,7 +14567,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        expected : Union[List[Union[Pattern, str]], Pattern, str]
+        expected : Union[List[Union[Pattern[str], str]], Pattern[str], str]
             Expected class or RegExp or a list of those.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14546,7 +14583,9 @@ class LocatorAssertions(AsyncBase):
     async def not_to_have_class(
         self,
         expected: typing.Union[
-            typing.List[typing.Union[typing.Pattern, str]], typing.Pattern, str
+            typing.List[typing.Union[typing.Pattern[str], str]],
+            typing.Pattern[str],
+            str,
         ],
         *,
         timeout: float = None
@@ -14557,7 +14596,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        expected : Union[List[Union[Pattern, str]], Pattern, str]
+        expected : Union[List[Union[Pattern[str], str]], Pattern[str], str]
             Expected class or RegExp or a list of those.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14616,7 +14655,7 @@ class LocatorAssertions(AsyncBase):
     async def to_have_css(
         self,
         name: str,
-        value: typing.Union[str, typing.Pattern],
+        value: typing.Union[str, typing.Pattern[str]],
         *,
         timeout: float = None
     ) -> NoneType:
@@ -14635,7 +14674,7 @@ class LocatorAssertions(AsyncBase):
         ----------
         name : str
             CSS property name.
-        value : Union[Pattern, str]
+        value : Union[Pattern[str], str]
             CSS property value.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14649,7 +14688,7 @@ class LocatorAssertions(AsyncBase):
     async def not_to_have_css(
         self,
         name: str,
-        value: typing.Union[str, typing.Pattern],
+        value: typing.Union[str, typing.Pattern[str]],
         *,
         timeout: float = None
     ) -> NoneType:
@@ -14661,7 +14700,7 @@ class LocatorAssertions(AsyncBase):
         ----------
         name : str
             CSS property name.
-        value : Union[Pattern, str]
+        value : Union[Pattern[str], str]
             CSS property value.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14675,7 +14714,7 @@ class LocatorAssertions(AsyncBase):
         )
 
     async def to_have_id(
-        self, id: typing.Union[str, typing.Pattern], *, timeout: float = None
+        self, id: typing.Union[str, typing.Pattern[str]], *, timeout: float = None
     ) -> NoneType:
         """LocatorAssertions.to_have_id
 
@@ -14690,7 +14729,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        id : Union[Pattern, str]
+        id : Union[Pattern[str], str]
             Element id.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14702,7 +14741,7 @@ class LocatorAssertions(AsyncBase):
         )
 
     async def not_to_have_id(
-        self, id: typing.Union[str, typing.Pattern], *, timeout: float = None
+        self, id: typing.Union[str, typing.Pattern[str]], *, timeout: float = None
     ) -> NoneType:
         """LocatorAssertions.not_to_have_id
 
@@ -14710,7 +14749,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        id : Union[Pattern, str]
+        id : Union[Pattern[str], str]
             Element id.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14778,7 +14817,7 @@ class LocatorAssertions(AsyncBase):
         )
 
     async def to_have_value(
-        self, value: typing.Union[str, typing.Pattern], *, timeout: float = None
+        self, value: typing.Union[str, typing.Pattern[str]], *, timeout: float = None
     ) -> NoneType:
         """LocatorAssertions.to_have_value
 
@@ -14795,7 +14834,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        value : Union[Pattern, str]
+        value : Union[Pattern[str], str]
             Expected value.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14807,7 +14846,7 @@ class LocatorAssertions(AsyncBase):
         )
 
     async def not_to_have_value(
-        self, value: typing.Union[str, typing.Pattern], *, timeout: float = None
+        self, value: typing.Union[str, typing.Pattern[str]], *, timeout: float = None
     ) -> NoneType:
         """LocatorAssertions.not_to_have_value
 
@@ -14815,7 +14854,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        value : Union[Pattern, str]
+        value : Union[Pattern[str], str]
             Expected value.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14828,7 +14867,7 @@ class LocatorAssertions(AsyncBase):
 
     async def to_have_values(
         self,
-        values: typing.List[typing.Union[typing.Pattern, str]],
+        values: typing.List[typing.Union[typing.Pattern[str], str]],
         *,
         timeout: float = None
     ) -> NoneType:
@@ -14858,7 +14897,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        values : List[Union[Pattern, str]]
+        values : List[Union[Pattern[str], str]]
             Expected options currently selected.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14873,7 +14912,7 @@ class LocatorAssertions(AsyncBase):
 
     async def not_to_have_values(
         self,
-        values: typing.List[typing.Union[typing.Pattern, str]],
+        values: typing.List[typing.Union[typing.Pattern[str], str]],
         *,
         timeout: float = None
     ) -> NoneType:
@@ -14883,7 +14922,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        values : List[Union[Pattern, str]]
+        values : List[Union[Pattern[str], str]]
             Expected options currently selected.
         timeout : Union[float, NoneType]
             Time to retry the assertion for.
@@ -14899,7 +14938,9 @@ class LocatorAssertions(AsyncBase):
     async def to_have_text(
         self,
         expected: typing.Union[
-            typing.List[typing.Union[typing.Pattern, str]], typing.Pattern, str
+            typing.List[typing.Union[typing.Pattern[str], str]],
+            typing.Pattern[str],
+            str,
         ],
         *,
         use_inner_text: bool = None,
@@ -14930,7 +14971,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        expected : Union[List[Union[Pattern, str]], Pattern, str]
+        expected : Union[List[Union[Pattern[str], str]], Pattern[str], str]
             Expected substring or RegExp or a list of those.
         use_inner_text : Union[bool, NoneType]
             Whether to use `element.innerText` instead of `element.textContent` when retrieving DOM node text.
@@ -14954,7 +14995,9 @@ class LocatorAssertions(AsyncBase):
     async def not_to_have_text(
         self,
         expected: typing.Union[
-            typing.List[typing.Union[typing.Pattern, str]], typing.Pattern, str
+            typing.List[typing.Union[typing.Pattern[str], str]],
+            typing.Pattern[str],
+            str,
         ],
         *,
         use_inner_text: bool = None,
@@ -14967,7 +15010,7 @@ class LocatorAssertions(AsyncBase):
 
         Parameters
         ----------
-        expected : Union[List[Union[Pattern, str]], Pattern, str]
+        expected : Union[List[Union[Pattern[str], str]], Pattern[str], str]
             Expected substring or RegExp or a list of those.
         use_inner_text : Union[bool, NoneType]
             Whether to use `element.innerText` instead of `element.textContent` when retrieving DOM node text.

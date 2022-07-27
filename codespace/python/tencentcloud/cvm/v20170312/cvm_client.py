@@ -1970,7 +1970,6 @@ class CvmClient(AbstractClient):
     def ModifyInstancesChargeType(self, request):
         """本接口 (ModifyInstancesChargeType) 用于切换实例的计费模式。
 
-        * 只支持从 `POSTPAID_BY_HOUR` 计费模式切换为`PREPAID`计费模式。
         * 关机不收费的实例、`BC1`和`BS1`机型族的实例、设置定时销毁的实例不支持该操作。
         * 实例操作结果可以通过调用 [DescribeInstances](https://cloud.tencent.com/document/api/213/15728#.E7.A4.BA.E4.BE.8B3-.E6.9F.A5.E8.AF.A2.E5.AE.9E.E4.BE.8B.E7.9A.84.E6.9C.80.E6.96.B0.E6.93.8D.E4.BD.9C.E6.83.85.E5.86.B5) 接口查询，如果实例的最新操作状态(LatestOperationState)为“SUCCESS”，则代表操作成功。
 
@@ -2697,8 +2696,9 @@ class CvmClient(AbstractClient):
 
         * 不再使用的实例，可通过本接口主动退还。
         * 按量计费的实例通过本接口可直接退还；包年包月实例如符合[退还规则](https://cloud.tencent.com/document/product/213/9711)，也可通过本接口主动退还。
-        * 包年包月实例首次调用本接口，实例将被移至回收站，再次调用本接口，实例将被销毁，且不可恢复。按量计费实例调用本接口将被直接销毁
+        * 包年包月实例首次调用本接口，实例将被移至回收站，再次调用本接口，实例将被销毁，且不可恢复。按量计费实例调用本接口将被直接销毁。
         * 支持批量操作，每次请求批量实例的上限为100。
+        * 批量操作时，所有实例的付费类型必须一致。
 
         :param request: Request instance for TerminateInstances.
         :type request: :class:`tencentcloud.cvm.v20170312.models.TerminateInstancesRequest`

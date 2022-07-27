@@ -4387,7 +4387,7 @@ class HealthCheck(AbstractModel):
         :param HttpCheckPath: 健康检查路径（仅适用于HTTP/HTTPS转发规则、TCP监听器的HTTP健康检查方式）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type HttpCheckPath: str
-        :param HttpCheckDomain: 健康检查域名（仅适用于HTTP/HTTPS转发规则、TCP监听器的HTTP健康检查方式）。
+        :param HttpCheckDomain: 健康检查域名（仅适用于HTTP/HTTPS转发规则、TCP监听器的HTTP健康检查方式，当监听器是TCP类型时，该参数为必填项）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type HttpCheckDomain: str
         :param HttpCheckMethod: 健康检查方法（仅适用于HTTP/HTTPS转发规则、TCP监听器的HTTP健康检查方式），默认值：HEAD，可选值HEAD或GET。
@@ -5842,6 +5842,8 @@ class ModifyListenerRequest(AbstractModel):
         :type Scheduler: str
         :param SniSwitch: 是否开启SNI特性，此参数仅适用于HTTPS监听器。注意：未开启SNI的监听器可以开启SNI；已开启SNI的监听器不能关闭SNI。
         :type SniSwitch: int
+        :param TargetType: 后端目标类型，NODE表示绑定普通节点，TARGETGROUP表示绑定目标组。
+        :type TargetType: str
         :param KeepaliveEnable: 是否开启长连接，此参数仅适用于HTTP/HTTPS监听器。
         :type KeepaliveEnable: int
         :param DeregisterTargetRst: 解绑后端目标时，是否发RST给客户端，此参数仅适用于TCP监听器。
@@ -5857,6 +5859,7 @@ class ModifyListenerRequest(AbstractModel):
         self.Certificate = None
         self.Scheduler = None
         self.SniSwitch = None
+        self.TargetType = None
         self.KeepaliveEnable = None
         self.DeregisterTargetRst = None
         self.SessionType = None
@@ -5875,6 +5878,7 @@ class ModifyListenerRequest(AbstractModel):
             self.Certificate._deserialize(params.get("Certificate"))
         self.Scheduler = params.get("Scheduler")
         self.SniSwitch = params.get("SniSwitch")
+        self.TargetType = params.get("TargetType")
         self.KeepaliveEnable = params.get("KeepaliveEnable")
         self.DeregisterTargetRst = params.get("DeregisterTargetRst")
         self.SessionType = params.get("SessionType")

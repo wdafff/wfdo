@@ -1303,6 +1303,10 @@ class CreateSparkAppRequest(AbstractModel):
         :type IsLocalPythonFiles: str
         :param AppPythonFiles: pyspark：python依赖, 除py文件外，还支持zip/egg等归档格式，多文件以逗号分隔
         :type AppPythonFiles: str
+        :param IsLocalArchives: archives：依赖上传方式，1、cos；2、lakefs（控制台使用，该方式不支持直接接口调用）
+        :type IsLocalArchives: str
+        :param AppArchives: archives：依赖资源
+        :type AppArchives: str
         """
         self.AppName = None
         self.AppType = None
@@ -1325,6 +1329,8 @@ class CreateSparkAppRequest(AbstractModel):
         self.DataSource = None
         self.IsLocalPythonFiles = None
         self.AppPythonFiles = None
+        self.IsLocalArchives = None
+        self.AppArchives = None
 
 
     def _deserialize(self, params):
@@ -1349,6 +1355,8 @@ class CreateSparkAppRequest(AbstractModel):
         self.DataSource = params.get("DataSource")
         self.IsLocalPythonFiles = params.get("IsLocalPythonFiles")
         self.AppPythonFiles = params.get("AppPythonFiles")
+        self.IsLocalArchives = params.get("IsLocalArchives")
+        self.AppArchives = params.get("AppArchives")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2397,12 +2405,24 @@ class DatabaseResponseInfo(AbstractModel):
         :param ModifiedTime: 数据库更新时间戳，单位：s。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ModifiedTime: str
+        :param Location: cos存储路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Location: str
+        :param UserAlias: 建库用户昵称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserAlias: str
+        :param UserSubUin: 建库用户ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserSubUin: str
         """
         self.DatabaseName = None
         self.Comment = None
         self.Properties = None
         self.CreateTime = None
         self.ModifiedTime = None
+        self.Location = None
+        self.UserAlias = None
+        self.UserSubUin = None
 
 
     def _deserialize(self, params):
@@ -2416,6 +2436,9 @@ class DatabaseResponseInfo(AbstractModel):
                 self.Properties.append(obj)
         self.CreateTime = params.get("CreateTime")
         self.ModifiedTime = params.get("ModifiedTime")
+        self.Location = params.get("Location")
+        self.UserAlias = params.get("UserAlias")
+        self.UserSubUin = params.get("UserSubUin")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3302,7 +3325,7 @@ class DescribeSparkAppJobsRequest(AbstractModel):
         :type SortBy: str
         :param Sorting: 正序或者倒序，例如：desc
         :type Sorting: str
-        :param Filters: 按照该参数过滤
+        :param Filters: 按照该参数过滤,支持spark-job-name
         :type Filters: list of Filter
         :param StartTime: 更新时间起始点
         :type StartTime: str
@@ -3389,11 +3412,20 @@ class DescribeSparkAppTasksRequest(AbstractModel):
         :type Limit: int
         :param TaskId: 执行实例id
         :type TaskId: str
+        :param StartTime: 更新时间起始点
+        :type StartTime: str
+        :param EndTime: 更新时间截止点
+        :type EndTime: str
+        :param Filters: 按照该参数过滤,支持task-state
+        :type Filters: list of Filter
         """
         self.JobId = None
         self.Offset = None
         self.Limit = None
         self.TaskId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Filters = None
 
 
     def _deserialize(self, params):
@@ -3401,6 +3433,14 @@ class DescribeSparkAppTasksRequest(AbstractModel):
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
         self.TaskId = params.get("TaskId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3554,7 +3594,7 @@ table-id - String - （过滤条件）table id形如：12342。
         :type StartTime: str
         :param EndTime: 终止时间：用于对更新时间的筛选
         :type EndTime: str
-        :param Sort: 排序字段，支持：ModifiedTime（默认）；CreateTime
+        :param Sort: 排序字段，支持：CreateTime、UpdateTime、StorageSize、RecordCount、Name（不传则默认按name升序）
         :type Sort: str
         :param Asc: 排序字段，false：降序（默认）；true：升序
         :type Asc: bool
@@ -4672,6 +4712,10 @@ class ModifySparkAppRequest(AbstractModel):
         :type MaxRetries: int
         :param DataSource: 数据源名
         :type DataSource: str
+        :param IsLocalArchives: archives：依赖上传方式，1、cos；2、lakefs（控制台使用，该方式不支持直接接口调用）
+        :type IsLocalArchives: str
+        :param AppArchives: archives：依赖资源
+        :type AppArchives: str
         """
         self.AppName = None
         self.AppType = None
@@ -4695,6 +4739,8 @@ class ModifySparkAppRequest(AbstractModel):
         self.CmdArgs = None
         self.MaxRetries = None
         self.DataSource = None
+        self.IsLocalArchives = None
+        self.AppArchives = None
 
 
     def _deserialize(self, params):
@@ -4720,6 +4766,8 @@ class ModifySparkAppRequest(AbstractModel):
         self.CmdArgs = params.get("CmdArgs")
         self.MaxRetries = params.get("MaxRetries")
         self.DataSource = params.get("DataSource")
+        self.IsLocalArchives = params.get("IsLocalArchives")
+        self.AppArchives = params.get("AppArchives")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5226,9 +5274,21 @@ class SparkJobInfo(AbstractModel):
         :param IsLocalPythonFiles: pyspark：依赖上传方式，1、cos；2、lakefs（控制台使用，该方式不支持直接接口调用）
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsLocalPythonFiles: str
-        :param AppPythonFiles: pyspark：python依赖, 除py文件外，还支持zip/egg等归档格式，多文件以逗号分隔
+        :param AppPythonFiles: 注：该返回值已废弃
 注意：此字段可能返回 null，表示取不到有效值。
         :type AppPythonFiles: str
+        :param IsLocalArchives: archives：依赖上传方式，1、cos；2、lakefs（控制台使用，该方式不支持直接接口调用）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsLocalArchives: str
+        :param JobArchives: archives：依赖资源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type JobArchives: str
+        :param JobPythonFiles: pyspark：python依赖, 除py文件外，还支持zip/egg等归档格式，多文件以逗号分隔
+注意：此字段可能返回 null，表示取不到有效值。
+        :type JobPythonFiles: str
+        :param TaskNum: 当前job正在运行或准备运行的任务个数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskNum: int
         """
         self.JobId = None
         self.JobName = None
@@ -5258,6 +5318,10 @@ class SparkJobInfo(AbstractModel):
         self.DataSource = None
         self.IsLocalPythonFiles = None
         self.AppPythonFiles = None
+        self.IsLocalArchives = None
+        self.JobArchives = None
+        self.JobPythonFiles = None
+        self.TaskNum = None
 
 
     def _deserialize(self, params):
@@ -5291,6 +5355,10 @@ class SparkJobInfo(AbstractModel):
         self.DataSource = params.get("DataSource")
         self.IsLocalPythonFiles = params.get("IsLocalPythonFiles")
         self.AppPythonFiles = params.get("AppPythonFiles")
+        self.IsLocalArchives = params.get("IsLocalArchives")
+        self.JobArchives = params.get("JobArchives")
+        self.JobPythonFiles = params.get("JobPythonFiles")
+        self.TaskNum = params.get("TaskNum")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5387,6 +5455,12 @@ class TableBaseInfo(AbstractModel):
         :param TableFormat: 数据格式类型，hive，iceberg等
 注意：此字段可能返回 null，表示取不到有效值。
         :type TableFormat: str
+        :param UserAlias: 建表用户昵称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserAlias: str
+        :param UserSubUin: 建表用户ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserSubUin: str
         """
         self.DatabaseName = None
         self.TableName = None
@@ -5394,6 +5468,8 @@ class TableBaseInfo(AbstractModel):
         self.TableComment = None
         self.Type = None
         self.TableFormat = None
+        self.UserAlias = None
+        self.UserSubUin = None
 
 
     def _deserialize(self, params):
@@ -5403,6 +5479,8 @@ class TableBaseInfo(AbstractModel):
         self.TableComment = params.get("TableComment")
         self.Type = params.get("Type")
         self.TableFormat = params.get("TableFormat")
+        self.UserAlias = params.get("UserAlias")
+        self.UserSubUin = params.get("UserSubUin")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6159,14 +6237,22 @@ class ViewBaseInfo(AbstractModel):
         :type DatabaseName: str
         :param ViewName: 视图名称
         :type ViewName: str
+        :param UserAlias: 视图创建人昵称
+        :type UserAlias: str
+        :param UserSubUin: 视图创建人ID
+        :type UserSubUin: str
         """
         self.DatabaseName = None
         self.ViewName = None
+        self.UserAlias = None
+        self.UserSubUin = None
 
 
     def _deserialize(self, params):
         self.DatabaseName = params.get("DatabaseName")
         self.ViewName = params.get("ViewName")
+        self.UserAlias = params.get("UserAlias")
+        self.UserSubUin = params.get("UserSubUin")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

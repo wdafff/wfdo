@@ -492,6 +492,8 @@ class CreateConsoleLoginUrlRequest(AbstractModel):
         :type ModuleId: str
         :param UniformSocialCreditCode: 渠道侧合作企业统一社会信用代码，最大长度200个字符
         :type UniformSocialCreditCode: str
+        :param MenuStatus: 是否展示左侧菜单栏 是：ENABLE（默认） 否：DISABLE
+        :type MenuStatus: str
         :param Operator: 操作者的信息
         :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
         """
@@ -501,6 +503,7 @@ class CreateConsoleLoginUrlRequest(AbstractModel):
         self.Module = None
         self.ModuleId = None
         self.UniformSocialCreditCode = None
+        self.MenuStatus = None
         self.Operator = None
 
 
@@ -513,6 +516,7 @@ class CreateConsoleLoginUrlRequest(AbstractModel):
         self.Module = params.get("Module")
         self.ModuleId = params.get("ModuleId")
         self.UniformSocialCreditCode = params.get("UniformSocialCreditCode")
+        self.MenuStatus = params.get("MenuStatus")
         if params.get("Operator") is not None:
             self.Operator = UserInfo()
             self.Operator._deserialize(params.get("Operator"))
@@ -710,12 +714,14 @@ class CreateSignUrlsRequest(AbstractModel):
 "CHANNEL"：渠道合作企业；
 "NOT_CHANNEL"：非渠道合作企业；
 "PERSON"：个人；
+"FOLLOWER"：关注方，目前是合同抄送方；
         :type GenerateType: str
         :param OrganizationName: 非渠道合作企业参与方的企业名称，GenerateType为"NOT_CHANNEL"时必填
         :type OrganizationName: str
         :param Name: 参与人姓名，GenerateType为"PERSON"时必填
         :type Name: str
-        :param Mobile: 参与人手机号，GenerateType为"PERSON"时必填
+        :param Mobile: 参与人手机号；
+GenerateType为"PERSON"或"FOLLOWER"时必填
         :type Mobile: str
         :param OrganizationOpenId: 渠道合作企业的企业Id，GenerateType为"CHANNEL"时必填
         :type OrganizationOpenId: str

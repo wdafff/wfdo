@@ -53,9 +53,9 @@ if TYPE_CHECKING:  # pragma: no cover
     from playwright._impl._api_structures import HeadersArray
     from playwright._impl._network import Request, Response, Route
 
-URLMatch = Union[str, Pattern, Callable[[str], bool]]
-URLMatchRequest = Union[str, Pattern, Callable[["Request"], bool]]
-URLMatchResponse = Union[str, Pattern, Callable[["Response"], bool]]
+URLMatch = Union[str, Pattern[str], Callable[[str], bool]]
+URLMatchRequest = Union[str, Pattern[str], Callable[["Request"], bool]]
+URLMatchResponse = Union[str, Pattern[str], Callable[["Response"], bool]]
 RouteHandlerCallback = Union[
     Callable[["Route"], Any], Callable[["Route", "Request"], Any]
 ]
@@ -152,7 +152,7 @@ Env = Dict[str, Union[str, float, bool]]
 class URLMatcher:
     def __init__(self, base_url: Union[str, None], match: URLMatch) -> None:
         self._callback: Optional[Callable[[str], bool]] = None
-        self._regex_obj: Optional[Pattern] = None
+        self._regex_obj: Optional[Pattern[str]] = None
         if isinstance(match, str):
             if base_url and not match.startswith("*"):
                 match = urljoin(base_url, match)
@@ -362,19 +362,3 @@ def is_file_payload(value: Optional[Any]) -> bool:
         and "mimeType" in value
         and "buffer" in value
     )
-
-
-class BackgroundTaskTracker:
-    def __init__(self) -> None:
-        self._pending_tasks: List[asyncio.Task] = []
-
-    def create_task(self, coro: Coroutine) -> asyncio.Task:
-        task = asyncio.create_task(coro)
-        task.add_done_callback(lambda task: self._pending_tasks.remove(task))
-        self._pending_tasks.append(task)
-        return task
-
-    def close(self) -> None:
-        for task in self._pending_tasks:
-            if not task.done():
-                task.cancel()

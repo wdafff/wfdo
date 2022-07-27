@@ -17,6 +17,9 @@
 # 未完成实名认证，不允许此操作。
 AUTHFAILURE_UNREALNAMEAUTHENTICATED = 'AuthFailure.UnRealNameAuthenticated'
 
+# 操作失败。
+FAILEDOPERATION = 'FailedOperation'
+
 # 房间中没有设置混流模板。
 FAILEDOPERATION_MIXSESSIONNOTEXIST = 'FailedOperation.MixSessionNotExist'
 
@@ -31,12 +34,6 @@ FAILEDOPERATION_SDKAPPIDNOTEXIST = 'FailedOperation.SdkAppIdNotExist'
 
 # 内部错误。
 INTERNALERROR = 'InternalError'
-
-# 访问后端服务失败。
-INTERNALERROR_BACKENDFAIL = 'InternalError.BackendFail'
-
-# 访问后端服务超时。
-INTERNALERROR_BACKENDTIMEOUT = 'InternalError.BackendTimeOut'
 
 # 数据库查询异常。
 INTERNALERROR_DBERROR = 'InternalError.DBError'
@@ -232,6 +229,9 @@ MISSINGPARAMETER_VIDEOENCODEPARAMS = 'MissingParameter.VideoEncodeParams'
 
 # 资源不足。
 RESOURCEINSUFFICIENT_REQUESTREJECTION = 'ResourceInsufficient.RequestRejection'
+
+# 资源不存在。
+RESOURCENOTFOUND = 'ResourceNotFound'
 
 # 没有操作SdkAppId的权限。
 UNAUTHORIZEDOPERATION_SDKAPPID = 'UnauthorizedOperation.SdkAppId'

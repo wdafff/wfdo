@@ -517,6 +517,8 @@ class CreateJobConfigRequest(AbstractModel):
         :type WorkSpaceId: str
         :param LogLevel: 日志级别
         :type LogLevel: str
+        :param AutoRecover: Oceanus 平台恢复作业开关 1:开启 -1: 关闭
+        :type AutoRecover: int
         """
         self.JobId = None
         self.EntrypointClass = None
@@ -536,6 +538,7 @@ class CreateJobConfigRequest(AbstractModel):
         self.PythonVersion = None
         self.WorkSpaceId = None
         self.LogLevel = None
+        self.AutoRecover = None
 
 
     def _deserialize(self, params):
@@ -567,6 +570,7 @@ class CreateJobConfigRequest(AbstractModel):
         self.PythonVersion = params.get("PythonVersion")
         self.WorkSpaceId = params.get("WorkSpaceId")
         self.LogLevel = params.get("LogLevel")
+        self.AutoRecover = params.get("AutoRecover")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1672,6 +1676,47 @@ class DescribeTreeJobsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeTreeResourcesRequest(AbstractModel):
+    """DescribeTreeResources请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param WorkSpaceId: 工作空间 SerialId
+        :type WorkSpaceId: str
+        """
+        self.WorkSpaceId = None
+
+
+    def _deserialize(self, params):
+        self.WorkSpaceId = params.get("WorkSpaceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTreeResourcesResponse(AbstractModel):
+    """DescribeTreeResources返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class Filter(AbstractModel):
     """查询作业列表时的过滤器
 
@@ -1761,6 +1806,12 @@ class JobConfig(AbstractModel):
         :param PythonVersion: pyflink作业运行的python版本
 注意：此字段可能返回 null，表示取不到有效值。
         :type PythonVersion: str
+        :param AutoRecover: Oceanus 平台恢复作业开关 1:开启 -1: 关闭
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoRecover: int
+        :param LogLevel: 日志级别
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogLevel: str
         """
         self.JobId = None
         self.EntrypointClass = None
@@ -1781,6 +1832,8 @@ class JobConfig(AbstractModel):
         self.ClsLogsetId = None
         self.ClsTopicId = None
         self.PythonVersion = None
+        self.AutoRecover = None
+        self.LogLevel = None
 
 
     def _deserialize(self, params):
@@ -1813,6 +1866,8 @@ class JobConfig(AbstractModel):
         self.ClsLogsetId = params.get("ClsLogsetId")
         self.ClsTopicId = params.get("ClsTopicId")
         self.PythonVersion = params.get("PythonVersion")
+        self.AutoRecover = params.get("AutoRecover")
+        self.LogLevel = params.get("LogLevel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

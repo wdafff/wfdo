@@ -3635,35 +3635,35 @@ class GPUInfo(AbstractModel):
 
 
 class HostItem(AbstractModel):
-    """cdh实例详细信息
+    """专用宿主机实例详细信息
 
     """
 
     def __init__(self):
         r"""
-        :param Placement: cdh实例所在的位置。通过该参数可以指定实例所属可用区，所属项目等属性。
+        :param Placement: 专用宿主机实例所在的位置。通过该参数可以指定实例所属可用区，所属项目等属性。
         :type Placement: :class:`tencentcloud.cvm.v20170312.models.Placement`
-        :param HostId: cdh实例id
+        :param HostId: 专用宿主机实例id
         :type HostId: str
-        :param HostType: cdh实例类型
+        :param HostType: 专用宿主机实例类型
         :type HostType: str
-        :param HostName: cdh实例名称
+        :param HostName: 专用宿主机实例名称
         :type HostName: str
-        :param HostChargeType: cdh实例付费模式
+        :param HostChargeType: 专用宿主机实例付费模式
         :type HostChargeType: str
-        :param RenewFlag: cdh实例自动续费标记
+        :param RenewFlag: 专用宿主机实例自动续费标记
         :type RenewFlag: str
-        :param CreatedTime: cdh实例创建时间
+        :param CreatedTime: 专用宿主机实例创建时间
         :type CreatedTime: str
-        :param ExpiredTime: cdh实例过期时间
+        :param ExpiredTime: 专用宿主机实例过期时间
         :type ExpiredTime: str
-        :param InstanceIds: cdh实例上已创建云子机的实例id列表
+        :param InstanceIds: 专用宿主机实例上已创建云子机的实例id列表
         :type InstanceIds: list of str
-        :param HostState: cdh实例状态
+        :param HostState: 专用宿主机实例状态
         :type HostState: str
-        :param HostIp: cdh实例ip
+        :param HostIp: 专用宿主机实例ip
         :type HostIp: str
-        :param HostResource: cdh实例资源信息
+        :param HostResource: 专用宿主机实例资源信息
         :type HostResource: :class:`tencentcloud.cvm.v20170312.models.HostResource`
         :param CageId: 专用宿主机所属的围笼ID。该字段仅对金融专区围笼内的专用宿主机有效。
 注意：此字段可能返回 null，表示取不到有效值。
@@ -8640,6 +8640,7 @@ class ZoneInfo(AbstractModel):
 <li> ap-singapore-1 </li>
 <li> ap-singapore-2 </li>
 <li> ap-singapore-3 </li>
+<li>ap-singapore-4 </li>
 <li> ap-shanghai-fsi-1 </li>
 <li> ap-shanghai-fsi-2 </li>
 <li> ap-shanghai-fsi-3 </li>
@@ -8650,6 +8651,7 @@ class ZoneInfo(AbstractModel):
 <li> ap-shanghai-3 </li>
 <li> ap-shanghai-4 </li>
 <li> ap-shanghai-5 </li>
+<li> ap-shanghai-8 </li>
 <li> ap-mumbai-1 </li>
 <li> ap-mumbai-2 </li>
 <li> eu-moscow-1 </li>
@@ -8669,7 +8671,10 @@ class ZoneInfo(AbstractModel):
 <li> na-ashburn-2 </li>
 <li> ap-nanjing-1 </li>
 <li> ap-nanjing-2 </li>
+<li> ap-nanjing-3 </li>
 <li> sa-saopaulo-1</li>
+<li> ap-jakarta-1 </li>
+<li> ap-jakarta-2 </li>
         :type Zone: str
         :param ZoneName: 可用区描述，例如，广州三区
         :type ZoneName: str

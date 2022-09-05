@@ -29,6 +29,9 @@ INTERNALERROR = 'InternalError'
 # 后台处理出错。
 INTERNALERROR_BACKENDERROR = 'InternalError.BackendError'
 
+# 数据库错误。
+INTERNALERROR_DBERROR = 'InternalError.DBError'
+
 # 获取配置失败。
 INTERNALERROR_DOMAINCONFIG = 'InternalError.DomainConfig'
 
@@ -65,6 +68,9 @@ INVALIDPARAMETER_INVALIDCERTINFO = 'InvalidParameter.InvalidCertInfo'
 # 无效的客户端IP请求头。
 INVALIDPARAMETER_INVALIDCLIENTIPHEADERNAME = 'InvalidParameter.InvalidClientIpHeaderName'
 
+# 套餐包不支持智能加速配置。
+INVALIDPARAMETER_INVALIDDYNAMICROUTINEBILLING = 'InvalidParameter.InvalidDynamicRoutineBilling'
+
 # 无效的源站。
 INVALIDPARAMETER_INVALIDORIGIN = 'InvalidParameter.InvalidOrigin'
 
@@ -76,6 +82,12 @@ INVALIDPARAMETER_INVALIDREQUESTHEADERNAME = 'InvalidParameter.InvalidRequestHead
 
 # 无套餐包。
 INVALIDPARAMETER_INVALIDRESOURCEIDBILLING = 'InvalidParameter.InvalidResourceIdBilling'
+
+# 无效的规则引擎条件。
+INVALIDPARAMETER_INVALIDRULEENGINETARGET = 'InvalidParameter.InvalidRuleEngineTarget'
+
+# 无效的规则引擎文件后缀条件。
+INVALIDPARAMETER_INVALIDRULEENGINETARGETSEXTENSION = 'InvalidParameter.InvalidRuleEngineTargetsExtension'
 
 # 无效的WebSocket。
 INVALIDPARAMETER_INVALIDWEBSOCKETTIMEOUT = 'InvalidParameter.InvalidWebSocketTimeout'
@@ -142,6 +154,9 @@ LIMITEXCEEDED_DAILYQUOTA = 'LimitExceeded.DailyQuota'
 
 # 操作被拒绝。
 OPERATIONDENIED = 'OperationDenied'
+
+# 域名尚未备案。
+OPERATIONDENIED_DOMAINNOICP = 'OperationDenied.DomainNoICP'
 
 # 资源被占用。
 RESOURCEINUSE = 'ResourceInUse'

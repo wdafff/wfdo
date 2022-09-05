@@ -409,7 +409,7 @@ class LiveClient(AbstractClient):
 
 
     def CreateLiveSnapshotTemplate(self, request):
-        """创建截图模板，成功返回模板id后，需要调用[CreateLiveSnapshotRule](/document/product/267/32625)接口，将模板id绑定到流使用。
+        """创建截图模板，数量上限：50，成功返回模板id后，需要调用[CreateLiveSnapshotRule](/document/product/267/32625)接口，将模板id绑定到流使用。
         <br>截图相关文档：[直播截图](/document/product/267/32737)。
 
         :param request: Request instance for CreateLiveSnapshotTemplate.
@@ -2314,7 +2314,7 @@ class LiveClient(AbstractClient):
 
 
     def DescribeLiveTranscodeTotalInfo(self, request):
-        """查询转码总量数据，可查询近30天内数据。
+        """查询转码总量数据，可查询近三个月内的数据。
         注意：
         如果是查询某一天内，则返回5分钟粒度数据；
         如果是查询跨天或指定域名， 则返回1小时粒度数据。

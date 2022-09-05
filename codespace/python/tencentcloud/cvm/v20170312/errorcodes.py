@@ -293,6 +293,9 @@ INVALIDPARAMETERVALUE_BANDWIDTHPACKAGEIDMALFORMED = 'InvalidParameterValue.Bandw
 # 请确认指定的带宽包是否存在。
 INVALIDPARAMETERVALUE_BANDWIDTHPACKAGEIDNOTFOUND = 'InvalidParameterValue.BandwidthPackageIdNotFound'
 
+# 实例为基础网络实例，目标实例规格仅支持私有网络，不支持调整。
+INVALIDPARAMETERVALUE_BASICNETWORKINSTANCEFAMILY = 'InvalidParameterValue.BasicNetworkInstanceFamily'
+
 # 请确认存储桶是否存在。
 INVALIDPARAMETERVALUE_BUCKETNOTFOUND = 'InvalidParameterValue.BucketNotFound'
 
@@ -337,6 +340,9 @@ INVALIDPARAMETERVALUE_ILLEGALHOSTNAME = 'InvalidParameterValue.IllegalHostName'
 
 # 传参格式不对。
 INVALIDPARAMETERVALUE_INCORRECTFORMAT = 'InvalidParameterValue.IncorrectFormat'
+
+# 实例ID不合要求，请提供规范的实例ID，类似ins-xxxxxxxx，字母x代表小写字符或数字。
+INVALIDPARAMETERVALUE_INSTANCEIDMALFORMED = 'InvalidParameterValue.InstanceIdMalformed'
 
 # 不支持操作不同计费方式的实例。
 INVALIDPARAMETERVALUE_INSTANCENOTSUPPORTEDMIXPRICINGMODEL = 'InvalidParameterValue.InstanceNotSupportedMixPricingModel'
@@ -712,6 +718,9 @@ UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 
 # 指定的实例付费模式或者网络付费模式不支持共享带宽包
 UNSUPPORTEDOPERATION_BANDWIDTHPACKAGEIDNOTSUPPORTED = 'UnsupportedOperation.BandwidthPackageIdNotSupported'
+
+# 云服务器绑定了弹性网卡，请解绑弹性网卡后再切换私有网络。
+UNSUPPORTEDOPERATION_ELASTICNETWORKINTERFACE = 'UnsupportedOperation.ElasticNetworkInterface'
 
 # 异构机型不支持跨机型调整。
 UNSUPPORTEDOPERATION_HETEROGENEOUSCHANGEINSTANCEFAMILY = 'UnsupportedOperation.HeterogeneousChangeInstanceFamily'

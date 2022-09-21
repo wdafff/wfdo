@@ -25,51 +25,46 @@ class AudioResult(AbstractModel):
 
     def __init__(self):
         r"""
-        :param HitFlag: 是否命中
-0 未命中
-1 命中
+        :param HitFlag: 该字段用于返回审核内容是否命中审核模型；取值：0（**未命中**）、1（**命中**）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type HitFlag: int
-        :param Label: 命中的标签
-Porn 色情
-Polity 政治
-Illegal 违法
-Abuse 谩骂
-Terror 暴恐
-Ad 广告
-Moan 呻吟
+        :param Label: 该字段用于返回检测结果所对应的恶意标签。<br>返回值：**Normal**：正常，**Porn**：色情，**Abuse**：谩骂，**Ad**：广告，**Custom**：自定义违规；以及其他令人反感、不安全或不适宜的内容类型。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Label: str
-        :param Suggestion: 审核建议，可选值：
-Pass 通过，
-Review 建议人审，
-Block 确认违规
+        :param Suggestion: 该字段用于返回后续操作建议。当您获取到判定结果后，返回值表示具体的后续建议操作。<br>
+返回值：**Block**：建议屏蔽，**Review** ：建议人工复审，**Pass**：建议通过
 注意：此字段可能返回 null，表示取不到有效值。
         :type Suggestion: str
-        :param Score: 得分，0-100
+        :param Score: 该字段用于返回当前标签下的置信度，取值范围：0（**置信度最低**）-100（**置信度最高** ），越高代表文本越有可能属于当前返回的标签；如：*色情 99*，则表明该文本非常有可能属于色情内容。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Score: int
-        :param Text: 音频ASR文本
+        :param Text: 该字段用于返回音频文件经ASR识别后的文本信息。最长可识别**5小时**的音频文件，若超出时长限制，接口将会报错。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Text: str
-        :param Url: 音频片段存储URL，有效期为1天
+        :param Url: 该字段用于返回音频片段存储的链接地址，该地址有效期为1天。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Url: str
-        :param Duration: 音频时长
+        :param Duration: 该字段用于返回音频文件的时长，单位为毫秒。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Duration: str
-        :param Extra: 拓展字段
+        :param Extra: 该字段用于返回输入参数中的额外附加信息（Extra），如未配置则默认返回值为空。<br>备注：不同客户或Biztype下返回信息不同，如需配置该字段请提交工单咨询或联系售后专员处理。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Extra: str
-        :param TextResults: 文本审核结果
+        :param TextResults: 该字段用于返回音频文件经ASR识别后产生的文本的详细审核结果。具体结果内容请参见AudioResultDetailLanguageResult数据结构的细节描述。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TextResults: list of AudioResultDetailTextResult
-        :param MoanResults: 音频呻吟审核结果
+        :param MoanResults: 该字段用于返回音频文件呻吟检测的详细审核结果。具体结果内容请参见AudioResultDetailMoanResult数据结构的细节描述。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MoanResults: list of AudioResultDetailMoanResult
-        :param LanguageResults: 音频语种检测结果
+        :param LanguageResults: 该字段用于返回音频小语种检测的详细审核结果。具体结果内容请参见AudioResultDetailLanguageResult数据结构的细节描述。
 注意：此字段可能返回 null，表示取不到有效值。
         :type LanguageResults: list of AudioResultDetailLanguageResult
+        :param SubLabel: 该字段用于返回当前标签（Lable）下的二级标签。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubLabel: str
+        :param RecognitionResults: 识别类标签结果信息列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RecognitionResults: list of RecognitionResult
         """
         self.HitFlag = None
         self.Label = None
@@ -82,6 +77,8 @@ Block 确认违规
         self.TextResults = None
         self.MoanResults = None
         self.LanguageResults = None
+        self.SubLabel = None
+        self.RecognitionResults = None
 
 
     def _deserialize(self, params):
@@ -111,6 +108,13 @@ Block 确认违规
                 obj = AudioResultDetailLanguageResult()
                 obj._deserialize(item)
                 self.LanguageResults.append(obj)
+        self.SubLabel = params.get("SubLabel")
+        if params.get("RecognitionResults") is not None:
+            self.RecognitionResults = []
+            for item in params.get("RecognitionResults"):
+                obj = RecognitionResult()
+                obj._deserialize(item)
+                self.RecognitionResults.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -172,23 +176,29 @@ class AudioResultDetailMoanResult(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Label: 固定为Moan
+        :param Label: 该字段用于返回检测结果需要检测的内容类型，此处固定为**Moan**（呻吟）以调用呻吟检测功能。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Label: str
-        :param Score: 分数
+        :param Score: 该字段用于返回呻吟检测的置信度，取值范围：0（**置信度最低**）-100（**置信度最高**），越高代表音频越有可能属于呻吟内容。
         :type Score: int
-        :param StartTime: 开始时间
+        :param StartTime: 该字段用于返回对应呻吟标签的片段在音频文件内的开始时间，单位为毫秒。
         :type StartTime: float
-        :param EndTime: 结束时间
+        :param EndTime: 该字段用于返回对应呻吟标签的片段在音频文件内的结束时间，单位为毫秒。
         :type EndTime: float
-        :param SubLabelCode: 子标签码
+        :param SubLabelCode: *内测中，敬请期待*
         :type SubLabelCode: str
+        :param SubLabel: 该字段用于返回当前标签（Lable）下的二级标签。
+        :type SubLabel: str
+        :param Suggestion: 该字段用于返回基于恶意标签的后续操作建议。当您获取到判定结果后，返回值表示系统推荐的后续操作；建议您按照业务所需，对不同违规类型与建议值进行处理。<br>返回值：**Block**：建议屏蔽，**Review** ：建议人工复审，**Pass**：建议通过
+        :type Suggestion: str
         """
         self.Label = None
         self.Score = None
         self.StartTime = None
         self.EndTime = None
         self.SubLabelCode = None
+        self.SubLabel = None
+        self.Suggestion = None
 
 
     def _deserialize(self, params):
@@ -197,6 +207,8 @@ class AudioResultDetailMoanResult(AbstractModel):
         self.StartTime = params.get("StartTime")
         self.EndTime = params.get("EndTime")
         self.SubLabelCode = params.get("SubLabelCode")
+        self.SubLabel = params.get("SubLabel")
+        self.Suggestion = params.get("Suggestion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -213,27 +225,31 @@ class AudioResultDetailTextResult(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Label: 标签
+        :param Label: 该字段用于返回检测结果所对应的恶意标签。<br>返回值：**Normal**：正常，**Porn**：色情，**Abuse**：谩骂，**Ad**：广告，**Custom**：自定义违规；以及其他令人反感、不安全或不适宜的内容类型。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Label: str
-        :param Keywords: 命中的关键词
+        :param Keywords: 该字段用于返回ASR识别出的文本内容命中的关键词信息，用于标注内容违规的具体原因（如：加我微信）。该参数可能会有多个返回值，代表命中的多个关键词；若返回值为空，Score不为空，则代表识别结果所对应的恶意标签（Label）来自于语义模型判断的返回值。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Keywords: list of str
-        :param LibId: 命中的LibId
+        :param LibId: 该字段**仅当Label为Custom：自定义关键词时该参数有效**,用于返回自定义库的ID，以方便自定义库管理和配置。
 注意：此字段可能返回 null，表示取不到有效值。
         :type LibId: str
-        :param LibName: 命中的LibName
+        :param LibName: 该字段**仅当Label为Custom：自定义关键词时该参数有效**,用于返回自定义库的名称,以方便自定义库管理和配置。
 注意：此字段可能返回 null，表示取不到有效值。
         :type LibName: str
-        :param Score: 得分
+        :param Score: 该字段用于返回当前标签下的置信度，取值范围：0（**置信度最低**）-100（**置信度最高**），越高代表文本越有可能属于当前返回的标签；如：*色情 99*，则表明该文本非常有可能属于色情内容。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Score: int
-        :param LibType: 词库类型 1 黑白库 2 自定义库
+        :param LibType: 该字段用于返回自定义关键词对应的词库类型，取值为**1**（黑白库）和**2**（自定义关键词库），若未配置自定义关键词库,则默认值为1（黑白库匹配）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type LibType: int
-        :param Suggestion: 审核建议
+        :param Suggestion: 该字段用于返回后续操作建议。当您获取到判定结果后，返回值表示具体的后续建议操作。<br>
+返回值：**Block**：建议屏蔽，**Review** ：建议人工复审，**Pass**：建议通过
 注意：此字段可能返回 null，表示取不到有效值。
         :type Suggestion: str
+        :param SubLabel: 该字段用于返回当前标签（Lable）下的二级标签。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubLabel: str
         """
         self.Label = None
         self.Keywords = None
@@ -242,6 +258,7 @@ class AudioResultDetailTextResult(AbstractModel):
         self.Score = None
         self.LibType = None
         self.Suggestion = None
+        self.SubLabel = None
 
 
     def _deserialize(self, params):
@@ -252,6 +269,7 @@ class AudioResultDetailTextResult(AbstractModel):
         self.Score = params.get("Score")
         self.LibType = params.get("LibType")
         self.Suggestion = params.get("Suggestion")
+        self.SubLabel = params.get("SubLabel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -480,70 +498,69 @@ class DescribeTaskDetailResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TaskId: 任务Id
+        :param TaskId: 该字段用于返回创建视频审核任务后返回的任务ID（在Results参数中），用于标识需要查询任务详情的审核任务。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TaskId: str
-        :param DataId: 审核时传入的数据Id
+        :param DataId: 该字段用于返回调用视频审核接口时传入的数据ID参数，方便数据的辨别和管理。
 注意：此字段可能返回 null，表示取不到有效值。
         :type DataId: str
-        :param BizType: 业务类型
+        :param BizType: 该字段用于返回调用视频审核接口时传入的BizType参数，方便数据的辨别和管理。
 注意：此字段可能返回 null，表示取不到有效值。
         :type BizType: str
-        :param Name: 任务名称
+        :param Name: 该字段用于返回调用视频审核接口时传入的TaskInput参数中的任务名称，方便任务的识别与管理。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
-        :param Status: 状态，可选值：
-FINISH 已完成
-PENDING 等待中
-RUNNING 进行中
-ERROR 出错
-CANCELLED 已取消
+        :param Status: 该字段用于返回所查询内容的任务状态。
+<br>取值：**FINISH**（任务已完成）、**PENDING** （任务等待中）、**RUNNING** （任务进行中）、**ERROR** （任务出错）、**CANCELLED** （任务已取消）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Status: str
-        :param Type: 类型
+        :param Type: 该字段用于返回调用视频审核接口时输入的视频审核类型，取值为：**VIDEO**（点播视频）和**LIVE_VIDEO**（直播视频），默认值为VIDEO。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Type: str
-        :param Suggestion: 审核建议
-可选：
-Pass 通过
-Reveiw 建议复审
-Block 确认违规
+        :param Suggestion: 该字段用于返回基于恶意标签的后续操作建议。当您获取到判定结果后，返回值表示系统推荐的后续操作；建议您按照业务所需，对不同违规类型与建议值进行处理。<br>返回值：**Block**：建议屏蔽，**Review** ：建议人工复审，**Pass**：建议通过
 注意：此字段可能返回 null，表示取不到有效值。
         :type Suggestion: str
-        :param Labels: 审核结果
+        :param Labels: 该字段用于返回检测结果所对应的恶意标签。<br>返回值：**Porn**：色情，**Abuse**：谩骂，**Ad**：广告，**Custom**：自定义违规；以及其他令人反感、不安全或不适宜的内容类型。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Labels: list of TaskLabel
-        :param MediaInfo: 媒体解码信息
+        :param MediaInfo: 该字段用于返回输入媒体文件的详细信息，包括编解码格式、分片时长等信息。详细内容敬请参考MediaInfo数据结构的描述。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MediaInfo: :class:`tencentcloud.vm.v20210922.models.MediaInfo`
-        :param InputInfo: 任务信息
+        :param InputInfo: 该字段用于返回审核服务的媒体内容信息，主要包括传入文件类型和访问地址。
 注意：此字段可能返回 null，表示取不到有效值。
         :type InputInfo: :class:`tencentcloud.vm.v20210922.models.InputInfo`
-        :param CreatedAt: 创建时间
+        :param CreatedAt: 该字段用于返回被查询任务创建的时间，格式采用 ISO 8601标准。
 注意：此字段可能返回 null，表示取不到有效值。
         :type CreatedAt: str
-        :param UpdatedAt: 更新时间
+        :param UpdatedAt: 该字段用于返回被查询任务最后更新时间，格式采用 ISO 8601标准。
 注意：此字段可能返回 null，表示取不到有效值。
         :type UpdatedAt: str
         :param TryInSeconds: 在秒后重试
 注意：此字段可能返回 null，表示取不到有效值。
         :type TryInSeconds: int
-        :param ImageSegments: 图片结果
+        :param ImageSegments: 该字段用于返回视频中截帧审核的结果，详细返回内容敬请参考ImageSegments数据结构的描述。<br>备注：数据有效期为24小时，如需要延长存储时间，请在已配置的COS储存桶中设置。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ImageSegments: list of ImageSegments
-        :param AudioSegments: 音频结果
+        :param AudioSegments: 该字段用于返回视频中音频审核的结果，详细返回内容敬请参考AudioSegments数据结构的描述。<br>备注：数据有效期为24小时，如需要延长存储时间，请在已配置的COS储存桶中设置。
 注意：此字段可能返回 null，表示取不到有效值。
         :type AudioSegments: list of AudioSegments
-        :param ErrorType: 如果返回的状态为ERROR，该字段会标记错误类型。
-可选值：：
-DECODE_ERROR: 解码失败。（输入资源中可能包含无法解码的视频）
-URL_ERROR：下载地址验证失败。
-TIMEOUT_ERROR：处理超时。
+        :param ErrorType: 当任务状态为Error时，返回对应错误的类型，取值：**DECODE_ERROR**: 解码失败。（输入资源中可能包含无法解码的视频）
+**URL_ERROR**：下载地址验证失败。
+**TIMEOUT_ERROR**：处理超时。任务状态非Error时默认返回为空。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ErrorType: str
-        :param ErrorDescription: 审核任务错误日志。当Error不为空时，会展示该字段
+        :param ErrorDescription: 当任务状态为Error时，该字段用于返回对应错误的详细描述，任务状态非Error时默认返回为空。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ErrorDescription: str
+        :param Label: 该字段用于返回检测结果所对应的标签。如果未命中恶意，返回Normal，如果命中恶意，则返回Labels中优先级最高的标签
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Label: str
+        :param AudioText: 该字段用于返回音频文件识别出的对应文本内容，最大支持**前1000个字符**。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AudioText: str
+        :param Asrs: 该字段用于返回音频文件识别出的对应文本内容。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Asrs: list of RcbAsr
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -564,6 +581,9 @@ TIMEOUT_ERROR：处理超时。
         self.AudioSegments = None
         self.ErrorType = None
         self.ErrorDescription = None
+        self.Label = None
+        self.AudioText = None
+        self.Asrs = None
         self.RequestId = None
 
 
@@ -604,6 +624,14 @@ TIMEOUT_ERROR：处理超时。
                 self.AudioSegments.append(obj)
         self.ErrorType = params.get("ErrorType")
         self.ErrorDescription = params.get("ErrorDescription")
+        self.Label = params.get("Label")
+        self.AudioText = params.get("AudioText")
+        if params.get("Asrs") is not None:
+            self.Asrs = []
+            for item in params.get("Asrs"):
+                obj = RcbAsr()
+                obj._deserialize(item)
+                self.Asrs.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -1040,11 +1068,14 @@ class MediaInfo(AbstractModel):
         :type Width: int
         :param Height: 高，单位为像素
         :type Height: int
+        :param Thumbnail: 封面
+        :type Thumbnail: str
         """
         self.Codecs = None
         self.Duration = None
         self.Width = None
         self.Height = None
+        self.Thumbnail = None
 
 
     def _deserialize(self, params):
@@ -1052,6 +1083,72 @@ class MediaInfo(AbstractModel):
         self.Duration = params.get("Duration")
         self.Width = params.get("Width")
         self.Height = params.get("Height")
+        self.Thumbnail = params.get("Thumbnail")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RcbAsr(AbstractModel):
+    """审核切片asr文本信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Text: 该字段用于返回音频文件识别出的对应文本内容，最大支持**前1000个字符**。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Text: str
+        :param CreatedAt: 该字段用于返回被查询任务创建的时间，格式采用 ISO 8601标准。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreatedAt: str
+        """
+        self.Text = None
+        self.CreatedAt = None
+
+
+    def _deserialize(self, params):
+        self.Text = params.get("Text")
+        self.CreatedAt = params.get("CreatedAt")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RecognitionResult(AbstractModel):
+    """识别类标签结果信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Label: 可能的取值有：Teenager 、Gender
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Label: str
+        :param Tags: 识别标签列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of Tag
+        """
+        self.Label = None
+        self.Tags = None
+
+
+    def _deserialize(self, params):
+        self.Label = params.get("Label")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1088,6 +1185,48 @@ COS 腾讯云对象存储类型
         if params.get("BucketInfo") is not None:
             self.BucketInfo = BucketInfo()
             self.BucketInfo._deserialize(params.get("BucketInfo"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class Tag(AbstractModel):
+    """音频切片识别标签
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 根据Label字段确定具体名称：
+当Label 为Teenager 时 Name可能取值有：Teenager 
+当Label 为Gender 时 Name可能取值有：Male 、Female
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
+        :param Score: 置信分：0～100，数值越大表示置信度越高
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Score: int
+        :param StartTime: 识别开始偏移时间，单位：毫秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: float
+        :param EndTime: 识别结束偏移时间，单位：毫秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: float
+        """
+        self.Name = None
+        self.Score = None
+        self.StartTime = None
+        self.EndTime = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Score = params.get("Score")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

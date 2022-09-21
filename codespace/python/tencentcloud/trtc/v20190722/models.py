@@ -211,7 +211,7 @@ class CreateCloudRecordingRequest(AbstractModel):
         :type SdkAppId: int
         :param RoomId: TRTC的[RoomId](https://cloud.tencent.com/document/product/647/46351#roomid)，录制的TRTC房间所对应的RoomId。
         :type RoomId: str
-        :param UserId: 录制机器人用于进入TRTC房间拉流的[UserId](https://cloud.tencent.com/document/product/647/46351#userid)，注意这个UserId不能与其他TRTC功能或者录制服务等已经使用的UserId重复，建议可以把房间ID作为userId的标识的一部分。
+        :param UserId: 录制机器人用于进入TRTC房间拉流的[UserId](https://cloud.tencent.com/document/product/647/46351#userid)，注意这个UserId不能与其他TRTC房间内的主播或者其他录制任务等已经使用的UserId重复，建议可以把房间ID作为userId的标识的一部分，即录制机器人进入房间的userid应保证独立且唯一。
         :type UserId: str
         :param UserSig: 录制机器人用于进入TRTC房间拉流的用户签名，当前 UserId 对应的验证签名，相当于登录密码，具体计算方法请参考TRTC计算[UserSig](https://cloud.tencent.com/document/product/647/45910#UserSig)的方案。
         :type UserSig: str
@@ -221,7 +221,7 @@ class CreateCloudRecordingRequest(AbstractModel):
         :type StorageParams: :class:`tencentcloud.trtc.v20190722.models.StorageParams`
         :param RoomIdType: TRTC房间号的类型，必须和录制的房间所对应的RoomId类型相同:
 0: 字符串类型的RoomId
-1: 32位整型的RoomId
+1: 32位整型的RoomId（默认）
         :type RoomIdType: int
         :param MixTranscodeParams: 混流的转码参数，录制模式为混流的时候可以设置。
         :type MixTranscodeParams: :class:`tencentcloud.trtc.v20190722.models.MixTranscodeParams`
@@ -1919,7 +1919,8 @@ class OutputParams(AbstractModel):
         :type StreamId: str
         :param PureAudioStream: 取值范围[0,1]， 填0：直播流为音视频(默认); 填1：直播流为纯音频
         :type PureAudioStream: int
-        :param RecordId: 自定义录制文件名称前缀。请先在实时音视频控制台开通录制功能，https://cloud.tencent.com/document/product/647/50768
+        :param RecordId: 自定义录制文件名称前缀。请先在实时音视频控制台开通录制功能，https://cloud.tencent.com/document/product/647/50768。
+【注意】该方式仅对旧版云端录制功能的应用生效，新版云端录制功能的应用请用接口CreateCloudRecording发起录制。新、旧云端录制类型判断方式请见：https://cloud.tencent.com/document/product/647/50768#record
         :type RecordId: str
         :param RecordAudioOnly: 取值范围[0,1]，填0无实际含义; 填1：指定录制文件格式为mp3。此参数不建议使用，建议在实时音视频控制台配置纯音频录制模板。
         :type RecordAudioOnly: int
@@ -2138,14 +2139,17 @@ class RecordParams(AbstractModel):
         :type StreamType: int
         :param SubscribeStreamUserIds: 指定订阅流白名单或者黑名单。
         :type SubscribeStreamUserIds: :class:`tencentcloud.trtc.v20190722.models.SubscribeStreamUserIds`
-        :param OutputFormat: 输出文件的格式，上传到云点播时此参数无效。0：(默认)输出文件为hls格式。1：输出文件格式为hls+mp4（hls录制完成后转mp4文件）
+        :param OutputFormat: 输出文件的格式，上传到云点播时此参数无效，存储到云点播时请关注TencentVod内的MediaType参数。0：(默认)输出文件为hls格式。1：输出文件格式为hls+mp4（hls录制完成后转mp4文件）。
         :type OutputFormat: int
+        :param AvMerge: 单流录制模式下，用户的音视频是否合并，0：单流音视频不合并（默认）。1：单流音视频合并成一个ts。混流录制此参数无需设置，默认音视频合并。
+        :type AvMerge: int
         """
         self.RecordMode = None
         self.MaxIdleTime = None
         self.StreamType = None
         self.SubscribeStreamUserIds = None
         self.OutputFormat = None
+        self.AvMerge = None
 
 
     def _deserialize(self, params):
@@ -2156,6 +2160,7 @@ class RecordParams(AbstractModel):
             self.SubscribeStreamUserIds = SubscribeStreamUserIds()
             self.SubscribeStreamUserIds._deserialize(params.get("SubscribeStreamUserIds"))
         self.OutputFormat = params.get("OutputFormat")
+        self.AvMerge = params.get("AvMerge")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2824,7 +2829,7 @@ class StorageParams(AbstractModel):
         r"""
         :param CloudStorage: 第三方云存储的账号信息（暂不支持）。
         :type CloudStorage: :class:`tencentcloud.trtc.v20190722.models.CloudStorage`
-        :param CloudVod: 第三方云点播的账号信息。
+        :param CloudVod: 腾讯云云点播的账号信息（必填，目前仅支持存储至腾讯云云点播）。
         :type CloudVod: :class:`tencentcloud.trtc.v20190722.models.CloudVod`
         """
         self.CloudStorage = None
@@ -2905,6 +2910,8 @@ class TencentVod(AbstractModel):
         :type SessionContext: str
         :param SourceContext: 上传上下文，上传完成回调时透传。
         :type SourceContext: str
+        :param MediaType: 上传到vod平台的录制文件格式类型，0：mp4(默认), 1: hls。
+        :type MediaType: int
         """
         self.Procedure = None
         self.ExpireTime = None
@@ -2913,6 +2920,7 @@ class TencentVod(AbstractModel):
         self.SubAppId = None
         self.SessionContext = None
         self.SourceContext = None
+        self.MediaType = None
 
 
     def _deserialize(self, params):
@@ -2923,6 +2931,7 @@ class TencentVod(AbstractModel):
         self.SubAppId = params.get("SubAppId")
         self.SessionContext = params.get("SessionContext")
         self.SourceContext = params.get("SourceContext")
+        self.MediaType = params.get("MediaType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

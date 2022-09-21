@@ -218,6 +218,9 @@ INVALIDPARAMETER_INVALIDVERIFYCHANNEL = 'InvalidParameter.InvalidVerifyChannel'
 # 验证码不正确。
 INVALIDPARAMETER_INVALIDVERIFYCODE = 'InvalidParameter.InvalidVerifyCode'
 
+# 缺少必填控件的值。
+INVALIDPARAMETER_MISSINGREQUIREDCOMPONENTVALUE = 'InvalidParameter.MissingRequiredComponentValue'
+
 # 不合法的手机号，请检查后重试。
 INVALIDPARAMETER_MOBILE = 'InvalidParameter.Mobile'
 
@@ -379,6 +382,9 @@ OPERATIONDENIED_FLOWSTATUSFORBID = 'OperationDenied.FlowStatusForbid'
 
 # 禁止此项操作。
 OPERATIONDENIED_FORBID = 'OperationDenied.Forbid'
+
+# 签署人年龄限制无法使用电子签服务。
+OPERATIONDENIED_INVALIDAPPROVERAGE = 'OperationDenied.InvalidApproverAge'
 
 # 资源id超过使用上限限制，请联系客服了解规则，并在修改后重试。
 OPERATIONDENIED_MANYRESOURCEID = 'OperationDenied.ManyResourceId'

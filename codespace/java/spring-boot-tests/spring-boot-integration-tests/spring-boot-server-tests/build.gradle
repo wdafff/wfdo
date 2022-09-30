@@ -13,15 +13,12 @@ configurations {
 dependencies {
 	intTestImplementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-test"))
 	intTestImplementation(project(":spring-boot-project:spring-boot-tools:spring-boot-test-support"))
-	intTestImplementation("org.apache.httpcomponents:httpasyncclient") {
-		exclude group: "commons-logging", module: "commons-logging"
-	}
+	intTestImplementation("org.apache.httpcomponents.client5:httpclient5")
 	intTestImplementation("org.awaitility:awaitility")
 	intTestImplementation("org.springframework:spring-web")
 
 	testRepository(project(path: ":spring-boot-project:spring-boot-dependencies", configuration: "mavenRepository"))
 	testRepository(project(path: ":spring-boot-project:spring-boot-tools:spring-boot-gradle-plugin", configuration: "mavenRepository"))
-	testRepository(project(path: ":spring-boot-project:spring-boot-tools:spring-boot-autoconfigure-processor", configuration: "mavenRepository"))
 	testRepository(project(path: ":spring-boot-project:spring-boot-starters:spring-boot-starter", configuration: "mavenRepository"))
 	testRepository(project(path: ":spring-boot-project:spring-boot-starters:spring-boot-starter-jetty", configuration: "mavenRepository"))
 	testRepository(project(path: ":spring-boot-project:spring-boot-starters:spring-boot-starter-json", configuration: "mavenRepository"))

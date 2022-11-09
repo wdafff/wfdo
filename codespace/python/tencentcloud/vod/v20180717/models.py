@@ -365,6 +365,8 @@ class AdaptiveDynamicStreamingTemplate(AbstractModel):
         :type CreateTime: str
         :param UpdateTime: 模板最后修改时间，使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
         :type UpdateTime: str
+        :param SegmentType: 切片类型，仅当 Format 为 HLS 时有效。
+        :type SegmentType: str
         """
         self.Definition = None
         self.Type = None
@@ -378,6 +380,7 @@ class AdaptiveDynamicStreamingTemplate(AbstractModel):
         self.DisableHigherVideoResolution = None
         self.CreateTime = None
         self.UpdateTime = None
+        self.SegmentType = None
 
 
     def _deserialize(self, params):
@@ -398,6 +401,7 @@ class AdaptiveDynamicStreamingTemplate(AbstractModel):
         self.DisableHigherVideoResolution = params.get("DisableHigherVideoResolution")
         self.CreateTime = params.get("CreateTime")
         self.UpdateTime = params.get("UpdateTime")
+        self.SegmentType = params.get("SegmentType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4783,12 +4787,17 @@ class AudioTrackItem(AbstractModel):
         :type SourceMediaStartTime: float
         :param Duration: 音频片段的时长，单位为秒。默认和素材本身长度一致，表示截取全部素材。
         :type Duration: float
+        :param TargetDuration: 音频片段目标时长，单位为秒。
+<li>当 TargetDuration 不填或填0时，表示目标时长和 Duration 一致；</li>
+<li>当 TargetDuration 取大于0的值时，将对音频片段做快进或慢放等处理，使得输出片段的时长等于 TargetDuration。</li>
+        :type TargetDuration: float
         :param AudioOperations: 对音频片段进行的操作，如音量调节等。
         :type AudioOperations: list of AudioTransform
         """
         self.SourceMedia = None
         self.SourceMediaStartTime = None
         self.Duration = None
+        self.TargetDuration = None
         self.AudioOperations = None
 
 
@@ -4796,6 +4805,7 @@ class AudioTrackItem(AbstractModel):
         self.SourceMedia = params.get("SourceMedia")
         self.SourceMediaStartTime = params.get("SourceMediaStartTime")
         self.Duration = params.get("Duration")
+        self.TargetDuration = params.get("TargetDuration")
         if params.get("AudioOperations") is not None:
             self.AudioOperations = []
             for item in params.get("AudioOperations"):
@@ -6117,6 +6127,11 @@ class CreateAdaptiveDynamicStreamingTemplateRequest(AbstractModel):
         :type DisableHigherVideoResolution: int
         :param Comment: 模板描述信息，长度限制：256 个字符。
         :type Comment: str
+        :param SegmentType: 切片类型，当 Format 为 HLS 时有效，可选值：
+<li>ts：ts 切片；</li>
+<li>fmp4：fmp4 切片。</li>
+默认值：ts。
+        :type SegmentType: str
         """
         self.Format = None
         self.StreamInfos = None
@@ -6127,6 +6142,7 @@ class CreateAdaptiveDynamicStreamingTemplateRequest(AbstractModel):
         self.DisableHigherVideoBitrate = None
         self.DisableHigherVideoResolution = None
         self.Comment = None
+        self.SegmentType = None
 
 
     def _deserialize(self, params):
@@ -6144,6 +6160,7 @@ class CreateAdaptiveDynamicStreamingTemplateRequest(AbstractModel):
         self.DisableHigherVideoBitrate = params.get("DisableHigherVideoBitrate")
         self.DisableHigherVideoResolution = params.get("DisableHigherVideoResolution")
         self.Comment = params.get("Comment")
+        self.SegmentType = params.get("SegmentType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7293,6 +7310,11 @@ class CreateTranscodeTemplateRequest(AbstractModel):
         :type AudioTemplate: :class:`tencentcloud.vod.v20180717.models.AudioTemplateInfo`
         :param TEHDConfig: 极速高清转码参数。
         :type TEHDConfig: :class:`tencentcloud.vod.v20180717.models.TEHDConfig`
+        :param SegmentType: 切片类型，当 Container 为 hls 时有效，可选值：
+<li>ts：ts 切片；</li>
+<li>fmp4：fmp4 切片。</li>
+默认值：ts。
+        :type SegmentType: str
         """
         self.Container = None
         self.SubAppId = None
@@ -7303,6 +7325,7 @@ class CreateTranscodeTemplateRequest(AbstractModel):
         self.VideoTemplate = None
         self.AudioTemplate = None
         self.TEHDConfig = None
+        self.SegmentType = None
 
 
     def _deserialize(self, params):
@@ -7321,6 +7344,7 @@ class CreateTranscodeTemplateRequest(AbstractModel):
         if params.get("TEHDConfig") is not None:
             self.TEHDConfig = TEHDConfig()
             self.TEHDConfig._deserialize(params.get("TEHDConfig"))
+        self.SegmentType = params.get("SegmentType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13660,7 +13684,7 @@ class LicenseUsageDataItem(AbstractModel):
 
 
 class LiveRealTimeClipMediaSegmentInfo(AbstractModel):
-    """即时剪辑后媒资的片段信息。
+    """即时剪辑后媒体的片段信息。
 
     """
 
@@ -14642,8 +14666,9 @@ class MediaDeleteItem(AbstractModel):
     def __init__(self):
         r"""
         :param Type: 所指定的删除部分。如果未填写该字段则参数无效。可选值有：
-<li>OriginalFiles（删除原文件，删除后无法发起转码、微信发布等任何视频处理操作）。</li>
-<li>TranscodeFiles（删除转码文件）。</li>
+<li>OriginalFiles（删除原文件，删除后无法发起转码、微信发布等任何视频处理操作）；</li>
+<li>TranscodeFiles（删除转码文件）；</li>
+<li>AdaptiveDynamicStreamingFiles（删除转自适应码流文件）；</li>
 <li>WechatPublishFiles（删除微信发布文件）。</li>
         :type Type: str
         :param Definition: 删除由Type参数指定的种类下的视频模板号，模板定义参见[转码模板](https://cloud.tencent.com/document/product/266/33478#.3Cspan-id-.3D-.22zm.22-.3E.3C.2Fspan.3E.E8.BD.AC.E7.A0.81.E6.A8.A1.E6.9D.BF)。
@@ -15170,6 +15195,8 @@ class MediaProcessTaskAdaptiveDynamicStreamingResult(AbstractModel):
         :type ErrCode: int
         :param Message: 错误信息。
         :type Message: str
+        :param Progress: 转自适应码流任务进度，取值范围 [0-100] 。
+        :type Progress: int
         :param Input: 对视频转自适应码流任务的输入。
         :type Input: :class:`tencentcloud.vod.v20180717.models.AdaptiveDynamicStreamingTaskInput`
         :param Output: 对视频转自适应码流任务的输出。
@@ -15179,6 +15206,7 @@ class MediaProcessTaskAdaptiveDynamicStreamingResult(AbstractModel):
         self.ErrCodeExt = None
         self.ErrCode = None
         self.Message = None
+        self.Progress = None
         self.Input = None
         self.Output = None
 
@@ -15188,6 +15216,7 @@ class MediaProcessTaskAdaptiveDynamicStreamingResult(AbstractModel):
         self.ErrCodeExt = params.get("ErrCodeExt")
         self.ErrCode = params.get("ErrCode")
         self.Message = params.get("Message")
+        self.Progress = params.get("Progress")
         if params.get("Input") is not None:
             self.Input = AdaptiveDynamicStreamingTaskInput()
             self.Input._deserialize(params.get("Input"))
@@ -15927,7 +15956,7 @@ class MediaSubtitleInput(AbstractModel):
         :type Format: str
         :param Content: 字幕内容，进行 [Base64](https://tools.ietf.org/html/rfc4648) 编码后的字符串。
         :type Content: str
-        :param Id: 字幕的唯一标识。长度不能超过16个字符，可以使用大小写字母、数字、下划线（_）或横杠（-）。不能与媒资文件中现有字幕的唯一标识重复。
+        :param Id: 字幕的唯一标识。长度不能超过16个字符，可以使用大小写字母、数字、下划线（_）或横杠（-）。不能与媒体文件中现有字幕的唯一标识重复。
         :type Id: str
         """
         self.Name = None
@@ -16260,12 +16289,15 @@ class MediaVideoStreamItem(AbstractModel):
         :type Codec: str
         :param Fps: 帧率，单位：hz。
         :type Fps: int
+        :param CodecTag: 编码标签，仅当 Codec 为 hevc 时有效。
+        :type CodecTag: str
         """
         self.Bitrate = None
         self.Height = None
         self.Width = None
         self.Codec = None
         self.Fps = None
+        self.CodecTag = None
 
 
     def _deserialize(self, params):
@@ -16274,6 +16306,7 @@ class MediaVideoStreamItem(AbstractModel):
         self.Width = params.get("Width")
         self.Codec = params.get("Codec")
         self.Fps = params.get("Fps")
+        self.CodecTag = params.get("CodecTag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16501,6 +16534,10 @@ class ModifyAdaptiveDynamicStreamingTemplateRequest(AbstractModel):
         :type StreamInfos: list of AdaptiveStreamTemplate
         :param Comment: 模板描述信息，长度限制：256 个字符。
         :type Comment: str
+        :param SegmentType: 切片类型，当 Format 为 HLS 时有效，可选值：
+<li>ts：ts 切片；</li>
+<li>fmp4：fmp4 切片。</li>
+        :type SegmentType: str
         """
         self.Definition = None
         self.SubAppId = None
@@ -16510,6 +16547,7 @@ class ModifyAdaptiveDynamicStreamingTemplateRequest(AbstractModel):
         self.DisableHigherVideoResolution = None
         self.StreamInfos = None
         self.Comment = None
+        self.SegmentType = None
 
 
     def _deserialize(self, params):
@@ -16526,6 +16564,7 @@ class ModifyAdaptiveDynamicStreamingTemplateRequest(AbstractModel):
                 obj._deserialize(item)
                 self.StreamInfos.append(obj)
         self.Comment = params.get("Comment")
+        self.SegmentType = params.get("SegmentType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -17759,6 +17798,10 @@ class ModifyTranscodeTemplateRequest(AbstractModel):
         :type AudioTemplate: :class:`tencentcloud.vod.v20180717.models.AudioTemplateInfoForUpdate`
         :param TEHDConfig: 极速高清转码参数。
         :type TEHDConfig: :class:`tencentcloud.vod.v20180717.models.TEHDConfigForUpdate`
+        :param SegmentType: 切片类型，当 Container 为 hls 时有效，可选值：
+<li>ts：ts 切片；</li>
+<li>fmp4：fmp4 切片。</li>
+        :type SegmentType: str
         """
         self.Definition = None
         self.SubAppId = None
@@ -17770,6 +17813,7 @@ class ModifyTranscodeTemplateRequest(AbstractModel):
         self.VideoTemplate = None
         self.AudioTemplate = None
         self.TEHDConfig = None
+        self.SegmentType = None
 
 
     def _deserialize(self, params):
@@ -17789,6 +17833,7 @@ class ModifyTranscodeTemplateRequest(AbstractModel):
         if params.get("TEHDConfig") is not None:
             self.TEHDConfig = TEHDConfigForUpdate()
             self.TEHDConfig._deserialize(params.get("TEHDConfig"))
+        self.SegmentType = params.get("SegmentType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -21720,9 +21765,6 @@ class SearchMediaRequest(AbstractModel):
         :param StreamIds: 推流直播码集合。匹配集合中的任意元素。
 <li>数组长度限制：10。</li>
         :type StreamIds: list of str
-        :param Vids: 直播录制文件的唯一标识。匹配集合中的任意元素。
-<li>数组长度限制：10。</li>
-        :type Vids: list of str
         :param CreateTime: 匹配创建时间在此时间段内的文件。
 <li>包含所指定的头尾时间点。</li>
         :type CreateTime: :class:`tencentcloud.vod.v20180717.models.TimeRange`
@@ -21777,9 +21819,6 @@ class SearchMediaRequest(AbstractModel):
         :param StreamId: （不推荐：应使用 StreamIds 替代）
 推流直播码。
         :type StreamId: str
-        :param Vid: （不推荐：应使用 Vids 替代）
-直播录制文件的唯一标识。
-        :type Vid: str
         :param StartTime: （不推荐：应使用 CreateTime 替代）
 创建时间的开始时间。
 <li>大于等于开始时间。</li>
@@ -21792,6 +21831,10 @@ class SearchMediaRequest(AbstractModel):
 <li>当 CreateTime.Before 也存在时，将优先使用 CreateTime.Before。</li>
 <li>格式按照 ISO 8601标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。</li>
         :type EndTime: str
+        :param Vids: 该字段已无效。
+        :type Vids: list of str
+        :param Vid: 该字段已无效。
+        :type Vid: str
         """
         self.SubAppId = None
         self.FileIds = None
@@ -21803,7 +21846,6 @@ class SearchMediaRequest(AbstractModel):
         self.Categories = None
         self.SourceTypes = None
         self.StreamIds = None
-        self.Vids = None
         self.CreateTime = None
         self.ExpireTime = None
         self.Sort = None
@@ -21817,9 +21859,10 @@ class SearchMediaRequest(AbstractModel):
         self.Text = None
         self.SourceType = None
         self.StreamId = None
-        self.Vid = None
         self.StartTime = None
         self.EndTime = None
+        self.Vids = None
+        self.Vid = None
 
 
     def _deserialize(self, params):
@@ -21833,7 +21876,6 @@ class SearchMediaRequest(AbstractModel):
         self.Categories = params.get("Categories")
         self.SourceTypes = params.get("SourceTypes")
         self.StreamIds = params.get("StreamIds")
-        self.Vids = params.get("Vids")
         if params.get("CreateTime") is not None:
             self.CreateTime = TimeRange()
             self.CreateTime._deserialize(params.get("CreateTime"))
@@ -21853,9 +21895,10 @@ class SearchMediaRequest(AbstractModel):
         self.Text = params.get("Text")
         self.SourceType = params.get("SourceType")
         self.StreamId = params.get("StreamId")
-        self.Vid = params.get("Vid")
         self.StartTime = params.get("StartTime")
         self.EndTime = params.get("EndTime")
+        self.Vids = params.get("Vids")
+        self.Vid = params.get("Vid")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -22694,6 +22737,7 @@ class StatDataItem(AbstractModel):
 <li>转码时长的数据，单位是秒。</li>
 <li>流量数据，单位是字节。</li>
 <li>带宽数据，单位是比特每秒。</li>
+<li>直播剪辑数据，单位是秒。</li>
         :type Value: int
         """
         self.Time = None
@@ -22800,21 +22844,26 @@ class StorageRegionInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Region: 存储地域
+        :param Region: 存储地域。
         :type Region: str
-        :param Description: 存储地域描述信息
+        :param Description: 存储地域描述信息。
         :type Description: str
         :param Status: 状态，是否开通，取值有：
 <li>opened：已经开通。</li>
 <li>unopened：未开通。</li>
         :type Status: str
-        :param IsDefault: 是否默认的存储地域，true：是；false：否
+        :param IsDefault: 是否默认的存储地域，true：是；false：否。
         :type IsDefault: bool
+        :param Area: 存储区域，取值有：
+<li>Chinese Mainland：中国境内（不包含港澳台）。</li>
+<li>Outside Chinese Mainland：中国境外。</li>
+        :type Area: str
         """
         self.Region = None
         self.Description = None
         self.Status = None
         self.IsDefault = None
+        self.Area = None
 
 
     def _deserialize(self, params):
@@ -22822,6 +22871,7 @@ class StorageRegionInfo(AbstractModel):
         self.Description = params.get("Description")
         self.Status = params.get("Status")
         self.IsDefault = params.get("IsDefault")
+        self.Area = params.get("Area")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -24059,6 +24109,8 @@ class TranscodeTemplate(AbstractModel):
         :type CreateTime: str
         :param UpdateTime: 模板最后修改时间，使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
         :type UpdateTime: str
+        :param SegmentType: 切片类型，仅当 Container 为 hls 时有效。
+        :type SegmentType: str
         """
         self.Definition = None
         self.Container = None
@@ -24073,6 +24125,7 @@ class TranscodeTemplate(AbstractModel):
         self.ContainerType = None
         self.CreateTime = None
         self.UpdateTime = None
+        self.SegmentType = None
 
 
     def _deserialize(self, params):
@@ -24095,6 +24148,7 @@ class TranscodeTemplate(AbstractModel):
         self.ContainerType = params.get("ContainerType")
         self.CreateTime = params.get("CreateTime")
         self.UpdateTime = params.get("UpdateTime")
+        self.SegmentType = params.get("SegmentType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -24617,6 +24671,11 @@ class VideoTemplateInfo(AbstractModel):
 <li>OFF: 无论原始文件是 HDR 还是 SDR，转码输出均为 SDR。</li>
 默认值：OFF。
         :type PreserveHDRSwitch: str
+        :param CodecTag: 编码标签，仅当视频流的编码格式为 H.265 编码时有效，可选值：
+<li>hvc1 表示 hvc1 标签；</li>
+<li>hev1 表示 hev1 标签。 </li>
+默认值：hvc1。
+        :type CodecTag: str
         """
         self.Codec = None
         self.Fps = None
@@ -24628,6 +24687,7 @@ class VideoTemplateInfo(AbstractModel):
         self.Vcrf = None
         self.Gop = None
         self.PreserveHDRSwitch = None
+        self.CodecTag = None
 
 
     def _deserialize(self, params):
@@ -24641,6 +24701,7 @@ class VideoTemplateInfo(AbstractModel):
         self.Vcrf = params.get("Vcrf")
         self.Gop = params.get("Gop")
         self.PreserveHDRSwitch = params.get("PreserveHDRSwitch")
+        self.CodecTag = params.get("CodecTag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -24704,6 +24765,11 @@ class VideoTemplateInfoForUpdate(AbstractModel):
 <li>ON: 如果原始文件是 HDR，则转码输出保持 HDR；否则转码输出为 SDR （Standard Dynamic Range）。</li>
 <li>OFF: 无论原始文件是 HDR 还是 SDR，转码输出均为 SDR。</li>
         :type PreserveHDRSwitch: str
+        :param CodecTag: 编码标签，仅当视频流的编码格式为 H.265 编码时有效，可选值：
+<li>hvc1 表示 hvc1 标签；</li>
+<li>hev1 表示 hev1 标签。 </li>
+默认值：hvc1。
+        :type CodecTag: str
         """
         self.Codec = None
         self.Fps = None
@@ -24715,6 +24781,7 @@ class VideoTemplateInfoForUpdate(AbstractModel):
         self.Vcrf = None
         self.Gop = None
         self.PreserveHDRSwitch = None
+        self.CodecTag = None
 
 
     def _deserialize(self, params):
@@ -24728,6 +24795,7 @@ class VideoTemplateInfoForUpdate(AbstractModel):
         self.Vcrf = params.get("Vcrf")
         self.Gop = params.get("Gop")
         self.PreserveHDRSwitch = params.get("PreserveHDRSwitch")
+        self.CodecTag = params.get("CodecTag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -24753,6 +24821,10 @@ class VideoTrackItem(AbstractModel):
         :type SourceMediaStartTime: float
         :param Duration: 视频片段时长，单位为秒。默认取视频素材本身长度，表示截取全部素材。如果源文件是图片，Duration需要大于0。
         :type Duration: float
+        :param TargetDuration: 视频片段目标时长，单位为秒。
+<li>当 TargetDuration 不填或填0时，表示目标时长和 Duration 一致；</li>
+<li>当 TargetDuration 取大于0的值时，将对视频片段做快进或慢放等处理，使得输出片段的时长等于 TargetDuration。</li>
+        :type TargetDuration: float
         :param CoordinateOrigin: 视频原点位置，取值有：
 <li>Center：坐标原点为中心位置，如画布中心。</li>
 默认值 ：Center。
@@ -24781,44 +24853,46 @@ class VideoTrackItem(AbstractModel):
 <li>当 Width 为空，Height 非空，则 Width 按比例缩放</li>
 <li>当 Width 非空，Height 为空，则 Height 按比例缩放。</li>
         :type Height: str
-        :param ImageOperations: 对图像进行的操作，如图像旋转等。
-        :type ImageOperations: list of ImageTransform
         :param AudioOperations: 对音频进行操作，如静音等。
         :type AudioOperations: list of AudioTransform
+        :param ImageOperations: 对图像进行的操作，如图像旋转等。
+        :type ImageOperations: list of ImageTransform
         """
         self.SourceMedia = None
         self.SourceMediaStartTime = None
         self.Duration = None
+        self.TargetDuration = None
         self.CoordinateOrigin = None
         self.XPos = None
         self.YPos = None
         self.Width = None
         self.Height = None
-        self.ImageOperations = None
         self.AudioOperations = None
+        self.ImageOperations = None
 
 
     def _deserialize(self, params):
         self.SourceMedia = params.get("SourceMedia")
         self.SourceMediaStartTime = params.get("SourceMediaStartTime")
         self.Duration = params.get("Duration")
+        self.TargetDuration = params.get("TargetDuration")
         self.CoordinateOrigin = params.get("CoordinateOrigin")
         self.XPos = params.get("XPos")
         self.YPos = params.get("YPos")
         self.Width = params.get("Width")
         self.Height = params.get("Height")
-        if params.get("ImageOperations") is not None:
-            self.ImageOperations = []
-            for item in params.get("ImageOperations"):
-                obj = ImageTransform()
-                obj._deserialize(item)
-                self.ImageOperations.append(obj)
         if params.get("AudioOperations") is not None:
             self.AudioOperations = []
             for item in params.get("AudioOperations"):
                 obj = AudioTransform()
                 obj._deserialize(item)
                 self.AudioOperations.append(obj)
+        if params.get("ImageOperations") is not None:
+            self.ImageOperations = []
+            for item in params.get("ImageOperations"):
+                obj = ImageTransform()
+                obj._deserialize(item)
+                self.ImageOperations.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

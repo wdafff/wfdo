@@ -26,6 +26,64 @@ class TcmClient(AbstractClient):
     _service = 'tcm'
 
 
+    def CreateMesh(self, request):
+        """创建网格
+
+        :param request: Request instance for CreateMesh.
+        :type request: :class:`tencentcloud.tcm.v20210413.models.CreateMeshRequest`
+        :rtype: :class:`tencentcloud.tcm.v20210413.models.CreateMeshResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateMesh", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreateMeshResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteMesh(self, request):
+        """删除网格
+
+        :param request: Request instance for DeleteMesh.
+        :type request: :class:`tencentcloud.tcm.v20210413.models.DeleteMeshRequest`
+        :rtype: :class:`tencentcloud.tcm.v20210413.models.DeleteMeshResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteMesh", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DeleteMeshResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeMesh(self, request):
         """查询网格详情
 
@@ -70,6 +128,180 @@ class TcmClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeMeshListResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def LinkClusterList(self, request):
+        """关联集群
+
+        :param request: Request instance for LinkClusterList.
+        :type request: :class:`tencentcloud.tcm.v20210413.models.LinkClusterListRequest`
+        :rtype: :class:`tencentcloud.tcm.v20210413.models.LinkClusterListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("LinkClusterList", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.LinkClusterListResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def LinkPrometheus(self, request):
+        """关联Prometheus
+
+        :param request: Request instance for LinkPrometheus.
+        :type request: :class:`tencentcloud.tcm.v20210413.models.LinkPrometheusRequest`
+        :rtype: :class:`tencentcloud.tcm.v20210413.models.LinkPrometheusResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("LinkPrometheus", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.LinkPrometheusResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyMesh(self, request):
+        """修改网格
+
+        :param request: Request instance for ModifyMesh.
+        :type request: :class:`tencentcloud.tcm.v20210413.models.ModifyMeshRequest`
+        :rtype: :class:`tencentcloud.tcm.v20210413.models.ModifyMeshResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyMesh", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ModifyMeshResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyTracingConfig(self, request):
+        """修改 Tracing 配置
+
+        :param request: Request instance for ModifyTracingConfig.
+        :type request: :class:`tencentcloud.tcm.v20210413.models.ModifyTracingConfigRequest`
+        :rtype: :class:`tencentcloud.tcm.v20210413.models.ModifyTracingConfigResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyTracingConfig", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ModifyTracingConfigResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def UnlinkCluster(self, request):
+        """解关联集群
+
+        :param request: Request instance for UnlinkCluster.
+        :type request: :class:`tencentcloud.tcm.v20210413.models.UnlinkClusterRequest`
+        :rtype: :class:`tencentcloud.tcm.v20210413.models.UnlinkClusterResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("UnlinkCluster", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.UnlinkClusterResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def UnlinkPrometheus(self, request):
+        """解除关联Prometheus
+
+        :param request: Request instance for UnlinkPrometheus.
+        :type request: :class:`tencentcloud.tcm.v20210413.models.UnlinkPrometheusRequest`
+        :rtype: :class:`tencentcloud.tcm.v20210413.models.UnlinkPrometheusResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("UnlinkPrometheus", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.UnlinkPrometheusResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

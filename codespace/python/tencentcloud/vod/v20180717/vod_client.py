@@ -627,7 +627,8 @@ class VodClient(AbstractClient):
 
 
     def CreateSuperPlayerConfig(self, request):
-        """创建播放器配置，数量上限：100。
+        """该 API 已经<font color='red'>不再维护</font>，新版播放器签名不再使用播放器配置模板，详细请参考 [播放器签名](https://cloud.tencent.com/document/product/266/45554)。
+        创建播放器配置，数量上限：100。
 
         :param request: Request instance for CreateSuperPlayerConfig.
         :type request: :class:`tencentcloud.vod.v20180717.models.CreateSuperPlayerConfigRequest`
@@ -1184,7 +1185,8 @@ class VodClient(AbstractClient):
 
 
     def DeleteSuperPlayerConfig(self, request):
-        """删除播放器配置。
+        """该 API 已经<font color='red'>不再维护</font>，新版播放器签名不再使用播放器配置模板，详细请参考 [播放器签名](https://cloud.tencent.com/document/product/266/45554)。
+        删除播放器配置。
         *注：系统预置播放器配置不允许删除。*
 
         :param request: Request instance for DeleteSuperPlayerConfig.
@@ -2412,7 +2414,8 @@ class VodClient(AbstractClient):
 
 
     def DescribeSuperPlayerConfigs(self, request):
-        """查询播放器配置，支持根据条件，分页查询。
+        """该 API 已经<font color='red'>不再维护</font>，新版播放器签名不再使用播放器配置模板，详细请参考 [播放器签名](https://cloud.tencent.com/document/product/266/45554)。
+        查询播放器配置，支持根据条件，分页查询。
 
         :param request: Request instance for DescribeSuperPlayerConfigs.
         :type request: :class:`tencentcloud.vod.v20180717.models.DescribeSuperPlayerConfigsRequest`
@@ -3341,7 +3344,8 @@ class VodClient(AbstractClient):
 
 
     def ModifySuperPlayerConfig(self, request):
-        """修改播放器配置。
+        """该 API 已经<font color='red'>不再维护</font>，新版播放器签名不再使用播放器配置模板，详细请参考 [播放器签名](https://cloud.tencent.com/document/product/266/45554)。
+        修改播放器配置。
 
         :param request: Request instance for ModifySuperPlayerConfig.
         :type request: :class:`tencentcloud.vod.v20180717.models.ModifySuperPlayerConfigRequest`
@@ -3907,9 +3911,9 @@ class VodClient(AbstractClient):
 
 
     def ReviewAudioVideo(self, request):
-        """对点播中的音视频媒体发起审核任务，智能检测视频画面、画面中的文字、语音中的文字出现的违规内容。
+        """对点播中的音视频媒体发起审核任务，智能检测视频画面、画面中的文字、语音中的文字、声音出现的违规内容。
 
-        如使用事件通知，事件通知的类型为 [任务流状态变更](https://cloud.tencent.com/document/product/266/9636)。
+        如使用事件通知，事件通知的类型为 [音视频审核完成](https://cloud.tencent.com/document/product/266/81258)。
 
         :param request: Request instance for ReviewAudioVideo.
         :type request: :class:`tencentcloud.vod.v20180717.models.ReviewAudioVideoRequest`
@@ -3980,14 +3984,12 @@ class VodClient(AbstractClient):
         - 指定文件类型集合 Categories（见输入参数），返回满足集合中任意类型的媒体。例如：文件类型有 Video（视频）、 Audio （音频）、 Image （图片）。如果Categories指定了 Video 和 Audio 2个文件类型，那么符合这些类型的媒体都会被检索出来。
         - 指定来源集合 SourceTypes（见输入参数），返回满足集合中任意来源的媒体。例如：媒体来源有 Record (直播录制)、Upload （上传）等。如果 SourceTypes 指定了 Record 和 Upload ，那么符合这些来源的媒体都会被检索出来。
         - 指定直播推流码集合 StreamIds（见输入参数）筛选直播录制的媒体。
-        - 指定视频 ID 集合 Vids （见输入参数）筛选直播录制的媒体。
         - 指定媒体的创建时间范围筛选媒体。
         - 指定 TRTC 应用 ID 集合筛选媒体。
         - 指定 TRTC 房间 ID 集合筛选媒体。
         - （不推荐：应使用 Names、NamePrefixes 或 Descriptions 替代）指定单个文本 Text 对媒体文件名或描述信息进行模糊搜索。
         - （不推荐：应使用 SourceTypes 替代）指定单个媒体文件来源 SourceType 进行搜索。
         - （不推荐：应使用 StreamIds 替代）指定单个推流直播码 StreamId 进行搜索。
-        - （不推荐：应使用 Vids 替代）指定单个视频 ID Vid 进行搜索。
         - （不推荐：应使用 CreateTime 替代）指定单个起始创建时间 StartTime 进行搜索。
         - （不推荐：应使用 CreateTime 替代）指定单个结尾创建时间 EndTime 进行搜索。
         - 以上参数之间可以任意组合进行检索。例如：筛选创建时间在2018年12月1日12:00:00到2018年12月8日12:00:00之间、分类为电影或电视剧、带有宫斗和悬疑标签的媒体。注意，任何支持数组输入的参数，其元素之间的搜索逻辑为‘或’。所有参数之间的逻辑关系为‘与’。

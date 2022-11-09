@@ -4775,6 +4775,10 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         :type FilterInstanceIdList: list of str
         :param FilterEnterpriseFlag: 企业版搜索
         :type FilterEnterpriseFlag: int
+        :param FilterLightFlag: 轻量版搜索
+        :type FilterLightFlag: int
+        :param FilterChannelFlag: 定制版搜索
+        :type FilterChannelFlag: int
         :param FilterTag: 标签搜索
         :type FilterTag: :class:`tencentcloud.antiddos.v20200309.models.TagFilter`
         """
@@ -4789,6 +4793,8 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         self.FilterBoundStatus = None
         self.FilterInstanceIdList = None
         self.FilterEnterpriseFlag = None
+        self.FilterLightFlag = None
+        self.FilterChannelFlag = None
         self.FilterTag = None
 
 
@@ -4804,6 +4810,8 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         self.FilterBoundStatus = params.get("FilterBoundStatus")
         self.FilterInstanceIdList = params.get("FilterInstanceIdList")
         self.FilterEnterpriseFlag = params.get("FilterEnterpriseFlag")
+        self.FilterLightFlag = params.get("FilterLightFlag")
+        self.FilterChannelFlag = params.get("FilterChannelFlag")
         if params.get("FilterTag") is not None:
             self.FilterTag = TagFilter()
             self.FilterTag._deserialize(params.get("FilterTag"))
@@ -6159,6 +6167,49 @@ class DescribeOverviewIndexResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribePendingRiskInfoRequest(AbstractModel):
+    """DescribePendingRiskInfo请求参数结构体
+
+    """
+
+
+class DescribePendingRiskInfoResponse(AbstractModel):
+    """DescribePendingRiskInfo返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IsPaidUsr: 是否为付费用户
+        :type IsPaidUsr: bool
+        :param AttackingCount: 攻击中的资源数量
+        :type AttackingCount: int
+        :param BlockingCount: 封堵中的资源数量
+        :type BlockingCount: int
+        :param ExpiredCount: 已过期的资源数量
+        :type ExpiredCount: int
+        :param Total: 所有待处理风险事件总数
+        :type Total: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.IsPaidUsr = None
+        self.AttackingCount = None
+        self.BlockingCount = None
+        self.ExpiredCount = None
+        self.Total = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.IsPaidUsr = params.get("IsPaidUsr")
+        self.AttackingCount = params.get("AttackingCount")
+        self.BlockingCount = params.get("BlockingCount")
+        self.ExpiredCount = params.get("ExpiredCount")
+        self.Total = params.get("Total")
+        self.RequestId = params.get("RequestId")
+
+
 class DisassociateDDoSEipAddressRequest(AbstractModel):
     """DisassociateDDoSEipAddress请求参数结构体
 
@@ -7478,16 +7529,36 @@ class ModifyDDoSThresholdRequest(AbstractModel):
         :type Id: str
         :param Business: 大禹子产品代号（bgpip表示高防IP；bgp表示独享包；bgp-multip表示共享包；net表示高防IP专业版）
         :type Business: str
+        :param OtherThresholdFlag: 配置其他阈值标志位，1表示配置其他阈值
+        :type OtherThresholdFlag: int
+        :param SynFloodThreshold: SYN FLOOD流量阈值
+        :type SynFloodThreshold: int
+        :param SynFloodPktThreshold: SYN FLOOD包量阈值
+        :type SynFloodPktThreshold: int
+        :param UdpFloodThreshold: UDP FLOOD流量阈值
+        :type UdpFloodThreshold: int
+        :param UdpFloodPktThreshold: UDP FLOOD包量阈值
+        :type UdpFloodPktThreshold: int
         """
         self.Threshold = None
         self.Id = None
         self.Business = None
+        self.OtherThresholdFlag = None
+        self.SynFloodThreshold = None
+        self.SynFloodPktThreshold = None
+        self.UdpFloodThreshold = None
+        self.UdpFloodPktThreshold = None
 
 
     def _deserialize(self, params):
         self.Threshold = params.get("Threshold")
         self.Id = params.get("Id")
         self.Business = params.get("Business")
+        self.OtherThresholdFlag = params.get("OtherThresholdFlag")
+        self.SynFloodThreshold = params.get("SynFloodThreshold")
+        self.SynFloodPktThreshold = params.get("SynFloodPktThreshold")
+        self.UdpFloodThreshold = params.get("UdpFloodThreshold")
+        self.UdpFloodPktThreshold = params.get("UdpFloodPktThreshold")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8034,6 +8105,8 @@ pcre(正则表达式)
         :type IsNot2: int
         :param Id: 特征过滤配置添加成功后自动生成的规则ID，当添加新特征过滤配置时，此字段不用填写；
         :type Id: str
+        :param PktLenGT: 大于报文长度，取值1+
+        :type PktLenGT: int
         """
         self.Protocol = None
         self.SportStart = None
@@ -8057,6 +8130,7 @@ pcre(正则表达式)
         self.Offset2 = None
         self.IsNot2 = None
         self.Id = None
+        self.PktLenGT = None
 
 
     def _deserialize(self, params):
@@ -8082,6 +8156,7 @@ pcre(正则表达式)
         self.Offset2 = params.get("Offset2")
         self.IsNot2 = params.get("IsNot2")
         self.Id = params.get("Id")
+        self.PktLenGT = params.get("PktLenGT")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8189,6 +8264,18 @@ off(关闭)
         :type InstanceDetailList: list of InstanceRelation
         :param ListenerCcThresholdList: 域名与协议纬度的防护阈值
         :type ListenerCcThresholdList: list of ListenerCcThreholdConfig
+        :param SynFloodThreshold: SYN FLOOD流量阈值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SynFloodThreshold: int
+        :param SynFloodPktThreshold: SYN FLOOD包量阈值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SynFloodPktThreshold: int
+        :param UdpFloodThreshold: UDP FLOOD流量阈值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UdpFloodThreshold: int
+        :param UdpFloodPktThreshold: UDP FLOOD包量阈值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UdpFloodPktThreshold: int
         """
         self.DDoSLevel = None
         self.DDoSThreshold = None
@@ -8197,6 +8284,10 @@ off(关闭)
         self.CCThreshold = None
         self.InstanceDetailList = None
         self.ListenerCcThresholdList = None
+        self.SynFloodThreshold = None
+        self.SynFloodPktThreshold = None
+        self.UdpFloodThreshold = None
+        self.UdpFloodPktThreshold = None
 
 
     def _deserialize(self, params):
@@ -8217,6 +8308,10 @@ off(关闭)
                 obj = ListenerCcThreholdConfig()
                 obj._deserialize(item)
                 self.ListenerCcThresholdList.append(obj)
+        self.SynFloodThreshold = params.get("SynFloodThreshold")
+        self.SynFloodPktThreshold = params.get("SynFloodPktThreshold")
+        self.UdpFloodThreshold = params.get("UdpFloodThreshold")
+        self.UdpFloodPktThreshold = params.get("UdpFloodPktThreshold")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8243,12 +8338,18 @@ class ProtocolBlockConfig(AbstractModel):
         :type DropOther: int
         :param CheckExceptNullConnect: 异常空连接防护，取值[0(防护关)，1(防护开)]
         :type CheckExceptNullConnect: int
+        :param PingOfDeath: ping of death防护，取值[0(防护关)，1(防护开)]
+        :type PingOfDeath: int
+        :param TearDrop: tear drop防护，取值[0(防护关)，1(防护开)]
+        :type TearDrop: int
         """
         self.DropTcp = None
         self.DropUdp = None
         self.DropIcmp = None
         self.DropOther = None
         self.CheckExceptNullConnect = None
+        self.PingOfDeath = None
+        self.TearDrop = None
 
 
     def _deserialize(self, params):
@@ -8257,6 +8358,8 @@ class ProtocolBlockConfig(AbstractModel):
         self.DropIcmp = params.get("DropIcmp")
         self.DropOther = params.get("DropOther")
         self.CheckExceptNullConnect = params.get("CheckExceptNullConnect")
+        self.PingOfDeath = params.get("PingOfDeath")
+        self.TearDrop = params.get("TearDrop")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

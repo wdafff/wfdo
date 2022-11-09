@@ -380,6 +380,9 @@ INVALIDPARAMETER_REPOPACKAGEPARAMERROR = 'InvalidParameter.RepoPackageParamError
 # 仓库中存在软件包，请先删除软件包。
 INVALIDPARAMETER_REPOSITORYNOTEMPTY = 'InvalidParameter.RepositoryNotEmpty'
 
+# TSF应用性能管理业务日志应用标识参数错误。
+INVALIDPARAMETER_TSFAPMBUSILOGCFGAPPPARAMERROR = 'InvalidParameter.TsfApmBusiLogCfgAppParamError'
+
 # TSF应用性能管理业务日志配置与应用关联参数错误。
 INVALIDPARAMETER_TSFAPMBUSILOGCFGAPPRELATIONPARAMERROR = 'InvalidParameter.TsfApmBusiLogCfgAppRelationParamError'
 
@@ -497,14 +500,14 @@ INVALIDPARAMETERVALUE_CONTAINERGROUPAPPLICATIONIDNULL = 'InvalidParameterValue.C
 # 集群 CPU 资源不足。
 INVALIDPARAMETERVALUE_CONTAINERGROUPCPULIMITOVER = 'InvalidParameterValue.ContainergroupCpulimitOver'
 
-# 容器 Env 的 Value 和 ValueFrom 至少要有一个。
-INVALIDPARAMETERVALUE_CONTAINERGROUPENVVALUENOTSET = 'InvalidParameterValue.ContainergroupEnvValueNotSet'
-
 # 部署组ID不能为空。
 INVALIDPARAMETERVALUE_CONTAINERGROUPGROUPIDNULL = 'InvalidParameterValue.ContainergroupGroupidNull'
 
 # 部署组名不能大于60个字符。
 INVALIDPARAMETERVALUE_CONTAINERGROUPGROUPNAMELEGNTH = 'InvalidParameterValue.ContainergroupGroupnameLegnth'
+
+# 部署组名不能为空。
+INVALIDPARAMETERVALUE_CONTAINERGROUPGROUPNAMENULL = 'InvalidParameterValue.ContainergroupGroupnameNull'
 
 # 部署组名称格式不正确,只能包含小写字母、数字及分隔符("-"),且必须以小写字母开头，数字或小写字母结尾。
 INVALIDPARAMETERVALUE_CONTAINERGROUPGROUPNAMEREGEXMATCHFALSE = 'InvalidParameterValue.ContainergroupGroupnameRegexMatchFalse'
@@ -650,11 +653,11 @@ INVALIDPARAMETERVALUE_GROUPSTATUSINVALID = 'InvalidParameterValue.GroupStatusInv
 # 分组操作，无有效机器。
 INVALIDPARAMETERVALUE_GROUPVALIDINSTANCENULL = 'InvalidParameterValue.GroupValidInstanceNull'
 
+# 镜像仓库名不能为空。
+INVALIDPARAMETERVALUE_IMAGEREPOREPONAMENULL = 'InvalidParameterValue.ImagerepoRepoNameNull'
+
 # 镜像仓库名不合法,示例:tsf-repo/nginx。
 INVALIDPARAMETERVALUE_IMAGEREPOREPONAMEINVALID = 'InvalidParameterValue.ImagerepoReponameInvalid'
-
-# 镜像仓库名不能为空。
-INVALIDPARAMETERVALUE_IMAGEREPOREPONAMENULL = 'InvalidParameterValue.ImagerepoReponameNull'
 
 # imageTags不能为空。
 INVALIDPARAMETERVALUE_IMAGEREPOTAGNAMENULL = 'InvalidParameterValue.ImagerepoTagnameNull'
@@ -763,6 +766,9 @@ INVALIDPARAMETERVALUE_SERVICENOTEXISTSORPERMISSIONDENIED = 'InvalidParameterValu
 
 # 无效请求参数。
 INVALIDPARAMETERVALUE_TASKPARAMETERINVALID = 'InvalidParameterValue.TaskParameterInvalid'
+
+# 仅有停止状态下的部署组才可以不启动。
+INVALIDPARAMETERVALUE_WRONGDONTSTARTVALUE = 'InvalidParameterValue.WrongDontStartValue'
 
 # 命名空间数达到上限。
 LIMITEXCEEDED_ERRNAMESPACEMAXLIMIT = 'LimitExceeded.ErrNamespaceMaxLimit'

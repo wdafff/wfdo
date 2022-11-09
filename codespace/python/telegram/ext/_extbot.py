@@ -124,6 +124,11 @@ class ExtBot(Bot, Generic[RLARGS]):
 
     .. versionadded:: 13.6
 
+    .. versionchanged:: 20.0
+        Removed the attribute ``arbitrary_callback_data``. You can instead use
+        :attr:`bot.callback_data_cache.maxsize <telegram.ext.CallbackDataCache.maxsize>` to
+        access the size of the cache.
+
     Args:
         defaults (:class:`telegram.ext.Defaults`, optional): An object containing default values to
             be used if not set explicitly in the bot methods.
@@ -137,16 +142,9 @@ class ExtBot(Bot, Generic[RLARGS]):
 
             .. versionadded:: 20.0
 
-    Attributes:
-        arbitrary_callback_data (:obj:`bool` | :obj:`int`): Whether this bot instance
-            allows to use arbitrary objects as callback data for
-            :class:`telegram.InlineKeyboardButton`.
-        callback_data_cache (:class:`telegram.ext.CallbackDataCache`): The cache for objects passed
-            as callback data for :class:`telegram.InlineKeyboardButton`.
-
     """
 
-    __slots__ = ("arbitrary_callback_data", "callback_data_cache", "_defaults", "_rate_limiter")
+    __slots__ = ("_callback_data_cache", "_defaults", "_rate_limiter")
 
     # using object() would be a tiny bit safer, but a string plays better with the typing setup
     __RL_KEY = uuid4().hex
@@ -210,15 +208,30 @@ class ExtBot(Bot, Generic[RLARGS]):
         )
         self._defaults = defaults
         self._rate_limiter = rate_limiter
+        self._callback_data_cache: Optional[CallbackDataCache] = None
 
         # set up callback_data
+        if arbitrary_callback_data is False:
+            return
+
         if not isinstance(arbitrary_callback_data, bool):
             maxsize = cast(int, arbitrary_callback_data)
-            self.arbitrary_callback_data = True
         else:
             maxsize = 1024
-            self.arbitrary_callback_data = arbitrary_callback_data
-        self.callback_data_cache: CallbackDataCache = CallbackDataCache(bot=self, maxsize=maxsize)
+
+        self._callback_data_cache = CallbackDataCache(bot=self, maxsize=maxsize)
+
+    @property
+    def callback_data_cache(self) -> Optional[CallbackDataCache]:
+        """:class:`telegram.ext.CallbackDataCache`: Optional. The cache for
+        objects passed as callback data for :class:`telegram.InlineKeyboardButton`.
+
+        .. versionchanged:: 20.0
+           * This property is now read-only.
+           * This property is now optional and can be :obj:`None` if
+             :paramref:`~telegram.ext.ExtBot.arbitrary_callback_data` is set to :obj:`False`.
+        """
+        return self._callback_data_cache
 
     async def initialize(self) -> None:
         """See :meth:`telegram.Bot.initialize`. Also initializes the
@@ -357,16 +370,22 @@ class ExtBot(Bot, Generic[RLARGS]):
 
             # 3)
             elif isinstance(val, InputMedia) and val.parse_mode is DEFAULT_NONE:
+                # Copy object as not to edit it in-place
+                val = copy(val)
                 val.parse_mode = self.defaults.parse_mode if self.defaults else None
+                data[key] = val
             elif key == "media" and isinstance(val, list):
-                for media in val:
+                # Copy objects as not to edit them in-place
+                copy_list = [copy(media) for media in val]
+                for media in copy_list:
                     if media.parse_mode is DEFAULT_NONE:
                         media.parse_mode = self.defaults.parse_mode if self.defaults else None
+                data[key] = copy_list
 
     def _replace_keyboard(self, reply_markup: Optional[ReplyMarkup]) -> Optional[ReplyMarkup]:
         # If the reply_markup is an inline keyboard and we allow arbitrary callback data, let the
         # CallbackDataCache build a new keyboard with the data replaced. Otherwise return the input
-        if isinstance(reply_markup, InlineKeyboardMarkup) and self.arbitrary_callback_data:
+        if isinstance(reply_markup, InlineKeyboardMarkup) and self.callback_data_cache is not None:
             return self.callback_data_cache.process_keyboard(reply_markup)
 
         return reply_markup
@@ -405,7 +424,7 @@ class ExtBot(Bot, Generic[RLARGS]):
             self._insert_callback_data(update.effective_message)
 
     def _insert_callback_data(self, obj: HandledTypes) -> HandledTypes:
-        if not self.arbitrary_callback_data:
+        if self.callback_data_cache is None:
             return obj
 
         if isinstance(obj, CallbackQuery):
@@ -514,7 +533,7 @@ class ExtBot(Bot, Generic[RLARGS]):
         )
 
         # Process arbitrary callback
-        if not self.arbitrary_callback_data:
+        if self.callback_data_cache is None:
             return effective_results, next_offset
         results = []
         for result in effective_results:
@@ -533,18 +552,25 @@ class ExtBot(Bot, Generic[RLARGS]):
         return results, next_offset
 
     @no_type_check  # mypy doesn't play too well with hasattr
-    def _insert_defaults_for_ilq_results(self, res: "InlineQueryResult") -> None:
+    def _insert_defaults_for_ilq_results(self, res: "InlineQueryResult") -> "InlineQueryResult":
         """This method is called by Bot.answer_inline_query to replace `DefaultValue(obj)` with
         `obj`.
         Overriding this to call insert the actual desired default values.
         """
+        # Copy the objects that need modification to avoid modifying the original object
+        copied = False
         if hasattr(res, "parse_mode") and res.parse_mode is DEFAULT_NONE:
+            res = copy(res)
+            copied = True
             res.parse_mode = self.defaults.parse_mode if self.defaults else None
         if hasattr(res, "input_message_content") and res.input_message_content:
             if (
                 hasattr(res.input_message_content, "parse_mode")
                 and res.input_message_content.parse_mode is DEFAULT_NONE
             ):
+                if not copied:
+                    res = copy(res)
+                    copied = True
                 res.input_message_content.parse_mode = (
                     self.defaults.parse_mode if self.defaults else None
                 )
@@ -552,9 +578,13 @@ class ExtBot(Bot, Generic[RLARGS]):
                 hasattr(res.input_message_content, "disable_web_page_preview")
                 and res.input_message_content.disable_web_page_preview is DEFAULT_NONE
             ):
+                if not copied:
+                    res = copy(res)
                 res.input_message_content.disable_web_page_preview = (
                     self.defaults.disable_web_page_preview if self.defaults else None
                 )
+
+        return res
 
     async def stop_poll(
         self,
@@ -2229,6 +2259,9 @@ class ExtBot(Bot, Generic[RLARGS]):
         pool_timeout: ODVInput[float] = DEFAULT_NONE,
         api_kwargs: JSONDict = None,
         rate_limit_args: RLARGS = None,
+        caption: Optional[str] = None,
+        parse_mode: ODVInput[str] = DEFAULT_NONE,
+        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
     ) -> List[Message]:
         return await super().send_media_group(
             chat_id=chat_id,
@@ -2242,6 +2275,9 @@ class ExtBot(Bot, Generic[RLARGS]):
             connect_timeout=connect_timeout,
             pool_timeout=pool_timeout,
             api_kwargs=self._merge_api_rl_kwargs(api_kwargs, rate_limit_args),
+            caption=caption,
+            parse_mode=parse_mode,
+            caption_entities=caption_entities,
         )
 
     async def send_message(

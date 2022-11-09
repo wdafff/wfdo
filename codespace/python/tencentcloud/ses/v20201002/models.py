@@ -487,14 +487,18 @@ class CycleEmailParam(AbstractModel):
         :type BeginTime: str
         :param IntervalTime: 任务周期 小时维度
         :type IntervalTime: int
+        :param TermCycle: 是否终止周期，用于任务更新 0否1是
+        :type TermCycle: int
         """
         self.BeginTime = None
         self.IntervalTime = None
+        self.TermCycle = None
 
 
     def _deserialize(self, params):
         self.BeginTime = params.get("BeginTime")
         self.IntervalTime = params.get("IntervalTime")
+        self.TermCycle = params.get("TermCycle")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -916,11 +920,14 @@ class GetEmailTemplateResponse(AbstractModel):
         :type TemplateContent: :class:`tencentcloud.ses.v20201002.models.TemplateContent`
         :param TemplateStatus: 模板状态 0-审核通过 1-待审核 2-审核拒绝
         :type TemplateStatus: int
+        :param TemplateName: 模板名称
+        :type TemplateName: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.TemplateContent = None
         self.TemplateStatus = None
+        self.TemplateName = None
         self.RequestId = None
 
 
@@ -929,6 +936,7 @@ class GetEmailTemplateResponse(AbstractModel):
             self.TemplateContent = TemplateContent()
             self.TemplateContent._deserialize(params.get("TemplateContent"))
         self.TemplateStatus = params.get("TemplateStatus")
+        self.TemplateName = params.get("TemplateName")
         self.RequestId = params.get("RequestId")
 
 

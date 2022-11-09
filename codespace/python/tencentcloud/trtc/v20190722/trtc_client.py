@@ -216,7 +216,8 @@ class TrtcClient(AbstractClient):
 
 
     def DescribeExternalTrtcMeasure(self, request):
-        """获取Trtc的用量统计数据。走计费渠道二期 只允许查两天的数据
+        """获取Trtc的用量统计数据。走计费渠道二期 只允许查两天的数据。
+        当前接口已不再更新维护，请使用新版音视频用量接口：DescribeTrtcUsage （https://cloud.tencent.com/document/product/647/81425）
 
         :param request: Request instance for DescribeExternalTrtcMeasure.
         :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeExternalTrtcMeasureRequest`
@@ -230,6 +231,40 @@ class TrtcClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeExternalTrtcMeasureResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeMixTranscodingUsage(self, request):
+        """获取TRTC混流转码的用量明细。
+        - 查询时间小于等于1天时，返回每5分钟粒度的数据；查询时间大于1天时，返回按天汇总的数据。
+        - 单次查询统计区间最多不能超过31天。
+        - 若查询当天用量，由于统计延迟等原因，返回数据可能不够准确。
+        - 该接口只用于历史用量数据统计或核对数据使用，关键业务逻辑不能使用。
+        - 默认接口请求频率限制：5次/秒。
+
+        :param request: Request instance for DescribeMixTranscodingUsage.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeMixTranscodingUsageRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeMixTranscodingUsageResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeMixTranscodingUsage", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeMixTranscodingUsageResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -307,6 +342,74 @@ class TrtcClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeRecordingUsage(self, request):
+        """获取TRTC录制的用量明细。
+        - 查询时间小于等于1天时，返回每5分钟粒度的数据；查询时间大于1天时，返回按天汇总的数据。
+        - 单次查询统计区间最多不能超过31天。
+        - 若查询当天用量，由于统计延迟等原因，返回数据可能不够准确。
+        - 该接口只用于历史用量数据统计或核对数据使用，关键业务逻辑不能使用。
+        - 默认接口请求频率限制：5次/秒。
+
+        :param request: Request instance for DescribeRecordingUsage.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeRecordingUsageRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeRecordingUsageResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRecordingUsage", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeRecordingUsageResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeRelayUsage(self, request):
+        """获取TRTC旁路转推的用量明细。
+        - 查询时间小于等于1天时，返回每5分钟粒度的数据；查询时间大于1天时，返回按天汇总的数据。
+        - 单次查询统计区间最多不能超过31天。
+        - 若查询当天用量，由于统计延迟等原因，返回数据可能不够准确。
+        - 该接口只用于历史用量数据统计或核对数据使用，关键业务逻辑不能使用。
+        - 默认接口请求频率限制：5次/秒。
+
+        :param request: Request instance for DescribeRelayUsage.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeRelayUsageRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeRelayUsageResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRelayUsage", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeRelayUsageResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeRoomInfo(self, request):
         """查询SdkAppId下的房间列表。默认返回10条通话，一次最多返回100条通话。可查询14天内的数据。（同老接口DescribeRoomInformation）
         **注意**：
@@ -368,6 +471,147 @@ class TrtcClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeTRTCMarketQualityMetricData(self, request):
+        """查询TRTC监控仪表盘-数据大盘质量指标（包括下列指标）
+        joinSuccessRate：加入频道成功率。
+        joinSuccessIn5sRate：5s内加入频道成功率。
+        audioFreezeRate：音频卡顿率。
+        videoFreezeRate：视频卡顿率。
+        networkDelay ：网络延迟率。
+        注意：
+        1.调用接口需开通监控仪表盘【基础版】和【进阶版】，监控仪表盘【免费版】不支持调用，监控仪表盘版本功能和计费说明：https://cloud.tencent.com/document/product/647/81331。
+        2、查询时间范围根据监控仪表盘功能版本而定，【基础版】可查近30天，【进阶版】可查近60天。
+
+        :param request: Request instance for DescribeTRTCMarketQualityMetricData.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeTRTCMarketQualityMetricDataRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeTRTCMarketQualityMetricDataResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeTRTCMarketQualityMetricData", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeTRTCMarketQualityMetricDataResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeTRTCMarketScaleMetricData(self, request):
+        """查询TRTC监控仪表盘-数据大盘规模指标（会返回通话人数，通话房间数，峰值同时在线人数，峰值同时在线频道数）
+        userCount：通话人数，
+        roomCount：通话房间数，从有用户加入频道到所有用户离开频道计为一个通话频道。
+        peakCurrentChannels：峰值同时在线频道数。
+        peakCurrentUsers：峰值同时在线人数。
+        注意：
+        1.调用接口需开通监控仪表盘【基础版】和【进阶版】，监控仪表盘【免费版】不支持调用，监控仪表盘版本功能和计费说明：https://cloud.tencent.com/document/product/647/81331。
+        2、查询时间范围根据监控仪表盘功能版本而定，【基础版】可查近30天，【进阶版】可查近60天。
+
+        :param request: Request instance for DescribeTRTCMarketScaleMetricData.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeTRTCMarketScaleMetricDataRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeTRTCMarketScaleMetricDataResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeTRTCMarketScaleMetricData", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeTRTCMarketScaleMetricDataResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeTRTCRealTimeQualityMetricData(self, request):
+        """查询TRTC监控仪表盘-实时监控质量指标（会返回下列指标）
+        -视频卡顿率
+        -音频卡顿率
+        注意：
+        1.调用接口需开通监控仪表盘【基础版】和【进阶版】，监控仪表盘【免费版】不支持调用，监控仪表盘版本功能和计费说明：https://cloud.tencent.com/document/product/647/81331。
+        2、查询时间范围根据监控仪表盘功能版本而定，基础版可查近3小时，进阶版可查近12小时。
+
+        :param request: Request instance for DescribeTRTCRealTimeQualityMetricData.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeTRTCRealTimeQualityMetricDataRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeTRTCRealTimeQualityMetricDataResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeTRTCRealTimeQualityMetricData", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeTRTCRealTimeQualityMetricDataResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeTRTCRealTimeScaleMetricData(self, request):
+        """查询TRTC监控仪表盘-实时监控规模指标（会返回下列指标）
+        -userCount（在线用户数）
+        -roomCount（在线房间数）
+        注意：
+        1.调用接口需开通监控仪表盘【基础版】和【进阶版】，监控仪表盘【免费版】不支持调用，监控仪表盘版本功能和计费说明：https://cloud.tencent.com/document/product/647/81331。
+        2、查询时间范围根据监控仪表盘功能版本而定，基础版可查近3小时，进阶版可查近12小时。
+
+        :param request: Request instance for DescribeTRTCRealTimeScaleMetricData.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeTRTCRealTimeScaleMetricDataRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeTRTCRealTimeScaleMetricDataResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeTRTCRealTimeScaleMetricData", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeTRTCRealTimeScaleMetricDataResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeTrtcMcuTranscodeTime(self, request):
         """查询旁路转码计费时长。
         - 查询时间小于等于1天时，返回每5分钟粒度的数据；查询时间大于1天时，返回按天汇总的数据。
@@ -387,6 +631,40 @@ class TrtcClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeTrtcMcuTranscodeTimeResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeTrtcUsage(self, request):
+        """获取TRTC音视频互动的用量明细。
+        - 查询时间小于等于1天时，返回每5分钟粒度的数据；查询时间大于1天时，返回按天汇总的数据。
+        - 单次查询统计区间最多不能超过31天。
+        - 若查询当天用量，由于统计延迟等原因，返回数据可能不够准确。
+        - 该接口只用于历史用量数据统计或核对数据使用，关键业务逻辑不能使用。
+        - 默认接口请求频率限制：5次/秒。
+
+        :param request: Request instance for DescribeTrtcUsage.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeTrtcUsageRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeTrtcUsageResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeTrtcUsage", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeTrtcUsageResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

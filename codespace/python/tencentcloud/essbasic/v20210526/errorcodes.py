@@ -35,6 +35,9 @@ FAILEDOPERATION_FLOWNUMEXCEED = 'FailedOperation.FlowNumExceed'
 # 已授权。
 FAILEDOPERATION_HASAUTHORIZED = 'FailedOperation.HasAuthorized'
 
+# 当前合同状态无法进行签署审批。
+FAILEDOPERATION_NOTAVAILABLESIGNREVIEW = 'FailedOperation.NotAvailableSignReview'
+
 # 发起签署存在填写控件。
 FAILEDOPERATION_QRCODECREATORSIGNCOMPONENTS = 'FailedOperation.QrCodeCreatorSignComponents'
 
@@ -128,6 +131,9 @@ INVALIDPARAMETER_DATANOTFOUND = 'InvalidParameter.DataNotFound'
 # 参数错误，不合法的日期，请检查后重试。
 INVALIDPARAMETER_DATE = 'InvalidParameter.Date'
 
+# 重复提交任务。
+INVALIDPARAMETER_DUPTASK = 'InvalidParameter.DupTask'
+
 # 参数为空。
 INVALIDPARAMETER_EMPTYPARAMS = 'InvalidParameter.EmptyParams'
 
@@ -181,6 +187,9 @@ INVALIDPARAMETER_MENUSTATUS = 'InvalidParameter.MenuStatus'
 
 # 缺少必填参数的值。
 INVALIDPARAMETER_MISSINGREQUIREDPARAMETERVALUE = 'InvalidParameter.MissingRequiredParameterValue'
+
+# 姓名不符合要求。
+INVALIDPARAMETER_NAME = 'InvalidParameter.Name'
 
 # 不支持的手机号。
 INVALIDPARAMETER_NONSUPPORTMOBILE = 'InvalidParameter.NonsupportMobile'
@@ -269,6 +278,9 @@ MISSINGPARAMETER_ORGANIZATIONID = 'MissingParameter.OrganizationId'
 # ProxyOperatorOpenId不存在。
 MISSINGPARAMETER_PROXYOPERATOROPENID = 'MissingParameter.ProxyOperatorOpenId'
 
+# 印章ID为空。
+MISSINGPARAMETER_SEALID = 'MissingParameter.SealId'
+
 # 印章图片为空。
 MISSINGPARAMETER_SEALIMAGE = 'MissingParameter.SealImage'
 
@@ -305,8 +317,8 @@ OPERATIONDENIED_ERRNORESOURCEACCESS = 'OperationDenied.ErrNoResourceAccess'
 # 文件已删除。
 OPERATIONDENIED_FILEDELETED = 'OperationDenied.FileDeleted'
 
-# 签署流程状态不正确，请检查后重试。
-OPERATIONDENIED_FLOWSTATUSFORBID = 'OperationDenied.FlowStatusForbid'
+# 流程已终止。
+OPERATIONDENIED_FLOWHASTERMINATED = 'OperationDenied.FlowHasTerminated'
 
 # 禁止操作。
 OPERATIONDENIED_FORBID = 'OperationDenied.Forbid'
@@ -317,26 +329,26 @@ OPERATIONDENIED_INVALIDAPPROVERAGE = 'OperationDenied.InvalidApproverAge'
 # 没有API权限。
 OPERATIONDENIED_NOAPIAUTH = 'OperationDenied.NoApiAuth'
 
+# 无权操作合同。
+OPERATIONDENIED_NOFLOWPERMISSION = 'OperationDenied.NoFlowPermission'
+
 # 未通过个人实名。
 OPERATIONDENIED_NOIDENTITYVERIFY = 'OperationDenied.NoIdentityVerify'
 
 # 流程配额不足。
 OPERATIONDENIED_NOQUOTA = 'OperationDenied.NoQuota'
 
-# 不属于企业超管或者法人。
-OPERATIONDENIED_NOTBELONGSUPERADMINORLEGALPERSON = 'OperationDenied.NotBelongSuperAdminOrLegalPerson'
-
 # 操作类型不支持。
 OPERATIONDENIED_OPERATETYPE = 'OperationDenied.OperateType'
+
+# 操作者权限不足。
+OPERATIONDENIED_OPERATORHASNOPERMISSION = 'OperationDenied.OperatorHasNoPermission'
 
 # 超出查询上限。
 OPERATIONDENIED_OUTQUERYLIMIT = 'OperationDenied.OutQueryLimit'
 
 # 用户不归属于当前企业，无法操作，请检查后重试。
 OPERATIONDENIED_USERNOTINORGANIZATION = 'OperationDenied.UserNotInOrganization'
-
-# 未开通功能白名单，请联系客服处理。
-OPERATIONDENIED_WHITELISTFORBID = 'OperationDenied.WhiteListForbid'
 
 # 资源不存在。
 RESOURCENOTFOUND = 'ResourceNotFound'
@@ -356,9 +368,6 @@ RESOURCENOTFOUND_FILE = 'ResourceNotFound.File'
 # 未找到对应流程。
 RESOURCENOTFOUND_FLOW = 'ResourceNotFound.Flow'
 
-# 签署流程的签署人不存在，请检查后重试。
-RESOURCENOTFOUND_FLOWAPPROVER = 'ResourceNotFound.FlowApprover'
-
 # 签署人信息不存在，请检查后重试。
 RESOURCENOTFOUND_FLOWAPPROVERS = 'ResourceNotFound.FlowApprovers'
 
@@ -376,9 +385,6 @@ RESOURCENOTFOUND_TEAMWORKORGANIZATION = 'ResourceNotFound.TeamWorkOrganization'
 
 # 模板不存在。
 RESOURCENOTFOUND_TEMPLATE = 'ResourceNotFound.Template'
-
-# Url不存在。
-RESOURCENOTFOUND_URL = 'ResourceNotFound.URL'
 
 # 用户信息不存在。
 RESOURCENOTFOUND_USER = 'ResourceNotFound.User'

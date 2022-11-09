@@ -100,11 +100,27 @@ class AppStatisticsItem(AbstractModel):
         :type VoiceFilterStatisticsItem: :class:`tencentcloud.gme.v20180711.models.VoiceFilterStatisticsItem`
         :param Date: 统计时间
         :type Date: str
+        :param AudioTextStatisticsItem: 录音转文本用量统计数据
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AudioTextStatisticsItem: :class:`tencentcloud.gme.v20180711.models.AudioTextStatisticsItem`
+        :param StreamTextStatisticsItem: 流式转文本用量数据
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StreamTextStatisticsItem: :class:`tencentcloud.gme.v20180711.models.StreamTextStatisticsItem`
+        :param OverseaTextStatisticsItem: 海外转文本用量数据
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OverseaTextStatisticsItem: :class:`tencentcloud.gme.v20180711.models.OverseaTextStatisticsItem`
+        :param RealtimeTextStatisticsItem: 实时语音转文本用量数据
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RealtimeTextStatisticsItem: :class:`tencentcloud.gme.v20180711.models.RealtimeTextStatisticsItem`
         """
         self.RealtimeSpeechStatisticsItem = None
         self.VoiceMessageStatisticsItem = None
         self.VoiceFilterStatisticsItem = None
         self.Date = None
+        self.AudioTextStatisticsItem = None
+        self.StreamTextStatisticsItem = None
+        self.OverseaTextStatisticsItem = None
+        self.RealtimeTextStatisticsItem = None
 
 
     def _deserialize(self, params):
@@ -118,6 +134,18 @@ class AppStatisticsItem(AbstractModel):
             self.VoiceFilterStatisticsItem = VoiceFilterStatisticsItem()
             self.VoiceFilterStatisticsItem._deserialize(params.get("VoiceFilterStatisticsItem"))
         self.Date = params.get("Date")
+        if params.get("AudioTextStatisticsItem") is not None:
+            self.AudioTextStatisticsItem = AudioTextStatisticsItem()
+            self.AudioTextStatisticsItem._deserialize(params.get("AudioTextStatisticsItem"))
+        if params.get("StreamTextStatisticsItem") is not None:
+            self.StreamTextStatisticsItem = StreamTextStatisticsItem()
+            self.StreamTextStatisticsItem._deserialize(params.get("StreamTextStatisticsItem"))
+        if params.get("OverseaTextStatisticsItem") is not None:
+            self.OverseaTextStatisticsItem = OverseaTextStatisticsItem()
+            self.OverseaTextStatisticsItem._deserialize(params.get("OverseaTextStatisticsItem"))
+        if params.get("RealtimeTextStatisticsItem") is not None:
+            self.RealtimeTextStatisticsItem = RealtimeTextStatisticsItem()
+            self.RealtimeTextStatisticsItem._deserialize(params.get("RealtimeTextStatisticsItem"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -235,6 +263,31 @@ class ApplicationDataStatistics(AbstractModel):
                 obj = StatisticsItem()
                 obj._deserialize(item)
                 self.PcuDataSum.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AudioTextStatisticsItem(AbstractModel):
+    """录音转文本用量统计数据
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 统计值，单位：秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: float
+        """
+        self.Data = None
+
+
+    def _deserialize(self, params):
+        self.Data = params.get("Data")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -838,7 +891,7 @@ class DescribeAppStatisticsRequest(AbstractModel):
         :type StartDate: str
         :param EndDate: 数据结束时间，东八区时间，格式: 年-月-日，如: 2018-07-13
         :type EndDate: str
-        :param Services: 要查询的服务列表，取值：RealTimeSpeech/VoiceMessage/VoiceFilter
+        :param Services: 要查询的服务列表，取值：RealTimeSpeech/VoiceMessage/VoiceFilter/SpeechToText
         :type Services: list of str
         """
         self.BizId = None
@@ -1584,67 +1637,6 @@ class ModifyCustomizationStateResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class ModifyRoomInfoRequest(AbstractModel):
-    """ModifyRoomInfo请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param SdkAppId: 应用ID，登录[控制台 - 服务管理](https://console.cloud.tencent.com/gamegme)创建应用得到的AppID
-        :type SdkAppId: int
-        :param RoomId: 房间id
-        :type RoomId: int
-        :param OperationType: 301 启动推流
-302 停止推流
-303 重置RTMP连接
-        :type OperationType: int
-        """
-        self.SdkAppId = None
-        self.RoomId = None
-        self.OperationType = None
-
-
-    def _deserialize(self, params):
-        self.SdkAppId = params.get("SdkAppId")
-        self.RoomId = params.get("RoomId")
-        self.OperationType = params.get("OperationType")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyRoomInfoResponse(AbstractModel):
-    """ModifyRoomInfo返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Result: 操作结果, 0成功, 非0失败
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Result: int
-        :param ErrMsg: 错误信息
-注意：此字段可能返回 null，表示取不到有效值。
-        :type ErrMsg: str
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Result = None
-        self.ErrMsg = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.Result = params.get("Result")
-        self.ErrMsg = params.get("ErrMsg")
-        self.RequestId = params.get("RequestId")
-
-
 class ModifyUserMicStatusRequest(AbstractModel):
     """ModifyUserMicStatus请求参数结构体
 
@@ -1705,6 +1697,31 @@ class ModifyUserMicStatusResponse(AbstractModel):
         self.Result = params.get("Result")
         self.ErrMsg = params.get("ErrMsg")
         self.RequestId = params.get("RequestId")
+
+
+class OverseaTextStatisticsItem(AbstractModel):
+    """海外转文本用量数据
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 统计值，单位：秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: float
+        """
+        self.Data = None
+
+
+    def _deserialize(self, params):
+        self.Data = params.get("Data")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class RealTimeSpeechStatisticsItem(AbstractModel):
@@ -1770,6 +1787,31 @@ class RealtimeSpeechConf(AbstractModel):
     def _deserialize(self, params):
         self.Status = params.get("Status")
         self.Quality = params.get("Quality")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RealtimeTextStatisticsItem(AbstractModel):
+    """实时语音转文本用量数据
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 统计值，单位：秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: float
+        """
+        self.Data = None
+
+
+    def _deserialize(self, params):
+        self.Data = params.get("Data")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2060,6 +2102,31 @@ class StatisticsItem(AbstractModel):
         
 
 
+class StreamTextStatisticsItem(AbstractModel):
+    """流式转文本用量数据
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 统计值，单位：秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: float
+        """
+        self.Data = None
+
+
+    def _deserialize(self, params):
+        self.Data = params.get("Data")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Tag(AbstractModel):
     """标签列表
 
@@ -2292,7 +2359,7 @@ class VoiceFilterStatisticsItem(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Duration: 语音过滤总时长
+        :param Duration: 语音过滤总时长，单位为min
         :type Duration: int
         """
         self.Duration = None

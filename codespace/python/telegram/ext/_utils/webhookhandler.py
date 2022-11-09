@@ -25,6 +25,8 @@ from ssl import SSLContext
 from types import TracebackType
 from typing import TYPE_CHECKING, Optional, Type
 
+# Instead of checking for ImportError here, we do that in `updater.py`, where we import from
+# this module. Doing it here would be tricky, as the classes below subclass tornado classes
 import tornado.web
 from tornado.httpserver import HTTPServer
 
@@ -142,7 +144,11 @@ class TelegramHandler(tornado.web.RequestHandler):
             )
 
         if update:
-            self._logger.debug("Received Update with ID %d on Webhook", update.update_id)
+            self._logger.debug(
+                "Received Update with ID %d on Webhook",
+                # For some reason pylint thinks update is a general TelegramObject
+                update.update_id,  # pylint: disable=no-member
+            )
 
             # handle arbitrary callback data, if necessary
             if isinstance(self.bot, ExtBot):

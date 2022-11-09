@@ -158,6 +158,9 @@ INVALIDPARAMETER_ERRORTAGOVERLIMIT = 'InvalidParameter.ErrorTagOverLimit'
 # 无效的TCR请求。
 INVALIDPARAMETER_ERRORTCRINVALIDPARAMETER = 'InvalidParameter.ErrorTcrInvalidParameter'
 
+# 复制实例已存在。
+INVALIDPARAMETER_REPLICATIONEXISTS = 'InvalidParameter.ReplicationExists'
+
 # 该地域不支持创建实例。
 INVALIDPARAMETER_UNSUPPORTEDREGION = 'InvalidParameter.UnsupportedRegion'
 
@@ -217,3 +220,27 @@ UNKNOWNPARAMETER = 'UnknownParameter'
 
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'
+
+# 创建私有域失败。
+UNSUPPORTEDOPERATION_CREATEPRIVATEZONE = 'UnsupportedOperation.CreatePrivateZone'
+
+# 创建私有域记录失败。
+UNSUPPORTEDOPERATION_CREATEPRIVATEZONERECORD = 'UnsupportedOperation.CreatePrivateZoneRecord'
+
+# 删除私有域记录失败。
+UNSUPPORTEDOPERATION_DELETEPRIVATEZONERECORD = 'UnsupportedOperation.DeletePrivateZoneRecord'
+
+# 查询私有域列表失败。
+UNSUPPORTEDOPERATION_DESCRIBEPRIVATEZONELIST = 'UnsupportedOperation.DescribePrivateZoneList'
+
+# 查询私有域记录列表失败。
+UNSUPPORTEDOPERATION_DESCRIBEPRIVATEZONERECORDLIST = 'UnsupportedOperation.DescribePrivateZoneRecordList'
+
+# 个人版实例用户未初始化。
+UNSUPPORTEDOPERATION_ERRNOUSERINITIALIZED = 'UnsupportedOperation.ErrNoUserInitialized'
+
+# 修改私有域记录失败。
+UNSUPPORTEDOPERATION_MODIFYPRIVATEZONERECORD = 'UnsupportedOperation.ModifyPrivateZoneRecord'
+
+# 修改vpc与私有域关联关系失败。
+UNSUPPORTEDOPERATION_MODIFYPRIVATEZONEVPC = 'UnsupportedOperation.ModifyPrivateZoneVpc'

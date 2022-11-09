@@ -29,6 +29,9 @@ INTERNALERROR_CREATECONFIGDATAERROR = 'InternalError.CreateConfigDataError'
 # 底层集群创建失败。
 INTERNALERROR_CREATEEKSCLUSTERERROR = 'InternalError.CreateEksClusterError'
 
+# 创建 LogConfig 错误。
+INTERNALERROR_CREATELOGCONFIGERROR = 'InternalError.CreateLogConfigError'
+
 # 创建服务失败。
 INTERNALERROR_CREATESERVICEERROR = 'InternalError.CreateServiceError'
 
@@ -37,6 +40,9 @@ INTERNALERROR_DEFAULTINTERNALERROR = 'InternalError.DefaultInternalError'
 
 # 删除 ingress 失败。
 INTERNALERROR_DELETEINGRESSERROR = 'InternalError.DeleteIngressError'
+
+# 删除 LogConfig 错误。
+INTERNALERROR_DELETELOGCONFIGERROR = 'InternalError.DeleteLogConfigError'
 
 # 删除应用失败。
 INTERNALERROR_DELETESERVICEERROR = 'InternalError.DeleteServiceError'
@@ -53,6 +59,12 @@ INTERNALERROR_DESCRIBECONFIGDATALISTERROR = 'InternalError.DescribeConfigDataLis
 # 查询 ingress 失败。
 INTERNALERROR_DESCRIBEINGRESSERROR = 'InternalError.DescribeIngressError'
 
+# 查询 LogConfig 错误。
+INTERNALERROR_DESCRIBELOGCONFIGERROR = 'InternalError.DescribeLogConfigError'
+
+# 查询 LogConfig 列表错误。
+INTERNALERROR_DESCRIBELOGCONFIGLISTERROR = 'InternalError.DescribeLogConfigListError'
+
 # 查询实例信息失败。
 INTERNALERROR_DESCRIBERUNPODLISTERROR = 'InternalError.DescribeRunPodListError'
 
@@ -68,11 +80,17 @@ INTERNALERROR_DESCRIBESERVICELISTERROR = 'InternalError.DescribeServiceListError
 # 修改配置失败。
 INTERNALERROR_MODIFYCONFIGDATAERROR = 'InternalError.ModifyConfigDataError'
 
+# 修改 LogConfig 错误。
+INTERNALERROR_MODIFYLOGCONFIGERROR = 'InternalError.ModifyLogConfigError'
+
 # 重启失败。
 INTERNALERROR_RESTARTAPPLICATIONERROR = 'InternalError.RestartApplicationError'
 
 # 停止应用失败。
 INTERNALERROR_STOPAPPLICATIONERROR = 'InternalError.StopApplicationError'
+
+# 调用标签接口异常。
+INTERNALERROR_TAGINTERFACEERROR = 'InternalError.TagInterfaceError'
 
 # 更新 ingress 失败。
 INTERNALERROR_UPDATEINGRESSERROR = 'InternalError.UpdateIngressError'
@@ -107,11 +125,17 @@ INVALIDPARAMETERVALUE_APPLICATIONSERVICEALREADYEXIST = 'InvalidParameterValue.Ap
 # 没有找到该访问方式。
 INVALIDPARAMETERVALUE_APPLICATIONSERVICENOTFOUND = 'InvalidParameterValue.ApplicationServiceNotFound'
 
+# 请至少启用一种弹性规则。
+INVALIDPARAMETERVALUE_ATLEASTONESCALERRULESHOULDBEAPPLIED = 'InvalidParameterValue.AtLeastOneScalerRuleShouldBeApplied'
+
 # 只支持绑定一种弹性伸缩。
 INVALIDPARAMETERVALUE_AUTOSCALERLARGERTHANONE = 'InvalidParameterValue.AutoScalerLargerThanOne'
 
 # 不能覆盖其他应用的访问方式。
 INVALIDPARAMETERVALUE_CANNOTOVERWRITEOTHERAPPLICATIONSERVICE = 'InvalidParameterValue.CannotOverWriteOtherApplicationService'
+
+# 不能同时使用全量以及单条更新。
+INVALIDPARAMETERVALUE_CANNOTUPDATESERVICEBYBOTHMETHODS = 'InvalidParameterValue.CannotUpdateServiceByBothMethods'
 
 # 配置已存在。
 INVALIDPARAMETERVALUE_CONFIGDATAALREADYEXIST = 'InvalidParameterValue.ConfigDataAlreadyExist'
@@ -122,14 +146,23 @@ INVALIDPARAMETERVALUE_CONFIGDATAINVALID = 'InvalidParameterValue.ConfigDataInval
 # 定时弹性伸缩目标实例数不合法。
 INVALIDPARAMETERVALUE_CRONHPAREPLICASINVALID = 'InvalidParameterValue.CronHpaReplicasInvalid'
 
+# 每日环境创建次数超过上限。
+INVALIDPARAMETERVALUE_DAILYCREATENAMESPACEREACHMAXIMUM = 'InvalidParameterValue.DailyCreateNamespaceReachMaximum'
+
 # 弹性伸缩启用中，请停用后再删除。
 INVALIDPARAMETERVALUE_DISABLESCALERBEFOREDELETE = 'InvalidParameterValue.DisableScalerBeforeDelete'
+
+# 环境名称不可变。
+INVALIDPARAMETERVALUE_ENVIRONMENTNAMEIMMUTABLE = 'InvalidParameterValue.EnvironmentNameImmutable'
 
 # 弹性伸缩指标不合法。
 INVALIDPARAMETERVALUE_HPAMETRICSINVALID = 'InvalidParameterValue.HpaMetricsInvalid'
 
 # 弹性伸缩最小值/最大值不合法。
 INVALIDPARAMETERVALUE_HPAMINMAXINVALID = 'InvalidParameterValue.HpaMinMaxInvalid'
+
+# 访问配置重定向需要启用 HTTPS。
+INVALIDPARAMETERVALUE_INGRESSREWRITEREQUIREDHTTPSENABLE = 'InvalidParameterValue.IngressRewriteRequiredHttpsEnable'
 
 # 无效的定时伸缩周期。
 INVALIDPARAMETERVALUE_INVALIDCRONSCALERPERIOD = 'InvalidParameterValue.InvalidCronScalerPeriod'
@@ -143,14 +176,23 @@ INVALIDPARAMETERVALUE_INVALIDEKSSERVICETYPE = 'InvalidParameterValue.InvalidEksS
 # 环境变量名非法，要求有由字母、数字，"."，"_" 和 "-" 组成，不能由数字开头。
 INVALIDPARAMETERVALUE_INVALIDENVNAME = 'InvalidParameterValue.InvalidEnvName'
 
+# 环境变量长度不能超过1000。
+INVALIDPARAMETERVALUE_INVALIDENVVALUE = 'InvalidParameterValue.InvalidEnvValue'
+
 # 挂载路径不合法，不能为 /app。
 INVALIDPARAMETERVALUE_INVALIDMOUNTPATH = 'InvalidParameterValue.InvalidMountPath'
 
 # 应用名格式非法。
 INVALIDPARAMETERVALUE_INVALIDSERVICENAME = 'InvalidParameterValue.InvalidServiceName'
 
+# 无法识别租户信息。
+INVALIDPARAMETERVALUE_INVALIDTENANTINFO = 'InvalidParameterValue.InvalidTenantInfo'
+
 # JDK 版本不能为空。
 INVALIDPARAMETERVALUE_JDKVERSIONREQUIRED = 'InvalidParameterValue.JdkVersionRequired'
+
+# LogConfig 配置已存在。
+INVALIDPARAMETERVALUE_LOGCONFIGALREADYEXIST = 'InvalidParameterValue.LogConfigAlreadyExist'
 
 # 必须提供PortMapping规则。
 INVALIDPARAMETERVALUE_MUSTPROVIDEPORTMAPPINGRULES = 'InvalidParameterValue.MustProvidePortMappingRules'
@@ -206,6 +248,12 @@ INVALIDPARAMETERVALUE_SERVICEPODREACHMAXIMUM = 'InvalidParameterValue.ServicePod
 # 应用创建失败，达到上限。
 INVALIDPARAMETERVALUE_SERVICEREACHMAXIMUM = 'InvalidParameterValue.ServiceReachMaximum'
 
+# 服务名使用了保留后缀。
+INVALIDPARAMETERVALUE_SERVICEUSERESERVESUFFIX = 'InvalidParameterValue.ServiceUseReserveSuffix'
+
+# 企业版 TCR 实例名称不合法。
+INVALIDPARAMETERVALUE_TCRENTINSTANCENAMENOTVALID = 'InvalidParameterValue.TcrEntInstanceNameNotValid'
+
 # 不是合法的TEM ID。
 INVALIDPARAMETERVALUE_TEMIDINVALID = 'InvalidParameterValue.TemIdInvalid'
 
@@ -226,6 +274,9 @@ MISSINGPARAMETER_DEPLOYMODENULL = 'MissingParameter.DeployModeNull'
 
 # 部署版本不能为空。
 MISSINGPARAMETER_DEPLOYVERSIONNULL = 'MissingParameter.DeployVersionNull'
+
+# 环境名称不能为空。
+MISSINGPARAMETER_ENVIRONMENTNAMENULL = 'MissingParameter.EnvironmentNameNull'
 
 # logset 和 topic 不能为空。
 MISSINGPARAMETER_LOGSETORTOPICNULL = 'MissingParameter.LogsetOrTopicNull'
@@ -248,6 +299,9 @@ MISSINGPARAMETER_SERVICEIDNULL = 'MissingParameter.ServiceIdNull'
 # 镜像仓库还未就绪。
 MISSINGPARAMETER_SVCREPONOTREADY = 'MissingParameter.SvcRepoNotReady'
 
+# 企业版 TCR 实例名称不能为空。
+MISSINGPARAMETER_TCRENTINSTANCENAMENULL = 'MissingParameter.TcrEntInstanceNameNull'
+
 # vpc内访问类型子网ID不能为空。
 MISSINGPARAMETER_VPCSERVICESUBNETNULL = 'MissingParameter.VpcServiceSubnetNull'
 
@@ -257,11 +311,17 @@ OPERATIONDENIED_BALANCENOTENOUGH = 'OperationDenied.BalanceNotEnough'
 # 账号欠费状态下不支持该操作，请冲正后重试。
 OPERATIONDENIED_RESOURCEISOLATED = 'OperationDenied.ResourceIsolated'
 
+# 环境已锁定。
+RESOURCEINUSE_ENVIRONMENTALREADYLOCKED = 'ResourceInUse.EnvironmentAlreadyLocked'
+
 # 你操作的资源已被其他操作占用，请稍后重试。
 RESOURCEINUSE_RESOURCEALREADYLOCKED = 'ResourceInUse.ResourceAlreadyLocked'
 
 # 资源已绑定。
 RESOURCEINUSE_RESOURCEALREADYUSED = 'ResourceInUse.ResourceAlreadyUsed'
+
+# 服务部署中。
+RESOURCEINUSE_SERVICEDEPLOYING = 'ResourceInUse.ServiceDeploying'
 
 # 未提供该接口。
 RESOURCENOTFOUND_INTERFACENOTFOUND = 'ResourceNotFound.InterfaceNotFound'

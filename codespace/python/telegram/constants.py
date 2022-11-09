@@ -66,6 +66,7 @@ __all__ = [
     "UpdateType",
 ]
 
+import sys
 from typing import List, NamedTuple
 
 from telegram._utils.enum import IntEnum, StringEnum
@@ -334,6 +335,13 @@ class FileSizeLimit(IntEnum):
     """:obj:`int`: Bots can download files of up to 20MB in size."""
     FILESIZE_UPLOAD = int(50e6)  # (50MB)
     """:obj:`int`: Bots can upload non-photo files of up to 50MB in size."""
+    FILESIZE_UPLOAD_LOCAL_MODE = int(2e9)  # (2000MB)
+    """:obj:`int`: Bots can upload non-photo files of up to 2000MB in size when using a local bot
+       API server.
+    """
+    FILESIZE_DOWNLOAD_LOCAL_MODE = sys.maxsize
+    """:obj:`int`: Bots can download files without a size limit when using a local bot API server.
+    """
     PHOTOSIZE_UPLOAD = int(10e6)  # (10MB)
     """:obj:`int`: Bots can upload photo files of up to 10MB in size."""
 
@@ -647,6 +655,8 @@ class MessageLimit(IntEnum):
     CAPTION_LENGTH = 1024
     """:obj:`int`: Maximum number of characters for a message caption."""
     # constants above this line are tested
+    DEEP_LINK_LENGTH = 64
+    """:obj:`int`: Maximum number of characters for a deep link."""
     MESSAGE_ENTITIES = 100
     """:obj:`int`: Maximum number of entities that can be displayed in a message. Further entities
     will simply be ignored by Telegram.

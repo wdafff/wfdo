@@ -702,6 +702,69 @@ class DescribeExternalTrtcMeasureResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeMixTranscodingUsageRequest(AbstractModel):
+    """DescribeMixTranscodingUsage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 查询开始时间，格式为YYYY-MM-DD。
+        :type StartTime: str
+        :param EndTime: 查询结束时间，格式为YYYY-MM-DD。
+单次查询统计区间最多不能超过31天。
+        :type EndTime: str
+        :param SdkAppId: TRTC的SdkAppId，和房间所对应的SdkAppId相同。如果没有这个参数，返回用户下全部实时音视频应用的汇总。
+        :type SdkAppId: int
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.SdkAppId = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.SdkAppId = params.get("SdkAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeMixTranscodingUsageResponse(AbstractModel):
+    """DescribeMixTranscodingUsage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UsageKey: 用量类型，与UsageValue中各个位置的值对应。
+        :type UsageKey: list of str
+        :param UsageList: 各个时间点用量明细。
+        :type UsageList: list of TrtcUsage
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.UsageKey = None
+        self.UsageList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.UsageKey = params.get("UsageKey")
+        if params.get("UsageList") is not None:
+            self.UsageList = []
+            for item in params.get("UsageList"):
+                obj = TrtcUsage()
+                obj._deserialize(item)
+                self.UsageList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribePictureRequest(AbstractModel):
     """DescribePicture请求参数结构体
 
@@ -824,6 +887,136 @@ class DescribeRecordStatisticResponse(AbstractModel):
                 obj = SdkAppIdRecordUsage()
                 obj._deserialize(item)
                 self.SdkAppIdUsages.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeRecordingUsageRequest(AbstractModel):
+    """DescribeRecordingUsage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 查询开始时间，格式为YYYY-MM-DD。
+        :type StartTime: str
+        :param EndTime: 查询结束时间，格式为YYYY-MM-DD。
+单次查询统计区间最多不能超过31天。
+        :type EndTime: str
+        :param MixType: 查询单流录制或合流录制，值为"single"或"multi"。
+        :type MixType: str
+        :param SdkAppId: TRTC的SdkAppId，和房间所对应的SdkAppId相同。如果没有这个参数，返回用户下全部实时音视频应用的汇总。
+        :type SdkAppId: int
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.MixType = None
+        self.SdkAppId = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.MixType = params.get("MixType")
+        self.SdkAppId = params.get("SdkAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRecordingUsageResponse(AbstractModel):
+    """DescribeRecordingUsage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UsageKey: 用量类型，与UsageValue中各个位置的值对应。
+        :type UsageKey: list of str
+        :param UsageList: 各个时间点用量明细。
+        :type UsageList: list of TrtcUsage
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.UsageKey = None
+        self.UsageList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.UsageKey = params.get("UsageKey")
+        if params.get("UsageList") is not None:
+            self.UsageList = []
+            for item in params.get("UsageList"):
+                obj = TrtcUsage()
+                obj._deserialize(item)
+                self.UsageList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeRelayUsageRequest(AbstractModel):
+    """DescribeRelayUsage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 查询开始时间，格式为YYYY-MM-DD。
+        :type StartTime: str
+        :param EndTime: 查询结束时间，格式为YYYY-MM-DD。
+单次查询统计区间最多不能超过31天。
+        :type EndTime: str
+        :param SdkAppId: TRTC的SdkAppId，和房间所对应的SdkAppId相同。如果没有这个参数，返回用户下全部实时音视频应用的汇总。
+        :type SdkAppId: int
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.SdkAppId = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.SdkAppId = params.get("SdkAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRelayUsageResponse(AbstractModel):
+    """DescribeRelayUsage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UsageKey: 用量类型，与UsageValue中各个位置的值对应。
+        :type UsageKey: list of str
+        :param UsageList: 各个时间点用量明细。
+        :type UsageList: list of TrtcUsage
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.UsageKey = None
+        self.UsageList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.UsageKey = params.get("UsageKey")
+        if params.get("UsageList") is not None:
+            self.UsageList = []
+            for item in params.get("UsageList"):
+                obj = TrtcUsage()
+                obj._deserialize(item)
+                self.UsageList.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -970,6 +1163,250 @@ class DescribeScaleInfoResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeTRTCMarketQualityMetricDataRequest(AbstractModel):
+    """DescribeTRTCMarketQualityMetricData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 用户SdkAppId（如：1400xxxxxx）
+        :type SdkAppId: str
+        :param StartTime: 查询开始时间，格式为YYYY-MM-DD。（查询时间范围根据监控仪表盘功能版本而定，【基础版】可查近30天，【进阶版】可查近60天）
+        :type StartTime: str
+        :param EndTime: 查询结束时间，格式为YYYY-MM-DD。
+        :type EndTime: str
+        :param Period: 返回数据的粒度，支持设为以下值：
+d：按天。此时返回查询时间范围内 UTC 时间为零点的数据。
+h：按小时。此时返回查询时间范围内 UTC 时间为整小时的数据。
+        :type Period: str
+        """
+        self.SdkAppId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Period = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Period = params.get("Period")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTRTCMarketQualityMetricDataResponse(AbstractModel):
+    """DescribeTRTCMarketQualityMetricData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: TRTC监控数据出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.trtc.v20190722.models.TRTCDataResp`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = TRTCDataResp()
+            self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTRTCMarketScaleMetricDataRequest(AbstractModel):
+    """DescribeTRTCMarketScaleMetricData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 用户SdkAppId
+        :type SdkAppId: str
+        :param StartTime: 查询开始时间，格式为YYYY-MM-DD。（查询时间范围根据监控仪表盘功能版本而定，【基础版】可查近30天，【进阶版】可查近60天）
+        :type StartTime: str
+        :param EndTime: 查询结束时间，格式为YYYY-MM-DD。
+        :type EndTime: str
+        :param Period: 返回数据的粒度，支持设为以下值：
+d：按天。此时返回查询时间范围内 UTC 时间为零点的数据。
+h：按小时。此时返回查询时间范围内 UTC 时间为整小时的数据。
+        :type Period: str
+        """
+        self.SdkAppId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Period = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Period = params.get("Period")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTRTCMarketScaleMetricDataResponse(AbstractModel):
+    """DescribeTRTCMarketScaleMetricData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: TRTC监控数据出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.trtc.v20190722.models.TRTCDataResp`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = TRTCDataResp()
+            self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTRTCRealTimeQualityMetricDataRequest(AbstractModel):
+    """DescribeTRTCRealTimeQualityMetricData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 用户SdkAppId（如：1400xxxxxx）
+        :type SdkAppId: str
+        :param StartTime: 开始时间，unix时间戳，单位：秒（查询时间范围根据监控仪表盘功能版本而定，基础版可查近3小时，进阶版可查近12小时）
+        :type StartTime: int
+        :param EndTime: 结束时间，unix时间戳，单位：秒
+        :type EndTime: int
+        :param RoomId: 房间ID
+        :type RoomId: str
+        """
+        self.SdkAppId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.RoomId = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.RoomId = params.get("RoomId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTRTCRealTimeQualityMetricDataResponse(AbstractModel):
+    """DescribeTRTCRealTimeQualityMetricData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: TRTC监控数据出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.trtc.v20190722.models.TRTCDataResp`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = TRTCDataResp()
+            self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTRTCRealTimeScaleMetricDataRequest(AbstractModel):
+    """DescribeTRTCRealTimeScaleMetricData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 用户SdkAppId（如：1400xxxxxx）
+        :type SdkAppId: str
+        :param StartTime: 开始时间，unix时间戳，单位：秒（查询时间范围根据监控仪表盘功能版本而定，基础版可查近3小时，进阶版可查近12小时）
+        :type StartTime: int
+        :param EndTime: 结束时间，unix时间戳，单位：秒
+        :type EndTime: int
+        :param RoomId: 房间ID
+        :type RoomId: str
+        """
+        self.SdkAppId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.RoomId = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.RoomId = params.get("RoomId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTRTCRealTimeScaleMetricDataResponse(AbstractModel):
+    """DescribeTRTCRealTimeScaleMetricData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: TRTC监控数据出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.trtc.v20190722.models.TRTCDataResp`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = TRTCDataResp()
+            self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeTrtcMcuTranscodeTimeRequest(AbstractModel):
     """DescribeTrtcMcuTranscodeTime请求参数结构体
 
@@ -1026,6 +1463,69 @@ class DescribeTrtcMcuTranscodeTimeResponse(AbstractModel):
                 obj = OneSdkAppIdTranscodeTimeUsagesInfo()
                 obj._deserialize(item)
                 self.Usages.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTrtcUsageRequest(AbstractModel):
+    """DescribeTrtcUsage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 查询开始时间，格式为YYYY-MM-DD。
+        :type StartTime: str
+        :param EndTime: 查询结束时间，格式为YYYY-MM-DD。
+单次查询统计区间最多不能超过31天。
+        :type EndTime: str
+        :param SdkAppId: TRTC的SdkAppId，和房间所对应的SdkAppId相同。如果没有这个参数，返回用户下全部实时音视频应用的汇总。
+        :type SdkAppId: int
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.SdkAppId = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.SdkAppId = params.get("SdkAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTrtcUsageResponse(AbstractModel):
+    """DescribeTrtcUsage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UsageKey: 用量类型，与UsageValue中各个位置的值对应。
+        :type UsageKey: list of str
+        :param UsageList: 各个时间点用量明细。
+        :type UsageList: list of TrtcUsage
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.UsageKey = None
+        self.UsageList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.UsageKey = params.get("UsageKey")
+        if params.get("UsageList") is not None:
+            self.UsageList = []
+            for item in params.get("UsageList"):
+                obj = TrtcUsage()
+                obj._deserialize(item)
+                self.UsageList.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -2484,12 +2984,15 @@ class SdkAppIdTrtcMcuTranscodeTimeUsage(AbstractModel):
         :type VideoTimeHd: int
         :param VideoTimeFhd: 视频时长-全高清FHD，单位：秒。
         :type VideoTimeFhd: int
+        :param Flux: 带宽，单位：Mbps。
+        :type Flux: float
         """
         self.TimeKey = None
         self.AudioTime = None
         self.VideoTimeSd = None
         self.VideoTimeHd = None
         self.VideoTimeFhd = None
+        self.Flux = None
 
 
     def _deserialize(self, params):
@@ -2498,6 +3001,37 @@ class SdkAppIdTrtcMcuTranscodeTimeUsage(AbstractModel):
         self.VideoTimeSd = params.get("VideoTimeSd")
         self.VideoTimeHd = params.get("VideoTimeHd")
         self.VideoTimeFhd = params.get("VideoTimeFhd")
+        self.Flux = params.get("Flux")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SeriesInfo(AbstractModel):
+    """SeriesInfo类型
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Columns: 数据列
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Columns: list of str
+        :param Values: 数据值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Values: list of int
+        """
+        self.Columns = None
+        self.Values = None
+
+
+    def _deserialize(self, params):
+        self.Columns = params.get("Columns")
+        self.Values = params.get("Values")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2888,6 +3422,46 @@ class SubscribeStreamUserIds(AbstractModel):
         
 
 
+class TRTCDataResp(AbstractModel):
+    """TRTC数据大盘/实时监控 API接口数据出参
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StatementID: StatementID值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StatementID: int
+        :param Series: Series数据
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Series: list of SeriesInfo
+        :param Total: Total值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Total: int
+        """
+        self.StatementID = None
+        self.Series = None
+        self.Total = None
+
+
+    def _deserialize(self, params):
+        self.StatementID = params.get("StatementID")
+        if params.get("Series") is not None:
+            self.Series = []
+            for item in params.get("Series"):
+                obj = SeriesInfo()
+                obj._deserialize(item)
+                self.Series.append(obj)
+        self.Total = params.get("Total")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TencentVod(AbstractModel):
     """腾讯云点播相关参数。
 
@@ -3020,6 +3594,34 @@ class TrtcTimeNewUsage(AbstractModel):
         self.Bandwidth = params.get("Bandwidth")
         self.Video2KTime = params.get("Video2KTime")
         self.Video4KTime = params.get("Video4KTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TrtcUsage(AbstractModel):
+    """实时音视频用量在某一时间段的统计信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TimeKey: 时间点，格式为YYYY-MM-DD HH:mm:ss。多天查询时，HH:mm:ss为00:00:00。
+        :type TimeKey: str
+        :param UsageValue: 用量数组。每个数值含义与UsageKey对应。单位：分钟。
+        :type UsageValue: list of float
+        """
+        self.TimeKey = None
+        self.UsageValue = None
+
+
+    def _deserialize(self, params):
+        self.TimeKey = params.get("TimeKey")
+        self.UsageValue = params.get("UsageValue")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

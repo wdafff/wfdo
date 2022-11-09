@@ -18,6 +18,54 @@ import warnings
 from tencentcloud.common.abstract_model import AbstractModel
 
 
+class AddMachineGroupInfoRequest(AbstractModel):
+    """AddMachineGroupInfo请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 机器组ID
+        :type GroupId: str
+        :param MachineGroupType: 机器组类型
+目前type支持 ip 和 label
+        :type MachineGroupType: :class:`tencentcloud.cls.v20201016.models.MachineGroupTypeInfo`
+        """
+        self.GroupId = None
+        self.MachineGroupType = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        if params.get("MachineGroupType") is not None:
+            self.MachineGroupType = MachineGroupTypeInfo()
+            self.MachineGroupType._deserialize(params.get("MachineGroupType"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AddMachineGroupInfoResponse(AbstractModel):
+    """AddMachineGroupInfo返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class AlarmAnalysisConfig(AbstractModel):
     """告警多维分析一些配置信息
 
@@ -683,6 +731,9 @@ class ConfigInfo(AbstractModel):
         r"""
         :param ConfigId: 采集规则配置ID
         :type ConfigId: str
+        :param Name: 采集规则配置名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
         :param LogFormat: 日志格式化方式
 注意：此字段可能返回 null，表示取不到有效值。
         :type LogFormat: str
@@ -710,6 +761,7 @@ class ConfigInfo(AbstractModel):
         :type UserDefineRule: str
         """
         self.ConfigId = None
+        self.Name = None
         self.LogFormat = None
         self.Path = None
         self.LogType = None
@@ -723,6 +775,7 @@ class ConfigInfo(AbstractModel):
 
     def _deserialize(self, params):
         self.ConfigId = params.get("ConfigId")
+        self.Name = params.get("Name")
         self.LogFormat = params.get("LogFormat")
         self.Path = params.get("Path")
         self.LogType = params.get("LogType")
@@ -1789,7 +1842,7 @@ class CreateTopicRequest(AbstractModel):
         :type MaxSplitPartitions: int
         :param StorageType: 日志主题的存储类型，可选值 hot（标准存储），cold（低频存储）；默认为hot。
         :type StorageType: str
-        :param Period: 生命周期，单位天，标准存储取值范围1~3600，低频存储取值范围7~3600天。取值为3640时代表永久保存
+        :param Period: 生命周期，单位天，标准存储取值范围1\~3600，低频存储取值范围7\~3600天。取值为3640时代表永久保存
         :type Period: int
         """
         self.LogsetId = None
@@ -2245,6 +2298,54 @@ class DeleteLogsetRequest(AbstractModel):
 
 class DeleteLogsetResponse(AbstractModel):
     """DeleteLogset返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteMachineGroupInfoRequest(AbstractModel):
+    """DeleteMachineGroupInfo请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 机器组ID
+        :type GroupId: str
+        :param MachineGroupType: 机器组类型
+目前type支持 ip 和 label
+        :type MachineGroupType: :class:`tencentcloud.cls.v20201016.models.MachineGroupTypeInfo`
+        """
+        self.GroupId = None
+        self.MachineGroupType = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        if params.get("MachineGroupType") is not None:
+            self.MachineGroupType = MachineGroupTypeInfo()
+            self.MachineGroupType._deserialize(params.get("MachineGroupType"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteMachineGroupInfoResponse(AbstractModel):
+    """DeleteMachineGroupInfo返回参数结构体
 
     """
 
@@ -3853,17 +3954,17 @@ class ExtractRuleInfo(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type JsonStandard: int
         :param Protocol: syslog传输协议，取值为tcp或者udp。
-该接口适用于：创建采集规则配置、修改采集规则配置
+该字段适用于：创建采集规则配置、修改采集规则配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type Protocol: str
         :param Address: syslog系统日志采集指定采集器监听的地址和端口 ，形式：[ip]:[port]。举例：127.0.0.1:9000
-该接口适用于：创建采集规则配置、修改采集规则配置
+该字段适用于：创建采集规则配置、修改采集规则配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type Address: str
         :param ParseProtocol: rfc3164：指定系统日志采集使用RFC3164协议解析日志。
 rfc5424：指定系统日志采集使用RFC5424协议解析日志。
 auto：自动匹配rfc3164或者rfc5424其中一种协议
-该接口适用于：创建采集规则配置、修改采集规则配置
+该字段适用于：创建采集规则配置、修改采集规则配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type ParseProtocol: str
         """
@@ -3984,8 +4085,8 @@ class FullTextInfo(AbstractModel):
         :param CaseSensitive: 是否大小写敏感
         :type CaseSensitive: bool
         :param Tokenizer: 全文索引的分词符，其中的每个字符代表一个分词符；
-仅支持英文符号及\n\t\r；
-推荐使用 @&?|#()='",;:<>[]{}/ \n\t\r\ 作为分词符；
+仅支持英文符号、\n\t\r及转义符\；
+注意：\n\t\r本身已被转义，直接使用双引号包裹即可作为入参，无需再次转义
         :type Tokenizer: str
         :param ContainZH: 是否包含中文
 注意：此字段可能返回 null，表示取不到有效值。
@@ -4451,17 +4552,21 @@ class LogsetInfo(AbstractModel):
         :type LogsetName: str
         :param CreateTime: 创建时间
         :type CreateTime: str
+        :param AssumerName: 云产品标识，日志集由其它云产品创建时，该字段会显示云产品名称，例如CDN、TKE
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AssumerName: str
         :param Tags: 日志集绑定的标签
 注意：此字段可能返回 null，表示取不到有效值。
         :type Tags: list of Tag
         :param TopicCount: 日志集下日志主题的数目
         :type TopicCount: int
-        :param RoleName: 若AssumerUin非空，则表示创建该日志集的服务方角色
+        :param RoleName: 若AssumerName非空，则表示创建该日志集的服务方角色
         :type RoleName: str
         """
         self.LogsetId = None
         self.LogsetName = None
         self.CreateTime = None
+        self.AssumerName = None
         self.Tags = None
         self.TopicCount = None
         self.RoleName = None
@@ -4471,6 +4576,7 @@ class LogsetInfo(AbstractModel):
         self.LogsetId = params.get("LogsetId")
         self.LogsetName = params.get("LogsetName")
         self.CreateTime = params.get("CreateTime")
+        self.AssumerName = params.get("AssumerName")
         if params.get("Tags") is not None:
             self.Tags = []
             for item in params.get("Tags"):
@@ -5896,6 +6002,12 @@ class SearchLogRequest(AbstractModel):
 为false时代表使用老的检索结果返回方式, 输出AnalysisResults和ColNames有效
 两种返回方式在编码格式上有少量区别，建议使用true
         :type UseNewAnalysis: bool
+        :param SamplingRate: 执行统计分析（Query中包含SQL）时，是否对原始日志先进行采样，再进行统计分析。
+0：自动采样;
+0～1：按指定采样率采样，例如0.02;
+1：不采样，即精确分析
+默认值为1
+        :type SamplingRate: float
         """
         self.TopicId = None
         self.From = None
@@ -5905,6 +6017,7 @@ class SearchLogRequest(AbstractModel):
         self.Context = None
         self.Sort = None
         self.UseNewAnalysis = None
+        self.SamplingRate = None
 
 
     def _deserialize(self, params):
@@ -5916,6 +6029,7 @@ class SearchLogRequest(AbstractModel):
         self.Context = params.get("Context")
         self.Sort = params.get("Sort")
         self.UseNewAnalysis = params.get("UseNewAnalysis")
+        self.SamplingRate = params.get("SamplingRate")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6251,6 +6365,9 @@ class TopicInfo(AbstractModel):
         :type PartitionCount: int
         :param Index: 是否开启索引
         :type Index: bool
+        :param AssumerName: 云产品标识，日志主题由其它云产品创建时，该字段会显示云产品名称，例如CDN、TKE
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AssumerName: str
         :param CreateTime: 创建时间
         :type CreateTime: str
         :param Status: 日主主题是否开启采集
@@ -6270,12 +6387,19 @@ class TopicInfo(AbstractModel):
         :param Period: 生命周期，单位天，可取值范围1~3600。取值为3640时代表永久保存
 注意：此字段可能返回 null，表示取不到有效值。
         :type Period: int
+        :param SubAssumerName: 云产品二级标识，日志主题由其它云产品创建时，该字段会显示云产品名称及其日志类型的二级分类，例如TKE-Audit、TKE-Event。部分云产品仅有云产品标识(AssumerName)，无该字段。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubAssumerName: str
+        :param Describes: 日志主题描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Describes: str
         """
         self.LogsetId = None
         self.TopicId = None
         self.TopicName = None
         self.PartitionCount = None
         self.Index = None
+        self.AssumerName = None
         self.CreateTime = None
         self.Status = None
         self.Tags = None
@@ -6283,6 +6407,8 @@ class TopicInfo(AbstractModel):
         self.MaxSplitPartitions = None
         self.StorageType = None
         self.Period = None
+        self.SubAssumerName = None
+        self.Describes = None
 
 
     def _deserialize(self, params):
@@ -6291,6 +6417,7 @@ class TopicInfo(AbstractModel):
         self.TopicName = params.get("TopicName")
         self.PartitionCount = params.get("PartitionCount")
         self.Index = params.get("Index")
+        self.AssumerName = params.get("AssumerName")
         self.CreateTime = params.get("CreateTime")
         self.Status = params.get("Status")
         if params.get("Tags") is not None:
@@ -6303,6 +6430,8 @@ class TopicInfo(AbstractModel):
         self.MaxSplitPartitions = params.get("MaxSplitPartitions")
         self.StorageType = params.get("StorageType")
         self.Period = params.get("Period")
+        self.SubAssumerName = params.get("SubAssumerName")
+        self.Describes = params.get("Describes")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6371,9 +6500,9 @@ class ValueInfo(AbstractModel):
         :param Type: 字段类型，目前支持的类型有：long、text、double
         :type Type: str
         :param Tokenizer: 字段的分词符，其中的每个字符代表一个分词符；
-仅支持英文符号及\n\t\r；
+仅支持英文符号、\n\t\r及转义符\；
 long及double类型字段需为空；
-text类型字段推荐使用 @&?|#()='",;:<>[]{}/ \n\t\r\\ 作为分词符；
+注意：\n\t\r本身已被转义，直接使用双引号包裹即可作为入参，无需再次转义
         :type Tokenizer: str
         :param SqlFlag: 字段是否开启分析功能
         :type SqlFlag: bool

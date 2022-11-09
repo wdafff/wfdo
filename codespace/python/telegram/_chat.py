@@ -19,7 +19,8 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram Chat."""
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, ClassVar, List, Optional, Tuple, Union
+from html import escape
+from typing import TYPE_CHECKING, ClassVar, List, Optional, Tuple, Union
 
 from telegram import constants
 from telegram._chatlocation import ChatLocation
@@ -30,6 +31,9 @@ from telegram._telegramobject import TelegramObject
 from telegram._utils import enum
 from telegram._utils.defaultvalue import DEFAULT_NONE
 from telegram._utils.types import DVInput, FileInput, JSONDict, ODVInput, ReplyMarkup
+from telegram.helpers import escape_markdown
+from telegram.helpers import mention_html as helpers_mention_html
+from telegram.helpers import mention_markdown as helpers_mention_markdown
 
 if TYPE_CHECKING:
     from telegram import (
@@ -73,6 +77,11 @@ class Chat(TelegramObject):
           ``api_kwargs``. Use a named argument for those,
           and notice that some positional arguments changed position as a result.
 
+    .. versionchanged:: 20.0
+        Removed the attribute ``all_members_are_administrators``. As long as Telegram provides
+        this field for backwards compatibility, it is available through
+        :attr:`~telegram.TelegramObject.api_kwargs`.
+
     Args:
         id (:obj:`int`): Unique identifier for this chat. This number may be greater than 32 bits
             and some programming languages may have difficulty/silent defects in interpreting it.
@@ -114,7 +123,7 @@ class Chat(TelegramObject):
             be forwarded to other chats. Returned only in :meth:`telegram.Bot.get_chat`.
 
             .. versionadded:: 13.9
-        bot (:class:`telegram.Bot`, optional): The Bot to use for instance methods.
+
         sticker_set_name (:obj:`str`, optional): For supergroups, name of group sticker set.
             Returned only in :meth:`telegram.Bot.get_chat`.
         can_set_sticker_set (:obj:`bool`, optional): :obj:`True`, if the bot can change group the
@@ -139,9 +148,6 @@ class Chat(TelegramObject):
             in the private chat. Returned only in :meth:`telegram.Bot.get_chat`.
 
             .. versionadded:: 20.0
-
-        **kwargs (:obj:`dict`): Arbitrary keyword arguments.
-
     Attributes:
         id (:obj:`int`): Unique identifier for this chat.
         type (:obj:`str`): Type of chat.
@@ -220,7 +226,6 @@ class Chat(TelegramObject):
         "title",
         "photo",
         "linked_chat_id",
-        "all_members_are_administrators",
         "message_auto_delete_time",
         "has_protected_content",
         "has_private_forwards",
@@ -245,13 +250,12 @@ class Chat(TelegramObject):
 
     def __init__(
         self,
-        id: int,  # pylint: disable=invalid-name
+        id: int,
         type: str,
         title: str = None,
         username: str = None,
         first_name: str = None,
         last_name: str = None,
-        bot: "Bot" = None,
         photo: ChatPhoto = None,
         description: str = None,
         invite_link: str = None,
@@ -269,8 +273,10 @@ class Chat(TelegramObject):
         join_to_send_messages: bool = None,
         join_by_request: bool = None,
         has_restricted_voice_and_video_messages: bool = None,
-        **_kwargs: Any,
+        *,
+        api_kwargs: JSONDict = None,
     ):
+        super().__init__(api_kwargs=api_kwargs)
         # Required
         self.id = id  # pylint: disable=invalid-name
         self.type = enum.get_member(constants.ChatType, type, type)
@@ -279,8 +285,6 @@ class Chat(TelegramObject):
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
-        # TODO: Remove (also from tests), when Telegram drops this completely
-        self.all_members_are_administrators = _kwargs.get("all_members_are_administrators")
         self.photo = photo
         self.bio = bio
         self.has_private_forwards = has_private_forwards
@@ -301,7 +305,6 @@ class Chat(TelegramObject):
         self.join_by_request = join_by_request
         self.has_restricted_voice_and_video_messages = has_restricted_voice_and_video_messages
 
-        self.set_bot(bot)
         self._id_attrs = (self.id,)
 
     @property
@@ -346,7 +349,116 @@ class Chat(TelegramObject):
         data["permissions"] = ChatPermissions.de_json(data.get("permissions"), bot)
         data["location"] = ChatLocation.de_json(data.get("location"), bot)
 
-        return cls(bot=bot, **data)
+        api_kwargs = {}
+        # This is a deprecated field that TG still returns for backwards compatibility
+        # Let's filter it out to speed up the de-json process
+        if "all_members_are_administrators" in data:
+            api_kwargs["all_members_are_administrators"] = data.pop(
+                "all_members_are_administrators"
+            )
+
+        return super()._de_json(data=data, bot=bot, api_kwargs=api_kwargs)
+
+    def mention_markdown(self, name: str = None) -> str:
+        """
+        Note:
+            :tg-const:`telegram.constants.ParseMode.MARKDOWN` is a legacy mode, retained by
+            Telegram for backward compatibility. You should use :meth:`mention_markdown_v2`
+            instead.
+
+        .. versionadded:: 20.0
+
+        Args:
+            name (:obj:`str`): The name used as a link for the chat. Defaults to :attr:`full_name`.
+
+        Returns:
+            :obj:`str`: The inline mention for the chat as markdown (version 1).
+
+        Raises:
+            :exc:`TypeError`: If the chat is a private chat and neither the :paramref:`name`
+                nor the :attr:`first_name` is set, then throw an :exc:`TypeError`.
+                If the chat is a public chat and neither the :paramref:`name` nor the :attr:`title`
+                is set, then throw an :exc:`TypeError`. If chat is a private group chat, then
+                throw an :exc:`TypeError`.
+
+        """
+        if self.type == self.PRIVATE:
+            if name:
+                return helpers_mention_markdown(self.id, name)
+            if self.full_name:
+                return helpers_mention_markdown(self.id, self.full_name)
+            raise TypeError("Can not create a mention to a private chat without first name")
+        if self.username:
+            if name:
+                return f"[{name}]({self.link})"
+            if self.title:
+                return f"[{self.title}]({self.link})"
+            raise TypeError("Can not create a mention to a public chat without title")
+        raise TypeError("Can not create a mention to a private group chat")
+
+    def mention_markdown_v2(self, name: str = None) -> str:
+        """
+        .. versionadded:: 20.0
+
+        Args:
+            name (:obj:`str`): The name used as a link for the chat. Defaults to :attr:`full_name`.
+
+        Returns:
+            :obj:`str`: The inline mention for the chat as markdown (version 2).
+
+        Raises:
+            :exc:`TypeError`: If the chat is a private chat and neither the :paramref:`name`
+                nor the :attr:`first_name` is set, then throw an :exc:`TypeError`.
+                If the chat is a public chat and neither the :paramref:`name` nor the :attr:`title`
+                is set, then throw an :exc:`TypeError`. If chat is a private group chat, then
+                throw an :exc:`TypeError`.
+
+        """
+        if self.type == self.PRIVATE:
+            if name:
+                return helpers_mention_markdown(self.id, name, version=2)
+            if self.full_name:
+                return helpers_mention_markdown(self.id, self.full_name, version=2)
+            raise TypeError("Can not create a mention to a private chat without first name")
+        if self.username:
+            if name:
+                return f"[{escape_markdown(name, version=2)}]({self.link})"
+            if self.title:
+                return f"[{escape_markdown(self.title, version=2)}]({self.link})"
+            raise TypeError("Can not create a mention to a public chat without title")
+        raise TypeError("Can not create a mention to a private group chat")
+
+    def mention_html(self, name: str = None) -> str:
+        """
+        .. versionadded:: 20.0
+
+        Args:
+            name (:obj:`str`): The name used as a link for the chat. Defaults to :attr:`full_name`.
+
+        Returns:
+            :obj:`str`: The inline mention for the chat as HTML.
+
+        Raises:
+            :exc:`TypeError`: If the chat is a private chat and neither the :paramref:`name`
+                nor the :attr:`first_name` is set, then throw an :exc:`TypeError`.
+                If the chat is a public chat and neither the :paramref:`name` nor the :attr:`title`
+                is set, then throw an :exc:`TypeError`. If chat is a private group chat, then
+                throw an :exc:`TypeError`.
+
+        """
+        if self.type == self.PRIVATE:
+            if name:
+                return helpers_mention_html(self.id, name)
+            if self.full_name:
+                return helpers_mention_html(self.id, self.full_name)
+            raise TypeError("Can not create a mention to a private chat without first name")
+        if self.username:
+            if name:
+                return f'<a href="{self.link}">{escape(name)}</a>'
+            if self.title:
+                return f'<a href="{self.link}">{escape(self.title)}</a>'
+            raise TypeError("Can not create a mention to a public chat without title")
+        raise TypeError("Can not create a mention to a private group chat")
 
     async def leave(
         self,
@@ -1122,6 +1234,9 @@ class Chat(TelegramObject):
         connect_timeout: ODVInput[float] = DEFAULT_NONE,
         pool_timeout: ODVInput[float] = DEFAULT_NONE,
         api_kwargs: JSONDict = None,
+        caption: Optional[str] = None,
+        parse_mode: ODVInput[str] = DEFAULT_NONE,
+        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
     ) -> List["Message"]:
         """Shortcut for::
 
@@ -1145,6 +1260,9 @@ class Chat(TelegramObject):
             api_kwargs=api_kwargs,
             allow_sending_without_reply=allow_sending_without_reply,
             protect_content=protect_content,
+            caption=caption,
+            parse_mode=parse_mode,
+            caption_entities=caption_entities,
         )
 
     async def send_chat_action(

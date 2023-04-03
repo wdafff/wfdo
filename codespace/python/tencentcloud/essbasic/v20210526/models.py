@@ -180,29 +180,23 @@ class BaseFlowInfo(AbstractModel):
     def __init__(self):
         r"""
         :param FlowName: 合同流程名称
-注意：此字段可能返回 null，表示取不到有效值。
         :type FlowName: str
         :param FlowType: 合同流程类型
-注意：此字段可能返回 null，表示取不到有效值。
         :type FlowType: str
         :param FlowDescription: 合同流程描述信息
-注意：此字段可能返回 null，表示取不到有效值。
         :type FlowDescription: str
         :param Deadline: 合同流程截止时间，unix时间戳
-注意：此字段可能返回 null，表示取不到有效值。
         :type Deadline: int
         :param Unordered: 是否顺序签署(true:无序签,false:顺序签)
-注意：此字段可能返回 null，表示取不到有效值。
         :type Unordered: bool
         :param IntelligentStatus: 打开智能添加填写区(默认开启，打开:"OPEN" 关闭："CLOSE")
-注意：此字段可能返回 null，表示取不到有效值。
         :type IntelligentStatus: str
         :param FormFields: 填写控件内容
-注意：此字段可能返回 null，表示取不到有效值。
         :type FormFields: list of FormField
         :param NeedSignReview: 本企业(发起方企业)是否需要签署审批，true：开启本企业签署审批
-注意：此字段可能返回 null，表示取不到有效值。
         :type NeedSignReview: bool
+        :param UserData: 用户流程自定义数据参数
+        :type UserData: str
         """
         self.FlowName = None
         self.FlowType = None
@@ -212,6 +206,7 @@ class BaseFlowInfo(AbstractModel):
         self.IntelligentStatus = None
         self.FormFields = None
         self.NeedSignReview = None
+        self.UserData = None
 
 
     def _deserialize(self, params):
@@ -228,6 +223,7 @@ class BaseFlowInfo(AbstractModel):
                 obj._deserialize(item)
                 self.FormFields.append(obj)
         self.NeedSignReview = params.get("NeedSignReview")
+        self.UserData = params.get("UserData")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -247,16 +243,13 @@ class CcInfo(AbstractModel):
         :param Mobile: 被抄送人手机号，大陆11位手机号
         :type Mobile: str
         :param Name: 被抄送人姓名
-注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
         :param CcType: 被抄送人类型
 0--个人. 1--员工
-注意：此字段可能返回 null，表示取不到有效值。
         :type CcType: int
         :param CcPermission: 被抄送人权限
 0--可查看
 1--可查看也可下载
-注意：此字段可能返回 null，表示取不到有效值。
         :type CcPermission: int
         """
         self.Mobile = None
@@ -1484,6 +1477,133 @@ class ChannelCreateSealPolicyResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ChannelCreateUserRolesRequest(AbstractModel):
+    """ChannelCreateUserRoles请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Operator: 操作者信息
+        :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
+        :param Agent: 应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 和 Agent.ProxyAppId 必填。
+        :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
+        :param UserIds: 绑定角色的员工id列表
+        :type UserIds: list of str
+        :param RoleIds: 绑定角色的角色id列表
+        :type RoleIds: list of str
+        """
+        self.Operator = None
+        self.Agent = None
+        self.UserIds = None
+        self.RoleIds = None
+
+
+    def _deserialize(self, params):
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        self.UserIds = params.get("UserIds")
+        self.RoleIds = params.get("RoleIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChannelCreateUserRolesResponse(AbstractModel):
+    """ChannelCreateUserRoles返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FailedCreateRoleData: 绑定失败的用户角色列表
+        :type FailedCreateRoleData: list of FailedCreateRoleData
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FailedCreateRoleData = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("FailedCreateRoleData") is not None:
+            self.FailedCreateRoleData = []
+            for item in params.get("FailedCreateRoleData"):
+                obj = FailedCreateRoleData()
+                obj._deserialize(item)
+                self.FailedCreateRoleData.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class ChannelDeleteRoleUsersRequest(AbstractModel):
+    """ChannelDeleteRoleUsers请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Operator: 操作人信息
+        :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
+        :param RoleId: 角色Id
+        :type RoleId: str
+        :param UserIds: 用户列表
+        :type UserIds: list of str
+        :param Agent: 代理信息
+        :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
+        """
+        self.Operator = None
+        self.RoleId = None
+        self.UserIds = None
+        self.Agent = None
+
+
+    def _deserialize(self, params):
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        self.RoleId = params.get("RoleId")
+        self.UserIds = params.get("UserIds")
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChannelDeleteRoleUsersResponse(AbstractModel):
+    """ChannelDeleteRoleUsers返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RoleId: 角色id
+        :type RoleId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RoleId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RoleId = params.get("RoleId")
+        self.RequestId = params.get("RequestId")
+
+
 class ChannelDeleteSealPoliciesRequest(AbstractModel):
     """ChannelDeleteSealPolicies请求参数结构体
 
@@ -1720,6 +1840,96 @@ class ChannelDescribeOrganizationSealsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ChannelDescribeRolesRequest(AbstractModel):
+    """ChannelDescribeRoles请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Operator: 操作人信息
+        :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
+        :param Agent: 应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 和 Agent.ProxyAppId 必填。
+        :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
+        :param Offset: 查询起始偏移，最大2000
+        :type Offset: int
+        :param Limit: 查询数量，最大200
+        :type Limit: str
+        :param Filters: 查询的关键字段:
+Key:"RoleType",Vales:["1"]查询系统角色，Values:["2]查询自定义角色
+Key:"RoleStatus",Values:["1"]查询启用角色，Values:["2"]查询禁用角色
+        :type Filters: list of Filter
+        """
+        self.Operator = None
+        self.Agent = None
+        self.Offset = None
+        self.Limit = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChannelDescribeRolesResponse(AbstractModel):
+    """ChannelDescribeRoles返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Offset: 页面偏移量，最大2000
+        :type Offset: int
+        :param Limit: 查询数量，最大200
+        :type Limit: int
+        :param TotalCount: 查询角色的总数量
+        :type TotalCount: int
+        :param ChannelRoles: 角色信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelRoles: list of ChannelRole
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Offset = None
+        self.Limit = None
+        self.TotalCount = None
+        self.ChannelRoles = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        self.TotalCount = params.get("TotalCount")
+        if params.get("ChannelRoles") is not None:
+            self.ChannelRoles = []
+            for item in params.get("ChannelRoles"):
+                obj = ChannelRole()
+                obj._deserialize(item)
+                self.ChannelRoles.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class ChannelGetTaskResultApiRequest(AbstractModel):
     """ChannelGetTaskResultApi请求参数结构体
 
@@ -1812,6 +2022,41 @@ ProcessTimeout - 转换文件超时
         self.RequestId = params.get("RequestId")
 
 
+class ChannelRole(AbstractModel):
+    """渠道角色信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RoleId: 角色id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RoleId: str
+        :param RoleName: 角色名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RoleName: str
+        :param RoleStatus: 角色状态：1-启用；2-禁用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RoleStatus: int
+        """
+        self.RoleId = None
+        self.RoleName = None
+        self.RoleStatus = None
+
+
+    def _deserialize(self, params):
+        self.RoleId = params.get("RoleId")
+        self.RoleName = params.get("RoleName")
+        self.RoleStatus = params.get("RoleStatus")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ChannelUpdateSealStatusRequest(AbstractModel):
     """ChannelUpdateSealStatus请求参数结构体
 
@@ -1880,7 +2125,7 @@ class ChannelVerifyPdfRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FlowId: 合同Id，流程Id
+        :param FlowId: 流程ID
         :type FlowId: str
         :param Agent: 应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 和 Agent.ProxyAppId 均必填。
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
@@ -1918,8 +2163,7 @@ class ChannelVerifyPdfResponse(AbstractModel):
         r"""
         :param VerifyResult: 验签结果，1-文件未被篡改，全部签名在腾讯电子签完成； 2-文件未被篡改，部分签名在腾讯电子签完成；3-文件被篡改；4-异常：文件内没有签名域；5-异常：文件签名格式错误
         :type VerifyResult: int
-        :param PdfVerifyResults: 验签结果详情,内部状态1-验签成功，在电子签签署；2-验签成功，在其他平台签署；3-验签失败；4-pdf文件没有签名域
-；5-文件签名格式错误
+        :param PdfVerifyResults: 验签结果详情,内部状态1-验签成功，在电子签签署；2-验签成功，在其他平台签署；3-验签失败；4-pdf文件没有签名域；5-文件签名格式错误
         :type PdfVerifyResults: list of PdfVerifyResult
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1948,7 +2192,6 @@ class CommonApproverOption(AbstractModel):
     def __init__(self):
         r"""
         :param CanEditApprover: 是否允许修改签署人信息
-注意：此字段可能返回 null，表示取不到有效值。
         :type CanEditApprover: bool
         """
         self.CanEditApprover = None
@@ -1973,47 +2216,33 @@ class CommonFlowApprover(AbstractModel):
     def __init__(self):
         r"""
         :param NotChannelOrganization: 指定当前签署人为第三方应用集成子客，默认false：当前签署人为第三方应用集成子客，true：当前签署人为saas企业用户
-注意：此字段可能返回 null，表示取不到有效值。
         :type NotChannelOrganization: bool
         :param ApproverType: 签署人类型,目前支持：0-企业签署人，1-个人签署人，3-企业静默签署人
-注意：此字段可能返回 null，表示取不到有效值。
         :type ApproverType: int
         :param OrganizationId: 企业id
-注意：此字段可能返回 null，表示取不到有效值。
         :type OrganizationId: str
         :param OrganizationOpenId: 企业OpenId，第三方应用集成非静默签子客企业签署人发起合同毕传
-注意：此字段可能返回 null，表示取不到有效值。
         :type OrganizationOpenId: str
         :param OrganizationName: 企业名称，第三方应用集成非静默签子客企业签署人必传，saas企业签署人必传
-注意：此字段可能返回 null，表示取不到有效值。
         :type OrganizationName: str
         :param UserId: 用户id
-注意：此字段可能返回 null，表示取不到有效值。
         :type UserId: str
         :param OpenId: 用户openId，第三方应用集成非静默签子客企业签署人必传
-注意：此字段可能返回 null，表示取不到有效值。
         :type OpenId: str
         :param ApproverName: 签署人名称，saas企业签署人，个人签署人必传
-注意：此字段可能返回 null，表示取不到有效值。
         :type ApproverName: str
         :param ApproverMobile: 签署人手机号，saas企业签署人，个人签署人必传
-注意：此字段可能返回 null，表示取不到有效值。
         :type ApproverMobile: str
         :param RecipientId: 签署人Id，使用模板发起是，对应模板配置中的签署人RecipientId
 注意：模板发起时该字段必填
-注意：此字段可能返回 null，表示取不到有效值。
         :type RecipientId: str
         :param PreReadTime: 签署前置条件：阅读时长限制，不传默认10s,最大300s，最小3s
-注意：此字段可能返回 null，表示取不到有效值。
         :type PreReadTime: int
         :param IsFullText: 签署前置条件：阅读全文限制
-注意：此字段可能返回 null，表示取不到有效值。
         :type IsFullText: bool
         :param NotifyType: 通知类型：SMS（短信） NONE（不做通知）, 不传 默认SMS
-注意：此字段可能返回 null，表示取不到有效值。
         :type NotifyType: str
         :param ApproverOption: 签署人配置
-注意：此字段可能返回 null，表示取不到有效值。
         :type ApproverOption: :class:`tencentcloud.essbasic.v20210526.models.CommonApproverOption`
         """
         self.NotChannelOrganization = None
@@ -2497,7 +2726,6 @@ class CreateFlowOption(AbstractModel):
     def __init__(self):
         r"""
         :param CanEditFlow: 是否允许修改合同信息
-注意：此字段可能返回 null，表示取不到有效值。
         :type CanEditFlow: bool
         """
         self.CanEditFlow = None
@@ -3355,6 +3583,36 @@ DISABLE 关闭
         
 
 
+class FailedCreateRoleData(AbstractModel):
+    """绑定失败的用户角色信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UserId: 用户userId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserId: str
+        :param RoleIds: 角色RoleId列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RoleIds: list of str
+        """
+        self.UserId = None
+        self.RoleIds = None
+
+
+    def _deserialize(self, params):
+        self.UserId = params.get("UserId")
+        self.RoleIds = params.get("RoleIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Filter(AbstractModel):
     """此结构体 (Filter) 用于描述查询过滤条件。
 
@@ -3515,6 +3773,12 @@ HANDWRITE -手写签名
         :type ApproverOption: :class:`tencentcloud.essbasic.v20210526.models.ApproverOption`
         :param ApproverNeedSignReview: 当前签署方进行签署操作是否需要企业内部审批，true 则为需要
         :type ApproverNeedSignReview: bool
+        :param ApproverVerifyTypes: 签署人查看合同时认证方式, 1-实名查看 2-短信验证码查看(企业签署方不支持该方式) 如果不传默认为1
+查看合同的认证方式 Flow层级的优先于approver层级的
+        :type ApproverVerifyTypes: list of int
+        :param ApproverSignTypes: 签署人签署合同时的认证方式
+1-人脸认证 2-签署密码 3-运营商三要素(默认为1,2)
+        :type ApproverSignTypes: list of int
         """
         self.Name = None
         self.IdCardType = None
@@ -3534,6 +3798,8 @@ HANDWRITE -手写签名
         self.JumpUrl = None
         self.ApproverOption = None
         self.ApproverNeedSignReview = None
+        self.ApproverVerifyTypes = None
+        self.ApproverSignTypes = None
 
 
     def _deserialize(self, params):
@@ -3562,6 +3828,8 @@ HANDWRITE -手写签名
             self.ApproverOption = ApproverOption()
             self.ApproverOption._deserialize(params.get("ApproverOption"))
         self.ApproverNeedSignReview = params.get("ApproverNeedSignReview")
+        self.ApproverVerifyTypes = params.get("ApproverVerifyTypes")
+        self.ApproverSignTypes = params.get("ApproverSignTypes")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3632,6 +3900,8 @@ class FlowDetailInfo(AbstractModel):
         :type CustomData: str
         :param FlowApproverInfos: 合同(流程)的签署人数组
         :type FlowApproverInfos: list of FlowApproverDetail
+        :param CcInfos: 合同(流程)关注方信息列表
+        :type CcInfos: list of FlowApproverDetail
         """
         self.FlowId = None
         self.FlowName = None
@@ -3642,6 +3912,7 @@ class FlowDetailInfo(AbstractModel):
         self.DeadLine = None
         self.CustomData = None
         self.FlowApproverInfos = None
+        self.CcInfos = None
 
 
     def _deserialize(self, params):
@@ -3659,6 +3930,12 @@ class FlowDetailInfo(AbstractModel):
                 obj = FlowApproverDetail()
                 obj._deserialize(item)
                 self.FlowApproverInfos.append(obj)
+        if params.get("CcInfos") is not None:
+            self.CcInfos = []
+            for item in params.get("CcInfos"):
+                obj = FlowApproverDetail()
+                obj._deserialize(item)
+                self.CcInfos.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4522,7 +4799,6 @@ class ProxyOrganizationOperator(AbstractModel):
 业务管理员：admin
 经办人：channel-normal-operator
 业务员：channel-sales-man
-注意：此字段可能返回 null，表示取不到有效值。
         :type DefaultRole: str
         """
         self.Id = None

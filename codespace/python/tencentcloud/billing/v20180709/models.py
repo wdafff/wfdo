@@ -1835,9 +1835,9 @@ class DescribeBillListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param StartTime: 查询范围的起始时间（包含）
+        :param StartTime: 查询范围的起始时间（包含）时间格式 yyyy-MM-dd HH:mm:ss 开始时间和结束时间差值小于等于六个月
         :type StartTime: str
-        :param EndTime: 查询范围的结束时间（包含）
+        :param EndTime: 查询范围的结束时间（包含）时间格式 yyyy-MM-dd HH:mm:ss ，开始时间和结束时间差值小于等于六个月
         :type EndTime: str
         :param Offset: 翻页偏移量，初始值为0
         :type Offset: int
@@ -2363,7 +2363,7 @@ class DescribeBillSummaryByTagRequest(AbstractModel):
         :type BeginTime: str
         :param EndTime: 目前必须和BeginTime为相同月份，不支持跨月查询，且查询结果是整月数据，例如 BeginTime为2018-09，EndTime 为 2018-09，查询结果是 2018 年 9 月数据。
         :type EndTime: str
-        :param TagKey: 分账标签键
+        :param TagKey: 分账标签键，用户自定义
         :type TagKey: str
         :param PayerUin: 查询账单数据的用户UIN
         :type PayerUin: str
@@ -3154,9 +3154,9 @@ class DescribeVoucherInfoRequest(AbstractModel):
         :type ActivityId: str
         :param VoucherName: 代金券名称
         :type VoucherName: str
-        :param TimeFrom: 发放开始时间
+        :param TimeFrom: 发放开始时间,例：2021-01-01
         :type TimeFrom: str
-        :param TimeTo: 发放结束时间
+        :param TimeTo: 发放结束时间，例：2021-01-01
         :type TimeTo: str
         :param SortField: 指定排序字段：BeginTime开始时间、EndTime到期时间、CreateTime创建时间
         :type SortField: str

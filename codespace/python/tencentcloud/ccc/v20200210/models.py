@@ -2187,6 +2187,10 @@ class DescribeTelCallInfoResponse(AbstractModel):
         :type SeatUsedCount: int
         :param VoipCallInCount: 音频套餐包消耗分钟数
         :type VoipCallInCount: int
+        :param AsrOfflineCount: 离线语音转文字套餐包消耗分钟数
+        :type AsrOfflineCount: int
+        :param AsrRealtimeCount: 实时语音转文字套餐包消耗分钟数
+        :type AsrRealtimeCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -2194,6 +2198,8 @@ class DescribeTelCallInfoResponse(AbstractModel):
         self.TelCallInCount = None
         self.SeatUsedCount = None
         self.VoipCallInCount = None
+        self.AsrOfflineCount = None
+        self.AsrRealtimeCount = None
         self.RequestId = None
 
 
@@ -2202,6 +2208,8 @@ class DescribeTelCallInfoResponse(AbstractModel):
         self.TelCallInCount = params.get("TelCallInCount")
         self.SeatUsedCount = params.get("SeatUsedCount")
         self.VoipCallInCount = params.get("VoipCallInCount")
+        self.AsrOfflineCount = params.get("AsrOfflineCount")
+        self.AsrRealtimeCount = params.get("AsrRealtimeCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -2499,10 +2507,8 @@ class Filter(AbstractModel):
     def __init__(self):
         r"""
         :param Name: 筛选字段名
-注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
         :param Values: 筛选条件值
-注意：此字段可能返回 null，表示取不到有效值。
         :type Values: list of str
         """
         self.Name = None
@@ -3277,6 +3283,9 @@ class SeatUserInfo(AbstractModel):
         :type Name: str
         :param Mail: 坐席邮箱
         :type Mail: str
+        :param StaffNumber: 工号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StaffNumber: str
         :param Phone: 坐席电话号码（带0086前缀）
         :type Phone: str
         :param Nick: 坐席昵称
@@ -3286,27 +3295,24 @@ class SeatUserInfo(AbstractModel):
         :param SkillGroupNameList: 坐席关联的技能组列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type SkillGroupNameList: list of str
-        :param StaffNumber: 工号
-注意：此字段可能返回 null，表示取不到有效值。
-        :type StaffNumber: str
         """
         self.Name = None
         self.Mail = None
+        self.StaffNumber = None
         self.Phone = None
         self.Nick = None
         self.UserId = None
         self.SkillGroupNameList = None
-        self.StaffNumber = None
 
 
     def _deserialize(self, params):
         self.Name = params.get("Name")
         self.Mail = params.get("Mail")
+        self.StaffNumber = params.get("StaffNumber")
         self.Phone = params.get("Phone")
         self.Nick = params.get("Nick")
         self.UserId = params.get("UserId")
         self.SkillGroupNameList = params.get("SkillGroupNameList")
-        self.StaffNumber = params.get("StaffNumber")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3668,6 +3674,12 @@ class StaffStatusMetrics(AbstractModel):
         :type UseMobileAccept: int
         :param UseMobileCallOut: 手机外呼开关
         :type UseMobileCallOut: bool
+        :param LastOnlineTimestamp: 最近一次上线时间戳
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastOnlineTimestamp: int
+        :param LastStatusTimestamp: 最近一次状态时间戳
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastStatusTimestamp: int
         """
         self.Email = None
         self.Status = None
@@ -3683,6 +3695,8 @@ class StaffStatusMetrics(AbstractModel):
         self.ReserveNotReady = None
         self.UseMobileAccept = None
         self.UseMobileCallOut = None
+        self.LastOnlineTimestamp = None
+        self.LastStatusTimestamp = None
 
 
     def _deserialize(self, params):
@@ -3702,6 +3716,8 @@ class StaffStatusMetrics(AbstractModel):
         self.ReserveNotReady = params.get("ReserveNotReady")
         self.UseMobileAccept = params.get("UseMobileAccept")
         self.UseMobileCallOut = params.get("UseMobileCallOut")
+        self.LastOnlineTimestamp = params.get("LastOnlineTimestamp")
+        self.LastStatusTimestamp = params.get("LastStatusTimestamp")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

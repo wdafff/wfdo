@@ -51,6 +51,8 @@ class BrandData(AbstractModel):
         :type InsertTime: str
         :param Services: 服务信息
         :type Services: :class:`tencentcloud.bma.v20221115.models.ServiceData`
+        :param Uin: 账号id
+        :type Uin: str
         """
         self.CompanyId = None
         self.CompanyName = None
@@ -65,6 +67,7 @@ class BrandData(AbstractModel):
         self.Trademarks = None
         self.InsertTime = None
         self.Services = None
+        self.Uin = None
 
 
     def _deserialize(self, params):
@@ -88,6 +91,7 @@ class BrandData(AbstractModel):
         if params.get("Services") is not None:
             self.Services = ServiceData()
             self.Services._deserialize(params.get("Services"))
+        self.Uin = params.get("Uin")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -954,10 +958,8 @@ class Filter(AbstractModel):
     def __init__(self):
         r"""
         :param Name: 过滤参数键
-注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
         :param Value: 过滤参数值
-注意：此字段可能返回 null，表示取不到有效值。
         :type Value: str
         """
         self.Name = None

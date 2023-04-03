@@ -233,6 +233,29 @@ class RedisClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CloneInstances(self, request):
+        """本接口（CloneInstances）可基于当前实例的备份文件克隆一个完整的新实例。
+
+        :param request: Request instance for CloneInstances.
+        :type request: :class:`tencentcloud.redis.v20180412.models.CloneInstancesRequest`
+        :rtype: :class:`tencentcloud.redis.v20180412.models.CloneInstancesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CloneInstances", params, headers=headers)
+            response = json.loads(body)
+            model = models.CloneInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CloseSSL(self, request):
         """关闭SSL
 
@@ -602,7 +625,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeInstanceDealDetail(self, request):
-        """查询订单信息
+        """本接口（DescribeInstanceDealDetail）用于查询订单信息。
 
         :param request: Request instance for DescribeInstanceDealDetail.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeInstanceDealDetailRequest`
@@ -1154,7 +1177,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeSSLStatus(self, request):
-        """查询SSL状态
+        """本接口（DescribeSSLStatus）用于查询实例 SSL 认证相关信息，包括开启状态、配置状态、证书地址等。
 
         :param request: Request instance for DescribeSSLStatus.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeSSLStatusRequest`
@@ -1499,7 +1522,7 @@ class RedisClient(AbstractClient):
 
 
     def ModfiyInstancePassword(self, request):
-        """修改redis密码
+        """本接口（ModfiyInstancePassword）用于修改实例访问密码。
 
         :param request: Request instance for ModfiyInstancePassword.
         :type request: :class:`tencentcloud.redis.v20180412.models.ModfiyInstancePasswordRequest`

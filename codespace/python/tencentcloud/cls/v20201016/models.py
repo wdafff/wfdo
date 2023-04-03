@@ -1057,19 +1057,19 @@ class CosRechargeInfo(AbstractModel):
         :param LogsetId: 日志集ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type LogsetId: str
-        :param Name: cos导入任务名称
+        :param Name: COS导入任务名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
-        :param Bucket: cos存储桶
+        :param Bucket: COS存储桶
 注意：此字段可能返回 null，表示取不到有效值。
         :type Bucket: str
-        :param BucketRegion: cos存储桶地域
+        :param BucketRegion: COS存储桶所在地域
 注意：此字段可能返回 null，表示取不到有效值。
         :type BucketRegion: str
-        :param Prefix: cos存储桶前缀地址
+        :param Prefix: COS文件所在文件夹的前缀
 注意：此字段可能返回 null，表示取不到有效值。
         :type Prefix: str
-        :param LogType: 采集的日志类型，json_log代表json格式日志，delimiter_log代表分隔符格式日志，minimalist_log代表极简日志；
+        :param LogType: 采集的日志类型，json_log代表json格式日志，delimiter_log代表分隔符格式日志，minimalist_log代表单行全文；
 默认为minimalist_log
 注意：此字段可能返回 null，表示取不到有效值。
         :type LogType: str
@@ -4329,7 +4329,7 @@ class FullTextInfo(AbstractModel):
         :type CaseSensitive: bool
         :param Tokenizer: 全文索引的分词符，其中的每个字符代表一个分词符；
 仅支持英文符号、\n\t\r及转义符\；
-注意：\n\t\r本身已被转义，直接使用双引号包裹即可作为入参，无需再次转义
+注意：\n\t\r本身已被转义，直接使用双引号包裹即可作为入参，无需再次转义。使用API Explorer进行调试时请使用JSON参数输入方式，以避免\n\t\r被重复转义
         :type Tokenizer: str
         :param ContainZH: 是否包含中文
 注意：此字段可能返回 null，表示取不到有效值。
@@ -4646,6 +4646,12 @@ class LogContextInfo(AbstractModel):
         :param HostName: 日志来源主机名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type HostName: str
+        :param RawLog: 原始日志(仅在日志创建索引异常时有值)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RawLog: str
+        :param IndexStatus: 日志创建索引异常原因(仅在日志创建索引异常时有值)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IndexStatus: str
         """
         self.Source = None
         self.Filename = None
@@ -4654,6 +4660,8 @@ class LogContextInfo(AbstractModel):
         self.PkgLogId = None
         self.BTime = None
         self.HostName = None
+        self.RawLog = None
+        self.IndexStatus = None
 
 
     def _deserialize(self, params):
@@ -4664,6 +4672,8 @@ class LogContextInfo(AbstractModel):
         self.PkgLogId = params.get("PkgLogId")
         self.BTime = params.get("BTime")
         self.HostName = params.get("HostName")
+        self.RawLog = params.get("RawLog")
+        self.IndexStatus = params.get("IndexStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4700,6 +4710,12 @@ class LogInfo(AbstractModel):
         :param HostName: 日志来源主机名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type HostName: str
+        :param RawLog: 原始日志(仅在日志创建索引异常时有值)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RawLog: str
+        :param IndexStatus: 日志创建索引异常原因(仅在日志创建索引异常时有值)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IndexStatus: str
         """
         self.Time = None
         self.TopicId = None
@@ -4710,6 +4726,8 @@ class LogInfo(AbstractModel):
         self.PkgLogId = None
         self.LogJson = None
         self.HostName = None
+        self.RawLog = None
+        self.IndexStatus = None
 
 
     def _deserialize(self, params):
@@ -4722,6 +4740,8 @@ class LogInfo(AbstractModel):
         self.PkgLogId = params.get("PkgLogId")
         self.LogJson = params.get("LogJson")
         self.HostName = params.get("HostName")
+        self.RawLog = params.get("RawLog")
+        self.IndexStatus = params.get("IndexStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6316,6 +6336,10 @@ class SearchLogRequest(AbstractModel):
 1：不采样，即精确分析
 默认值为1
         :type SamplingRate: float
+        :param SyntaxRule: 检索语法规则，默认值为0。
+0：Lucene语法，1：CQL语法。
+详细说明参见https://cloud.tencent.com/document/product/614/47044#RetrievesConditionalRules
+        :type SyntaxRule: int
         """
         self.From = None
         self.To = None
@@ -6326,6 +6350,7 @@ class SearchLogRequest(AbstractModel):
         self.Sort = None
         self.UseNewAnalysis = None
         self.SamplingRate = None
+        self.SyntaxRule = None
 
 
     def _deserialize(self, params):
@@ -6338,6 +6363,7 @@ class SearchLogRequest(AbstractModel):
         self.Sort = params.get("Sort")
         self.UseNewAnalysis = params.get("UseNewAnalysis")
         self.SamplingRate = params.get("SamplingRate")
+        self.SyntaxRule = params.get("SyntaxRule")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6818,7 +6844,7 @@ class ValueInfo(AbstractModel):
         :param Tokenizer: 字段的分词符，其中的每个字符代表一个分词符；
 仅支持英文符号、\n\t\r及转义符\；
 long及double类型字段需为空；
-注意：\n\t\r本身已被转义，直接使用双引号包裹即可作为入参，无需再次转义
+注意：\n\t\r本身已被转义，直接使用双引号包裹即可作为入参，无需再次转义。使用API Explorer进行调试时请使用JSON参数输入方式，以避免\n\t\r被重复转义
         :type Tokenizer: str
         :param SqlFlag: 字段是否开启分析功能
         :type SqlFlag: bool

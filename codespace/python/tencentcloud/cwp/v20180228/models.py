@@ -4289,6 +4289,149 @@ class BashEventNew(AbstractModel):
         
 
 
+class BashEventsInfoNew(AbstractModel):
+    """高危命令数据详情(新)
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 数据ID
+        :type Id: int
+        :param Uuid: 云镜ID
+        :type Uuid: str
+        :param Quuid: 主机ID
+        :type Quuid: str
+        :param HostIp: 主机内网IP
+        :type HostIp: str
+        :param Platform: 平台类型
+        :type Platform: int
+        :param BashCmd: 执行命令
+        :type BashCmd: str
+        :param RuleId: 规则ID,等于0表示已规则已被删除或生效范围已修改
+        :type RuleId: int
+        :param RuleName: 规则名称
+        :type RuleName: str
+        :param RuleLevel: 规则等级：1-高 2-中 3-低
+        :type RuleLevel: int
+        :param Status: 处理状态： 0 = 待处理 1= 已处理, 2 = 已加白， 3= 已忽略
+        :type Status: int
+        :param CreateTime: 发生时间
+        :type CreateTime: str
+        :param MachineName: 主机名
+        :type MachineName: str
+        :param Exe: 进程名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Exe: str
+        :param ModifyTime: 处理时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ModifyTime: str
+        :param RuleCategory: 规则类别  0=系统规则，1=用户规则
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleCategory: int
+        :param RegexBashCmd: 自动生成的正则表达式
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegexBashCmd: str
+        :param PsTree: 进程树 json  pid:进程id，exe:文件路径 ，account:进程所属用组和用户 ,cmdline:执行命令，ssh_service: SSH服务ip, ssh_soure:登录源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PsTree: str
+        :param SuggestScheme: 建议方案
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SuggestScheme: str
+        :param HarmDescribe: 描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HarmDescribe: str
+        :param Tags: 标签
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of str
+        :param References: 参考链接
+注意：此字段可能返回 null，表示取不到有效值。
+        :type References: list of str
+        :param MachineWanIp: 主机外网ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineWanIp: str
+        :param MachineStatus: 主机在线状态 OFFLINE  ONLINE
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineStatus: str
+        :param User: 登录用户
+注意：此字段可能返回 null，表示取不到有效值。
+        :type User: str
+        :param Pid: 进程号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Pid: str
+        :param MachineType: 0:普通 1:专业版 2:旗舰版
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineType: int
+        :param DetectBy: 检测来源 0:bash日志 1:实时监控
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DetectBy: int
+        """
+        self.Id = None
+        self.Uuid = None
+        self.Quuid = None
+        self.HostIp = None
+        self.Platform = None
+        self.BashCmd = None
+        self.RuleId = None
+        self.RuleName = None
+        self.RuleLevel = None
+        self.Status = None
+        self.CreateTime = None
+        self.MachineName = None
+        self.Exe = None
+        self.ModifyTime = None
+        self.RuleCategory = None
+        self.RegexBashCmd = None
+        self.PsTree = None
+        self.SuggestScheme = None
+        self.HarmDescribe = None
+        self.Tags = None
+        self.References = None
+        self.MachineWanIp = None
+        self.MachineStatus = None
+        self.User = None
+        self.Pid = None
+        self.MachineType = None
+        self.DetectBy = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.Uuid = params.get("Uuid")
+        self.Quuid = params.get("Quuid")
+        self.HostIp = params.get("HostIp")
+        self.Platform = params.get("Platform")
+        self.BashCmd = params.get("BashCmd")
+        self.RuleId = params.get("RuleId")
+        self.RuleName = params.get("RuleName")
+        self.RuleLevel = params.get("RuleLevel")
+        self.Status = params.get("Status")
+        self.CreateTime = params.get("CreateTime")
+        self.MachineName = params.get("MachineName")
+        self.Exe = params.get("Exe")
+        self.ModifyTime = params.get("ModifyTime")
+        self.RuleCategory = params.get("RuleCategory")
+        self.RegexBashCmd = params.get("RegexBashCmd")
+        self.PsTree = params.get("PsTree")
+        self.SuggestScheme = params.get("SuggestScheme")
+        self.HarmDescribe = params.get("HarmDescribe")
+        self.Tags = params.get("Tags")
+        self.References = params.get("References")
+        self.MachineWanIp = params.get("MachineWanIp")
+        self.MachineStatus = params.get("MachineStatus")
+        self.User = params.get("User")
+        self.Pid = params.get("Pid")
+        self.MachineType = params.get("MachineType")
+        self.DetectBy = params.get("DetectBy")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class BashRule(AbstractModel):
     """高危命令规则
 
@@ -11173,6 +11316,54 @@ class DescribeBaselineWeakPasswordListResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeBashEventsInfoNewRequest(AbstractModel):
+    """DescribeBashEventsInfoNew请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 事件id
+        :type Id: int
+        """
+        self.Id = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBashEventsInfoNewResponse(AbstractModel):
+    """DescribeBashEventsInfoNew返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BashEventsInfo: 事件详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BashEventsInfo: :class:`tencentcloud.cwp.v20180228.models.BashEventsInfoNew`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.BashEventsInfo = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("BashEventsInfo") is not None:
+            self.BashEventsInfo = BashEventsInfoNew()
+            self.BashEventsInfo._deserialize(params.get("BashEventsInfo"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeBashEventsNewRequest(AbstractModel):
     """DescribeBashEventsNew请求参数结构体
 
@@ -12079,7 +12270,7 @@ class DescribeExportMachinesResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TaskId: 任务id
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -14944,6 +15135,89 @@ class DescribeReverseShellRulesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeRiskDnsEventListRequest(AbstractModel):
+    """DescribeRiskDnsEventList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filters: <li>IpOrName - String - 是否必填：否 - 主机Ip或别名筛选</li>
+<li>HostId - String - 是否必填：否 - 主机Id</li>
+<li>AgentId - String - 是否必填：否 - 客户端Id</li>
+<li>PolicyType - String - 是否必填：否 - 策略类型,0:系统策略1:用户自定义策略</li>
+<li>Domain - String - 是否必填：否 - 域名(先对域名做urlencode,再base64)</li>
+<li>HandleStatus - String - 是否必填：否 - 状态筛选0:待处理；2:信任；3:不信任</li>
+<li>BeginTime - String - 是否必填：否 - 最近访问开始时间</li>
+<li>EndTime - String - 是否必填：否 - 最近访问结束时间</li>
+        :type Filters: list of Filter
+        :param Limit: 需要返回的数量，默认为10，最大值为100
+        :type Limit: int
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Order: 排序方式：根据请求次数排序：[asc:升序|desc:降序]
+        :type Order: str
+        :param By: 排序字段：[AccessCount:请求次数|LastTime:最近请求时间]
+        :type By: str
+        """
+        self.Filters = None
+        self.Limit = None
+        self.Offset = None
+        self.Order = None
+        self.By = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.Order = params.get("Order")
+        self.By = params.get("By")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRiskDnsEventListResponse(AbstractModel):
+    """DescribeRiskDnsEventList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param List: 恶意请求事件列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type List: list of RiskDnsEvent
+        :param TotalCount: 总数
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.List = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("List") is not None:
+            self.List = []
+            for item in params.get("List"):
+                obj = RiskDnsEvent()
+                obj._deserialize(item)
+                self.List.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeRiskDnsListRequest(AbstractModel):
     """DescribeRiskDnsList请求参数结构体
 
@@ -15520,9 +15794,9 @@ class DescribeSearchExportListResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TaskId: 导出的任务号
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: int
-        :param DownloadUrl: 下载地址
+        :param DownloadUrl: 该参数作废
         :type DownloadUrl: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -18039,7 +18313,7 @@ class ExportAttackLogsResponse(AbstractModel):
         r"""
         :param DownloadUrl: 已废弃
         :type DownloadUrl: str
-        :param TaskId: 导出任务ID 可通过ExportTasks接口下载
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -18108,10 +18382,10 @@ class ExportBaselineEffectHostListResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DownloadUrl: 下载地址
+        :param DownloadUrl: 该参数已废弃
 注意：此字段可能返回 null，表示取不到有效值。
         :type DownloadUrl: str
-        :param TaskId: 导出任务id 可通过 ExportTasks接口下载
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -18392,7 +18666,7 @@ class ExportBaselineListResponse(AbstractModel):
         :param DownloadUrl: 导出文件下载地址（已弃用）
 注意：此字段可能返回 null，表示取不到有效值。
         :type DownloadUrl: str
-        :param TaskId: 导出文件Id 可通过ExportTasks接口下载
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -18548,7 +18822,7 @@ class ExportBashEventsResponse(AbstractModel):
         r"""
         :param DownloadUrl: 导出文件下载链接地址。
         :type DownloadUrl: str
-        :param TaskId: 导出任务ID
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -18600,9 +18874,9 @@ class ExportBruteAttacksResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DownloadUrl: 导出文件下载链接地址。
+        :param DownloadUrl: 该参数已废弃
         :type DownloadUrl: str
-        :param TaskId: 导出任务ID
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -18649,9 +18923,9 @@ class ExportIgnoreBaselineRuleResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DownloadUrl: 文件下载地址
+        :param DownloadUrl: 该参数已废弃
         :type DownloadUrl: str
-        :param TaskId: 导出任务Id , 可通过ExportTasks 接口下载
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -18708,9 +18982,9 @@ class ExportIgnoreRuleEffectHostListResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DownloadUrl: 导出文件下载地址
+        :param DownloadUrl: 该参数已废弃
         :type DownloadUrl: str
-        :param TaskId: 导出任务Id , 可通过ExportTasks 接口下载
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -18783,7 +19057,7 @@ class ExportLicenseDetailResponse(AbstractModel):
         r"""
         :param DownloadUrl: 下载地址,该字段废弃
         :type DownloadUrl: str
-        :param TaskId: 任务ID,可通过任务ID去查下载任务
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -18835,9 +19109,9 @@ class ExportMaliciousRequestsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DownloadUrl: 导出文件下载链接地址。
+        :param DownloadUrl: 该参数已废弃
         :type DownloadUrl: str
-        :param TaskId: 导出任务Id , 可通过ExportTasks 接口下载
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -18911,9 +19185,9 @@ class ExportMalwaresResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DownloadUrl: 导出文件下载链接地址。
+        :param DownloadUrl: 该参数已废弃
         :type DownloadUrl: str
-        :param TaskId: 任务id
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -18965,9 +19239,9 @@ class ExportNonlocalLoginPlacesResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DownloadUrl: 导出文件下载链接地址。
+        :param DownloadUrl: 该参数已废弃
         :type DownloadUrl: str
-        :param TaskId: 导出任务ID
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -19019,9 +19293,9 @@ class ExportPrivilegeEventsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DownloadUrl: 导出文件下载链接地址。
+        :param DownloadUrl: 该参数已废弃
         :type DownloadUrl: str
-        :param TaskId: 导出任务ID
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -19082,7 +19356,7 @@ class ExportProtectDirListResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TaskId: 任务ID
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -19132,9 +19406,9 @@ class ExportReverseShellEventsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DownloadUrl: 导出文件下载链接地址。
+        :param DownloadUrl: 该参数已废弃
         :type DownloadUrl: str
-        :param TaskId: 任务id
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -19194,7 +19468,7 @@ class ExportScanTaskDetailsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TaskId: 导出本次检测Excel的任务Id（不同于入参的本次检测任务id）
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址(不同于入参的本次检测任务id)
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -19337,9 +19611,9 @@ class ExportVulDetectionExcelResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DownloadUrl: 导出文件下载链接地址
+        :param DownloadUrl: 该参数已废弃
         :type DownloadUrl: str
-        :param TaskId: 导出本次漏洞检测Excel的任务Id（不同于入参的本次漏洞检测任务id）
+        :param TaskId: 任务ID,需要到接口“异步导出任务”ExportTasks获取DownloadUrl下载地址（不同于入参的本次漏洞检测任务id）
         :type TaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -23213,6 +23487,129 @@ class ReverseShellRule(AbstractModel):
         
 
 
+class RiskDnsEvent(AbstractModel):
+    """恶意请求事件
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 事件Id
+        :type Id: int
+        :param PolicyId: 策略ID
+        :type PolicyId: int
+        :param PolicyType: 命中策略类型[-1:未知|0系统|1:用户]
+        :type PolicyType: int
+        :param PolicyName: 命中策略名称
+        :type PolicyName: str
+        :param ProtectLevel: 保护级别[0:基础版|1:专业版|2:旗舰版]
+        :type ProtectLevel: int
+        :param HostId: 主机ID
+        :type HostId: str
+        :param HostName: 主机名称
+        :type HostName: str
+        :param HostIp: 主机IP
+        :type HostIp: str
+        :param WanIp: 外网IP
+        :type WanIp: str
+        :param AgentId: 客户端ID
+        :type AgentId: str
+        :param Domain: 访问域名
+        :type Domain: str
+        :param Tags: 标签特性
+        :type Tags: list of str
+        :param AccessCount: 访问次数
+        :type AccessCount: int
+        :param ThreatDesc: 威胁描述
+        :type ThreatDesc: str
+        :param SuggestSolution: 修复方案
+        :type SuggestSolution: str
+        :param ReferenceLink: 参考链接
+        :type ReferenceLink: str
+        :param HandleStatus: 处理状态；[0:待处理|2:已加白|3:非信任状态|4:已处理|5:已忽略]
+        :type HandleStatus: int
+        :param Pid: 进程ID
+        :type Pid: int
+        :param ProcessName: 进程名
+        :type ProcessName: str
+        :param ProcessMd5: 进程MD5
+        :type ProcessMd5: str
+        :param CmdLine: 命令行
+        :type CmdLine: str
+        :param FirstTime: 首次访问时间
+        :type FirstTime: str
+        :param LastTime: 最近访问时间
+        :type LastTime: str
+        :param HostStatus: 主机在线状态[OFFLINE:离线|ONLINE:在线|UNKNOWN:未知]
+        :type HostStatus: str
+        :param MachineExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
+        """
+        self.Id = None
+        self.PolicyId = None
+        self.PolicyType = None
+        self.PolicyName = None
+        self.ProtectLevel = None
+        self.HostId = None
+        self.HostName = None
+        self.HostIp = None
+        self.WanIp = None
+        self.AgentId = None
+        self.Domain = None
+        self.Tags = None
+        self.AccessCount = None
+        self.ThreatDesc = None
+        self.SuggestSolution = None
+        self.ReferenceLink = None
+        self.HandleStatus = None
+        self.Pid = None
+        self.ProcessName = None
+        self.ProcessMd5 = None
+        self.CmdLine = None
+        self.FirstTime = None
+        self.LastTime = None
+        self.HostStatus = None
+        self.MachineExtraInfo = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.PolicyId = params.get("PolicyId")
+        self.PolicyType = params.get("PolicyType")
+        self.PolicyName = params.get("PolicyName")
+        self.ProtectLevel = params.get("ProtectLevel")
+        self.HostId = params.get("HostId")
+        self.HostName = params.get("HostName")
+        self.HostIp = params.get("HostIp")
+        self.WanIp = params.get("WanIp")
+        self.AgentId = params.get("AgentId")
+        self.Domain = params.get("Domain")
+        self.Tags = params.get("Tags")
+        self.AccessCount = params.get("AccessCount")
+        self.ThreatDesc = params.get("ThreatDesc")
+        self.SuggestSolution = params.get("SuggestSolution")
+        self.ReferenceLink = params.get("ReferenceLink")
+        self.HandleStatus = params.get("HandleStatus")
+        self.Pid = params.get("Pid")
+        self.ProcessName = params.get("ProcessName")
+        self.ProcessMd5 = params.get("ProcessMd5")
+        self.CmdLine = params.get("CmdLine")
+        self.FirstTime = params.get("FirstTime")
+        self.LastTime = params.get("LastTime")
+        self.HostStatus = params.get("HostStatus")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class RiskDnsList(AbstractModel):
     """恶意请求列表
 
@@ -24633,24 +25030,24 @@ class UpdateMachineTagsRequest(AbstractModel):
         r"""
         :param Quuid: 机器 Quuid
         :type Quuid: str
+        :param TagIds: 标签ID，该操作会覆盖原有的标签列表
+        :type TagIds: list of int non-negative
         :param MachineRegion: 服务器地区 如: ap-guangzhou
         :type MachineRegion: str
         :param MachineArea: 服务器类型(CVM|BM|ECM|LH|Other)
         :type MachineArea: str
-        :param TagIds: 标签ID，该操作会覆盖原有的标签列表
-        :type TagIds: list of int non-negative
         """
         self.Quuid = None
+        self.TagIds = None
         self.MachineRegion = None
         self.MachineArea = None
-        self.TagIds = None
 
 
     def _deserialize(self, params):
         self.Quuid = params.get("Quuid")
+        self.TagIds = params.get("TagIds")
         self.MachineRegion = params.get("MachineRegion")
         self.MachineArea = params.get("MachineArea")
-        self.TagIds = params.get("TagIds")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -25242,7 +25639,6 @@ class WarningObject(AbstractModel):
         :param ControlBits: 漏洞等级控制位二进制，每一位对应页面漏洞等级的开启关闭：低中高（0:关闭；1：开启），例如：101 → 同时勾选低+高；01→(登录审计)疑似不告警，高危告警
         :type ControlBits: str
         :param HostRange: 告警主机范围类型，0:全部主机，1:按所属项目选，2:按腾讯云标签选，3:按主机安全标签选，4:自选主机
-注意：此字段可能返回 null，表示取不到有效值。
         :type HostRange: int
         """
         self.Type = None

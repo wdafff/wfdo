@@ -167,6 +167,9 @@ INTERNALERROR_SYSTEMERROR = 'InternalError.SystemError'
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
 
+# 无效的管理端接口地址。
+INVALIDPARAMETER_INVALIDADMINURL = 'InvalidParameter.InvalidAdminUrl'
+
 # 错误的分区数。
 INVALIDPARAMETER_PARTITION = 'InvalidParameter.Partition'
 
@@ -271,6 +274,9 @@ RESOURCENOTFOUND_ENVIRONMENT = 'ResourceNotFound.Environment'
 
 # 环境角色不存在。
 RESOURCENOTFOUND_ENVIRONMENTROLE = 'ResourceNotFound.EnvironmentRole'
+
+# 实例不存在。
+RESOURCENOTFOUND_INSTANCE = 'ResourceNotFound.Instance'
 
 # 命名空间不存在。
 RESOURCENOTFOUND_NAMESPACE = 'ResourceNotFound.Namespace'

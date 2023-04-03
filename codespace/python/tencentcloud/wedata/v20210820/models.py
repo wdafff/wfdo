@@ -2759,16 +2759,21 @@ class CreateOfflineTaskResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param TaskId: 任务ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskId: str
         :param Data: 结果
         :type Data: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.TaskId = None
         self.Data = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
         self.Data = params.get("Data")
         self.RequestId = params.get("RequestId")
 
@@ -11646,6 +11651,9 @@ class InLongAgentDetail(AbstractModel):
         :param AgentTotal: agent数量
 注意：此字段可能返回 null，表示取不到有效值。
         :type AgentTotal: int
+        :param LifeDays: 生命周期
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LifeDays: int
         """
         self.AgentId = None
         self.AgentName = None
@@ -11660,6 +11668,7 @@ class InLongAgentDetail(AbstractModel):
         self.AgentGroupId = None
         self.CvmAgentStatusList = None
         self.AgentTotal = None
+        self.LifeDays = None
 
 
     def _deserialize(self, params):
@@ -11681,6 +11690,7 @@ class InLongAgentDetail(AbstractModel):
                 obj._deserialize(item)
                 self.CvmAgentStatusList.append(obj)
         self.AgentTotal = params.get("AgentTotal")
+        self.LifeDays = params.get("LifeDays")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -17744,10 +17754,8 @@ class SearchConditionInstance(AbstractModel):
         :param ExecutionSpace: 执行空间 "DRY_RUN"
         :type ExecutionSpace: int
         :param ProductName: 产品名称，可选
-注意：此字段可能返回 null，表示取不到有效值。
         :type ProductName: int
         :param ResourceGroup: 资源组
-注意：此字段可能返回 null，表示取不到有效值。
         :type ResourceGroup: int
         """
         self.ExecutionSpace = None

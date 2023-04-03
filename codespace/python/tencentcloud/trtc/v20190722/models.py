@@ -1534,6 +1534,55 @@ class DescribeTrtcMcuTranscodeTimeResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeTrtcRoomUsageRequest(AbstractModel):
+    """DescribeTrtcRoomUsage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppid: TRTC的SdkAppId，和房间所对应的SdkAppId相同。
+        :type SdkAppid: int
+        :param StartTime: 查询开始时间，格式为YYYY-MM-DD HH:MM，精确到分钟级。
+        :type StartTime: str
+        :param EndTime: 查询结束时间，格式为YYYY-MM-DD HH:MM，单次查询不超过24h。
+        :type EndTime: str
+        """
+        self.SdkAppid = None
+        self.StartTime = None
+        self.EndTime = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppid = params.get("SdkAppid")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTrtcRoomUsageResponse(AbstractModel):
+    """DescribeTrtcRoomUsage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeTrtcUsageRequest(AbstractModel):
     """DescribeTrtcUsage请求参数结构体
 
@@ -2090,7 +2139,7 @@ class LayoutParams(AbstractModel):
         :type PureAudioHoldPlaceMode: int
         :param WaterMarkParams: 水印参数。
         :type WaterMarkParams: :class:`tencentcloud.trtc.v20190722.models.WaterMarkParams`
-        :param RenderMode: 屏幕分享模板、悬浮模板、九宫格模板、画中画模版有效，画面在输出时的显示模式：0为裁剪，1为缩放，2为缩放并显示黑底，不填采用后台的默认渲染方式（屏幕分享大画面为缩放，其他为裁剪）。
+        :param RenderMode: 屏幕分享模板、悬浮模板、九宫格模板、画中画模版有效，画面在输出时的显示模式：0为裁剪，1为缩放，2为缩放并显示黑底，不填采用后台的默认渲染方式（屏幕分享大画面为缩放，其他为裁剪）。若此参数不生效，请请提交工单寻求帮助。
         :type RenderMode: int
         """
         self.Template = None
@@ -2301,7 +2350,7 @@ class McuLayout(AbstractModel):
         :type ZOrder: int
         :param RenderMode: 子画面在输出时的显示模式：0为裁剪，1为缩放，2为缩放并显示黑底。不填默认为0。
         :type RenderMode: int
-        :param BackGroundColor: 子画面的背景颜色，常用的颜色有：
+        :param BackGroundColor: 【此参数配置无效，暂不支持】子画面的背景颜色，常用的颜色有：
 红色：0xcc0033。
 黄色：0xcc9900。
 绿色：0xcccc33。
@@ -2366,11 +2415,14 @@ class McuLayoutParams(AbstractModel):
         :type MixLayoutList: list of McuLayout
         :param MaxVideoUser: 指定动态布局中悬浮布局和屏幕分享布局的大画面信息，只在悬浮布局和屏幕分享布局有效。
         :type MaxVideoUser: :class:`tencentcloud.trtc.v20190722.models.MaxVideoUser`
+        :param RenderMode: 屏幕分享模板、悬浮模板、九宫格模版有效，画面在输出时的显示模式：0为裁剪，1为缩放，2为缩放并显示黑底
+        :type RenderMode: int
         """
         self.MixLayoutMode = None
         self.PureAudioHoldPlaceMode = None
         self.MixLayoutList = None
         self.MaxVideoUser = None
+        self.RenderMode = None
 
 
     def _deserialize(self, params):
@@ -2385,6 +2437,7 @@ class McuLayoutParams(AbstractModel):
         if params.get("MaxVideoUser") is not None:
             self.MaxVideoUser = MaxVideoUser()
             self.MaxVideoUser._deserialize(params.get("MaxVideoUser"))
+        self.RenderMode = params.get("RenderMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2407,10 +2460,8 @@ class McuLayoutVolume(AbstractModel):
         :param PayloadType: SEI消息的payload_type，默认值100，取值范围100-254（244除外，244为我们内部自定义的时间戳SEI）
         :type PayloadType: int
         :param Interval: SEI发送间隔，单位毫秒，默认值为1000。
-注意：此字段可能返回 null，表示取不到有效值。
         :type Interval: int
         :param FollowIdr: 取值范围[0,1]，填1：发送关键帧时会确保带SEI；填0：发送关键帧时不确保带SEI。默认值为0。
-注意：此字段可能返回 null，表示取不到有效值。
         :type FollowIdr: int
         """
         self.AppData = None
@@ -2447,10 +2498,8 @@ class McuPassThrough(AbstractModel):
         :param PayloadUuid: PayloadType为5，PayloadUuid必须填写。PayloadType不是5时，不需要填写，填写会被后台忽略。该值必须是32长度的十六进制。
         :type PayloadUuid: str
         :param Interval: SEI发送间隔，单位毫秒，默认值为1000。
-注意：此字段可能返回 null，表示取不到有效值。
         :type Interval: int
         :param FollowIdr: 取值范围[0,1]，填1：发送关键帧时会确保带SEI；填0：发送关键帧时不确保带SEI。默认值为0。
-注意：此字段可能返回 null，表示取不到有效值。
         :type FollowIdr: int
         """
         self.PayloadContent = None
@@ -2673,7 +2722,6 @@ class McuWaterMarkParams(AbstractModel):
         :param WaterMarkImage: 图片水印参数。WaterMarkType为0指定。
         :type WaterMarkImage: :class:`tencentcloud.trtc.v20190722.models.McuWaterMarkImage`
         :param WaterMarkText: 文字水印参数。WaterMarkType为1指定。
-注意：此字段可能返回 null，表示取不到有效值。
         :type WaterMarkText: :class:`tencentcloud.trtc.v20190722.models.McuWaterMarkText`
         """
         self.WaterMarkType = None
@@ -2716,13 +2764,10 @@ class McuWaterMarkText(AbstractModel):
         :param LocationY: 水印在输出时的Y偏移。单位为像素值。
         :type LocationY: int
         :param FontSize: 字体大小
-注意：此字段可能返回 null，表示取不到有效值。
         :type FontSize: int
         :param FontColor: 字体颜色，默认为白色。常用的颜色有： 红色：0xcc0033。 黄色：0xcc9900。 绿色：0xcccc33。 蓝色：0x99CCFF。 黑色：0x000000。 白色：0xFFFFFF。 灰色：0x999999。	
-注意：此字段可能返回 null，表示取不到有效值。
         :type FontColor: str
         :param BackGroundColor: 字体背景色，不配置默认为透明。常用的颜色有： 红色：0xcc0033。 黄色：0xcc9900。 绿色：0xcccc33。 蓝色：0x99CCFF。 黑色：0x000000。 白色：0xFFFFFF。 灰色：0x999999。	
-注意：此字段可能返回 null，表示取不到有效值。
         :type BackGroundColor: str
         """
         self.Text = None
@@ -3376,7 +3421,6 @@ class RecordParams(AbstractModel):
 Hls 格式录制此参数不生效。
         :type MaxMediaFileDuration: int
         :param MediaId: 指定录制主辅流，0：主流+辅流（默认）；1:主流；2:辅流。
-注意：此字段可能返回 null，表示取不到有效值。
         :type MediaId: int
         """
         self.RecordMode = None
@@ -4003,19 +4047,19 @@ class StartPublishCdnStreamRequest(AbstractModel):
         :type RoomIdType: int
         :param AgentParams: 转推服务加入TRTC房间的机器人参数。
         :type AgentParams: :class:`tencentcloud.trtc.v20190722.models.AgentParams`
-        :param WithTranscoding: 是否转码，0表示无需转码，1表示需要转码。
+        :param WithTranscoding: 是否转码，0表示无需转码，1表示需要转码。是否收取转码费是由WithTranscoding参数决定的，WithTranscoding为0，表示旁路转推，不会收取转码费用，WithTranscoding为1，表示混流转推，会收取转吗费用。
         :type WithTranscoding: int
-        :param AudioParams: 转推流的音频编码参数。
+        :param AudioParams: 转推流的音频编码参数。由于音频是必转码的（不会收取转码费用），所以启动任务的时候，必须填写。
         :type AudioParams: :class:`tencentcloud.trtc.v20190722.models.McuAudioParams`
         :param VideoParams: 转推流的视频编码参数，不填表示纯音频转推。
         :type VideoParams: :class:`tencentcloud.trtc.v20190722.models.McuVideoParams`
         :param SingleSubscribeParams: 需要单流旁路转推的用户上行参数，单流旁路转推时，WithTranscoding需要设置为0。
         :type SingleSubscribeParams: :class:`tencentcloud.trtc.v20190722.models.SingleSubscribeParams`
-        :param PublishCdnParams: 转推的CDN参数。
+        :param PublishCdnParams: 转推的CDN参数。和回推房间参数必须要有一个。
         :type PublishCdnParams: list of McuPublishCdnParam
         :param SeiParams: 混流SEI参数
         :type SeiParams: :class:`tencentcloud.trtc.v20190722.models.McuSeiParams`
-        :param FeedBackRoomParams: 回推房间信息
+        :param FeedBackRoomParams: 回推房间信息，和转推CDN参数必须要有一个。
         :type FeedBackRoomParams: list of McuFeedBackRoomParams
         """
         self.SdkAppId = None
@@ -4827,10 +4871,8 @@ class WaterMark(AbstractModel):
         :param WaterMarkImage: 水印为图片时的参数列表，水印为图片时校验必填。
         :type WaterMarkImage: :class:`tencentcloud.trtc.v20190722.models.WaterMarkImage`
         :param WaterMarkChar: 水印为文字时的参数列表，水印为文字时校验必填。
-注意：此字段可能返回 null，表示取不到有效值。
         :type WaterMarkChar: :class:`tencentcloud.trtc.v20190722.models.WaterMarkChar`
         :param WaterMarkTimestamp: 水印为时间戳时的参数列表，水印为时间戳时校验必填。
-注意：此字段可能返回 null，表示取不到有效值。
         :type WaterMarkTimestamp: :class:`tencentcloud.trtc.v20190722.models.WaterMarkTimestamp`
         """
         self.WaterMarkType = None
@@ -4867,28 +4909,20 @@ class WaterMarkChar(AbstractModel):
     def __init__(self):
         r"""
         :param Top: 文字水印的起始坐标Y值，从左上角开始
-注意：此字段可能返回 null，表示取不到有效值。
         :type Top: int
         :param Left: 文字水印的起始坐标X值，从左上角开始
-注意：此字段可能返回 null，表示取不到有效值。
         :type Left: int
         :param Width: 文字水印的宽度，单位像素值
-注意：此字段可能返回 null，表示取不到有效值。
         :type Width: int
         :param Height: 文字水印的高度，单位像素值
-注意：此字段可能返回 null，表示取不到有效值。
         :type Height: int
         :param Chars: 水印文字的内容
-注意：此字段可能返回 null，表示取不到有效值。
         :type Chars: str
         :param FontSize: 水印文字的大小，单位像素，默认14
-注意：此字段可能返回 null，表示取不到有效值。
         :type FontSize: int
         :param FontColor: 水印文字的颜色，默认白色
-注意：此字段可能返回 null，表示取不到有效值。
         :type FontColor: str
         :param BackGroundColor: 水印文字的背景色，为空代表背景透明，默认为空
-注意：此字段可能返回 null，表示取不到有效值。
         :type BackGroundColor: str
         """
         self.Top = None
@@ -5011,10 +5045,8 @@ class WaterMarkTimestamp(AbstractModel):
     def __init__(self):
         r"""
         :param Pos: 时间戳的位置，取值范围0-6，分别代表上左，上右，下左，下右，上居中，下居中，居中
-注意：此字段可能返回 null，表示取不到有效值。
         :type Pos: int
         :param TimeZone: 显示时间戳的时区，默认东八区
-注意：此字段可能返回 null，表示取不到有效值。
         :type TimeZone: int
         """
         self.Pos = None

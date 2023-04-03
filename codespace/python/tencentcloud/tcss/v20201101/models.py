@@ -12171,6 +12171,8 @@ class DescribeClusterDetailResponse(AbstractModel):
         :type ServiceCount: int
         :param IngressCount: Ingress数量
         :type IngressCount: int
+        :param MasterIps: 主节点的ip列表
+        :type MasterIps: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -12198,6 +12200,7 @@ class DescribeClusterDetailResponse(AbstractModel):
         self.PodCount = None
         self.ServiceCount = None
         self.IngressCount = None
+        self.MasterIps = None
         self.RequestId = None
 
 
@@ -12226,6 +12229,7 @@ class DescribeClusterDetailResponse(AbstractModel):
         self.PodCount = params.get("PodCount")
         self.ServiceCount = params.get("ServiceCount")
         self.IngressCount = params.get("IngressCount")
+        self.MasterIps = params.get("MasterIps")
         self.RequestId = params.get("RequestId")
 
 
@@ -12262,6 +12266,8 @@ class DescribeClusterSummaryResponse(AbstractModel):
         :type ManualCheckClusterCount: int
         :param FailedClusterCount: 检查失败集群数
         :type FailedClusterCount: int
+        :param NotImportedClusterCount: 未导入的集群数量
+        :type NotImportedClusterCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -12275,6 +12281,7 @@ class DescribeClusterSummaryResponse(AbstractModel):
         self.AutoCheckClusterCount = None
         self.ManualCheckClusterCount = None
         self.FailedClusterCount = None
+        self.NotImportedClusterCount = None
         self.RequestId = None
 
 
@@ -12289,6 +12296,7 @@ class DescribeClusterSummaryResponse(AbstractModel):
         self.AutoCheckClusterCount = params.get("AutoCheckClusterCount")
         self.ManualCheckClusterCount = params.get("ManualCheckClusterCount")
         self.FailedClusterCount = params.get("FailedClusterCount")
+        self.NotImportedClusterCount = params.get("NotImportedClusterCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -20668,6 +20676,16 @@ class DescribeVulSummaryResponse(AbstractModel):
         :type RemoteExpLevelVulCount: int
         :param SeriousVulNewestImageCount: 受严重或高危漏洞影响的最新版本镜像数
         :type SeriousVulNewestImageCount: int
+        :param SystemVulnerabilityFocusCount: 系统漏洞重点关注数
+        :type SystemVulnerabilityFocusCount: int
+        :param WebVulnerabilityFocusCount: web漏洞重点关注数
+        :type WebVulnerabilityFocusCount: int
+        :param SeriousVulnerabilityLocalImageCount: 受影响本地镜像数
+        :type SeriousVulnerabilityLocalImageCount: int
+        :param SeriousVulnerabilityRegistryImageCount: 受影响仓库镜像数
+        :type SeriousVulnerabilityRegistryImageCount: int
+        :param EmergencyVulnerabilityCount: 应急漏洞数量
+        :type EmergencyVulnerabilityCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -20677,6 +20695,11 @@ class DescribeVulSummaryResponse(AbstractModel):
         self.PocExpLevelVulCount = None
         self.RemoteExpLevelVulCount = None
         self.SeriousVulNewestImageCount = None
+        self.SystemVulnerabilityFocusCount = None
+        self.WebVulnerabilityFocusCount = None
+        self.SeriousVulnerabilityLocalImageCount = None
+        self.SeriousVulnerabilityRegistryImageCount = None
+        self.EmergencyVulnerabilityCount = None
         self.RequestId = None
 
 
@@ -20687,6 +20710,11 @@ class DescribeVulSummaryResponse(AbstractModel):
         self.PocExpLevelVulCount = params.get("PocExpLevelVulCount")
         self.RemoteExpLevelVulCount = params.get("RemoteExpLevelVulCount")
         self.SeriousVulNewestImageCount = params.get("SeriousVulNewestImageCount")
+        self.SystemVulnerabilityFocusCount = params.get("SystemVulnerabilityFocusCount")
+        self.WebVulnerabilityFocusCount = params.get("WebVulnerabilityFocusCount")
+        self.SeriousVulnerabilityLocalImageCount = params.get("SeriousVulnerabilityLocalImageCount")
+        self.SeriousVulnerabilityRegistryImageCount = params.get("SeriousVulnerabilityRegistryImageCount")
+        self.EmergencyVulnerabilityCount = params.get("EmergencyVulnerabilityCount")
         self.RequestId = params.get("RequestId")
 
 

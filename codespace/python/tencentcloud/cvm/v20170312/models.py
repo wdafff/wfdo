@@ -121,10 +121,13 @@ class ActionTimer(AbstractModel):
     def __init__(self):
         r"""
         :param TimerAction: 定时器名称，目前仅支持销毁一个值：TerminateInstances。
+注意：此字段可能返回 null，表示取不到有效值。
         :type TimerAction: str
         :param ActionTime: 执行时间，按照ISO8601标准表示，并且使用UTC时间。格式为 YYYY-MM-DDThh:mm:ssZ。例如 2018-05-29T11:26:40Z，执行时间必须大于当前时间5分钟。
+注意：此字段可能返回 null，表示取不到有效值。
         :type ActionTime: str
         :param Externals: 扩展数据
+注意：此字段可能返回 null，表示取不到有效值。
         :type Externals: :class:`tencentcloud.cvm.v20170312.models.Externals`
         """
         self.TimerAction = None
@@ -5346,8 +5349,10 @@ class InstanceChargePrepaid(AbstractModel):
     def __init__(self):
         r"""
         :param Period: 购买实例的时长，单位：月。取值范围：1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 24, 36, 48, 60。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Period: int
         :param RenewFlag: 自动续费标识。取值范围：<br><li>NOTIFY_AND_AUTO_RENEW：通知过期且自动续费<br><li>NOTIFY_AND_MANUAL_RENEW：通知过期不自动续费<br><li>DISABLE_NOTIFY_AND_MANUAL_RENEW：不通知过期不自动续费<br><br>默认取值：NOTIFY_AND_MANUAL_RENEW。若该参数指定为NOTIFY_AND_AUTO_RENEW，在账户余额充足的情况下，实例到期后将按月自动续费。
+注意：此字段可能返回 null，表示取不到有效值。
         :type RenewFlag: str
         """
         self.Period = None
@@ -5403,8 +5408,10 @@ class InstanceMarketOptionsRequest(AbstractModel):
     def __init__(self):
         r"""
         :param SpotOptions: 竞价相关选项
+注意：此字段可能返回 null，表示取不到有效值。
         :type SpotOptions: :class:`tencentcloud.cvm.v20170312.models.SpotMarketOptions`
         :param MarketType: 市场选项类型，当前只支持取值：spot
+注意：此字段可能返回 null，表示取不到有效值。
         :type MarketType: str
         """
         self.SpotOptions = None
@@ -6133,6 +6140,14 @@ class LaunchTemplateVersionData(AbstractModel):
         :param TagSpecification: 标签描述列表。通过指定该参数可以同时绑定标签到相应的云服务器、云硬盘实例。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TagSpecification: list of TagSpecification
+        :param DisableApiTermination: 实例销毁保护标志，表示是否允许通过api接口删除实例。取值范围：
+
+TRUE：表示开启实例保护，不允许通过api接口删除实例
+FALSE：表示关闭实例保护，允许通过api接口删除实例
+
+默认取值：FALSE。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DisableApiTermination: bool
         """
         self.Placement = None
         self.InstanceType = None
@@ -6157,6 +6172,7 @@ class LaunchTemplateVersionData(AbstractModel):
         self.ClientToken = None
         self.InstanceChargePrepaid = None
         self.TagSpecification = None
+        self.DisableApiTermination = None
 
 
     def _deserialize(self, params):
@@ -6211,6 +6227,7 @@ class LaunchTemplateVersionData(AbstractModel):
                 obj = TagSpecification()
                 obj._deserialize(item)
                 self.TagSpecification.append(obj)
+        self.DisableApiTermination = params.get("DisableApiTermination")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6841,7 +6858,7 @@ class ModifyInstancesProjectRequest(AbstractModel):
         r"""
         :param InstanceIds: 一个或多个待操作的实例ID。可通过[`DescribeInstances`](https://cloud.tencent.com/document/api/213/15728) API返回值中的`InstanceId`获取。每次请求允许操作的实例数量上限是100。
         :type InstanceIds: list of str
-        :param ProjectId: 项目ID。项目可以使用[AddProject](https://cloud.tencent.com/doc/api/403/4398)接口创建。可通过[`DescribeProject`](https://cloud.tencent.com/document/product/378/4400) API返回值中的`projectId`获取。后续使用[DescribeInstances](https://cloud.tencent.com/document/api/213/15728)接口查询实例时，项目ID可用于过滤结果。
+        :param ProjectId: 项目ID。项目可以使用[AddProject](https://cloud.tencent.com/document/product/651/81952)接口创建。可通过[`DescribeProject`](https://cloud.tencent.com/document/product/378/4400) API返回值中的`projectId`获取。后续使用[DescribeInstances](https://cloud.tencent.com/document/api/213/15728)接口查询实例时，项目ID可用于过滤结果。
         :type ProjectId: int
         """
         self.InstanceIds = None
@@ -8647,7 +8664,7 @@ class RunInstancesRequest(AbstractModel):
         :type VirtualPrivateCloud: :class:`tencentcloud.cvm.v20170312.models.VirtualPrivateCloud`
         :param InternetAccessible: 公网带宽相关信息设置。若不指定该参数，则默认公网带宽为0Mbps。
         :type InternetAccessible: :class:`tencentcloud.cvm.v20170312.models.InternetAccessible`
-        :param InstanceCount: 购买实例数量。包年包月实例取值范围：[1，300]，按量计费实例取值范围：[1，100]。默认取值：1。指定购买实例的数量不能超过用户所能购买的剩余配额数量，具体配额相关限制详见[CVM实例购买限制](https://cloud.tencent.com/document/product/213/2664)。
+        :param InstanceCount: 购买实例数量。包年包月实例取值范围：[1，500]，按量计费实例取值范围：[1，500]。默认取值：1。指定购买实例的数量不能超过用户所能购买的剩余配额数量，具体配额相关限制详见[CVM实例购买限制](https://cloud.tencent.com/document/product/213/2664)。
         :type InstanceCount: int
         :param InstanceName: 实例显示名称。<br><li>不指定实例显示名称则默认显示‘未命名’。</li><li>购买多台实例，如果指定模式串`{R:x}`，表示生成数字`[x, x+n-1]`，其中`n`表示购买实例的数量，例如`server_{R:3}`，购买1台时，实例显示名称为`server_3`；购买2台时，实例显示名称分别为`server_3`，`server_4`。支持指定多个模式串`{R:x}`。</li><li>购买多台实例，如果不指定模式串，则在实例显示名称添加后缀`1、2...n`，其中`n`表示购买实例的数量，例如`server_`，购买2台时，实例显示名称分别为`server_1`，`server_2`。</li><li>最多支持60个字符（包含模式串）。
         :type InstanceName: str
@@ -9281,8 +9298,10 @@ class TagSpecification(AbstractModel):
     def __init__(self):
         r"""
         :param ResourceType: 标签绑定的资源类型，云服务器为“instance”，专用宿主机为“host”，镜像为“image”，密钥为“keypair”
+注意：此字段可能返回 null，表示取不到有效值。
         :type ResourceType: str
         :param Tags: 标签对列表
+注意：此字段可能返回 null，表示取不到有效值。
         :type Tags: list of Tag
         """
         self.ResourceType = None

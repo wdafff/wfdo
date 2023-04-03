@@ -5743,7 +5743,7 @@ class ConfirmEventsRequest(AbstractModel):
         :type EventHandles: list of str
         :param ExtInfo: 保留字段，特殊用途时使用。
         :type ExtInfo: str
-        :param SubAppId: 点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
         :type SubAppId: int
         """
         self.EventHandles = None
@@ -10748,6 +10748,7 @@ class DescribeMediaProcessUsageDataRequest(AbstractModel):
 <li> RemoveWatermark: 去除水印</li>
 <li> ExtractTraceWatermark: 提取水印</li>
 <li> AddTraceWatermark: 添加水印</li>
+<li> RebuildMedia: 音画质重生</li>
 <li>Transcode: 转码，包含普通转码、极速高清和视频编辑（不推荐使用）</li>
         :type Type: str
         """
@@ -22162,6 +22163,8 @@ class RebuildMediaTaskInput(AbstractModel):
         :type StartTimeOffset: float
         :param EndTimeOffset: 结束偏移时间，单位：秒，不填表示截取到视频末尾。
         :type EndTimeOffset: float
+        :param Definition: 音画质重生模版号。
+        :type Definition: int
         :param RepairInfo: 画质修复控制参数。
         :type RepairInfo: :class:`tencentcloud.vod.v20180717.models.RepairInfo`
         :param VideoFrameInterpolationInfo: 智能插帧控制参数。
@@ -22192,6 +22195,7 @@ class RebuildMediaTaskInput(AbstractModel):
         self.FileId = None
         self.StartTimeOffset = None
         self.EndTimeOffset = None
+        self.Definition = None
         self.RepairInfo = None
         self.VideoFrameInterpolationInfo = None
         self.SuperResolutionInfo = None
@@ -22211,6 +22215,7 @@ class RebuildMediaTaskInput(AbstractModel):
         self.FileId = params.get("FileId")
         self.StartTimeOffset = params.get("StartTimeOffset")
         self.EndTimeOffset = params.get("EndTimeOffset")
+        self.Definition = params.get("Definition")
         if params.get("RepairInfo") is not None:
             self.RepairInfo = RepairInfo()
             self.RepairInfo._deserialize(params.get("RepairInfo"))
@@ -24054,6 +24059,17 @@ class SearchMediaRequest(AbstractModel):
         :param MediaTypes: 媒体文件封装格式集合，匹配集合中任意元素。
 <li>数组长度限制：10。</li>
         :type MediaTypes: list of str
+        :param Status: 媒体文件状态，匹配集合中任意元素。
+<li> Normal：正常；</li>
+<li> SystemForbidden：平台封禁；</li>
+<li> Forbidden：主动封禁。</li>
+        :type Status: list of str
+        :param ReviewResults: 媒体文件审核结果，匹配集合中任意元素。
+<li> pass：审核通过；</li>
+<li> review：疑似违规，建议复审；</li>
+<li> block：确认违规，建议封禁；</li>
+<li> notModerated：未审核。</li>
+        :type ReviewResults: list of str
         :param TrtcSdkAppIds: TRTC 应用 ID 集合。匹配集合中的任意元素。
 <li>数组长度限制：10。</li>
         :type TrtcSdkAppIds: list of int non-negative
@@ -24106,6 +24122,8 @@ class SearchMediaRequest(AbstractModel):
         self.StorageRegions = None
         self.StorageClasses = None
         self.MediaTypes = None
+        self.Status = None
+        self.ReviewResults = None
         self.TrtcSdkAppIds = None
         self.TrtcRoomIds = None
         self.Text = None
@@ -24143,6 +24161,8 @@ class SearchMediaRequest(AbstractModel):
         self.StorageRegions = params.get("StorageRegions")
         self.StorageClasses = params.get("StorageClasses")
         self.MediaTypes = params.get("MediaTypes")
+        self.Status = params.get("Status")
+        self.ReviewResults = params.get("ReviewResults")
         self.TrtcSdkAppIds = params.get("TrtcSdkAppIds")
         self.TrtcRoomIds = params.get("TrtcRoomIds")
         self.Text = params.get("Text")
@@ -25662,6 +25682,7 @@ class TaskStatData(AbstractModel):
 <li> RemoveWatermark: 去水印</li>
 <li> ExtractTraceWatermark: 提取水印</li>
 <li> AddTraceWatermark: 添加水印</li>
+<li> RebuildMedia: 音画质重生</li>
 <li>Transcode: 转码，包含普通转码、极速高清和视频编辑（不推荐使用）</li>
         :type TaskType: str
         :param Summary: 任务数统计数据概览，用量单位为秒。
@@ -25711,13 +25732,14 @@ class TaskStatData(AbstractModel):
 <li>Edit.TESHD-10.H265.FHD: H.265编码方式全高清极速高清视频编辑</li>
 <li>Edit.TESHD-10.H265.2K: H.265编码方式2K极速高清视频编辑</li>
 <li>Edit.TESHD-10.H265.4K: H.265编码方式4K极速高清视频编辑</li>
-去水印规格：
+去水印、音画质重生规格：
 <li>480P: 短边 ≤ 480px</li>
 <li>720P: 短边 ≤ 720px</li>
 <li>1080P: 短边 ≤ 1080px</li>
 <li>2K: 短边 ≤ 1440px</li>
 <li>4K: 短边 ≤ 2160px</li>
 <li>8K: 短边 ≤ 4320px</li>
+<li>Audio: 音频</li>
         :type Details: list of SpecificationDataItem
         """
         self.TaskType = None

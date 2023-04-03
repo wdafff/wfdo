@@ -1988,12 +1988,12 @@ class FinanBillSliceOCRRequest(AbstractModel):
         r"""
         :param ImageBase64: 图片的 Base64 值。
 支持的图片格式：PNG、JPG、JPEG，暂不支持 GIF 格式。
-支持的图片大小：所下载图片经Base64编码后不超过 3M。图片下载时间不超过 3 秒。
+支持的图片大小：所下载图片经Base64编码后不超过 7M。图片下载时间不超过 3 秒。
 图片的 ImageUrl、ImageBase64 必须提供一个，如果都提供，只使用 ImageUrl。
         :type ImageBase64: str
         :param ImageUrl: 图片的 Url 地址。
 支持的图片格式：PNG、JPG、JPEG，暂不支持 GIF 格式。
-支持的图片大小：所下载图片经 Base64 编码后不超过 3M。图片下载时间不超过 3 秒。
+支持的图片大小：所下载图片经 Base64 编码后不超过 7M。图片下载时间不超过 3 秒。
 图片存储于腾讯云的 Url 可保障更高的下载速度和稳定性，建议图片存储于腾讯云。
 非腾讯云存储的 Url 速度和稳定性可能受一定影响。
         :type ImageUrl: str
@@ -5462,6 +5462,10 @@ class RecognizeIndonesiaIDCardOCRResponse(AbstractModel):
         :type IssuedDate: str
         :param Photo: 人像截图
         :type Photo: str
+        :param Provinsi: 省份，Scene为V2时支持识别
+        :type Provinsi: str
+        :param Kota: 城市，Scene为V2时支持识别
+        :type Kota: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -5481,6 +5485,8 @@ class RecognizeIndonesiaIDCardOCRResponse(AbstractModel):
         self.BerlakuHingga = None
         self.IssuedDate = None
         self.Photo = None
+        self.Provinsi = None
+        self.Kota = None
         self.RequestId = None
 
 
@@ -5501,6 +5507,8 @@ class RecognizeIndonesiaIDCardOCRResponse(AbstractModel):
         self.BerlakuHingga = params.get("BerlakuHingga")
         self.IssuedDate = params.get("IssuedDate")
         self.Photo = params.get("Photo")
+        self.Provinsi = params.get("Provinsi")
+        self.Kota = params.get("Kota")
         self.RequestId = params.get("RequestId")
 
 
@@ -6815,6 +6823,28 @@ class SmartFormFileUrl(AbstractModel):
     """智慧表单上传文件信息
 
     """
+
+    def __init__(self):
+        r"""
+        :param FileUrl: 文件url地址
+        :type FileUrl: str
+        :param FileOrderNumber: 文件的顺序，顺序从1开始
+        :type FileOrderNumber: int
+        """
+        self.FileUrl = None
+        self.FileOrderNumber = None
+
+
+    def _deserialize(self, params):
+        self.FileUrl = params.get("FileUrl")
+        self.FileOrderNumber = params.get("FileOrderNumber")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class SmartStructuralOCRRequest(AbstractModel):

@@ -653,6 +653,137 @@ class ClearInstanceResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CloneInstancesRequest(AbstractModel):
+    """CloneInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 当前实例ID。
+        :type InstanceId: str
+        :param GoodsNum: 单次克隆实例的数量。包年包月每次购买最大数量为100。按量计费每次购买最大数量为30，每个地域购买数量取值范围为[1,100]。
+        :type GoodsNum: int
+        :param ZoneId: 克隆实例所属的可用区ID。当前所支持的可用区 ID，请参见[地域和可用区](https://cloud.tencent.com/document/product/239/4106) 。
+        :type ZoneId: int
+        :param BillingMode: 付费方式。<ul><li>0：按量计费。</li><li>1：包年包月。</li></ul>
+        :type BillingMode: int
+        :param Period: 购买实例时长。<ul><li>单位：月。</li><li>付费方式选择包年包月计费时，取值范围为[1,2,3,4,5,6,7,8,9,10,11,12,24,36,48,60]。</li><li>付费方式选择按量计费时，设置为1。</li></ul>
+        :type Period: int
+        :param SecurityGroupIdList: 安全组ID。请登录控制台，在<b>安全组</b>页面获取安全组 ID 信息。
+        :type SecurityGroupIdList: list of str
+        :param BackupId: 克隆实例使用的备份ID。请通过接口[DescribeInstanceBackups](https://cloud.tencent.com/document/product/239/20011)获取备份ID。
+        :type BackupId: str
+        :param NoAuth: 配置克隆实例是否支持免密访问。开启 SSL 与外网均不支持免密访问。<ul><li>true：免密实例，</li><li>false：非免密实例。默认为非免密实例。</li></ul>
+        :type NoAuth: bool
+        :param VpcId: 私有网络ID。如果未配置该参数，默认选择基础网络。
+        :type VpcId: str
+        :param SubnetId: 私有网络所属子网。基础网络时该参数无需配置。
+        :type SubnetId: str
+        :param InstanceName: 克隆实例的名称。<br>仅支持长度小于60的中文、英文或者数字，短划线"-"、下划线"_"。</br>
+        :type InstanceName: str
+        :param Password: 克隆实例的访问密码。<ul><li>当输入参数<b>NoAuth</b>为<b>true</b>时，可不设置该参数。</li><li>当实例为Redis2.8、4.0和5.0时，其密码格式为：8-30个字符，至少包含小写字母、大写字母、数字和字符 ()`~!@#$%^&*-+=_|{}[]:;<>,.?/ 中的2种，不能以"/"开头；</li><li>当实例为CKV 3.2时，其密码格式为：8-30个字符，必须包含字母和数字，且不包含其他字符。</li></ul>
+        :type Password: str
+        :param AutoRenew: 自动续费标识。<ul><li>0：默认状态（手动续费）。</li><li>1：自动续费。</li><li>2：不自动续费，到期自动隔离。</li></ul>
+        :type AutoRenew: int
+        :param VPort: 用户自定义的端口，默认为6379，取值范围[1024,65535]。
+        :type VPort: int
+        :param NodeSet: 实例的节点信息。<ul><li>目前支持配置节点的类型（主节点或者副本节点），及其节点的可用区信息。具体信息，请参见[RedisNodeInfo](https://cloud.tencent.com/document/product/239/20022#RedisNodeInfo)。</li><li>单可用区部署可不配置该参数。</li></ul>
+        :type NodeSet: list of RedisNodeInfo
+        :param ProjectId: 项目 ID。登录控制台，可在右上角的<b>账号中心</b> > <b>项目管理</b>中查找项目ID。
+        :type ProjectId: int
+        :param ResourceTags: 克隆实例需绑定的标签。
+        :type ResourceTags: list of ResourceTag
+        :param TemplateId: 克隆实例需要应用的参数模板ID,请登录 Redis 控制台，在<b>参数模板</b>页面获取。若不配置该参数，则应用默认的参数模板。
+        :type TemplateId: str
+        :param AlarmPolicyList: 指定克隆实例的告警策略 ID。请登录控制台，在<b>云监控</b> > <b>告警配置</b> > <b>告警策略</b>页面获取策略 ID 信息。
+        :type AlarmPolicyList: list of str
+        """
+        self.InstanceId = None
+        self.GoodsNum = None
+        self.ZoneId = None
+        self.BillingMode = None
+        self.Period = None
+        self.SecurityGroupIdList = None
+        self.BackupId = None
+        self.NoAuth = None
+        self.VpcId = None
+        self.SubnetId = None
+        self.InstanceName = None
+        self.Password = None
+        self.AutoRenew = None
+        self.VPort = None
+        self.NodeSet = None
+        self.ProjectId = None
+        self.ResourceTags = None
+        self.TemplateId = None
+        self.AlarmPolicyList = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.GoodsNum = params.get("GoodsNum")
+        self.ZoneId = params.get("ZoneId")
+        self.BillingMode = params.get("BillingMode")
+        self.Period = params.get("Period")
+        self.SecurityGroupIdList = params.get("SecurityGroupIdList")
+        self.BackupId = params.get("BackupId")
+        self.NoAuth = params.get("NoAuth")
+        self.VpcId = params.get("VpcId")
+        self.SubnetId = params.get("SubnetId")
+        self.InstanceName = params.get("InstanceName")
+        self.Password = params.get("Password")
+        self.AutoRenew = params.get("AutoRenew")
+        self.VPort = params.get("VPort")
+        if params.get("NodeSet") is not None:
+            self.NodeSet = []
+            for item in params.get("NodeSet"):
+                obj = RedisNodeInfo()
+                obj._deserialize(item)
+                self.NodeSet.append(obj)
+        self.ProjectId = params.get("ProjectId")
+        if params.get("ResourceTags") is not None:
+            self.ResourceTags = []
+            for item in params.get("ResourceTags"):
+                obj = ResourceTag()
+                obj._deserialize(item)
+                self.ResourceTags.append(obj)
+        self.TemplateId = params.get("TemplateId")
+        self.AlarmPolicyList = params.get("AlarmPolicyList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloneInstancesResponse(AbstractModel):
+    """CloneInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DealId: 请求任务 ID。
+        :type DealId: str
+        :param InstanceIds: 克隆实例的 ID。
+        :type InstanceIds: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DealId = None
+        self.InstanceIds = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.DealId = params.get("DealId")
+        self.InstanceIds = params.get("InstanceIds")
+        self.RequestId = params.get("RequestId")
+
+
 class CloseSSLRequest(AbstractModel):
     """CloseSSL请求参数结构体
 
@@ -1959,7 +2090,7 @@ class DescribeInstanceDealDetailResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DealDetails: 订单详细信息
+        :param DealDetails: 订单详细信息。
         :type DealDetails: list of TradeDealDetail
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -3397,7 +3528,7 @@ class DescribeReplicationGroupRequest(AbstractModel):
         :type Offset: int
         :param GroupId: 复制组ID。
         :type GroupId: str
-        :param SearchKey: 设置模糊查询的关键字，可以设置为实例ID或实例名称进行模糊查询。
+        :param SearchKey: 模糊查询的关键字，可以设置为复制组ID或复制组名称进行模糊查询。
         :type SearchKey: str
         """
         self.Limit = None
@@ -3457,7 +3588,7 @@ class DescribeSSLStatusRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例ID
+        :param InstanceId: 实例 ID。
         :type InstanceId: str
         """
         self.InstanceId = None
@@ -3481,15 +3612,21 @@ class DescribeSSLStatusResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param CertDownloadUrl: 证书下载地址
+        :param CertDownloadUrl: SSL 证书下载地址。
         :type CertDownloadUrl: str
-        :param UrlExpiredTime: 证书下载链接到期时间
+        :param UrlExpiredTime: 证书下载链接到期时间。
         :type UrlExpiredTime: str
-        :param SSLConfig: 实例SSL配置状态， true：开启 false：关闭
+        :param SSLConfig: 标识实例开启 SSL 功能。
+- true：开启 。
+- false：关闭。
         :type SSLConfig: bool
-        :param FeatureSupport: 实例SSL特性支持， true：支持 false：不支持（小版本升级后才能支持SSL特性）
+        :param FeatureSupport: 标识实例是否支持 SSL特性。
+- true：支持。
+- false：不支持。
         :type FeatureSupport: bool
-        :param Status: SSL配置状态，1: 配置中 2：配置成功
+        :param Status: 说明配置 SSL 的状态。
+- 1: 配置中。
+- 2：配置成功。
         :type Status: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -4071,21 +4208,44 @@ class Groups(AbstractModel):
         r"""
         :param AppId: 用户AppID
         :type AppId: int
-        :param RegionId: 地域ID 1--广州 4--上海 5-- 中国香港 6--多伦多 7--上海金融 8--北京 9-- 新加坡 11--深圳金融 15--美西（硅谷）16--成都 17--德国 18--韩国 19--重庆 21--印度 22--美东（弗吉尼亚）23--泰国 24--俄罗斯 25--日本
+        :param RegionId: 地域ID 。
+- 1：广州 
+- 4：上海 
+- 5：中国香港 
+- 6：多伦多 
+- 7：上海金融 
+- 8：北京 
+- 9：新加坡
+- 11：深圳金融
+- 15：美西（硅谷）
+- 16：成都 
+- 17：德国 
+- 18：韩国 
+- 19：重庆 
+- 21：印度 
+- 22：美东（弗吉尼亚）
+- 23：泰国 
+- 24：俄罗斯 
+- 25：日本
         :type RegionId: int
-        :param GroupId: 复制组信息
+        :param GroupId: 复制组 ID。
         :type GroupId: str
-        :param GroupName: 复制组名称
+        :param GroupName: 复制组名称。
 注意：此字段可能返回 null，表示取不到有效值。
         :type GroupName: str
-        :param Status: 复制组状态，37："绑定复制组中"，38："复制组重连中"，51："解绑复制组中"，52："复制组实例切主中"，53："角色变更中"
+        :param Status: 复制组状态。
+- 37：绑定复制组中。
+- 38：复制组重连中。
+- 51：解绑复制组中。
+- 52：复制组实例切主中。
+- 53：角色变更中。
         :type Status: int
-        :param InstanceCount: 复制组数量
+        :param InstanceCount: 复制组数量。
         :type InstanceCount: int
-        :param Instances: 复制组实例
+        :param Instances: 复制组中的实例信息。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Instances: list of Instances
-        :param Remark: 备注信息
+        :param Remark: 备注信息。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Remark: str
         """
@@ -5490,11 +5650,14 @@ class ModfiyInstancePasswordRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例ID
+        :param InstanceId: 实例 ID。
         :type InstanceId: str
-        :param OldPassword: 实例旧密码
+        :param OldPassword: 实例旧密码。
         :type OldPassword: str
-        :param Password: 实例新密码
+        :param Password: 实例新密码。密码复杂度要求如下：
+- 长度8 - 30位, 推荐使用12位以上的密码。
+- 不能以"/"开头。
+- 至少包含小写字母a - z、大写字母A - Z、数字0 - 9、特殊字符 ()~!@#$%^&*-+=_|{}[]:;<>,.?/中的两项。
         :type Password: str
         """
         self.InstanceId = None
@@ -5522,7 +5685,7 @@ class ModfiyInstancePasswordResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TaskId: 任务ID
+        :param TaskId: 任务 ID。
         :type TaskId: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str

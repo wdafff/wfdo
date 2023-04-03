@@ -233,6 +233,9 @@ INVALIDPARAMETER_SENSITIVEFILECONTENT = 'InvalidParameter.SensitiveFileContent'
 # 参数错误，不合法的签署控件类型，请修改后重试。
 INVALIDPARAMETER_SIGNCOMPONENTTYPE = 'InvalidParameter.SignComponentType'
 
+# 类型不支持。
+INVALIDPARAMETER_SIGNCOMPONENTS = 'InvalidParameter.SignComponents'
+
 # 状态异常。
 INVALIDPARAMETER_STATUS = 'InvalidParameter.Status'
 
@@ -241,6 +244,9 @@ INVALIDPARAMETER_UNORDERED = 'InvalidParameter.Unordered'
 
 # 参数错误，不支持的控件类型，请检查后重试。
 INVALIDPARAMETER_UNSUPPORTEDCOMPONENTTYPE = 'InvalidParameter.UnsupportedComponentType'
+
+# 流程id不存在。
+INVALIDPARAMETER_FFOWIDS = 'InvalidParameter.fFowIds'
 
 # 参数取值错误。
 INVALIDPARAMETERVALUE = 'InvalidParameterValue'

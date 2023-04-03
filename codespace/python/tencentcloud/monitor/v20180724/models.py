@@ -7971,11 +7971,14 @@ class DescribePrometheusClusterAgentsResponse(AbstractModel):
         :type Agents: list of PrometheusAgentOverview
         :param Total: 被关联集群总量
         :type Total: int
+        :param IsFirstBind: 是否为首次绑定，需要安装预聚合规则
+        :type IsFirstBind: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Agents = None
         self.Total = None
+        self.IsFirstBind = None
         self.RequestId = None
 
 
@@ -7987,6 +7990,7 @@ class DescribePrometheusClusterAgentsResponse(AbstractModel):
                 obj._deserialize(item)
                 self.Agents.append(obj)
         self.Total = params.get("Total")
+        self.IsFirstBind = params.get("IsFirstBind")
         self.RequestId = params.get("RequestId")
 
 
@@ -11168,11 +11172,14 @@ class ModifyAlarmPolicyNoticeRequest(AbstractModel):
         :type NoticeIds: list of str
         :param PolicyIds: 告警策略ID数组，支持给多个告警策略批量绑定通知模板。最多30个。
         :type PolicyIds: list of str
+        :param HierarchicalNotices: 告警分级通知规则配置
+        :type HierarchicalNotices: list of AlarmHierarchicalNotice
         """
         self.Module = None
         self.PolicyId = None
         self.NoticeIds = None
         self.PolicyIds = None
+        self.HierarchicalNotices = None
 
 
     def _deserialize(self, params):
@@ -11180,6 +11187,12 @@ class ModifyAlarmPolicyNoticeRequest(AbstractModel):
         self.PolicyId = params.get("PolicyId")
         self.NoticeIds = params.get("NoticeIds")
         self.PolicyIds = params.get("PolicyIds")
+        if params.get("HierarchicalNotices") is not None:
+            self.HierarchicalNotices = []
+            for item in params.get("HierarchicalNotices"):
+                obj = AlarmHierarchicalNotice()
+                obj._deserialize(item)
+                self.HierarchicalNotices.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12690,6 +12703,8 @@ class PrometheusClusterAgentBasic(AbstractModel):
         :type NotInstallBasicScrape: bool
         :param NotScrape: 是否采集指标，true代表drop所有指标，false代表采集默认指标
         :type NotScrape: bool
+        :param OpenDefaultRecord: 是否开启默认预聚合规则
+        :type OpenDefaultRecord: bool
         """
         self.Region = None
         self.ClusterType = None
@@ -12699,6 +12714,7 @@ class PrometheusClusterAgentBasic(AbstractModel):
         self.ExternalLabels = None
         self.NotInstallBasicScrape = None
         self.NotScrape = None
+        self.OpenDefaultRecord = None
 
 
     def _deserialize(self, params):
@@ -12717,6 +12733,7 @@ class PrometheusClusterAgentBasic(AbstractModel):
                 self.ExternalLabels.append(obj)
         self.NotInstallBasicScrape = params.get("NotInstallBasicScrape")
         self.NotScrape = params.get("NotScrape")
+        self.OpenDefaultRecord = params.get("OpenDefaultRecord")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14095,7 +14112,7 @@ class SendCustomAlarmMsgRequest(AbstractModel):
         r"""
         :param Module: 接口模块名，当前取值monitor
         :type Module: str
-        :param PolicyId: 消息策略ID，在云监控自定义消息页面配置
+        :param PolicyId: 消息策略ID，在自定义消息页面配置
         :type PolicyId: str
         :param Msg: 用户想要发送的自定义消息内容
         :type Msg: str

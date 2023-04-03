@@ -237,12 +237,16 @@ class Subtitle(AbstractModel):
         :type BeginIndex: int
         :param EndIndex: 该字在整句中的结束位置，从0开始。
         :type EndIndex: int
+        :param Phoneme: 该字的音素
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Phoneme: str
         """
         self.Text = None
         self.BeginTime = None
         self.EndTime = None
         self.BeginIndex = None
         self.EndIndex = None
+        self.Phoneme = None
 
 
     def _deserialize(self, params):
@@ -251,6 +255,7 @@ class Subtitle(AbstractModel):
         self.EndTime = params.get("EndTime")
         self.BeginIndex = params.get("BeginIndex")
         self.EndIndex = params.get("EndIndex")
+        self.Phoneme = params.get("Phoneme")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -274,7 +279,7 @@ class TextToVoiceRequest(AbstractModel):
         :type SessionId: str
         :param Volume: 音量大小，范围：[0，10]，分别对应11个等级的音量，默认为0，代表正常音量。没有静音选项。
         :type Volume: float
-        :param Speed: 语速，范围：[-2，2]，分别对应不同语速：<li>-2代表0.6倍</li><li>-1代表0.8倍</li><li>0代表1.0倍（默认）</li><li>1代表1.2倍</li><li>2代表1.5倍</li>如果需要更细化的语速，可以保留小数点后一位，例如0.5 1.1 1.8等。<br>
+        :param Speed: 语速，范围：[-2，6]，分别对应不同语速：<li>-2代表0.6倍</li><li>-1代表0.8倍</li><li>0代表1.0倍（默认）</li><li>1代表1.2倍</li><li>2代表1.5倍</li><li>6代表2.5倍</li>如果需要更细化的语速，可以保留小数点后一位，例如0.5 1.1 1.8等。<br>
         :type Speed: float
         :param ProjectId: 项目id，用户自定义，默认为0。
         :type ProjectId: int

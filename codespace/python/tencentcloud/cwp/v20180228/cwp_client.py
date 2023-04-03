@@ -2398,6 +2398,29 @@ class CwpClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeBashEventsInfoNew(self, request):
+        """查询高危命令事件详情(新)
+
+        :param request: Request instance for DescribeBashEventsInfoNew.
+        :type request: :class:`tencentcloud.cwp.v20180228.models.DescribeBashEventsInfoNewRequest`
+        :rtype: :class:`tencentcloud.cwp.v20180228.models.DescribeBashEventsInfoNewResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBashEventsInfoNew", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeBashEventsInfoNewResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeBashEventsNew(self, request):
         """获取高危命令列表(新)
 
@@ -3608,6 +3631,29 @@ class CwpClient(AbstractClient):
             body = self.call("DescribeReverseShellRules", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeReverseShellRulesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeRiskDnsEventList(self, request):
+        """获取恶意请求事件列表
+
+        :param request: Request instance for DescribeRiskDnsEventList.
+        :type request: :class:`tencentcloud.cwp.v20180228.models.DescribeRiskDnsEventListRequest`
+        :rtype: :class:`tencentcloud.cwp.v20180228.models.DescribeRiskDnsEventListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRiskDnsEventList", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeRiskDnsEventListResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

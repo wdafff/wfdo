@@ -608,10 +608,8 @@ class CSV(AbstractModel):
         :param CSVSerde: CSV序列化及反序列化数据结构。
         :type CSVSerde: :class:`tencentcloud.dlc.v20210125.models.CSVSerde`
         :param HeadLines: 标题行，默认为0。
-注意：此字段可能返回 null，表示取不到有效值。
         :type HeadLines: int
         :param Format: 格式，默认值为CSV
-注意：此字段可能返回 null，表示取不到有效值。
         :type Format: str
         """
         self.CodeCompress = None
@@ -7441,6 +7439,9 @@ class SparkJobInfo(AbstractModel):
         :param JobExecutorMaxNumbers: 指定的Executor数量（最大值），默认为1，当开启动态分配有效，若未开启，则该值等于JobExecutorNums
 注意：此字段可能返回 null，表示取不到有效值。
         :type JobExecutorMaxNumbers: int
+        :param SparkImageVersion: 镜像版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SparkImageVersion: str
         """
         self.JobId = None
         self.JobName = None
@@ -7477,6 +7478,7 @@ class SparkJobInfo(AbstractModel):
         self.TaskNum = None
         self.DataEngineStatus = None
         self.JobExecutorMaxNumbers = None
+        self.SparkImageVersion = None
 
 
     def _deserialize(self, params):
@@ -7517,6 +7519,7 @@ class SparkJobInfo(AbstractModel):
         self.TaskNum = params.get("TaskNum")
         self.DataEngineStatus = params.get("DataEngineStatus")
         self.JobExecutorMaxNumbers = params.get("JobExecutorMaxNumbers")
+        self.SparkImageVersion = params.get("SparkImageVersion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

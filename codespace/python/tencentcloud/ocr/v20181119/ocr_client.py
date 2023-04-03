@@ -54,6 +54,8 @@ class OcrClient(AbstractClient):
     def ArithmeticOCR(self, request):
         """本接口支持作业算式题目的自动识别和判分，目前覆盖 K12 学力范围内的 11 种题型，包括加减乘除四则、加减乘除已知结果求运算因子、判断大小、约等于估算、带余数除法、分数四则运算、单位换算、竖式加减法、竖式乘除法、脱式计算和解方程，平均识别精度达到93%以上。
 
+        默认接口请求频率限制：10次/秒。
+
         :param request: Request instance for ArithmeticOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.ArithmeticOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.ArithmeticOCRResponse`
@@ -177,6 +179,8 @@ class OcrClient(AbstractClient):
     def BusinessCardOCR(self, request):
         """本接口支持名片各字段的自动定位与识别，包含姓名、电话、手机号、邮箱、公司、部门、职位、网址、地址、QQ、微信、MSN等。
 
+        默认接口请求频率限制：10次/秒。
+
         :param request: Request instance for BusinessCardOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.BusinessCardOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.BusinessCardOCRResponse`
@@ -222,6 +226,8 @@ class OcrClient(AbstractClient):
 
     def ClassifyDetectOCR(self, request):
         """支持身份证、护照、名片、银行卡、行驶证、驾驶证、港澳台通行证、户口本、港澳台来往内地通行证、港澳台居住证、不动产证、营业执照的智能分类。
+
+        默认接口请求频率限制：20次/秒。
 
         :param request: Request instance for ClassifyDetectOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.ClassifyDetectOCRRequest`
@@ -329,6 +335,8 @@ class OcrClient(AbstractClient):
     def EduPaperOCR(self, request):
         """本接口支持数学试题内容的识别和结构化输出，包括通用文本解析和小学/初中/高中数学公式解析能力（包括91种题型，180种符号），公式返回格式为 Latex 格式文本。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for EduPaperOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.EduPaperOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.EduPaperOCRResponse`
@@ -377,6 +385,8 @@ class OcrClient(AbstractClient):
     def EnterpriseLicenseOCR(self, request):
         """本接口支持智能化识别各类企业登记证书、许可证书、企业执照、三证合一类证书，结构化输出统一社会信用代码、公司名称、法定代表人、公司地址、注册资金、企业类型、经营范围等关键字段。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for EnterpriseLicenseOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.EnterpriseLicenseOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.EnterpriseLicenseOCRResponse`
@@ -400,6 +410,7 @@ class OcrClient(AbstractClient):
     def EstateCertOCR(self, request):
         """本接口支持不动产权证关键字段的识别，包括使用期限、面积、用途、权利性质、权利类型、坐落、共有情况、权利人、权利其他状况等。
 
+        默认接口请求频率限制：5次/秒。
 
 
         :param request: Request instance for EstateCertOCR.
@@ -425,6 +436,8 @@ class OcrClient(AbstractClient):
     def FinanBillOCR(self, request):
         """本接口支持常见银行票据的自动分类和识别。整单识别包括支票（含现金支票、普通支票、转账支票），承兑汇票（含银行承兑汇票、商业承兑汇票）以及进账单等，适用于中国人民银行印发的 2010 版银行票据凭证版式（银发[2010]299 号）。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for FinanBillOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.FinanBillOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.FinanBillOCRResponse`
@@ -447,6 +460,8 @@ class OcrClient(AbstractClient):
 
     def FinanBillSliceOCR(self, request):
         """本接口支持常见银行票据的自动分类和识别。切片识别包括金融行业常见票据的重要切片字段识别，包括金额、账号、日期、凭证号码等。（金融票据切片：金融票据中待识别字段及其周围局部区域的裁剪图像。）
+
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for FinanBillSliceOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.FinanBillSliceOCRRequest`
@@ -495,6 +510,8 @@ class OcrClient(AbstractClient):
 
     def FormulaOCR(self, request):
         """本接口支持识别主流初高中数学符号和公式，返回公式的 Latex 格式文本。
+
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for FormulaOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.FormulaOCRRequest`
@@ -872,6 +889,8 @@ class OcrClient(AbstractClient):
     def HmtResidentPermitOCR(self, request):
         """港澳台居住证OCR支持港澳台居住证正反面全字段内容检测识别功能，包括姓名、性别、出生日期、地址、身份证ID、签发机关、有效期限、签发次数、通行证号码关键字段识别。可以应用于港澳台居住证信息有效性校验场景，例如银行开户、用户注册等场景。
 
+        默认接口请求频率限制：20次/秒。
+
         :param request: Request instance for HmtResidentPermitOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.HmtResidentPermitOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.HmtResidentPermitOCRResponse`
@@ -965,6 +984,8 @@ class OcrClient(AbstractClient):
     def ImageEnhancement(self, request):
         """文本图像增强是面向文档类图片提供的图像增强处理能力，包括切边增强、图像矫正、阴影去除、摩尔纹去除等；可以有效优化文档类的图片质量，提升文字的清晰度。
 
+        默认接口请求频率限制：10次/秒。
+
         :param request: Request instance for ImageEnhancement.
         :type request: :class:`tencentcloud.ocr.v20181119.models.ImageEnhancementRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.ImageEnhancementResponse`
@@ -988,6 +1009,8 @@ class OcrClient(AbstractClient):
     def InstitutionOCR(self, request):
         """本接口支持事业单位法人证书关键字段识别，包括注册号、有效期、住所、名称、法定代表人等。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for InstitutionOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.InstitutionOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.InstitutionOCRResponse`
@@ -1010,6 +1033,8 @@ class OcrClient(AbstractClient):
 
     def InsuranceBillOCR(self, request):
         """本接口支持病案首页、费用清单、结算单、医疗发票四种保险理赔单据的文本识别和结构化输出。
+
+        默认接口请求频率限制：1次/秒。
 
         :param request: Request instance for InsuranceBillOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.InsuranceBillOCRRequest`
@@ -1133,6 +1158,8 @@ class OcrClient(AbstractClient):
     def MainlandPermitOCR(self, request):
         """智能识别并结构化港澳台居民来往内地通行证正面全部字段，包含中文姓名、英文姓名、性别、出生日期、签发机关、有效期限、证件号、签发地点、签发次数、证件类别。
 
+        默认接口请求频率限制：20次/秒。
+
         :param request: Request instance for MainlandPermitOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.MainlandPermitOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.MainlandPermitOCRResponse`
@@ -1155,6 +1182,7 @@ class OcrClient(AbstractClient):
 
     def MixedInvoiceDetect(self, request):
         """本接口支持多张、多类型票据的混合检测和自动分类，返回对应票据类型。目前已支持增值税发票、增值税发票（卷票）、定额发票、通用机打发票、购车发票、火车票、出租车发票、机票行程单、汽车票、轮船票、过路过桥费发票、酒店账单、客运限额发票、购物小票、完税证明共15种票据。
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for MixedInvoiceDetect.
         :type request: :class:`tencentcloud.ocr.v20181119.models.MixedInvoiceDetectRequest`
@@ -1204,6 +1232,8 @@ class OcrClient(AbstractClient):
     def OrgCodeCertOCR(self, request):
         """本接口支持组织机构代码证关键字段的识别，包括代码、有效期、地址、机构名称等。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for OrgCodeCertOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.OrgCodeCertOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.OrgCodeCertOCRResponse`
@@ -1227,6 +1257,8 @@ class OcrClient(AbstractClient):
     def PassportOCR(self, request):
         """本接口支持中国大陆地区护照个人资料页多个字段的检测与识别。已支持字段包括英文姓名、中文姓名、国家码、护照号、出生地、出生日期、国籍英文、性别英文、有效期、签发地点英文、签发日期、持证人签名、护照机读码（MRZ码）等。
 
+        默认接口请求频率限制：10次/秒。
+
         :param request: Request instance for PassportOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.PassportOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.PassportOCRResponse`
@@ -1249,6 +1281,8 @@ class OcrClient(AbstractClient):
 
     def PermitOCR(self, request):
         """本接口支持对卡式港澳台通行证的识别，包括签发地点、签发机关、有效期限、性别、出生日期、英文姓名、姓名、证件号等字段。
+
+        默认接口请求频率限制：10次/秒。
 
         :param request: Request instance for PermitOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.PermitOCRRequest`
@@ -1274,6 +1308,8 @@ class OcrClient(AbstractClient):
         """本接口支持房产证关键字段的识别，包括房地产权利人、共有情况、登记时间、规划用途、房屋性质、房屋坐落等。
         目前接口对合肥、成都、佛山三个城市的房产证版式识别较好。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for PropOwnerCertOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.PropOwnerCertOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.PropOwnerCertOCRResponse`
@@ -1297,6 +1333,8 @@ class OcrClient(AbstractClient):
     def QrcodeOCR(self, request):
         """本接口支持条形码和二维码的识别（包括 DataMatrix 和 PDF417）。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for QrcodeOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.QrcodeOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.QrcodeOCRResponse`
@@ -1318,7 +1356,9 @@ class OcrClient(AbstractClient):
 
 
     def QueryBarCode(self, request):
-        """本接口支持条形码备案信息查询，返回条形码查询结果的相关信息，包括产品名称、产品英文名称、品牌名称、规格型号、宽度、高度、深度、关键字、产品描述、厂家名称、厂家地址、企业社会信用代码13个字段信息。
+        """库源服务调整，该接口在2023年6月1日将正式下线。
+
+        本接口支持条形码备案信息查询，返回条形码查询结果的相关信息，包括产品名称、产品英文名称、品牌名称、规格型号、宽度、高度、深度、关键字、产品描述、厂家名称、厂家地址、企业社会信用代码13个字段信息。
 
         产品优势：直联中国物品编码中心，查询结果更加准确、可靠。
 
@@ -1369,6 +1409,7 @@ class OcrClient(AbstractClient):
 
     def RecognizeContainerOCR(self, request):
         """本接口支持集装箱箱门信息识别，识别字段包括集装箱箱号、类型、总重量、有效承重、容量、自身重量，具备集装箱箱号、类型不完整或者不清晰的告警功能。
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for RecognizeContainerOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.RecognizeContainerOCRRequest`
@@ -1418,6 +1459,8 @@ class OcrClient(AbstractClient):
     def RecognizeIndonesiaIDCardOCR(self, request):
         """印尼身份证识别
 
+        默认接口请求频率限制：20次/秒。
+
         :param request: Request instance for RecognizeIndonesiaIDCardOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.RecognizeIndonesiaIDCardOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.RecognizeIndonesiaIDCardOCRResponse`
@@ -1465,6 +1508,8 @@ class OcrClient(AbstractClient):
 
     def RecognizeOnlineTaxiItineraryOCR(self, request):
         """本接口支持网约车行程单关键字段的识别，包括行程起止日期、上车时间、起点、终点、里程、金额等字段。
+
+        默认接口请求频率限制：20次/秒。
 
         :param request: Request instance for RecognizeOnlineTaxiItineraryOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.RecognizeOnlineTaxiItineraryOCRRequest`
@@ -1558,6 +1603,8 @@ class OcrClient(AbstractClient):
     def RecognizeTableOCR(self, request):
         """本接口支持中英文图片/ PDF内常规表格、无线表格、多表格的检测和识别，支持日文有线表格识别，返回每个单元格的文字内容，支持旋转的表格图片识别，且支持将识别结果保存为 Excel 格式。
 
+        默认接口请求频率限制：10次/秒。
+
         :param request: Request instance for RecognizeTableOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.RecognizeTableOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.RecognizeTableOCRResponse`
@@ -1630,6 +1677,8 @@ class OcrClient(AbstractClient):
     def ResidenceBookletOCR(self, request):
         """本接口支持居民户口簿户主页及成员页关键字段的识别，包括姓名、户别、地址、籍贯、身份证号码等。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for ResidenceBookletOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.ResidenceBookletOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.ResidenceBookletOCRResponse`
@@ -1652,6 +1701,8 @@ class OcrClient(AbstractClient):
 
     def RideHailingDriverLicenseOCR(self, request):
         """本接口支持网约车驾驶证关键字段的识别，包括姓名、证号、起始日期、截止日期、发证日期。
+
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for RideHailingDriverLicenseOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.RideHailingDriverLicenseOCRRequest`
@@ -1676,6 +1727,7 @@ class OcrClient(AbstractClient):
     def RideHailingTransportLicenseOCR(self, request):
         """本接口支持网约车运输证关键字段的识别，包括交运管许可字号、车辆所有人、车辆号牌、起始日期、截止日期、发证日期。
 
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for RideHailingTransportLicenseOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.RideHailingTransportLicenseOCRRequest`
@@ -1777,6 +1829,7 @@ class OcrClient(AbstractClient):
 
         本接口支持图片内表格文档的检测和识别，返回每个单元格的文字内容，支持将识别结果保存为 Excel 格式。
 
+        默认接口请求频率限制：10次/秒。
 
         :param request: Request instance for TableOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.TableOCRRequest`
@@ -2030,6 +2083,8 @@ class OcrClient(AbstractClient):
     def VehicleRegCertOCR(self, request):
         """本接口支持国内机动车登记证书主要字段的结构化识别，包括机动车所有人、身份证明名称、号码、车辆型号、车辆识别代号、发动机号、制造厂名称等。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for VehicleRegCertOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.VehicleRegCertOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.VehicleRegCertOCRResponse`
@@ -2051,7 +2106,9 @@ class OcrClient(AbstractClient):
 
 
     def VerifyBasicBizLicense(self, request):
-        """本接口支持营业执照信息的识别与准确性核验。
+        """库源服务调整，该接口在2023年6月1日将正式下线。
+
+        本接口支持营业执照信息的识别与准确性核验。
 
         您可以通过输入营业执照注册号或营业执照图片（若两者都输入则只用注册号做查询）进行核验，接口返回查询到的工商照面信息，并比对要校验的字段与查询结果的一致性。查询到工商信息包括：统一社会信用代码、经营期限、法人姓名、经营状态、经营业务范围、注册资本等。
 
@@ -2076,7 +2133,9 @@ class OcrClient(AbstractClient):
 
 
     def VerifyBizLicense(self, request):
-        """本接口支持营业执照信息的识别与准确性核验，返回的真实工商照面信息比营业执照识别及核验（基础版）接口更详细。
+        """库源服务调整，该接口在2023年6月1日将正式下线。
+
+        本接口支持营业执照信息的识别与准确性核验，返回的真实工商照面信息比营业执照识别及核验（基础版）接口更详细。
 
         您可以输入营业执照注册号或营业执照图片（若两者都输入则只用注册号做查询），接口返回查询到的工商照面信息，并比对要校验的字段与查询结果的一致性。
 
@@ -2103,7 +2162,9 @@ class OcrClient(AbstractClient):
 
 
     def VerifyEnterpriseFourFactors(self, request):
-        """此接口基于企业四要素授权“姓名、证件号码、企业标识、企业全称”，验证企业信息是否一致。
+        """库源服务调整，该接口在2023年6月1日将正式下线。
+
+        此接口基于企业四要素授权“姓名、证件号码、企业标识、企业全称”，验证企业信息是否一致。
 
         :param request: Request instance for VerifyEnterpriseFourFactors.
         :type request: :class:`tencentcloud.ocr.v20181119.models.VerifyEnterpriseFourFactorsRequest`

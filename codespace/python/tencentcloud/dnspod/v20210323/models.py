@@ -36,7 +36,6 @@ class AddRecordBatch(AbstractModel):
         :param RecordLineId: 解析记录的线路 ID，RecordLine和RecordLineId都有时，系统优先取 RecordLineId。
         :type RecordLineId: str
         :param Weight: 记录权重值(暂未支持)。
-注意：此字段可能返回 null，表示取不到有效值。
         :type Weight: int
         :param MX: 记录的 MX 记录值，非 MX 记录类型，默认为 0，MX记录则必选。
         :type MX: int
@@ -1838,7 +1837,7 @@ class DescribeDomainListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Type: 域名分组类型，默认为ALL。可取值为ALL，MINE，SHARE，ISMARK，PAUSE，VIP，RECENT，SHARE_OUT。
+        :param Type: 域名分组类型，默认为ALL。可取值为ALL，MINE，SHARE，ISMARK，PAUSE，VIP，RECENT，SHARE_OUT，FREE。
         :type Type: str
         :param Offset: 记录开始的偏移, 第一条记录为 0, 依次类推。默认值为0。
         :type Offset: int

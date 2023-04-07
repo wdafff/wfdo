@@ -322,7 +322,7 @@ class VodClient(AbstractClient):
 
 
     def CreateImageProcessingTemplate(self, request):
-        """创建一个用户自定义的图片处理模板，数量上限：16。最多支持三次操作，例如：裁剪-缩略-裁剪。
+        """创建一个用户自定义的图片处理模板，数量上限：16。最多支持十次操作，例如：裁剪-缩略-裁剪-模糊-缩略-裁剪-缩略-裁剪-模糊-缩略。
 
         :param request: Request instance for CreateImageProcessingTemplate.
         :type request: :class:`tencentcloud.vod.v20180717.models.CreateImageProcessingTemplateRequest`
@@ -404,6 +404,29 @@ class VodClient(AbstractClient):
             body = self.call("CreateProcedureTemplate", params, headers=headers)
             response = json.loads(body)
             model = models.CreateProcedureTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateRebuildMediaTemplate(self, request):
+        """创建音画质重生模板。
+
+        :param request: Request instance for CreateRebuildMediaTemplate.
+        :type request: :class:`tencentcloud.vod.v20180717.models.CreateRebuildMediaTemplateRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.CreateRebuildMediaTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateRebuildMediaTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateRebuildMediaTemplateResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -946,6 +969,29 @@ class VodClient(AbstractClient):
             body = self.call("DeleteProcedureTemplate", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteProcedureTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteRebuildMediaTemplate(self, request):
+        """删除音画质重生模板。
+
+        :param request: Request instance for DeleteRebuildMediaTemplate.
+        :type request: :class:`tencentcloud.vod.v20180717.models.DeleteRebuildMediaTemplateRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.DeleteRebuildMediaTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteRebuildMediaTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteRebuildMediaTemplateResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1893,6 +1939,29 @@ class VodClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeRebuildMediaTemplates(self, request):
+        """获取音画质重生模板列表。
+
+        :param request: Request instance for DescribeRebuildMediaTemplates.
+        :type request: :class:`tencentcloud.vod.v20180717.models.DescribeRebuildMediaTemplatesRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.DescribeRebuildMediaTemplatesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRebuildMediaTemplates", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeRebuildMediaTemplatesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeReviewDetails(self, request):
         """<b>本接口已不推荐使用，用 [DescribeMediaProcessUsageData](/document/product/266/41464) 替代</b>
 
@@ -2771,6 +2840,29 @@ class VodClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyRebuildMediaTemplate(self, request):
+        """修改音画质重生模板。
+
+        :param request: Request instance for ModifyRebuildMediaTemplate.
+        :type request: :class:`tencentcloud.vod.v20180717.models.ModifyRebuildMediaTemplateRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.ModifyRebuildMediaTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyRebuildMediaTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyRebuildMediaTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyReviewTemplate(self, request):
         """修改用户自定义审核模板。
         >模板仅适用于 [音视频审核(ReviewAudioVideo)](https://cloud.tencent.com/document/api/266/80283) 和 [图片审核(ReviewImage)](https://cloud.tencent.com/document/api/266/73217) 接口。
@@ -3283,6 +3375,29 @@ class VodClient(AbstractClient):
             body = self.call("RebuildMedia", params, headers=headers)
             response = json.loads(body)
             model = models.RebuildMediaResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def RebuildMediaByTemplate(self, request):
+        """使用模板发起音画质重生。
+
+        :param request: Request instance for RebuildMediaByTemplate.
+        :type request: :class:`tencentcloud.vod.v20180717.models.RebuildMediaByTemplateRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.RebuildMediaByTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RebuildMediaByTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.RebuildMediaByTemplateResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

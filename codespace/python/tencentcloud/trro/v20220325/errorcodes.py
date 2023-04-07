@@ -14,6 +14,9 @@
 # limitations under the License.
 
 
+# 操作失败。
+FAILEDOPERATION = 'FailedOperation'
+
 # 内部错误。
 INTERNALERROR = 'InternalError'
 
@@ -23,11 +26,11 @@ INVALIDPARAMETER = 'InvalidParameter'
 # 参数取值错误。
 INVALIDPARAMETERVALUE = 'InvalidParameterValue'
 
-# 超过配额限制。
-LIMITEXCEEDED = 'LimitExceeded'
+# 缺少参数错误。
+MISSINGPARAMETER = 'MissingParameter'
 
 # 操作被拒绝。
 OPERATIONDENIED = 'OperationDenied'
 
-# 未授权操作。
-UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'
+# 资源不存在。
+RESOURCENOTFOUND = 'ResourceNotFound'

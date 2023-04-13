@@ -513,7 +513,7 @@ class CwpClient(AbstractClient):
 
 
     def DeleteMachine(self, request):
-        """本接口（DeleteMachine）用于卸载云镜客户端。
+        """本接口（DeleteMachine）用于卸载主机安全客户端。
 
         :param request: Request instance for DeleteMachine.
         :type request: :class:`tencentcloud.cwp.v20180228.models.DeleteMachineRequest`
@@ -2757,6 +2757,29 @@ class CwpClient(AbstractClient):
             body = self.call("DescribeExportMachines", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeExportMachinesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeFileTamperEvents(self, request):
+        """核心文件监控事件列表
+
+        :param request: Request instance for DescribeFileTamperEvents.
+        :type request: :class:`tencentcloud.cwp.v20180228.models.DescribeFileTamperEventsRequest`
+        :rtype: :class:`tencentcloud.cwp.v20180228.models.DescribeFileTamperEventsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeFileTamperEvents", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeFileTamperEventsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

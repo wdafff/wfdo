@@ -305,15 +305,15 @@ class BackupDownloadInfo(AbstractModel):
 
 
 class BackupLimitVpcItem(AbstractModel):
-    """自定义的备份文件下载地址的 VPC 信息。
+    """已配置的备份文件下载地址对应的 VPC 信息。
 
     """
 
     def __init__(self):
         r"""
-        :param Region: 自定义下载备份文件的VPC 所属地域。
+        :param Region: 备份文件的下载地址对应VPC 所属的地域。
         :type Region: str
-        :param VpcList: 自定义下载备份文件的 VPC 列表。
+        :param VpcList: 备份文件下载地址的 VPC 列表。
         :type VpcList: list of str
         """
         self.Region = None
@@ -660,9 +660,11 @@ class CloneInstancesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 当前实例ID。
+        :param InstanceId: 指定待克隆的源实例 ID。例如：crs-xjhsdj****。请登录[Redis控制台](https://console.cloud.tencent.com/redis)在实例列表复制实例 ID。
         :type InstanceId: str
-        :param GoodsNum: 单次克隆实例的数量。包年包月每次购买最大数量为100。按量计费每次购买最大数量为30，每个地域购买数量取值范围为[1,100]。
+        :param GoodsNum: 单次克隆实例的数量。
+- 包年包月每次购买最大数量为100。
+- 按量计费每次购买最大数量为30。
         :type GoodsNum: int
         :param ZoneId: 克隆实例所属的可用区ID。当前所支持的可用区 ID，请参见[地域和可用区](https://cloud.tencent.com/document/product/239/4106) 。
         :type ZoneId: int
@@ -676,27 +678,29 @@ class CloneInstancesRequest(AbstractModel):
         :type BackupId: str
         :param NoAuth: 配置克隆实例是否支持免密访问。开启 SSL 与外网均不支持免密访问。<ul><li>true：免密实例，</li><li>false：非免密实例。默认为非免密实例。</li></ul>
         :type NoAuth: bool
-        :param VpcId: 私有网络ID。如果未配置该参数，默认选择基础网络。
+        :param VpcId: 配置克隆实例的私有网络ID。如果未配置该参数，默认选择基础网络。
         :type VpcId: str
-        :param SubnetId: 私有网络所属子网。基础网络时该参数无需配置。
+        :param SubnetId: 配置克隆实例所属私有网络的子网。基础网络时该参数无需配置。
         :type SubnetId: str
         :param InstanceName: 克隆实例的名称。<br>仅支持长度小于60的中文、英文或者数字，短划线"-"、下划线"_"。</br>
         :type InstanceName: str
         :param Password: 克隆实例的访问密码。<ul><li>当输入参数<b>NoAuth</b>为<b>true</b>时，可不设置该参数。</li><li>当实例为Redis2.8、4.0和5.0时，其密码格式为：8-30个字符，至少包含小写字母、大写字母、数字和字符 ()`~!@#$%^&*-+=_|{}[]:;<>,.?/ 中的2种，不能以"/"开头；</li><li>当实例为CKV 3.2时，其密码格式为：8-30个字符，必须包含字母和数字，且不包含其他字符。</li></ul>
         :type Password: str
-        :param AutoRenew: 自动续费标识。<ul><li>0：默认状态（手动续费）。</li><li>1：自动续费。</li><li>2：不自动续费，到期自动隔离。</li></ul>
+        :param AutoRenew: 自动续费标识。<ul><li>0：默认状态，手动续费。</li><li>1：自动续费。</li><li>2：不自动续费，到期自动隔离。</li></ul>
         :type AutoRenew: int
         :param VPort: 用户自定义的端口，默认为6379，取值范围[1024,65535]。
         :type VPort: int
         :param NodeSet: 实例的节点信息。<ul><li>目前支持配置节点的类型（主节点或者副本节点），及其节点的可用区信息。具体信息，请参见[RedisNodeInfo](https://cloud.tencent.com/document/product/239/20022#RedisNodeInfo)。</li><li>单可用区部署可不配置该参数。</li></ul>
         :type NodeSet: list of RedisNodeInfo
-        :param ProjectId: 项目 ID。登录控制台，可在右上角的<b>账号中心</b> > <b>项目管理</b>中查找项目ID。
+        :param ProjectId: 项目 ID。登录[Redis 控制台](https://console.cloud.tencent.com/redis#/)，可在右上角的<b>账号中心</b> > <b>项目管理</b>中查找项目ID。
         :type ProjectId: int
         :param ResourceTags: 克隆实例需绑定的标签。
         :type ResourceTags: list of ResourceTag
-        :param TemplateId: 克隆实例需要应用的参数模板ID,请登录 Redis 控制台，在<b>参数模板</b>页面获取。若不配置该参数，则应用默认的参数模板。
+        :param TemplateId: 指定克隆实例相关的参数模板 ID。
+- 若不配置该参数，则系统会依据所选择的兼容版本及架构，自动适配对应的默认模板。
+- 请通过[DescribeParamTemplates](https://cloud.tencent.com/document/product/239/58750)接口，查询实例的参数模板列表，获取模板 ID 编号。
         :type TemplateId: str
-        :param AlarmPolicyList: 指定克隆实例的告警策略 ID。请登录控制台，在<b>云监控</b> > <b>告警配置</b> > <b>告警策略</b>页面获取策略 ID 信息。
+        :param AlarmPolicyList: 指定克隆实例的告警策略 ID。请登录[腾讯云可观测平台控制台](https://console.cloud.tencent.com/monitor/alarm2/policy)，在 <b>告警管理</b> > <b>策略管理</b>页面获取策略 ID 信息。
         :type AlarmPolicyList: list of str
         """
         self.InstanceId = None
@@ -1599,6 +1603,63 @@ class DescribeBackupUrlResponse(AbstractModel):
                 obj = BackupDownloadInfo()
                 obj._deserialize(item)
                 self.BackupInfos.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeBandwidthRangeRequest(AbstractModel):
+    """DescribeBandwidthRange请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例 ID。
+        :type InstanceId: str
+        """
+        self.InstanceId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBandwidthRangeResponse(AbstractModel):
+    """DescribeBandwidthRange返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BaseBandwidth: 标准带宽。指购买实例时，系统为每个节点分配的带宽。
+        :type BaseBandwidth: int
+        :param AddBandwidth: 指实例的附加带宽。标准带宽不满足需求的情况下，用户可自行增加的带宽。<ul><li>开启副本只读时，实例总带宽 = 附加带宽 * 分片数 + 标准带宽 * 分片数 * Max ([只读副本数量, 1])，标准架构的分片数 = 1。</li><li>没有开启副本只读时，实例总带宽 = 附加带宽 * 分片数 + 标准带宽 * 分片数，标准架构的分片数 = 1。</li></ul>
+        :type AddBandwidth: int
+        :param MinAddBandwidth: 附加带宽设置下限。
+        :type MinAddBandwidth: int
+        :param MaxAddBandwidth: 附加带宽设置上限。
+        :type MaxAddBandwidth: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.BaseBandwidth = None
+        self.AddBandwidth = None
+        self.MinAddBandwidth = None
+        self.MaxAddBandwidth = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.BaseBandwidth = params.get("BaseBandwidth")
+        self.AddBandwidth = params.get("AddBandwidth")
+        self.MinAddBandwidth = params.get("MinAddBandwidth")
+        self.MaxAddBandwidth = params.get("MaxAddBandwidth")
         self.RequestId = params.get("RequestId")
 
 
@@ -3160,7 +3221,7 @@ class DescribeParamTemplateInfoRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TemplateId: 参数模板 ID。
+        :param TemplateId: 指定查询的参数模板 ID。请通过接口[DescribeParamTemplates](https://cloud.tencent.com/document/product/239/58750)获取参数模板列表信息。
         :type TemplateId: str
         """
         self.TemplateId = None
@@ -3184,17 +3245,27 @@ class DescribeParamTemplateInfoResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TotalCount: 实例参数个数
+        :param TotalCount: 参数模板的参数数量。
         :type TotalCount: int
         :param TemplateId: 参数模板 ID。
         :type TemplateId: str
         :param Name: 参数模板名称。
         :type Name: str
-        :param ProductType: 产品类型：1 – Redis2.8内存版（集群架构），2 – Redis2.8内存版（标准架构），3 – CKV 3.2内存版(标准架构)，4 – CKV 3.2内存版(集群架构)，5 – Redis2.8内存版（单机），6 – Redis4.0内存版（标准架构），7 – Redis4.0内存版（集群架构），8 – Redis5.0内存版（标准架构），9 – Redis5.0内存版（集群架构）
+        :param ProductType: 产品类型。
+- 2：Redis 2.8内存版（标准架构）。
+- 3：CKV 3.2内存版（标准架构）。
+- 4：CKV 3.2内存版（集群架构）。
+- 5：Redis 2.8内存版（单机）。
+- 6：Redis 4.0内存版（标准架构）。
+- 7：Redis 4.0内存版（集群架构）。
+- 8：Redis 5.0内存版（标准架构）。
+- 9：Redis 5.0内存版（集群架构）。
+- 15：Redis 6.2内存版（标准架构）。
+- 16：Redis 6.2内存版（集群架构）。
         :type ProductType: int
-        :param Description: 参数模板描述
+        :param Description: 参数模板描述。
         :type Description: str
-        :param Items: 参数详情
+        :param Items: 参数详情。包含：参数的名称，当前运行值，默认值，最大值、最小值、枚举值等信息。
         :type Items: list of ParameterDetail
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -4206,7 +4277,7 @@ class Groups(AbstractModel):
 
     def __init__(self):
         r"""
-        :param AppId: 用户AppID
+        :param AppId: 用户 APPID。APPID是与账号ID有唯一对应关系的应用 ID，部分腾讯云产品会使用此 APPID。
         :type AppId: int
         :param RegionId: 地域ID 。
 - 1：广州 
@@ -4228,7 +4299,7 @@ class Groups(AbstractModel):
 - 24：俄罗斯 
 - 25：日本
         :type RegionId: int
-        :param GroupId: 复制组 ID。
+        :param GroupId: 复制组 ID。格式如：crs-rpl-deind****。
         :type GroupId: str
         :param GroupName: 复制组名称。
 注意：此字段可能返回 null，表示取不到有效值。
@@ -4922,15 +4993,18 @@ class InstanceParamHistory(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ParamName: 参数名称
+        :param ParamName: 参数名称。
         :type ParamName: str
-        :param PreValue: 修改前值
+        :param PreValue: 参数修改之前的值。
         :type PreValue: str
-        :param NewValue: 修改后值
+        :param NewValue: 参数修改之后的值。
         :type NewValue: str
-        :param Status: 状态：1-参数配置修改中；2-参数配置修改成功；3-参数配置修改失败
+        :param Status: 参数配置状态。
+- 1：参数配置修改中。
+- 2：参数配置修改成功。
+- 3：参数配置修改失败。
         :type Status: int
-        :param ModifyTime: 修改时间
+        :param ModifyTime: 修改时间。
         :type ModifyTime: str
         """
         self.ParamName = None
@@ -4962,13 +5036,13 @@ class InstanceProxySlowlogDetail(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Duration: 慢查询耗时（单位：毫秒）。
+        :param Duration: 慢查询耗时时长。单位：毫秒。
         :type Duration: int
         :param Client: 客户端地址。
         :type Client: str
-        :param Command: 命令。
+        :param Command: 慢查询的命令。
         :type Command: str
-        :param CommandLine: 详细命令行信息。
+        :param CommandLine: 慢查询详细命令行信息。
         :type CommandLine: str
         :param ExecuteTime: 执行时间。
         :type ExecuteTime: str
@@ -5061,9 +5135,19 @@ class InstanceSet(AbstractModel):
         :type Createtime: str
         :param Size: 实例容量大小，单位：MB。
         :type Size: float
-        :param SizeUsed: 该字段已废弃。可使用云监控 API 接口 [GetMonitorData](https://cloud.tencent.com/document/product/248/31014) 获取实例已使用的内容容量。
+        :param SizeUsed: 该字段已废弃。请使用腾讯云可观测平台API 接口 [GetMonitorData](https://cloud.tencent.com/document/product/248/31014) 获取实例已使用的内存容量。
         :type SizeUsed: float
-        :param Type: 实例类型：<ul><li>1：Redis2.8内存版（集群架构）。</li><li>2：Redis2.8内存版（标准架构）。</li><li>3：CKV 3.2内存版(标准架构)。</li><li>4：CKV 3.2内存版(集群架构)。</li><li>5：Redis2.8内存版（单机）。</li></li><li>6：Redis4.0内存版（标准架构）。</li></li><li>7：Redis4.0内存版（集群架构）。</li></li><li>8：Redis5.0内存版（标准架构）。</li></li><li>9：Redis5.0内存版（集群架构）。</li></ul>
+        :param Type: 实例类型。
+- 2：Redis 2.8内存版（标准架构）。
+- 3：CKV 3.2内存版（标准架构）。
+- 4：CKV 3.2内存版（集群架构）。
+- 5：Redis 2.8内存版（单机）。
+- 6：Redis 4.0内存版（标准架构）。
+- 7：Redis 4.0内存版（集群架构）。
+- 8：Redis 5.0内存版（标准架构）。
+- 9：Redis 5.0内存版（集群架构）。
+- 15：Redis 6.2内存版（标准架构）。
+- 16：Redis 6.2内存版（集群架构）。
         :type Type: int
         :param AutoRenewFlag: 实例是否设置自动续费标识。<ul><li>1：设置自动续费。</li><li>0：未设置自动续费。</li></ul>
         :type AutoRenewFlag: int
@@ -5436,7 +5520,7 @@ class Instances(AbstractModel):
 
     def __init__(self):
         r"""
-        :param AppId: 用户AppID。
+        :param AppId: 用户APPID。APPID是与账号ID有唯一对应关系的应用 ID，部分腾讯云产品会使用此 APPID。
         :type AppId: int
         :param InstanceId: 实例 ID。
         :type InstanceId: str
@@ -5472,7 +5556,17 @@ class Instances(AbstractModel):
         :type Status: int
         :param GrocerySysId: 仓库ID。
         :type GrocerySysId: int
-        :param ProductType: 实例类型。<ul><li>1：Redis 2.8 内存版（集群架构）。</li><li>2：Redis 2.8 内存版（标准架构）。</li><li>3：CKV 3.2 内存版（标准架构）。</li><li>4：CKV 3.2 内存版（集群架构）。</li><li>5：Redis 2.8 单机版。</li><li>6：Redis 4.0 内存版（标准架构）。</li><li>7：Redis 4.0 内存版（集群架构）。</li><li>8：Redis 5.0 内存版（标准架构）。</li><li>9：Redis 5.0 内存版（集群架构）。</li></ul>
+        :param ProductType: 实例类型。
+- 2：Redis 2.8内存版（标准架构）。
+- 3：CKV 3.2内存版（标准架构）。
+- 4：CKV 3.2内存版（集群架构）。
+- 5：Redis 2.8内存版（单机）。
+- 6：Redis 4.0内存版（标准架构）。
+- 7：Redis 4.0内存版（集群架构）。
+- 8：Redis 5.0内存版（标准架构）。
+- 9：Redis 5.0内存版（集群架构）。
+- 15：Redis 6.2内存版（标准架构）。
+- 16：Redis 6.2内存版（集群架构）。
         :type ProductType: int
         :param CreateTime: 实例加入复制组的时间。
         :type CreateTime: str
@@ -5650,7 +5744,7 @@ class ModfiyInstancePasswordRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例 ID。
+        :param InstanceId: 指定实例 ID。例如：crs-xjhsdj****。请登录[Redis控制台](https://console.cloud.tencent.com/redis)在实例列表复制实例 ID。
         :type InstanceId: str
         :param OldPassword: 实例旧密码。
         :type OldPassword: str
@@ -6495,13 +6589,22 @@ class ParamTemplateInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TemplateId: 参数模板ID
+        :param TemplateId: 参数模板 ID。
         :type TemplateId: str
-        :param Name: 参数模板名称
+        :param Name: 参数模板名称。
         :type Name: str
-        :param Description: 参数模板描述
+        :param Description: 参数模板描述。
         :type Description: str
-        :param ProductType: 产品类型：1 – Redis2.8内存版（集群架构），2 – Redis2.8内存版（标准架构），3 – CKV 3.2内存版(标准架构)，4 – CKV 3.2内存版(集群架构)，5 – Redis2.8内存版（单机），6 – Redis4.0内存版（标准架构），7 – Redis4.0内存版（集群架构），8 – Redis5.0内存版（标准架构），9 – Redis5.0内存版（集群架构）
+        :param ProductType: 实例类型。
+- 2：Redis 2.8内存版（标准架构）。
+- 3：CKV 3.2内存版（标准架构）。
+- 4：CKV 3.2内存版（集群架构）。
+- 5：Redis 2.8内存版（单机）。
+- 6：Redis 4.0内存版（标准架构）。
+- 7：Redis 4.0内存版（集群架构）。
+- 8：Redis 5.0内存版（标准架构）。
+- 9：Redis 5.0内存版（集群架构）。
+
         :type ProductType: int
         """
         self.TemplateId = None
@@ -6531,25 +6634,27 @@ class ParameterDetail(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Name: 参数名称
+        :param Name: 参数名称。
         :type Name: str
-        :param ParamType: 参数类型
+        :param ParamType: 参数类型。
         :type ParamType: str
-        :param Default: 参数默认值
+        :param Default: 参数默认值。
         :type Default: str
-        :param Description: 参数描述
+        :param Description: 参数描述。
         :type Description: str
-        :param CurrentValue: 参数当前值
+        :param CurrentValue: 参数当前值。
         :type CurrentValue: str
-        :param NeedReboot: 修改参数后，是否需要重启数据库以使参数生效。可能的值包括：0-不需要重启；1-需要重启
+        :param NeedReboot: 修改参数后，是否需要重启数据库以使参数生效。
+- 0：不需要重启。
+- 1：需要重启。
         :type NeedReboot: int
-        :param Max: 参数允许的最大值
+        :param Max: 参数允许的最大值。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Max: str
-        :param Min: 参数允许的最小值
+        :param Min: 参数允许的最小值。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Min: str
-        :param EnumValue: 参数的可选枚举值。如果为非枚举参数，则为空
+        :param EnumValue: 参数可选枚举值。如果为非枚举参数，则为空。
 注意：此字段可能返回 null，表示取不到有效值。
         :type EnumValue: list of str
         """
@@ -6787,33 +6892,42 @@ class RedisCommonInstanceList(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceName: 实例名称
+        :param InstanceName: 实例名称。
         :type InstanceName: str
-        :param InstanceId: 实例id
+        :param InstanceId: 实例 ID。
         :type InstanceId: str
-        :param AppId: 用户id
+        :param AppId: 用户APPID。APPID是与账号ID有唯一对应关系的应用 ID，部分腾讯云产品会使用此 APPID。
         :type AppId: int
-        :param ProjectId: 实例所属项目id
+        :param ProjectId: 实例所属项目 ID。
         :type ProjectId: int
-        :param Region: 实例接入区域
+        :param Region: 实例接入区域。
         :type Region: str
-        :param Zone: 实例接入zone
+        :param Zone: 实例接入可用区。
         :type Zone: str
-        :param VpcId: 实例网络id
+        :param VpcId: 实例私有网络 ID。
         :type VpcId: str
-        :param SubnetId: 子网id
+        :param SubnetId: 私有网络所属子网 ID。
         :type SubnetId: str
-        :param Status: 实例状态信息，1-流程中 ,2-运行中, -2-实例已隔离 ,-3-实例待回收, -4-实例已删除
+        :param Status: 实例状态信息。
+- 1-流程中。
+- 2-运行中。
+- -2-实例已隔离。
+- -3-实例待回收。
+- -4-实例已删除。
         :type Status: str
-        :param Vips: 实例网络ip
+        :param Vips: 实例私有网络 IP 地址。
         :type Vips: list of str
-        :param Vport: 实例网络端口
+        :param Vport: 实例网络端口。
         :type Vport: int
-        :param Createtime: 实例创建时间
+        :param Createtime: 实例创建时间。
         :type Createtime: str
-        :param PayMode: 计费类型，0-按量计费，1-包年包月
+        :param PayMode: 计费类型。
+- 0：按量计费。
+- 1：包年包月。
         :type PayMode: int
-        :param NetType: 网络类型，0-基础网络，1-VPC网络
+        :param NetType: 网络类型。
+- 0：基础网络。
+- 1：VPC 网络。
         :type NetType: int
         """
         self.InstanceName = None
@@ -7062,6 +7176,59 @@ class ReleaseWanAddressResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class RemoveReplicationInstanceRequest(AbstractModel):
+    """RemoveReplicationInstance请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 复制组ID
+        :type GroupId: str
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param SyncType: 数据同步类型，true:需要数据强同步,false:不需要强同步，仅限删除主实例
+        :type SyncType: bool
+        """
+        self.GroupId = None
+        self.InstanceId = None
+        self.SyncType = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.InstanceId = params.get("InstanceId")
+        self.SyncType = params.get("SyncType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RemoveReplicationInstanceResponse(AbstractModel):
+    """RemoveReplicationInstance返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 异步任务ID
+        :type TaskId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
+
+
 class RenewInstanceRequest(AbstractModel):
     """RenewInstance请求参数结构体
 
@@ -7220,9 +7387,9 @@ class ResourceTag(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TagKey: 标签key
+        :param TagKey: 标签Key。
         :type TagKey: str
-        :param TagValue: 标签value
+        :param TagValue: 标签 Key 对应的 Value。
         :type TagValue: str
         """
         self.TagKey = None

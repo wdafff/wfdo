@@ -256,6 +256,29 @@ class DbbrainClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DeleteDBDiagReportTasks(self, request):
+        """根据任务id删除健康报告生成任务
+
+        :param request: Request instance for DeleteDBDiagReportTasks.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DeleteDBDiagReportTasksRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DeleteDBDiagReportTasksResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteDBDiagReportTasks", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteDBDiagReportTasksResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteSecurityAuditLogExportTasks(self, request):
         """删除安全审计日志导出任务。
 
@@ -776,6 +799,29 @@ class DbbrainClient(AbstractClient):
             body = self.call("DescribeSlowLogUserHostStats", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeSlowLogUserHostStatsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeSlowLogs(self, request):
+        """获取指定时间内某个sql模版的慢日志明细
+
+        :param request: Request instance for DescribeSlowLogs.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DescribeSlowLogsRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DescribeSlowLogsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSlowLogs", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeSlowLogsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

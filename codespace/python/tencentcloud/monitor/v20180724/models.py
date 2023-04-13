@@ -8129,6 +8129,9 @@ class DescribePrometheusGlobalConfigResponse(AbstractModel):
         :param RawJobs: RawJobs列表以及对应targets信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type RawJobs: list of PrometheusConfigItem
+        :param Probes: Probes列表以及对应targets信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Probes: list of PrometheusConfigItem
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -8136,6 +8139,7 @@ class DescribePrometheusGlobalConfigResponse(AbstractModel):
         self.ServiceMonitors = None
         self.PodMonitors = None
         self.RawJobs = None
+        self.Probes = None
         self.RequestId = None
 
 
@@ -8159,6 +8163,12 @@ class DescribePrometheusGlobalConfigResponse(AbstractModel):
                 obj = PrometheusConfigItem()
                 obj._deserialize(item)
                 self.RawJobs.append(obj)
+        if params.get("Probes") is not None:
+            self.Probes = []
+            for item in params.get("Probes"):
+                obj = PrometheusConfigItem()
+                obj._deserialize(item)
+                self.Probes.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -12339,7 +12349,7 @@ class PolicyTag(AbstractModel):
 
 
 class ProductSimple(AbstractModel):
-    """云监控支持的产品简要信息
+    """云产品监控支持的产品简要信息
 
     """
 
@@ -12689,7 +12699,7 @@ class PrometheusAlertRule(AbstractModel):
 
 
 class PrometheusClusterAgentBasic(AbstractModel):
-    """与云监控融合托管prometheus实例，关联集群基础信息
+    """与腾讯云可观测平台融合托管 Prometheus 实例，关联集群基础信息
 
     """
 
@@ -12807,16 +12817,23 @@ class PrometheusConfigItem(AbstractModel):
         :param TemplateId: 用于出参，如果该配置来至模板，则为模板id
 注意：此字段可能返回 null，表示取不到有效值。
         :type TemplateId: str
+        :param Targets: 目标数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Targets: :class:`tencentcloud.monitor.v20180724.models.Targets`
         """
         self.Name = None
         self.Config = None
         self.TemplateId = None
+        self.Targets = None
 
 
     def _deserialize(self, params):
         self.Name = params.get("Name")
         self.Config = params.get("Config")
         self.TemplateId = params.get("TemplateId")
+        if params.get("Targets") is not None:
+            self.Targets = Targets()
+            self.Targets._deserialize(params.get("Targets"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13340,12 +13357,24 @@ class PrometheusRecordRuleYamlItem(AbstractModel):
         :param ClusterId: 该聚合规则如果来源于用户集群crd资源定义，则ClusterId为所属集群ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClusterId: str
+        :param Status: 状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: int
+        :param Id: id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Id: str
+        :param Count: 规则数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Count: int
         """
         self.Name = None
         self.UpdateTime = None
         self.TemplateId = None
         self.Content = None
         self.ClusterId = None
+        self.Status = None
+        self.Id = None
+        self.Count = None
 
 
     def _deserialize(self, params):
@@ -13354,6 +13383,9 @@ class PrometheusRecordRuleYamlItem(AbstractModel):
         self.TemplateId = params.get("TemplateId")
         self.Content = params.get("Content")
         self.ClusterId = params.get("ClusterId")
+        self.Status = params.get("Status")
+        self.Id = params.get("Id")
+        self.Count = params.get("Count")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14399,6 +14431,46 @@ class TagInstance(AbstractModel):
         
 
 
+class Targets(AbstractModel):
+    """抓取目标数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Total: 总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Total: int
+        :param Up: 在线数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Up: int
+        :param Down: 不在线数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Down: int
+        :param Unknown: 未知状态数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Unknown: int
+        """
+        self.Total = None
+        self.Up = None
+        self.Down = None
+        self.Unknown = None
+
+
+    def _deserialize(self, params):
+        self.Total = params.get("Total")
+        self.Up = params.get("Up")
+        self.Down = params.get("Down")
+        self.Unknown = params.get("Unknown")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TaskStepInfo(AbstractModel):
     """任务步骤信息
 
@@ -14602,7 +14674,7 @@ class Toleration(AbstractModel):
 
 
 class URLNotice(AbstractModel):
-    """云监控告警通知模板 - 回调通知详情
+    """告警通知模板 - 回调通知详情
 
     """
 
@@ -15831,7 +15903,7 @@ class UpgradeGrafanaInstanceResponse(AbstractModel):
 
 
 class UserNotice(AbstractModel):
-    """云监控告警通知模板 - 用户通知详情
+    """告警通知模板 - 用户通知详情
 
     """
 

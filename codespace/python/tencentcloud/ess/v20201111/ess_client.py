@@ -75,7 +75,7 @@ class EssClient(AbstractClient):
 
 
     def CreateBatchCancelFlowUrl(self, request):
-        """电子签企业版：指定需要批量撤回的签署流程Id，获取批量撤销链接
+        """指定需要批量撤回的签署流程Id，获取批量撤销链接
         客户指定需要撤回的签署流程Id，最多100个，超过100不处理；接口调用成功返回批量撤回合同的链接，通过链接跳转到电子签小程序完成批量撤回
 
         :param request: Request instance for CreateBatchCancelFlowUrl.
@@ -99,7 +99,7 @@ class EssClient(AbstractClient):
 
 
     def CreateConvertTaskApi(self, request):
-        """创建文件转换任务
+        """上传了word、excel文件后，通过该接口发起文件转换任务，将word、excel文件转换为pdf文件。
 
         :param request: Request instance for CreateConvertTaskApi.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateConvertTaskApiRequest`
@@ -123,7 +123,7 @@ class EssClient(AbstractClient):
 
     def CreateDocument(self, request):
         """创建签署流程电子文档
-        适用场景：见创建签署流程接口。x0b
+        适用场景：见创建签署流程接口。
         注：该接口需要给对应的流程指定一个模板id，并且填充该模板中需要补充的信息。是“发起流程”接口的前置接口。
 
         :param request: Request instance for CreateDocument.
@@ -252,6 +252,8 @@ class EssClient(AbstractClient):
         """指定需要批量催办的签署流程Id，批量催办合同，最多100个; 接口失败后返回错误信息
         注意:
         该接口不可直接调用，请联系客户经理申请使用
+        仅能催办当前状态为“待签署”的签署人，且只能催办一次
+        发起合同时，签署人的NotifyType需设置为sms，否则无法催办
 
         :param request: Request instance for CreateFlowReminds.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateFlowRemindsRequest`
@@ -300,7 +302,7 @@ class EssClient(AbstractClient):
 
 
     def CreateFlowSignUrl(self, request):
-        """创建签署链接，请联系客户经理申请使用
+        """创建集成页面签署链接，请联系客户经理申请使用
 
         :param request: Request instance for CreateFlowSignUrl.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateFlowSignUrlRequest`
@@ -346,7 +348,7 @@ class EssClient(AbstractClient):
 
 
     def CreateIntegrationUserRoles(self, request):
-        """集成版绑定员工角色
+        """绑定员工与对应角色
 
         :param request: Request instance for CreateIntegrationUserRoles.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateIntegrationUserRolesRequest`
@@ -419,7 +421,7 @@ class EssClient(AbstractClient):
 
 
     def CreatePreparedPersonalEsign(self, request):
-        """本接口（CreatePreparedPersonalEsign）由于创建导入个人印章。
+        """本接口（CreatePreparedPersonalEsign）用于创建导入个人印章。
 
         :param request: Request instance for CreatePreparedPersonalEsign.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreatePreparedPersonalEsignRequest`
@@ -465,7 +467,7 @@ class EssClient(AbstractClient):
 
 
     def CreateSchemeUrl(self, request):
-        """获取小程序跳转链接
+        """获取小程序签署链接
 
         适用场景：如果需要签署人在自己的APP、小程序、H5应用中签署，可以通过此接口获取跳转腾讯电子签小程序的签署跳转链接。
 
@@ -567,7 +569,7 @@ class EssClient(AbstractClient):
 
 
     def DeleteIntegrationRoleUsers(self, request):
-        """解绑用户角色绑定关系
+        """解绑员工与对应角色关系
 
         :param request: Request instance for DeleteIntegrationRoleUsers.
         :type request: :class:`tencentcloud.ess.v20201111.models.DeleteIntegrationRoleUsersRequest`
@@ -732,7 +734,7 @@ class EssClient(AbstractClient):
 
 
     def DescribeIntegrationEmployees(self, request):
-        """查询员工信息，每次返回的数据量最大为20
+        """查询企业员工列表，每次返回的数据量最大为20
 
         :param request: Request instance for DescribeIntegrationEmployees.
         :type request: :class:`tencentcloud.ess.v20201111.models.DescribeIntegrationEmployeesRequest`
@@ -778,7 +780,7 @@ class EssClient(AbstractClient):
 
 
     def DescribeIntegrationRoles(self, request):
-        """查询集成版角色
+        """查询企业角色列表
 
         :param request: Request instance for DescribeIntegrationRoles.
         :type request: :class:`tencentcloud.ess.v20201111.models.DescribeIntegrationRolesRequest`
@@ -917,7 +919,7 @@ class EssClient(AbstractClient):
 
 
     def GetTaskResultApi(self, request):
-        """查询转换任务状态
+        """通过发起转换任务接口（CreateConvertTaskApi）返回的任务Id查询转换任务状态，通过本接口确认转换任务是否完成。大文件转换所需的时间可能会比较长。
 
         :param request: Request instance for GetTaskResultApi.
         :type request: :class:`tencentcloud.ess.v20201111.models.GetTaskResultApiRequest`
@@ -990,7 +992,7 @@ class EssClient(AbstractClient):
 
 
     def UpdateIntegrationEmployees(self, request):
-        """更新集成版员工信息(姓名，手机号，邮件)，用户实名后无法更改姓名与手机号
+        """更新员工信息(姓名，手机号，邮件)，用户实名后无法更改姓名与手机号
 
         :param request: Request instance for UpdateIntegrationEmployees.
         :type request: :class:`tencentcloud.ess.v20201111.models.UpdateIntegrationEmployeesRequest`
@@ -1039,7 +1041,7 @@ class EssClient(AbstractClient):
 
 
     def VerifyPdf(self, request):
-        """验证合同文件
+        """对流程的合同文件进行验证，判断文件是否合法。
 
         :param request: Request instance for VerifyPdf.
         :type request: :class:`tencentcloud.ess.v20201111.models.VerifyPdfRequest`

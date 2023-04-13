@@ -4110,7 +4110,7 @@ class BashEvent(AbstractModel):
         r"""
         :param Id: 数据ID
         :type Id: int
-        :param Uuid: 云镜ID
+        :param Uuid: 主机安全ID
         :type Uuid: str
         :param Quuid: 主机ID
         :type Quuid: str
@@ -4212,7 +4212,7 @@ class BashEventNew(AbstractModel):
         r"""
         :param Id: 数据ID
         :type Id: int
-        :param Uuid: 云镜ID
+        :param Uuid: 主机安全ID
         :type Uuid: str
         :param Quuid: 主机ID
         :type Quuid: str
@@ -4326,7 +4326,7 @@ class BashEventsInfoNew(AbstractModel):
         r"""
         :param Id: 数据ID
         :type Id: int
-        :param Uuid: 云镜ID
+        :param Uuid: 主机安全ID
         :type Uuid: str
         :param Quuid: 主机ID
         :type Quuid: str
@@ -4552,7 +4552,7 @@ class BruteAttackInfo(AbstractModel):
         r"""
         :param Id: 唯一Id
         :type Id: int
-        :param Uuid: 云镜客户端唯一标识UUID
+        :param Uuid: 主机安全客户端唯一标识UUID
 注意：此字段可能返回 null，表示取不到有效值。
         :type Uuid: str
         :param MachineIp: 主机ip
@@ -5921,7 +5921,7 @@ class DeleteMachineRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Uuid: 云镜客户端Uuid。
+        :param Uuid: 主机安全客户端Uuid。
         :type Uuid: str
         """
         self.Uuid = None
@@ -11604,32 +11604,40 @@ class DescribeBashEventsRequest(AbstractModel):
         r"""
         :param Limit: 返回数量，默认为10，最大值为100。
         :type Limit: int
+        :param Filters: 过滤条件。
+<li>HostName - String - 是否必填：否 - 主机名</li>
+<li>Hostip - String - 是否必填：否 - 主机内网IP</li>
+<li>RuleCategory - Int - 是否必填：否 - 策略类型,全部或者单选(0:系统 1:用户)</li>
+<li>RuleName - String - 是否必填：否 - 策略名称</li>
+<li>RuleLevel - Int - 是否必填：否 - 威胁等级,可以多选</li>
+<li>Status - Int - 是否必填：否 - 处理状态,可多选(0:待处理 1:已处理 2:已加白  3:已忽略 4:已删除 5:已拦截)</li>
+<li>DetectBy - Int - 是否必填：否 - 数据来源,可多选(0:bash日志 1:实时监控)</li>
+<li>StartTime - String - 是否必填：否 - 开始时间</li>
+<li>EndTime - String - 是否必填：否 - 结束时间</li>
+        :type Filters: list of Filter
         :param Offset: 偏移量，默认为0。
         :type Offset: int
-        :param Filters: 过滤条件。
-<li>Keywords - String - 是否必填：否 - 关键词(主机内网IP)</li>
-        :type Filters: list of Filter
         :param Order: 排序方式：根据请求次数排序：asc-升序/desc-降序
         :type Order: str
         :param By: 排序字段：CreateTime-发生时间。ModifyTime-处理时间
         :type By: str
         """
         self.Limit = None
-        self.Offset = None
         self.Filters = None
+        self.Offset = None
         self.Order = None
         self.By = None
 
 
     def _deserialize(self, params):
         self.Limit = params.get("Limit")
-        self.Offset = params.get("Offset")
         if params.get("Filters") is not None:
             self.Filters = []
             for item in params.get("Filters"):
                 obj = Filter()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        self.Offset = params.get("Offset")
         self.Order = params.get("Order")
         self.By = params.get("By")
         memeber_set = set(params.keys())
@@ -11756,7 +11764,7 @@ class DescribeBruteAttackListRequest(AbstractModel):
         :type Offset: int
         :param Filters: 过滤条件。
 <li>IpOrAlias - String - 是否必填：否 - 主机ip或别名筛选</li>
-<li>Uuid - String - 是否必填：否 - 云镜唯一Uuid</li>
+<li>Uuid - String - 是否必填：否 - 主机安全唯一Uuid</li>
 <li>Quuid - String - 是否必填：否 - 云服务器uuid</li>
 <li>Status - String - 是否必填：否 - 状态筛选：失败：FAILED 成功：SUCCESS</li>
 <li>UserName - String - 是否必填：否 - UserName筛选</li>
@@ -12483,6 +12491,86 @@ class DescribeExportMachinesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeFileTamperEventsRequest(AbstractModel):
+    """DescribeFileTamperEvents请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filters: 过滤条件。
+<li>Status - String - 是否必填：否 - 处理状态  0 -- 待处理 1 -- 已加白 2 -- 已删除 3 - 已忽略</li>
+<li>ModifyTime - String - 是否必填：否 - 最近发生时间</li>
+<li>Uuid- String - 是否必填：否 - 主机uuid查询</li>
+<li>RuleCategory- string - 是否必填：否 - 规则类别 0 系统规则 1 自定义规则</li>
+        :type Filters: list of Filters
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Limit: 需要返回的数量，默认为10，最大值为100
+        :type Limit: int
+        :param Order: 排序方式 ASC,DESC
+        :type Order: str
+        :param By: 排序字段 CreateTime、ModifyTime
+        :type By: str
+        """
+        self.Filters = None
+        self.Offset = None
+        self.Limit = None
+        self.Order = None
+        self.By = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filters()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        self.Order = params.get("Order")
+        self.By = params.get("By")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeFileTamperEventsResponse(AbstractModel):
+    """DescribeFileTamperEvents返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param List: 核心文件事件列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type List: list of FileTamperEvent
+        :param TotalCount: 数据总条数
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.List = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("List") is not None:
+            self.List = []
+            for item in params.get("List"):
+                obj = FileTamperEvent()
+                obj._deserialize(item)
+                self.List.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeGeneralStatRequest(AbstractModel):
     """DescribeGeneralStat请求参数结构体
 
@@ -12728,7 +12816,7 @@ class DescribeHostLoginListRequest(AbstractModel):
         :type Offset: int
         :param Filters: 过滤条件。
 <li>IpOrAlias - String - 是否必填：否 - 主机ip或别名筛选</li>
-<li>Uuid - String - 是否必填：否 - 云镜唯一Uuid</li>
+<li>Uuid - String - 是否必填：否 - 主机安全唯一Uuid</li>
 <li>Quuid - String - 是否必填：否 - 云服务器uuid</li>
 <li>UserName - String - 是否必填：否 - 用户名筛选</li>
 <li>LoginTimeBegin - String - 是否必填：否 - 按照修改时间段筛选，开始时间</li>
@@ -13689,7 +13777,7 @@ class DescribeMachineInfoRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Uuid: 云镜客户端唯一Uuid。
+        :param Uuid: 主机安全客户端唯一Uuid。
         :type Uuid: str
         :param Quuid: Quuid , Uuid 必填一项
         :type Quuid: str
@@ -13719,7 +13807,7 @@ class DescribeMachineInfoResponse(AbstractModel):
         r"""
         :param MachineIp: 机器ip。
         :type MachineIp: str
-        :param ProtectDays: 受云镜保护天数。
+        :param ProtectDays: 受主机安全保护天数。
         :type ProtectDays: int
         :param MachineOs: 操作系统。
         :type MachineOs: str
@@ -13735,7 +13823,7 @@ class DescribeMachineInfoResponse(AbstractModel):
         :type MachineWanIp: str
         :param Quuid: CVM或BM主机唯一Uuid。
         :type Quuid: str
-        :param Uuid: 云镜客户端唯一Uuid。
+        :param Uuid: 主机安全客户端唯一Uuid。
         :type Uuid: str
         :param IsProVersion: 是否开通专业版。
 <li>true：是</li>
@@ -13766,7 +13854,7 @@ class DescribeMachineInfoResponse(AbstractModel):
         :type ProVersionDeadline: str
         :param HasAssetScan: 是否有资产扫描记录，0无，1有
         :type HasAssetScan: int
-        :param ProtectType: 防护版本 BASIC_VERSION 基础版, PRO_VERSION 专业版 Flagship 旗舰版.
+        :param ProtectType: 防护版本：BASIC_VERSION 基础版，PRO_VERSION 专业版，Flagship 旗舰版，GENERAL_DISCOUNT 普惠版
         :type ProtectType: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -14900,7 +14988,7 @@ class DescribeProVersionStatusRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Uuid: 云镜客户端UUID、填写"all"表示所有主机。
+        :param Uuid: 主机安全客户端UUID、填写"all"表示所有主机。
         :type Uuid: str
         """
         self.Uuid = None
@@ -17067,7 +17155,7 @@ class DescribeUsualLoginPlacesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Uuid: 云镜客户端UUID
+        :param Uuid: 主机安全客户端UUID
         :type Uuid: str
         """
         self.Uuid = None
@@ -20282,6 +20370,180 @@ class ExportWebPageEventListResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class FileTamperEvent(AbstractModel):
+    """核心文件监控事件
+
+    """
+
+    def __init__(self):
+        r"""
+        :param HostName: 机器名称
+        :type HostName: str
+        :param HostIp: 机器IP
+        :type HostIp: str
+        :param CreateTime: 发生时间
+        :type CreateTime: str
+        :param ModifyTime: 最近发生时间
+        :type ModifyTime: str
+        :param Id: 事件id
+        :type Id: int
+        :param Uuid: 主机uuid
+        :type Uuid: str
+        :param Quuid: cvm id
+        :type Quuid: str
+        :param Type: 事件类型/动作  0 -- 告警
+        :type Type: int
+        :param ProcessExe: 进程路径
+        :type ProcessExe: str
+        :param ProcessArgv: 进程参数
+        :type ProcessArgv: str
+        :param Target: 目标文件路径
+        :type Target: str
+        :param Status: 处理状态  0 -- 待处理 1 -- 已加白 2 -- 已删除 3 - 已忽略 4-已手动处理
+        :type Status: int
+        :param EventCount: 事件产生次数
+        :type EventCount: int
+        :param RuleId: 规则id
+        :type RuleId: int
+        :param RuleName: 规则名称
+        :type RuleName: str
+        :param Pstree: 事件详情: json格式
+        :type Pstree: str
+        :param RuleCategory: 规则类型 0系统规则 1自定义规则
+        :type RuleCategory: int
+        :param MachineStatus: 主机在线信息 ONLINE、OFFLINE
+        :type MachineStatus: str
+        :param Description: 危害描述
+        :type Description: str
+        :param Suggestion: 修护建议
+        :type Suggestion: str
+        :param PrivateIp: 内网ip
+        :type PrivateIp: str
+        :param ExePermission: 进程权限
+        :type ExePermission: str
+        :param UserName: 用户名
+        :type UserName: str
+        :param UserGroup: 用户组
+        :type UserGroup: str
+        :param ExeMd5: 进程名
+        :type ExeMd5: str
+        :param ExeSize: 进程文件大小
+        :type ExeSize: int
+        :param ExeTime: 进程执行时长
+        :type ExeTime: int
+        :param TargetSize: 目标文件大小
+        :type TargetSize: int
+        :param TargetPermission: 目标文件权限
+        :type TargetPermission: str
+        :param TargetModifyTime: 目标文件更新时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TargetModifyTime: str
+        :param TargetCreatTime: 目标文件创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TargetCreatTime: str
+        :param ExePid: 进程pid
+        :type ExePid: int
+        :param TargetName: 文件名称
+        :type TargetName: str
+        :param Reference: 参考链接
+        :type Reference: str
+        :param Level: 风险等级 0：无， 1: 高危， 2:中危， 3: 低危
+        :type Level: int
+        :param ExeName: 进程名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExeName: str
+        :param MachineExtraInfo:  主机额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
+        """
+        self.HostName = None
+        self.HostIp = None
+        self.CreateTime = None
+        self.ModifyTime = None
+        self.Id = None
+        self.Uuid = None
+        self.Quuid = None
+        self.Type = None
+        self.ProcessExe = None
+        self.ProcessArgv = None
+        self.Target = None
+        self.Status = None
+        self.EventCount = None
+        self.RuleId = None
+        self.RuleName = None
+        self.Pstree = None
+        self.RuleCategory = None
+        self.MachineStatus = None
+        self.Description = None
+        self.Suggestion = None
+        self.PrivateIp = None
+        self.ExePermission = None
+        self.UserName = None
+        self.UserGroup = None
+        self.ExeMd5 = None
+        self.ExeSize = None
+        self.ExeTime = None
+        self.TargetSize = None
+        self.TargetPermission = None
+        self.TargetModifyTime = None
+        self.TargetCreatTime = None
+        self.ExePid = None
+        self.TargetName = None
+        self.Reference = None
+        self.Level = None
+        self.ExeName = None
+        self.MachineExtraInfo = None
+
+
+    def _deserialize(self, params):
+        self.HostName = params.get("HostName")
+        self.HostIp = params.get("HostIp")
+        self.CreateTime = params.get("CreateTime")
+        self.ModifyTime = params.get("ModifyTime")
+        self.Id = params.get("Id")
+        self.Uuid = params.get("Uuid")
+        self.Quuid = params.get("Quuid")
+        self.Type = params.get("Type")
+        self.ProcessExe = params.get("ProcessExe")
+        self.ProcessArgv = params.get("ProcessArgv")
+        self.Target = params.get("Target")
+        self.Status = params.get("Status")
+        self.EventCount = params.get("EventCount")
+        self.RuleId = params.get("RuleId")
+        self.RuleName = params.get("RuleName")
+        self.Pstree = params.get("Pstree")
+        self.RuleCategory = params.get("RuleCategory")
+        self.MachineStatus = params.get("MachineStatus")
+        self.Description = params.get("Description")
+        self.Suggestion = params.get("Suggestion")
+        self.PrivateIp = params.get("PrivateIp")
+        self.ExePermission = params.get("ExePermission")
+        self.UserName = params.get("UserName")
+        self.UserGroup = params.get("UserGroup")
+        self.ExeMd5 = params.get("ExeMd5")
+        self.ExeSize = params.get("ExeSize")
+        self.ExeTime = params.get("ExeTime")
+        self.TargetSize = params.get("TargetSize")
+        self.TargetPermission = params.get("TargetPermission")
+        self.TargetModifyTime = params.get("TargetModifyTime")
+        self.TargetCreatTime = params.get("TargetCreatTime")
+        self.ExePid = params.get("ExePid")
+        self.TargetName = params.get("TargetName")
+        self.Reference = params.get("Reference")
+        self.Level = params.get("Level")
+        self.ExeName = params.get("ExeName")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Filter(AbstractModel):
     """描述键值对过滤器，用于条件过滤查询。例如过滤ID、名称、状态等
 
@@ -20413,7 +20675,7 @@ class HistoryAccount(AbstractModel):
         r"""
         :param Id: 唯一ID。
         :type Id: int
-        :param Uuid: 云镜客户端唯一Uuid。
+        :param Uuid: 主机安全客户端唯一Uuid。
         :type Uuid: str
         :param MachineIp: 主机内网IP。
         :type MachineIp: str
@@ -20933,11 +21195,11 @@ class LicenseBindDetail(AbstractModel):
         :type MachineIp: str
         :param Quuid: 云服务器UUID
         :type Quuid: str
-        :param Uuid: 云镜客户端UUID
+        :param Uuid: 主机安全客户端UUID
         :type Uuid: str
         :param Tags: 标签信息
         :type Tags: list of str
-        :param AgentStatus: 云镜客户端状态,OFFLINE 离线,ONLINE 在线,UNINSTALL 未安装
+        :param AgentStatus: 主机安全客户端状态,OFFLINE 离线,ONLINE 在线,UNINSTALL 未安装
         :type AgentStatus: str
         :param IsUnBind: 是否允许解绑,false 不允许解绑
         :type IsUnBind: bool
@@ -23054,7 +23316,7 @@ class PrivilegeEscalationProcess(AbstractModel):
         r"""
         :param Id: 数据ID
         :type Id: int
-        :param Uuid: 云镜ID
+        :param Uuid: 主机安全ID
         :type Uuid: str
         :param Quuid: 主机ID
         :type Quuid: str
@@ -23906,7 +24168,7 @@ class ReverseShell(AbstractModel):
         r"""
         :param Id: ID 主键
         :type Id: int
-        :param Uuid: 云镜UUID
+        :param Uuid: 主机安全UUID
         :type Uuid: str
         :param Quuid: 主机ID
         :type Quuid: str
@@ -24871,7 +25133,7 @@ class SecurityDynamic(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Uuid: 云镜客户端UUID。
+        :param Uuid: 主机安全客户端UUID。
         :type Uuid: str
         :param EventTime: 安全事件发生时间。
         :type EventTime: str
@@ -25798,7 +26060,7 @@ class UsualPlace(AbstractModel):
         r"""
         :param Id: ID。
         :type Id: int
-        :param Uuid: 云镜客户端唯一标识UUID。
+        :param Uuid: 主机安全客户端唯一标识UUID。
         :type Uuid: str
         :param CountryId: 国家 ID。
         :type CountryId: int

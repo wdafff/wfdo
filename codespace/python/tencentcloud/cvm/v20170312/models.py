@@ -371,10 +371,12 @@ class ChcHost(AbstractModel):
         :type SerialNumber: str
         :param InstanceState: CHC的状态<br/>
 <ul>
-<li>REGISTERED: 设备已录入。还未配置带外和部署网络</li>
-<li>VPC_READY: 已配置带外和部署网络</li>
+<li>INIT: 设备已录入。还未配置带外和部署网络</li>
+<li>READY: 已配置带外和部署网络</li>
 <li>PREPARED: 可分配云主机</li>
 <li>ONLINE: 已分配云主机</li>
+<li>OPERATING: 设备操作中，如正在配置带外网络等。</li>
+<li>CLEAR_NETWORK_FAILED: 清理带外和部署网络失败</li>
 </ul>
         :type InstanceState: str
         :param DeviceType: 设备类型。
@@ -4157,7 +4159,7 @@ SYNCING-同步中
 IMPORTING-导入中
 IMPORTFAILED-导入失败
         :type ImageState: str
-        :param Platform: 镜像来源平台
+        :param Platform: 镜像来源平台，包括如TencentOS、 CentOS、 Windows、 Ubuntu、 Debian、Fedora等。
         :type Platform: str
         :param ImageCreator: 镜像创建者
         :type ImageCreator: str
@@ -9263,7 +9265,7 @@ class SystemDisk(AbstractModel):
 
 
 class Tag(AbstractModel):
-    """标签键值对
+    """标签键值对，可以通过调用 [DescribeTags](https://cloud.tencent.com/document/api/651/35316) 返回值中的 Tags 字段来获取。
 
     """
 

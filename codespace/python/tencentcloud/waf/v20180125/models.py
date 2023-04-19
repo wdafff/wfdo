@@ -561,7 +561,7 @@ class AddSpartaProtectionRequest(AbstractModel):
         :type HttpsRewrite: int
         :param Ports: 服务有多端口需要设置此字段
         :type Ports: list of PortItem
-        :param Edition: 版本：sparta-waf、clb-waf、cdn-waf
+        :param Edition: WAF实例类型，sparta-waf表示SAAS型WAF，clb-waf表示负载均衡型WAF，cdn-waf表示CDN上的Web防护能力
         :type Edition: str
         :param IsKeepAlive: 是否开启长连接，仅IP回源时可以用填次参数，域名回源时这个参数无效
         :type IsKeepAlive: str
@@ -583,6 +583,12 @@ class AddSpartaProtectionRequest(AbstractModel):
         :type ProxyReadTimeout: int
         :param ProxySendTimeout: 300s
         :type ProxySendTimeout: int
+        :param SniType: 0:关闭SNI；1:开启SNI，SNI=源请求host；2:开启SNI，SNI=修改为源站host；3：开启SNI，自定义host，SNI=SniHost；
+        :type SniType: int
+        :param SniHost: SniType=3时，需要填此参数，表示自定义的host；
+        :type SniHost: str
+        :param IpHeaders: is_cdn=3时，需要填此参数，表示自定义header
+        :type IpHeaders: list of str
         """
         self.Domain = None
         self.CertType = None
@@ -614,6 +620,9 @@ class AddSpartaProtectionRequest(AbstractModel):
         self.CipherTemplate = None
         self.ProxyReadTimeout = None
         self.ProxySendTimeout = None
+        self.SniType = None
+        self.SniHost = None
+        self.IpHeaders = None
 
 
     def _deserialize(self, params):
@@ -652,6 +661,9 @@ class AddSpartaProtectionRequest(AbstractModel):
         self.CipherTemplate = params.get("CipherTemplate")
         self.ProxyReadTimeout = params.get("ProxyReadTimeout")
         self.ProxySendTimeout = params.get("ProxySendTimeout")
+        self.SniType = params.get("SniType")
+        self.SniHost = params.get("SniHost")
+        self.IpHeaders = params.get("IpHeaders")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2348,6 +2360,175 @@ class DescribeIpHitItemsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribePeakPointsRequest(AbstractModel):
+    """DescribePeakPoints请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FromTime: 查询起始时间
+        :type FromTime: str
+        :param ToTime: 查询终止时间
+        :type ToTime: str
+        :param Domain: 查询的域名，如果查询所有域名数据，该参数不填写
+        :type Domain: str
+        :param Edition: 只有两个值有效，sparta-waf，clb-waf，不传则不过滤
+        :type Edition: str
+        :param InstanceID: WAF实例ID，不传则不过滤
+        :type InstanceID: str
+        :param MetricName: 十三个值可选：
+access-峰值qps趋势图
+botAccess- bot峰值qps趋势图
+down-下行峰值带宽趋势图
+up-上行峰值带宽趋势图
+attack-Web攻击总数趋势图
+cc-CC攻击总数趋势图
+StatusServerError-WAF返回给客户端状态码次数趋势图
+StatusClientError-WAF返回给客户端状态码次数趋势图
+StatusRedirect-WAF返回给客户端状态码次数趋势图
+StatusOk-WAF返回给客户端状态码次数趋势图
+UpstreamServerError-源站返回给WAF状态码次数趋势图
+UpstreamClientError-源站返回给WAF状态码次数趋势图
+UpstreamRedirect-源站返回给WAF状态码次数趋势图
+        :type MetricName: str
+        """
+        self.FromTime = None
+        self.ToTime = None
+        self.Domain = None
+        self.Edition = None
+        self.InstanceID = None
+        self.MetricName = None
+
+
+    def _deserialize(self, params):
+        self.FromTime = params.get("FromTime")
+        self.ToTime = params.get("ToTime")
+        self.Domain = params.get("Domain")
+        self.Edition = params.get("Edition")
+        self.InstanceID = params.get("InstanceID")
+        self.MetricName = params.get("MetricName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePeakPointsResponse(AbstractModel):
+    """DescribePeakPoints返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Points: 数据点
+        :type Points: list of PeakPointsItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Points = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Points") is not None:
+            self.Points = []
+            for item in params.get("Points"):
+                obj = PeakPointsItem()
+                obj._deserialize(item)
+                self.Points.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribePeakValueRequest(AbstractModel):
+    """DescribePeakValue请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FromTime: 查询起始时间
+        :type FromTime: str
+        :param ToTime: 查询结束时间
+        :type ToTime: str
+        :param Domain: 需要查询的域名，当前用户所有域名可以不传
+        :type Domain: str
+        :param Edition: 只有两个值有效，sparta-waf，clb-waf，不传则不过滤
+        :type Edition: str
+        :param InstanceID: WAF实例ID，不传则不过滤
+        :type InstanceID: str
+        :param MetricName: 五个值可选：
+access-峰值qps
+down-下行峰值带宽
+up-上行峰值带宽
+attack-Web攻击总数
+cc-CC攻击总数趋势图
+        :type MetricName: str
+        """
+        self.FromTime = None
+        self.ToTime = None
+        self.Domain = None
+        self.Edition = None
+        self.InstanceID = None
+        self.MetricName = None
+
+
+    def _deserialize(self, params):
+        self.FromTime = params.get("FromTime")
+        self.ToTime = params.get("ToTime")
+        self.Domain = params.get("Domain")
+        self.Edition = params.get("Edition")
+        self.InstanceID = params.get("InstanceID")
+        self.MetricName = params.get("MetricName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePeakValueResponse(AbstractModel):
+    """DescribePeakValue返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Access: QPS峰值
+        :type Access: int
+        :param Up: 上行带宽峰值，单位B
+        :type Up: int
+        :param Down: 下行带宽峰值，单位B
+        :type Down: int
+        :param Attack: Web攻击总数
+        :type Attack: int
+        :param Cc: CC攻击总数
+        :type Cc: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Access = None
+        self.Up = None
+        self.Down = None
+        self.Attack = None
+        self.Cc = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Access = params.get("Access")
+        self.Up = params.get("Up")
+        self.Down = params.get("Down")
+        self.Attack = params.get("Attack")
+        self.Cc = params.get("Cc")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribePolicyStatusRequest(AbstractModel):
     """DescribePolicyStatus请求参数结构体
 
@@ -2908,6 +3089,18 @@ class DomainsPartInfo(AbstractModel):
         :param ProxySendTimeout: 300s
 注意：此字段可能返回 null，表示取不到有效值。
         :type ProxySendTimeout: int
+        :param SniType: 0:关闭SNI；1:开启SNI，SNI=源请求host；2:开启SNI，SNI=修改为源站host；3：开启SNI，自定义host，SNI=SniHost；
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SniType: int
+        :param SniHost: SniType=3时，需要填此参数，表示自定义的host；
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SniHost: str
+        :param Weights: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Weights: list of str
+        :param IpHeaders: IsCdn=3时，表示自定义header
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IpHeaders: list of str
         """
         self.HttpsRewrite = None
         self.HttpsUpstreamPort = None
@@ -2934,6 +3127,10 @@ class DomainsPartInfo(AbstractModel):
         self.CipherTemplate = None
         self.ProxyReadTimeout = None
         self.ProxySendTimeout = None
+        self.SniType = None
+        self.SniHost = None
+        self.Weights = None
+        self.IpHeaders = None
 
 
     def _deserialize(self, params):
@@ -2967,6 +3164,10 @@ class DomainsPartInfo(AbstractModel):
         self.CipherTemplate = params.get("CipherTemplate")
         self.ProxyReadTimeout = params.get("ProxyReadTimeout")
         self.ProxySendTimeout = params.get("ProxySendTimeout")
+        self.SniType = params.get("SniType")
+        self.SniHost = params.get("SniHost")
+        self.Weights = params.get("Weights")
+        self.IpHeaders = params.get("IpHeaders")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3275,6 +3476,12 @@ class HostRecord(AbstractModel):
         :param AlbType: 应用型负载均衡类型: clb或者apisix，默认clb
 注意：此字段可能返回 null，表示取不到有效值。
         :type AlbType: str
+        :param IpHeaders: IsCdn=3时，需要填此参数，表示自定义header
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IpHeaders: list of str
+        :param EngineType: 规则引擎类型， 1: menshen,   2:tiga
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EngineType: int
         """
         self.Domain = None
         self.DomainId = None
@@ -3292,6 +3499,8 @@ class HostRecord(AbstractModel):
         self.Level = None
         self.CdcClusters = None
         self.AlbType = None
+        self.IpHeaders = None
+        self.EngineType = None
 
 
     def _deserialize(self, params):
@@ -3316,6 +3525,8 @@ class HostRecord(AbstractModel):
         self.Level = params.get("Level")
         self.CdcClusters = params.get("CdcClusters")
         self.AlbType = params.get("AlbType")
+        self.IpHeaders = params.get("IpHeaders")
+        self.EngineType = params.get("EngineType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4129,10 +4340,127 @@ class ModifyWafThreatenIntelligenceResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class PortInfo(AbstractModel):
-    """防护域名端口配置信息
+class PeakPointsItem(AbstractModel):
+    """PeakPoints数组项
 
     """
+
+    def __init__(self):
+        r"""
+        :param Time: 秒级别时间戳
+        :type Time: int
+        :param Access: QPS
+        :type Access: int
+        :param Up: 上行带宽峰值，单位B
+        :type Up: int
+        :param Down: 下行带宽峰值，单位B
+        :type Down: int
+        :param Attack: Web攻击次数
+        :type Attack: int
+        :param Cc: CC攻击次数
+        :type Cc: int
+        :param BotAccess: Bot qps
+        :type BotAccess: int
+        :param StatusServerError: WAF返回给客户端状态码次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StatusServerError: int
+        :param StatusClientError: WAF返回给客户端状态码次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StatusClientError: int
+        :param StatusRedirect: WAF返回给客户端状态码次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StatusRedirect: int
+        :param StatusOk: WAF返回给客户端状态码次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StatusOk: int
+        :param UpstreamServerError: 源站返回给WAF状态码次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpstreamServerError: int
+        :param UpstreamClientError: 源站返回给WAF状态码次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpstreamClientError: int
+        :param UpstreamRedirect: 源站返回给WAF状态码次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpstreamRedirect: int
+        """
+        self.Time = None
+        self.Access = None
+        self.Up = None
+        self.Down = None
+        self.Attack = None
+        self.Cc = None
+        self.BotAccess = None
+        self.StatusServerError = None
+        self.StatusClientError = None
+        self.StatusRedirect = None
+        self.StatusOk = None
+        self.UpstreamServerError = None
+        self.UpstreamClientError = None
+        self.UpstreamRedirect = None
+
+
+    def _deserialize(self, params):
+        self.Time = params.get("Time")
+        self.Access = params.get("Access")
+        self.Up = params.get("Up")
+        self.Down = params.get("Down")
+        self.Attack = params.get("Attack")
+        self.Cc = params.get("Cc")
+        self.BotAccess = params.get("BotAccess")
+        self.StatusServerError = params.get("StatusServerError")
+        self.StatusClientError = params.get("StatusClientError")
+        self.StatusRedirect = params.get("StatusRedirect")
+        self.StatusOk = params.get("StatusOk")
+        self.UpstreamServerError = params.get("UpstreamServerError")
+        self.UpstreamClientError = params.get("UpstreamClientError")
+        self.UpstreamRedirect = params.get("UpstreamRedirect")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PortInfo(AbstractModel):
+    """服务端口配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NginxServerId: Nginx的服务器id
+        :type NginxServerId: int
+        :param Port: 监听端口配置
+        :type Port: str
+        :param Protocol: 与端口对应的协议
+        :type Protocol: str
+        :param UpstreamPort: 回源端口
+        :type UpstreamPort: str
+        :param UpstreamProtocol: 回源协议
+        :type UpstreamProtocol: str
+        """
+        self.NginxServerId = None
+        self.Port = None
+        self.Protocol = None
+        self.UpstreamPort = None
+        self.UpstreamProtocol = None
+
+
+    def _deserialize(self, params):
+        self.NginxServerId = params.get("NginxServerId")
+        self.Port = params.get("Port")
+        self.Protocol = params.get("Protocol")
+        self.UpstreamPort = params.get("UpstreamPort")
+        self.UpstreamProtocol = params.get("UpstreamProtocol")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class PortItem(AbstractModel):
@@ -4645,11 +4973,11 @@ class UpsertIpAccessControlRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param Items: ip 参数列表，json数组由ip，source，note，action，valid_ts组成。ip对应配置的ip地址，source固定为custom值，note为注释，action值42为黑名单，40为白名单，valid_ts为有效日期，值为秒级时间戳
+        :param Items: ip 参数列表，json数组由ip，source，note，action，valid_ts组成。ip对应配置的ip地址，source固定为custom值，note为注释，action值42为黑名单，40为白名单，valid_ts为有效日期，值为秒级时间戳（（如1680570420代表2023-04-04 09:07:00））
         :type Items: list of str
         :param Edition: WAF实例类型，sparta-waf表示SAAS型WAF，clb-waf表示负载均衡型WAF
         :type Edition: str
-        :param SourceType: 是否为多域名黑白名单
+        :param SourceType: 是否为多域名黑白名单，当为多域名的黑白名单时，取值为batch，佛祖饿为空
         :type SourceType: str
         """
         self.Domain = None

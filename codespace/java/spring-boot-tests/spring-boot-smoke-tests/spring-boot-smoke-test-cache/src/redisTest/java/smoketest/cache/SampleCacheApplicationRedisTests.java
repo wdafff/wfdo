@@ -21,8 +21,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.redis.RedisServiceConnection;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testsupport.testcontainers.RedisContainer;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SampleCacheApplicationRedisTests {
 
 	@Container
-	@RedisServiceConnection
+	@ServiceConnection
 	private static final RedisContainer redis = new RedisContainer();
 
 	@Autowired

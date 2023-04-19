@@ -7855,12 +7855,16 @@ overseas：境外
         :type Area: str
         :param LogName: 日志包文件名
         :type LogName: str
+        :param FileSize: 文件大小，单位: Byte
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileSize: int
         """
         self.StartTime = None
         self.EndTime = None
         self.LogPath = None
         self.Area = None
         self.LogName = None
+        self.FileSize = None
 
 
     def _deserialize(self, params):
@@ -7869,6 +7873,7 @@ overseas：境外
         self.LogPath = params.get("LogPath")
         self.Area = params.get("Area")
         self.LogName = params.get("LogName")
+        self.FileSize = params.get("FileSize")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10842,11 +10847,11 @@ class OfflineCache(AbstractModel):
 class Origin(AbstractModel):
     """源站配置复杂类型，支持以下配置：
     + 源站指定为单个域名
-    + 源站指定为多个 IP，可配置端口（1~65535），可配置权重（1~100），格式为 IP:端口:权重
+    + 源站指定为多个 IP，可配置端口（1\~65535），可配置权重（1\~100），格式为 IP:端口:权重
     + 回源域名配置
     + 对象存储（COS）作为源站
     + 热备源站指定为单个域名
-    + 热备源站指定为多个 IP，可配置端口（1~65535），暂不支持权重配置
+    + 热备源站指定为多个 IP，可配置端口（1\~65535），暂不支持权重配置
     + 热备源站回源域名配置
 
     """

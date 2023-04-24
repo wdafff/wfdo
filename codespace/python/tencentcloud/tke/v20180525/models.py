@@ -447,6 +447,64 @@ class AutoscalingAdded(AbstractModel):
         
 
 
+class BackupStorageLocation(AbstractModel):
+    """仓储仓库信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 备份仓库名称	
+        :type Name: str
+        :param StorageRegion: 存储仓库所属地域，比如COS广州(ap-guangzhou)	
+        :type StorageRegion: str
+        :param Provider: 存储服务提供方，默认腾讯云	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Provider: str
+        :param Bucket: 对象存储桶名称，如果是COS必须是tke-backup-前缀开头	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Bucket: str
+        :param Path: 对象存储桶路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Path: str
+        :param State: 存储仓库状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type State: str
+        :param Message: 详细状态信息	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Message: str
+        :param LastValidationTime: 最后一次检查时间	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastValidationTime: str
+        """
+        self.Name = None
+        self.StorageRegion = None
+        self.Provider = None
+        self.Bucket = None
+        self.Path = None
+        self.State = None
+        self.Message = None
+        self.LastValidationTime = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.StorageRegion = params.get("StorageRegion")
+        self.Provider = params.get("Provider")
+        self.Bucket = params.get("Bucket")
+        self.Path = params.get("Path")
+        self.State = params.get("State")
+        self.Message = params.get("Message")
+        self.LastValidationTime = params.get("LastValidationTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CUDNN(AbstractModel):
     """cuDNN的版本信息
 
@@ -1980,6 +2038,63 @@ class ControllerStatus(AbstractModel):
         
 
 
+class CreateBackupStorageLocationRequest(AbstractModel):
+    """CreateBackupStorageLocation请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StorageRegion: 存储仓库所属地域，比如COS广州(ap-guangzhou)
+        :type StorageRegion: str
+        :param Bucket: 对象存储桶名称，如果是COS必须是tke-backup前缀开头
+        :type Bucket: str
+        :param Name: 备份仓库名称
+        :type Name: str
+        :param Provider: 存储服务提供方，默认腾讯云
+        :type Provider: str
+        :param Path: 对象存储桶路径
+        :type Path: str
+        """
+        self.StorageRegion = None
+        self.Bucket = None
+        self.Name = None
+        self.Provider = None
+        self.Path = None
+
+
+    def _deserialize(self, params):
+        self.StorageRegion = params.get("StorageRegion")
+        self.Bucket = params.get("Bucket")
+        self.Name = params.get("Name")
+        self.Provider = params.get("Provider")
+        self.Path = params.get("Path")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateBackupStorageLocationResponse(AbstractModel):
+    """CreateBackupStorageLocation返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class CreateClusterEndpointRequest(AbstractModel):
     """CreateClusterEndpoint请求参数结构体
 
@@ -1997,7 +2112,12 @@ class CreateClusterEndpointRequest(AbstractModel):
         :type Domain: str
         :param SecurityGroup: 使用的安全组，只有外网访问需要传递（开启外网访问时必传）
         :type SecurityGroup: str
-        :param ExtensiveParameters: 创建lb参数，只有外网访问需要设置
+        :param ExtensiveParameters: 创建lb参数，只有外网访问需要设置，是一个json格式化后的字符串：{"InternetAccessible":{"InternetChargeType":"TRAFFIC_POSTPAID_BY_HOUR","InternetMaxBandwidthOut":"200"},"VipIsp":"","BandwidthPackageId":""}。
+各个参数意义：
+InternetAccessible.InternetChargeType含义：TRAFFIC_POSTPAID_BY_HOUR按流量按小时后计费;BANDWIDTH_POSTPAID_BY_HOUR 按带宽按小时后计费;InternetAccessible.BANDWIDTH_PACKAGE 按带宽包计费。
+InternetMaxBandwidthOut含义：最大出带宽，单位Mbps，范围支持0到2048，默认值10。
+VipIsp含义：CMCC | CTCC | CUCC，分别对应 移动 | 电信 | 联通，如果不指定本参数，则默认使用BGP。可通过 DescribeSingleIsp 接口查询一个地域所支持的Isp。如果指定运营商，则网络计费式只能使用按带宽包计费(BANDWIDTH_PACKAGE)。
+BandwidthPackageId含义：带宽包ID，指定此参数时，网络计费方式（InternetAccessible.InternetChargeType）只支持按带宽包计费（BANDWIDTH_PACKAGE。
         :type ExtensiveParameters: str
         """
         self.ClusterId = None
@@ -2280,7 +2400,7 @@ class CreateClusterReleaseRequest(AbstractModel):
         :type Chart: str
         :param Values: 自定义参数
         :type Values: :class:`tencentcloud.tke.v20180525.models.ReleaseValues`
-        :param ChartFrom: 制品来源，范围：tke 应用市场/第三方chart
+        :param ChartFrom: 制品来源，范围：tke-market 或 other
         :type ChartFrom: str
         :param ChartVersion: 制品版本
         :type ChartVersion: str
@@ -4012,6 +4132,47 @@ class DataDisk(AbstractModel):
         
 
 
+class DeleteBackupStorageLocationRequest(AbstractModel):
+    """DeleteBackupStorageLocation请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 备份仓库名称
+        :type Name: str
+        """
+        self.Name = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteBackupStorageLocationResponse(AbstractModel):
+    """DeleteBackupStorageLocation返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteClusterAsGroupsRequest(AbstractModel):
     """DeleteClusterAsGroups请求参数结构体
 
@@ -5353,6 +5514,57 @@ class DescribeAvailableTKEEdgeVersionResponse(AbstractModel):
         self.Versions = params.get("Versions")
         self.EdgeVersionLatest = params.get("EdgeVersionLatest")
         self.EdgeVersionCurrent = params.get("EdgeVersionCurrent")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeBackupStorageLocationsRequest(AbstractModel):
+    """DescribeBackupStorageLocations请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Names: 多个备份仓库名称，如果不填写，默认返回当前地域所有存储仓库名称
+        :type Names: list of str
+        """
+        self.Names = None
+
+
+    def _deserialize(self, params):
+        self.Names = params.get("Names")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBackupStorageLocationsResponse(AbstractModel):
+    """DescribeBackupStorageLocations返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BackupStorageLocationSet: 详细备份仓库信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BackupStorageLocationSet: list of BackupStorageLocation
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.BackupStorageLocationSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("BackupStorageLocationSet") is not None:
+            self.BackupStorageLocationSet = []
+            for item in params.get("BackupStorageLocationSet"):
+                obj = BackupStorageLocation()
+                obj._deserialize(item)
+                self.BackupStorageLocationSet.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -10479,6 +10691,9 @@ class EdgeCluster(AbstractModel):
         :param ChargeType: 集群付费模式，支持POSTPAID_BY_HOUR或者PREPAID
 注意：此字段可能返回 null，表示取不到有效值。
         :type ChargeType: str
+        :param EdgeVersion: 边缘集群组件的版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EdgeVersion: str
         """
         self.ClusterId = None
         self.ClusterName = None
@@ -10495,6 +10710,7 @@ class EdgeCluster(AbstractModel):
         self.Level = None
         self.AutoUpgradeClusterLevel = None
         self.ChargeType = None
+        self.EdgeVersion = None
 
 
     def _deserialize(self, params):
@@ -10515,6 +10731,7 @@ class EdgeCluster(AbstractModel):
         self.Level = params.get("Level")
         self.AutoUpgradeClusterLevel = params.get("AutoUpgradeClusterLevel")
         self.ChargeType = params.get("ChargeType")
+        self.EdgeVersion = params.get("EdgeVersion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11163,12 +11380,15 @@ class EnableVpcCniNetworkTypeRequest(AbstractModel):
         :type Subnets: list of str
         :param ExpiredSeconds: 在固定IP模式下，Pod销毁后退还IP的时间，传参必须大于300；不传默认IP永不销毁。
         :type ExpiredSeconds: int
+        :param SkipAddingNonMasqueradeCIDRs: 是否同步添加 vpc 网段到 ip-masq-agent-config 的 NonMasqueradeCIDRs 字段，默认 false 会同步添加
+        :type SkipAddingNonMasqueradeCIDRs: bool
         """
         self.ClusterId = None
         self.VpcCniType = None
         self.EnableStaticIp = None
         self.Subnets = None
         self.ExpiredSeconds = None
+        self.SkipAddingNonMasqueradeCIDRs = None
 
 
     def _deserialize(self, params):
@@ -11177,6 +11397,7 @@ class EnableVpcCniNetworkTypeRequest(AbstractModel):
         self.EnableStaticIp = params.get("EnableStaticIp")
         self.Subnets = params.get("Subnets")
         self.ExpiredSeconds = params.get("ExpiredSeconds")
+        self.SkipAddingNonMasqueradeCIDRs = params.get("SkipAddingNonMasqueradeCIDRs")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18057,7 +18278,7 @@ class UpgradeClusterReleaseRequest(AbstractModel):
         :type Chart: str
         :param Values: 自定义参数，覆盖chart 中values.yaml 中的参数
         :type Values: :class:`tencentcloud.tke.v20180525.models.ReleaseValues`
-        :param ChartFrom: 制品来源，范围：tke-market/tcr/other
+        :param ChartFrom: 制品来源，范围：tke-market 或 other
         :type ChartFrom: str
         :param ChartVersion: 制品版本( 从第三安装时，不传这个参数）
         :type ChartVersion: str
@@ -18316,14 +18537,23 @@ class VirtualNodeSpec(AbstractModel):
         :type DisplayName: str
         :param SubnetId: 子网ID
         :type SubnetId: str
+        :param Tags: 腾讯云标签
+        :type Tags: list of Tag
         """
         self.DisplayName = None
         self.SubnetId = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
         self.DisplayName = params.get("DisplayName")
         self.SubnetId = params.get("SubnetId")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

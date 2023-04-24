@@ -657,6 +657,16 @@ BORDERLESS_ESIGN – 自动生成无边框腾讯体
 OCR_ESIGN -- AI智能识别手写签名
 ESIGN -- 个人印章类型
 如：{“ComponentTypeLimit”: [“BORDERLESS_ESIGN”]}
+
+ComponentType为SIGN_DATE时，支持以下参数：
+1 Font：字符串类型目前只支持"黑体"、"宋体"，如果不填默认为"黑体"
+2 FontSize： 数字类型，范围6-72，默认值为12
+3 FontAlign： 字符串类型，可取Left/Right/Center，对应左对齐/居中/右对齐
+4 Format： 字符串类型，日期格式，必须是以下五种之一 “yyyy m d”，”yyyy年m月d日”，”yyyy/m/d”，”yyyy-m-d”，”yyyy.m.d”。
+5 Gaps:： 字符串类型，仅在Format为“yyyy m d”时起作用，格式为用逗号分开的两个整数，例如”2,2”，两个数字分别是日期格式的前后两个空隙钟的空格个数
+如果extra参数为空，默认为”yyyy年m月d日”格式的居中日期
+特别地，如果extra中Format字段为空或无法被识别，则extra参数会被当作默认值处理（Font，FontSize，Gaps和FontAlign都不会起效）
+参数样例：    "ComponentExtra": "{\"Format\":“yyyy m d”,\"FontSize\":12,\"Gaps\":\"2,2\", \"FontAlign\":\"Right\"}",
         :type ComponentExtra: str
         :param IsFormType: 是否是表单域类型，默认不存在
         :type IsFormType: bool
@@ -1579,15 +1589,15 @@ class CreateFlowSignUrlRequest(AbstractModel):
         :type FlowId: str
         :param FlowApproverInfos: 流程签署人，其中ApproverName，ApproverMobile和ApproverType必传，其他可不传，ApproverType目前只支持个人类型的签署人。还需注意签署人只能有手写签名和时间类型的签署控件，其他类型的填写控件和签署控件暂时都未支持。
         :type FlowApproverInfos: list of FlowCreateApprover
-        :param Organization: 机构信息，暂未开放
-        :type Organization: :class:`tencentcloud.ess.v20201111.models.OrganizationInfo`
         :param Operator: 用户信息，此结构体UserId必填
         :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param Organization: 机构信息，暂未开放
+        :type Organization: :class:`tencentcloud.ess.v20201111.models.OrganizationInfo`
         """
         self.FlowId = None
         self.FlowApproverInfos = None
-        self.Organization = None
         self.Operator = None
+        self.Organization = None
 
 
     def _deserialize(self, params):
@@ -1598,12 +1608,12 @@ class CreateFlowSignUrlRequest(AbstractModel):
                 obj = FlowCreateApprover()
                 obj._deserialize(item)
                 self.FlowApproverInfos.append(obj)
-        if params.get("Organization") is not None:
-            self.Organization = OrganizationInfo()
-            self.Organization._deserialize(params.get("Organization"))
         if params.get("Operator") is not None:
             self.Operator = UserInfo()
             self.Operator._deserialize(params.get("Operator"))
+        if params.get("Organization") is not None:
+            self.Organization = OrganizationInfo()
+            self.Organization._deserialize(params.get("Organization"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1983,7 +1993,7 @@ HONGKONG_MACAO_AND_TAIWAN 中国台湾
         :type IdCardType: str
         :param Mobile: 手机号码
         :type Mobile: str
-        :param EnableAutoSign: 是否需开通自动签
+        :param EnableAutoSign: 是否开通自动签，该功能需联系运营工作人员开通后使用
         :type EnableAutoSign: bool
         """
         self.UserName = None
@@ -4041,6 +4051,9 @@ class FlowBrief(AbstractModel):
         :param FlowMessage: 拒签或者取消的原因描述
 注意：此字段可能返回 null，表示取不到有效值。
         :type FlowMessage: str
+        :param Creator:  合同发起人userId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Creator: str
         """
         self.FlowId = None
         self.FlowName = None
@@ -4049,6 +4062,7 @@ class FlowBrief(AbstractModel):
         self.FlowStatus = None
         self.CreatedOn = None
         self.FlowMessage = None
+        self.Creator = None
 
 
     def _deserialize(self, params):
@@ -4059,6 +4073,7 @@ class FlowBrief(AbstractModel):
         self.FlowStatus = params.get("FlowStatus")
         self.CreatedOn = params.get("CreatedOn")
         self.FlowMessage = params.get("FlowMessage")
+        self.Creator = params.get("Creator")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4205,6 +4220,9 @@ class FlowDetailInfo(AbstractModel):
         :type FlowApproverInfos: list of FlowApproverDetail
         :param CcInfos: 合同(流程)的关注方信息列表
         :type CcInfos: list of FlowApproverDetail
+        :param Creator: 合同发起人UserId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Creator: str
         """
         self.FlowId = None
         self.FlowName = None
@@ -4215,6 +4233,7 @@ class FlowDetailInfo(AbstractModel):
         self.CreatedOn = None
         self.FlowApproverInfos = None
         self.CcInfos = None
+        self.Creator = None
 
 
     def _deserialize(self, params):
@@ -4237,6 +4256,7 @@ class FlowDetailInfo(AbstractModel):
                 obj = FlowApproverDetail()
                 obj._deserialize(item)
                 self.CcInfos.append(obj)
+        self.Creator = params.get("Creator")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

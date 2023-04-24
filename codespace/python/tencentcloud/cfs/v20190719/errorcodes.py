@@ -164,6 +164,9 @@ INVALIDPARAMETERVALUE_INVALIDRESOURCETAGS = 'InvalidParameterValue.InvalidResour
 # 读写权限设置错误。
 INVALIDPARAMETERVALUE_INVALIDRWPERMISSION = 'InvalidParameterValue.InvalidRwPermission'
 
+# 扩容目标容量参数错误
+INVALIDPARAMETERVALUE_INVALIDSCALEUPTARGETCAPACITY = 'InvalidParameterValue.InvalidScaleupTargetCapacity'
+
 # 无效的快照状态。
 INVALIDPARAMETERVALUE_INVALIDSNAPSHOTSTATUS = 'InvalidParameterValue.InvalidSnapshotStatus'
 
@@ -317,11 +320,17 @@ RESOURCEINSUFFICIENT_TAGLIMITEXCEEDED = 'ResourceInsufficient.TagLimitExceeded'
 # 标签限额不足。
 RESOURCEINSUFFICIENT_TAGQUOTASEXCEEDED = 'ResourceInsufficient.TagQuotasExceeded'
 
+# Turbo类型特殊容量文件系统数量限制
+RESOURCEINSUFFICIENT_TURBOSPECIALCAPACITYFILESYSTEMCOUNTLIMIT = 'ResourceInsufficient.TurboSpecialCapacityFileSystemCountLimit'
+
 # 资源不存在。
 RESOURCENOTFOUND = 'ResourceNotFound'
 
 # 该文件系统不存在。
 RESOURCENOTFOUND_FILESYSTEMNOTFOUND = 'ResourceNotFound.FileSystemNotFound'
+
+# 文件系统不存在。
+RESOURCENOTFOUND_FSNOTEXIST = 'ResourceNotFound.FsNotExist'
 
 # 挂载点不存在。
 RESOURCENOTFOUND_MOUNTTARGETNOTFOUND = 'ResourceNotFound.MountTargetNotFound'
@@ -335,11 +344,17 @@ RESOURCENOTFOUND_RULENOTFOUND = 'ResourceNotFound.RuleNotFound'
 # 快照ID 不存在。
 RESOURCENOTFOUND_SNAPSHOTNOTFOUND = 'ResourceNotFound.SnapshotNotFound'
 
+# 未授权操作。
+UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'
+
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 
 # 该可用区不支持基础网络。
 UNSUPPORTEDOPERATION_BASICNETINTERFACENOTSUPPORTED = 'UnsupportedOperation.BasicNetInterfaceNotSupported'
+
+# appid不在kms白名单(kms目前是白名单开启状态)。
+UNSUPPORTEDOPERATION_MISSINGKMSACCESSPERMISSION = 'UnsupportedOperation.MissingKmsAccessPermission'
 
 # 用户已欠费, 请充值后重试。
 UNSUPPORTEDOPERATION_OUTOFSERVICE = 'UnsupportedOperation.OutOfService'

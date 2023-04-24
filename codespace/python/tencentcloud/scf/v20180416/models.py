@@ -2709,6 +2709,9 @@ class LayerVersionInfo(AbstractModel):
         :type LayerName: str
         :param Status: 层的具体版本当前状态，状态值[参考此处](https://cloud.tencent.com/document/product/583/47175#.E5.B1.82.EF.BC.88layer.EF.BC.89.E7.8A.B6.E6.80.81)
         :type Status: str
+        :param Stamp: Stamp
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Stamp: str
         """
         self.CompatibleRuntimes = None
         self.AddTime = None
@@ -2717,6 +2720,7 @@ class LayerVersionInfo(AbstractModel):
         self.LayerVersion = None
         self.LayerName = None
         self.Status = None
+        self.Stamp = None
 
 
     def _deserialize(self, params):
@@ -2727,6 +2731,7 @@ class LayerVersionInfo(AbstractModel):
         self.LayerVersion = params.get("LayerVersion")
         self.LayerName = params.get("LayerName")
         self.Status = params.get("Status")
+        self.Stamp = params.get("Stamp")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3274,8 +3279,9 @@ class ListTriggersRequest(AbstractModel):
         :type OrderBy: str
         :param Order: 以升序还是降序的方式返回结果，可选值 ASC 和 DESC，默认DESC
         :type Order: str
-        :param Filters: * Qualifier:
-函数版本，别名
+        :param Filters: * Qualifier: 函数版本，别名
+* TriggerName: 函数触发器名称
+* Description: 函数触发器描述
         :type Filters: list of Filter
         """
         self.FunctionName = None
@@ -4116,7 +4122,7 @@ class Result(AbstractModel):
         :type BillDuration: int
         :param FunctionRequestId: 此次函数执行的Id
         :type FunctionRequestId: str
-        :param InvokeResult: 0为正确，异步调用返回为空
+        :param InvokeResult: 请求 Invoke 接口，该参数已弃用。请求 InvokeFunction 接口，该参数值为请求执行[状态码](https://cloud.tencent.com/document/product/583/42611)。
         :type InvokeResult: int
         """
         self.Log = None
@@ -4583,6 +4589,9 @@ class TriggerInfo(AbstractModel):
         :type BindStatus: str
         :param TriggerAttribute: 触发器类型，双向表示两侧控制台均可操作，单向表示SCF控制台单向创建
         :type TriggerAttribute: str
+        :param Description: 客户自定义触发器描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
         """
         self.Enable = None
         self.Qualifier = None
@@ -4596,6 +4605,7 @@ class TriggerInfo(AbstractModel):
         self.ResourceId = None
         self.BindStatus = None
         self.TriggerAttribute = None
+        self.Description = None
 
 
     def _deserialize(self, params):
@@ -4611,6 +4621,7 @@ class TriggerInfo(AbstractModel):
         self.ResourceId = params.get("ResourceId")
         self.BindStatus = params.get("BindStatus")
         self.TriggerAttribute = params.get("TriggerAttribute")
+        self.Description = params.get("Description")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

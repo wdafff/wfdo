@@ -4598,16 +4598,25 @@ class AsrFullTextConfigureInfo(AbstractModel):
 <li>srt：生成 SRT 字幕文件。</li>
 <font color='red'>注意：此字段已废弃，建议使用 SubtitleFormats。</font>
         :type SubtitleFormat: str
+        :param SrcLanguage: 媒体源语言，取值范围：
+<li>zh：中文普通话；</li>
+<li>en：英语；</li>
+<li>ja：日语；</li>
+<li>zh-ca：粤语。</li>
+<font color=red>注意：</font> 填空字符串，或者不填该参数，则自动识别（效果较难保证，推荐填写原始媒体对应的语言，以提高识别的准确率）。
+        :type SrcLanguage: str
         """
         self.Switch = None
         self.SubtitleFormats = None
         self.SubtitleFormat = None
+        self.SrcLanguage = None
 
 
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
         self.SubtitleFormats = params.get("SubtitleFormats")
         self.SubtitleFormat = params.get("SubtitleFormat")
+        self.SrcLanguage = params.get("SrcLanguage")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4635,10 +4644,17 @@ class AsrFullTextConfigureInfoForUpdate(AbstractModel):
 <li>srt：生成 SRT 字幕文件。</li>
 <font color='red'>注意：此字段已废弃，建议使用 SubtitleFormatsOperation。</font>
         :type SubtitleFormat: str
+        :param SrcLanguage: 媒体源语言，取值范围：
+<li>zh：中文普通话；</li>
+<li>en：英语；</li>
+<li>ja：日语；</li>
+<li>zh-ca：粤语。</li>
+        :type SrcLanguage: str
         """
         self.Switch = None
         self.SubtitleFormatsOperation = None
         self.SubtitleFormat = None
+        self.SrcLanguage = None
 
 
     def _deserialize(self, params):
@@ -4647,6 +4663,7 @@ class AsrFullTextConfigureInfoForUpdate(AbstractModel):
             self.SubtitleFormatsOperation = SubtitleFormatsOperation()
             self.SubtitleFormatsOperation._deserialize(params.get("SubtitleFormatsOperation"))
         self.SubtitleFormat = params.get("SubtitleFormat")
+        self.SrcLanguage = params.get("SrcLanguage")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12539,6 +12556,9 @@ class DomainDetailInfo(AbstractModel):
         :param CreateTime: 域名添加到腾讯云点播系统中的时间。
 <li>格式按照 ISO 8601标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#iso-.E6.97.A5.E6.9C.9F.E6.A0.BC.E5.BC.8F)。</li>
         :type CreateTime: str
+        :param QUICConfig: 域名 QUIC 配置信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type QUICConfig: :class:`tencentcloud.vod.v20180717.models.DomainQUICConfig`
         """
         self.Domain = None
         self.AccelerateAreaInfos = None
@@ -12547,6 +12567,7 @@ class DomainDetailInfo(AbstractModel):
         self.UrlSignatureAuthPolicy = None
         self.RefererAuthPolicy = None
         self.CreateTime = None
+        self.QUICConfig = None
 
 
     def _deserialize(self, params):
@@ -12568,6 +12589,9 @@ class DomainDetailInfo(AbstractModel):
             self.RefererAuthPolicy = RefererAuthPolicy()
             self.RefererAuthPolicy._deserialize(params.get("RefererAuthPolicy"))
         self.CreateTime = params.get("CreateTime")
+        if params.get("QUICConfig") is not None:
+            self.QUICConfig = DomainQUICConfig()
+            self.QUICConfig._deserialize(params.get("QUICConfig"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12593,6 +12617,32 @@ class DomainHTTPSConfig(AbstractModel):
 
     def _deserialize(self, params):
         self.CertExpireTime = params.get("CertExpireTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DomainQUICConfig(AbstractModel):
+    """域名 QUIC 配置信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Status: QUIC 配置状态，可选值：
+<li>Enabled: 启用；</li>
+<li>Disabled: 禁用。</li>
+        :type Status: str
+        """
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19457,11 +19507,14 @@ class ModifyVodDomainConfigRequest(AbstractModel):
         :type RefererAuthPolicy: :class:`tencentcloud.vod.v20180717.models.RefererAuthPolicy`
         :param UrlSignatureAuthPolicy: [Key 防盗链](/document/product/266/14047)规则。
         :type UrlSignatureAuthPolicy: :class:`tencentcloud.vod.v20180717.models.UrlSignatureAuthPolicy`
+        :param QUICConfig: QUIC 配置。
+        :type QUICConfig: :class:`tencentcloud.vod.v20180717.models.DomainQUICConfig`
         """
         self.Domain = None
         self.SubAppId = None
         self.RefererAuthPolicy = None
         self.UrlSignatureAuthPolicy = None
+        self.QUICConfig = None
 
 
     def _deserialize(self, params):
@@ -19473,6 +19526,9 @@ class ModifyVodDomainConfigRequest(AbstractModel):
         if params.get("UrlSignatureAuthPolicy") is not None:
             self.UrlSignatureAuthPolicy = UrlSignatureAuthPolicy()
             self.UrlSignatureAuthPolicy._deserialize(params.get("UrlSignatureAuthPolicy"))
+        if params.get("QUICConfig") is not None:
+            self.QUICConfig = DomainQUICConfig()
+            self.QUICConfig._deserialize(params.get("QUICConfig"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -23327,17 +23383,29 @@ class RemoveWaterMarkTaskOutput(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FileId: 视频 ID。
+        :param FileId: 媒体文件 ID。
         :type FileId: str
+        :param FileType: 文件类型，例如 mp4、mp3 等。
+        :type FileType: str
+        :param FileUrl: 媒体文件播放地址。
+        :type FileUrl: str
+        :param MediaName: 文件名称，最长 64 个字符。
+        :type MediaName: str
         :param MetaData: 元信息。包括大小、时长、视频流信息、音频流信息等。
         :type MetaData: :class:`tencentcloud.vod.v20180717.models.MediaMetaData`
         """
         self.FileId = None
+        self.FileType = None
+        self.FileUrl = None
+        self.MediaName = None
         self.MetaData = None
 
 
     def _deserialize(self, params):
         self.FileId = params.get("FileId")
+        self.FileType = params.get("FileType")
+        self.FileUrl = params.get("FileUrl")
+        self.MediaName = params.get("MediaName")
         if params.get("MetaData") is not None:
             self.MetaData = MediaMetaData()
             self.MetaData._deserialize(params.get("MetaData"))

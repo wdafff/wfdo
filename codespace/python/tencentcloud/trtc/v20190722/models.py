@@ -285,7 +285,7 @@ class CreateCloudRecordingRequest(AbstractModel):
         :type UserSig: str
         :param RecordParams: 云端录制控制参数。
         :type RecordParams: :class:`tencentcloud.trtc.v20190722.models.RecordParams`
-        :param StorageParams: 云端录制文件上传到云存储的参数(目前只支持使用腾讯云点播作为存储)。
+        :param StorageParams: 云端录制文件上传到云存储的参数(目前支持云点播VOD和对象存储COS)。
         :type StorageParams: :class:`tencentcloud.trtc.v20190722.models.StorageParams`
         :param RoomIdType: TRTC房间号的类型，必须和录制的房间所对应的RoomId类型相同:
 0: 字符串类型的RoomId
@@ -372,7 +372,7 @@ class CreatePictureRequest(AbstractModel):
         r"""
         :param SdkAppId: 应用id
         :type SdkAppId: int
-        :param Content: 图片内容经base64编码后的string格式
+        :param Content: 图片内容经base64编码后的string格式,最大长度为2M
         :type Content: str
         :param Suffix: 图片后缀名
         :type Suffix: str

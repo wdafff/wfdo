@@ -32,13 +32,13 @@ class TrtcClient(AbstractClient):
 
         您可以通过此接口实现如下目标：
         * 指定订阅流参数（RecordParams）来指定需要录制的主播的黑名单或者白名单。
-        * 指定第三方存储的参数（StorageParams）来指定上传到您希望的云存储，目前仅支持云点播存储（CloudVod）
+        * 指定第三方存储的参数（StorageParams）来指定上传到您希望的云存储，目前支持云点播VOD和对象存储COS
         * 指定混流模式下的音视频转码详细参数（MixTranscodeParams），包括视频分辨率、视频码率、视频帧率、以及声音质量等
         * 指定混流模式各路画面的位置和布局或者也可以指定自动模板的方式来配置。
 
         关键名词：
-        * 单流录制：分别录制房间的订阅UserId的音频和视频。录制服务会实时将录制文件上传至云点播存储。
-        * 合流录制：将房间内订阅UserId的音视频混录成一个音视频文件，并将录制文件上传至云点播存储（录制结束后可前往云点播控制台查看录制文件：https://console.cloud.tencent.com/vod/media）。
+        * 单流录制：分别录制房间的订阅UserId的音频和视频，录制服务会实时将录制文件上传至您指定的云存储。
+        * 合流录制：将房间内订阅UserId的音视频混录成一个视频文件，并将录制文件上传至您指定的云存储。（录制结束后可前往云点播控制台https://console.cloud.tencent.com/vod/media 或 对象存储COS控制台https://console.cloud.tencent.com/cos/bucket查看文件）。
 
         :param request: Request instance for CreateCloudRecording.
         :type request: :class:`tencentcloud.trtc.v20190722.models.CreateCloudRecordingRequest`
@@ -485,6 +485,8 @@ class TrtcClient(AbstractClient):
         注意：
         1.调用接口需开通监控仪表盘【基础版】和【进阶版】，监控仪表盘【免费版】不支持调用，监控仪表盘版本功能和计费说明：https://cloud.tencent.com/document/product/647/81331。
         2.查询时间范围根据监控仪表盘功能版本而定，基础版可查近3小时，进阶版可查近12小时。
+        xa0
+        3.除此之外您也可以通过订阅TRTC包月套餐(https://buy.cloud.tencent.com/trtc)尊享版或旗舰版解锁此接口（DescribeTRTCRealTimeScaleMetricData）的调用能力，请在开通包月套餐后，请提交工单联系售后解锁调用能力https://console.cloud.tencent.com/workorder/category
 
         :param request: Request instance for DescribeTRTCRealTimeScaleMetricData.
         :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeTRTCRealTimeScaleMetricDataRequest`

@@ -1591,12 +1591,15 @@ class CreateFlowSignUrlRequest(AbstractModel):
         :type FlowApproverInfos: list of FlowCreateApprover
         :param Operator: 用户信息，此结构体UserId必填
         :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param Agent: 代理相关应用信息，如集团主企业代子企业操作的场景中ProxyOrganizationId必填
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
         :param Organization: 机构信息，暂未开放
         :type Organization: :class:`tencentcloud.ess.v20201111.models.OrganizationInfo`
         """
         self.FlowId = None
         self.FlowApproverInfos = None
         self.Operator = None
+        self.Agent = None
         self.Organization = None
 
 
@@ -1611,6 +1614,9 @@ class CreateFlowSignUrlRequest(AbstractModel):
         if params.get("Operator") is not None:
             self.Operator = UserInfo()
             self.Operator._deserialize(params.get("Operator"))
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
         if params.get("Organization") is not None:
             self.Organization = OrganizationInfo()
             self.Organization._deserialize(params.get("Organization"))
@@ -2334,7 +2340,7 @@ E_PRESCRIPTION_AUTO_SIGN 电子处方
         :type AutoSignConfig: :class:`tencentcloud.ess.v20201111.models.AutoSignConfig`
         :param UrlType: 链接类型，空-默认小程序端链接，H5SIGN-h5端链接
         :type UrlType: str
-        :param NotifyType: 通知类型，默认不填为不通知开通方，填写 SMS 为短息通知。
+        :param NotifyType: 通知类型，默认不填为不通知开通方，填写 SMS 为短信通知。
         :type NotifyType: str
         :param NotifyAddress: 若上方填写为 SMS，则此处为手机号
         :type NotifyAddress: str
@@ -2747,7 +2753,8 @@ class DescribeFileUrlsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FileUrls: URL信息
+        :param FileUrls: 文件URL信息；
+链接不是永久链接，有效期5分钟后链接失效。
         :type FileUrls: list of FileUrl
         :param TotalCount: URL数量
         :type TotalCount: int
@@ -3982,30 +3989,35 @@ class FlowApproverUrlInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param SignUrl: 签署链接，注意该链接有效期为30分钟，同时需要注意保密，不要外泄给无关用户。
+        :param SignUrl: 签署链接。注意该链接有效期为30分钟，同时需要注意保密，不要外泄给无关用户。
 注意：此字段可能返回 null，表示取不到有效值。
         :type SignUrl: str
-        :param ApproverMobile: 签署人手机号
-注意：此字段可能返回 null，表示取不到有效值。
-        :type ApproverMobile: str
-        :param ApproverName: 签署人姓名
-注意：此字段可能返回 null，表示取不到有效值。
-        :type ApproverName: str
         :param ApproverType: 签署人类型 1-个人
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApproverType: int
+        :param ApproverName: 签署人姓名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ApproverName: str
+        :param ApproverMobile: 签署人手机号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ApproverMobile: str
+        :param LongUrl: 签署长链接。注意该链接有效期为30分钟，同时需要注意保密，不要外泄给无关用户。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LongUrl: str
         """
         self.SignUrl = None
-        self.ApproverMobile = None
-        self.ApproverName = None
         self.ApproverType = None
+        self.ApproverName = None
+        self.ApproverMobile = None
+        self.LongUrl = None
 
 
     def _deserialize(self, params):
         self.SignUrl = params.get("SignUrl")
-        self.ApproverMobile = params.get("ApproverMobile")
-        self.ApproverName = params.get("ApproverName")
         self.ApproverType = params.get("ApproverType")
+        self.ApproverName = params.get("ApproverName")
+        self.ApproverMobile = params.get("ApproverMobile")
+        self.LongUrl = params.get("LongUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4114,9 +4126,9 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         :type VerifyChannel: list of str
         :param NotifyType: 是否发送短信，sms--短信通知，none--不通知，默认为sms；发起方=签署方时不发送短信
         :type NotifyType: str
-        :param IsFullText: 签署前置条件：是否需要阅读全文，默认为不需要
+        :param IsFullText: 合同强制需要阅读全文，无需传此参数
         :type IsFullText: bool
-        :param PreReadTime: 签署前置条件：阅读时长限制，单位秒，默认为不需要
+        :param PreReadTime: 合同的强制预览时间：3~300s，未指定则按合同页数计算
         :type PreReadTime: int
         :param UserId: 签署方经办人的用户ID,和签署方经办人姓名+手机号+证件必须有一个。
         :type UserId: str
@@ -4130,6 +4142,8 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         :type RegisterInfo: :class:`tencentcloud.ess.v20201111.models.RegisterInfo`
         :param ApproverOption: 签署人个性化能力值
         :type ApproverOption: :class:`tencentcloud.ess.v20201111.models.ApproverOption`
+        :param JumpUrl: 签署完前端跳转的url，暂未使用
+        :type JumpUrl: str
         """
         self.ApproverType = None
         self.OrganizationName = None
@@ -4148,6 +4162,7 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         self.CustomApproverTag = None
         self.RegisterInfo = None
         self.ApproverOption = None
+        self.JumpUrl = None
 
 
     def _deserialize(self, params):
@@ -4172,6 +4187,7 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         if params.get("ApproverOption") is not None:
             self.ApproverOption = ApproverOption()
             self.ApproverOption._deserialize(params.get("ApproverOption"))
+        self.JumpUrl = params.get("JumpUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

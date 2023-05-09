@@ -252,22 +252,31 @@ class ActivityPara(AbstractModel):
     def __init__(self):
         r"""
         :param TranscodeTask: 视频转码任务
+注意：此字段可能返回 null，表示取不到有效值。
         :type TranscodeTask: :class:`tencentcloud.mps.v20190612.models.TranscodeTaskInput`
         :param AnimatedGraphicTask: 视频转动图任务
+注意：此字段可能返回 null，表示取不到有效值。
         :type AnimatedGraphicTask: :class:`tencentcloud.mps.v20190612.models.AnimatedGraphicTaskInput`
         :param SnapshotByTimeOffsetTask: 视频按时间点截图任务
+注意：此字段可能返回 null，表示取不到有效值。
         :type SnapshotByTimeOffsetTask: :class:`tencentcloud.mps.v20190612.models.SnapshotByTimeOffsetTaskInput`
         :param SampleSnapshotTask: 视频采样截图任务
+注意：此字段可能返回 null，表示取不到有效值。
         :type SampleSnapshotTask: :class:`tencentcloud.mps.v20190612.models.SampleSnapshotTaskInput`
         :param ImageSpriteTask: 视频截雪碧图任务
+注意：此字段可能返回 null，表示取不到有效值。
         :type ImageSpriteTask: :class:`tencentcloud.mps.v20190612.models.ImageSpriteTaskInput`
         :param AdaptiveDynamicStreamingTask: 转自适应码流任务
+注意：此字段可能返回 null，表示取不到有效值。
         :type AdaptiveDynamicStreamingTask: :class:`tencentcloud.mps.v20190612.models.AdaptiveDynamicStreamingTaskInput`
         :param AiContentReviewTask: 视频内容审核类型任务
+注意：此字段可能返回 null，表示取不到有效值。
         :type AiContentReviewTask: :class:`tencentcloud.mps.v20190612.models.AiContentReviewTaskInput`
         :param AiAnalysisTask: 视频内容分析类型任务
+注意：此字段可能返回 null，表示取不到有效值。
         :type AiAnalysisTask: :class:`tencentcloud.mps.v20190612.models.AiAnalysisTaskInput`
         :param AiRecognitionTask: 视频内容识别类型任务
+注意：此字段可能返回 null，表示取不到有效值。
         :type AiRecognitionTask: :class:`tencentcloud.mps.v20190612.models.AiRecognitionTaskInput`
         """
         self.TranscodeTask = None
@@ -16592,6 +16601,8 @@ class ProcessLiveStreamRequest(AbstractModel):
         :type AiContentReviewTask: :class:`tencentcloud.mps.v20190612.models.AiContentReviewTaskInput`
         :param AiRecognitionTask: 视频内容识别类型任务参数。
         :type AiRecognitionTask: :class:`tencentcloud.mps.v20190612.models.AiRecognitionTaskInput`
+        :param AiAnalysisTask: 视频内容分析类型任务参数。
+        :type AiAnalysisTask: :class:`tencentcloud.mps.v20190612.models.AiAnalysisTaskInput`
         :param SessionId: 用于去重的识别码，如果七天内曾有过相同的识别码的请求，则本次的请求会返回错误。最长 50 个字符，不带或者带空字符串表示不做去重。
         :type SessionId: str
         :param SessionContext: 来源上下文，用于透传用户请求信息，任务流状态变更回调将返回该字段值，最长 1000 个字符。
@@ -16603,6 +16614,7 @@ class ProcessLiveStreamRequest(AbstractModel):
         self.OutputDir = None
         self.AiContentReviewTask = None
         self.AiRecognitionTask = None
+        self.AiAnalysisTask = None
         self.SessionId = None
         self.SessionContext = None
 
@@ -16622,6 +16634,9 @@ class ProcessLiveStreamRequest(AbstractModel):
         if params.get("AiRecognitionTask") is not None:
             self.AiRecognitionTask = AiRecognitionTaskInput()
             self.AiRecognitionTask._deserialize(params.get("AiRecognitionTask"))
+        if params.get("AiAnalysisTask") is not None:
+            self.AiAnalysisTask = AiAnalysisTaskInput()
+            self.AiAnalysisTask._deserialize(params.get("AiAnalysisTask"))
         self.SessionId = params.get("SessionId")
         self.SessionContext = params.get("SessionContext")
         memeber_set = set(params.keys())
@@ -18166,7 +18181,7 @@ class SchedulesInfo(AbstractModel):
 Enabled：已启用，
 Disabled：已禁用。
 注意：此字段可能返回 null，表示取不到有效值。
-        :type Status: list of str
+        :type Status: str
         :param Trigger: 编排绑定的触发规则。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Trigger: :class:`tencentcloud.mps.v20190612.models.WorkflowTrigger`

@@ -285,7 +285,7 @@ class CreateCloudRecordingRequest(AbstractModel):
         :type UserSig: str
         :param RecordParams: 云端录制控制参数。
         :type RecordParams: :class:`tencentcloud.trtc.v20190722.models.RecordParams`
-        :param StorageParams: 云端录制文件上传到云存储的参数(目前支持云点播VOD和对象存储COS)。
+        :param StorageParams: 云端录制文件上传到云存储的参数(目前支持云点播VOD和对象存储COS)。点播和对象存储的参数必填其中之一，不支持同时设置点播和对象存储。
         :type StorageParams: :class:`tencentcloud.trtc.v20190722.models.StorageParams`
         :param RoomIdType: TRTC房间号的类型，必须和录制的房间所对应的RoomId类型相同:
 0: 字符串类型的RoomId
@@ -1179,7 +1179,7 @@ class DescribeScaleInfoRequest(AbstractModel):
 注意：支持查询14天内的数据。
         :type StartTime: int
         :param EndTime: 查询结束时间，本地unix时间戳，单位为秒（如：1590065877），建议与StartTime间隔时间超过24小时。
-注意：按天统计，结束时间小于前一天，否则查询数据为空（如：需查询20号数据，结束时间需晚于20号0点）。
+注意：按天统计，结束时间大于前一天，否则查询数据为空（如：需查询20号数据，结束时间需晚于20号0点）。
         :type EndTime: int
         """
         self.SdkAppId = None
@@ -2143,7 +2143,7 @@ class LayoutParams(AbstractModel):
         :type PureAudioHoldPlaceMode: int
         :param WaterMarkParams: 水印参数。
         :type WaterMarkParams: :class:`tencentcloud.trtc.v20190722.models.WaterMarkParams`
-        :param RenderMode: 屏幕分享模板、悬浮模板、九宫格模板、画中画模版有效，画面在输出时的显示模式：0为裁剪，1为缩放，2为缩放并显示黑底，不填采用后台的默认渲染方式（屏幕分享大画面为缩放，其他为裁剪）。若此参数不生效，请请提交工单寻求帮助。
+        :param RenderMode: 屏幕分享模板、悬浮模板、九宫格模板、画中画模版有效，画面在输出时的显示模式：0为裁剪，1为缩放，2为缩放并显示黑底，不填采用后台的默认渲染方式（屏幕分享大画面为缩放，其他为裁剪）。若此参数不生效，请提交工单寻求帮助。
         :type RenderMode: int
         """
         self.Template = None
@@ -3193,7 +3193,7 @@ class OutputParams(AbstractModel):
 
     def __init__(self):
         r"""
-        :param StreamId: 直播流 ID，由用户自定义设置，该流 ID 不能与用户旁路的流 ID 相同。
+        :param StreamId: 直播流 ID，由用户自定义设置，该流 ID 不能与用户旁路的流 ID 相同，限制64字节。
         :type StreamId: str
         :param PureAudioStream: 取值范围[0,1]， 填0：直播流为音视频(默认); 填1：直播流为纯音频
         :type PureAudioStream: int

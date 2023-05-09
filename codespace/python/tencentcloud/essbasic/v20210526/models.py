@@ -2495,6 +2495,9 @@ SIGN_PAGING_SEAL - 可以指定印章ID
         :type RelativeLocation: str
         :param KeywordIndexes: 关键字索引，可选参数，如果一个关键字在PDF文件中存在多个，可以通过关键字索引指定使用第几个关键字作为最后的结果，可指定多个索引。示例[0,2]，说明使用PDF文件内第1个和第3个关键字位置。
         :type KeywordIndexes: list of int
+        :param Placeholder: 填写提示的内容
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Placeholder: str
         """
         self.ComponentId = None
         self.ComponentType = None
@@ -2520,6 +2523,7 @@ SIGN_PAGING_SEAL - 可以指定印章ID
         self.KeywordPage = None
         self.RelativeLocation = None
         self.KeywordIndexes = None
+        self.Placeholder = None
 
 
     def _deserialize(self, params):
@@ -2547,6 +2551,7 @@ SIGN_PAGING_SEAL - 可以指定印章ID
         self.KeywordPage = params.get("KeywordPage")
         self.RelativeLocation = params.get("RelativeLocation")
         self.KeywordIndexes = params.get("KeywordIndexes")
+        self.Placeholder = params.get("Placeholder")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3870,26 +3875,31 @@ class FlowApproverUrlInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param SignUrl: 签署链接，注意该链接有效期为30分钟，同时需要注意保密，不要外泄给无关用户。
+        :param SignUrl: 签署链接。注意该链接有效期为30分钟，同时需要注意保密，不要外泄给无关用户。
         :type SignUrl: str
-        :param Mobile: 签署人手机号
-        :type Mobile: str
-        :param Name: 签署人姓名
-        :type Name: str
         :param ApproverType: 签署人类型 PERSON-个人
         :type ApproverType: str
+        :param Name: 签署人姓名
+        :type Name: str
+        :param Mobile: 签署人手机号
+        :type Mobile: str
+        :param LongUrl: 签署长链接。注意该链接有效期为30分钟，同时需要注意保密，不要外泄给无关用户。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LongUrl: str
         """
         self.SignUrl = None
-        self.Mobile = None
-        self.Name = None
         self.ApproverType = None
+        self.Name = None
+        self.Mobile = None
+        self.LongUrl = None
 
 
     def _deserialize(self, params):
         self.SignUrl = params.get("SignUrl")
-        self.Mobile = params.get("Mobile")
-        self.Name = params.get("Name")
         self.ApproverType = params.get("ApproverType")
+        self.Name = params.get("Name")
+        self.Mobile = params.get("Mobile")
+        self.LongUrl = params.get("LongUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

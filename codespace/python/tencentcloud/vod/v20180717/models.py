@@ -9432,6 +9432,7 @@ class DescribeCDNStatDetailsRequest(AbstractModel):
 <li>Traffic：流量，单位为 Byte。</li>
 <li>Bandwidth：带宽，单位为 Bps。</li>
 <li>Requests：请求数。</li>
+<li>QUICRequests：QUIC 请求数。</li>
         :type Metric: str
         :param StartTime: 起始时间，使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
         :type StartTime: str
@@ -10392,12 +10393,16 @@ class DescribeFileAttributesTaskOutput(AbstractModel):
         r"""
         :param Md5: 媒体文件的 Md5 值。
         :type Md5: str
+        :param Sha1: 媒体文件的 Sha1 值。
+        :type Sha1: str
         """
         self.Md5 = None
+        self.Sha1 = None
 
 
     def _deserialize(self, params):
         self.Md5 = params.get("Md5")
+        self.Sha1 = params.get("Sha1")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14414,8 +14419,9 @@ class ImageOperation(AbstractModel):
     def __init__(self):
         r"""
         :param Type: 图片处理类型。可选类型有：
-<li>Scale : 图片缩略处理。</li>
-<li>CenterCut : 图片裁剪处理。</li>
+<li>Scale : 图片缩略处理；</li>
+<li>CenterCut : 图片裁剪处理；</li>
+<li>Blur : 图片模糊处理。</li>
         :type Type: str
         :param Scale: 图片缩略处理，仅当 Type 为 Scale 时有效。
         :type Scale: :class:`tencentcloud.vod.v20180717.models.ImageScale`
@@ -25799,6 +25805,7 @@ class StatDataItem(AbstractModel):
 <li>流量数据，单位是字节。</li>
 <li>带宽数据，单位是比特每秒。</li>
 <li>直播剪辑数据，单位是秒。</li>
+<li>轮播数据，单位是秒。</li>
         :type Value: int
         """
         self.Time = None

@@ -368,7 +368,7 @@ class CreateRecTaskRequest(AbstractModel):
 注意：8k电话场景建议使用双声道来区分通话双方，设置ChannelNum=2即可，不用开启说话人分离。
         :type SpeakerDiarization: int
         :param SpeakerNumber: 说话人分离人数（需配合开启说话人分离使用），取值范围：0-10，0代表自动分离（目前仅支持≤6个人），1-10代表指定说话人数分离。默认值为 0。
-注：话者分离目前是beta版本，请根据您的需要谨慎使用
+注：此功能结果仅供参考，请根据您的需要谨慎使用。
         :type SpeakerNumber: int
         :param CallbackUrl: 回调 URL，用户自行搭建的用于接收识别结果的服务URL。如果用户使用轮询方式获取识别结果，则无需提交该参数。回调格式&内容详见：[录音识别回调说明](https://cloud.tencent.com/document/product/1093/52632)
         :type CallbackUrl: str
@@ -929,6 +929,53 @@ class GetCustomizationListResponse(AbstractModel):
                 obj._deserialize(item)
                 self.Data.append(obj)
         self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class GetModelInfoRequest(AbstractModel):
+    """GetModelInfo请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ModelId: 模型id
+        :type ModelId: str
+        """
+        self.ModelId = None
+
+
+    def _deserialize(self, params):
+        self.ModelId = params.get("ModelId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetModelInfoResponse(AbstractModel):
+    """GetModelInfo返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 模型信息
+        :type Data: :class:`tencentcloud.asr.v20190614.models.Model`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = Model()
+            self.Data._deserialize(params.get("Data"))
         self.RequestId = params.get("RequestId")
 
 

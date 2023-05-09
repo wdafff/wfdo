@@ -1014,23 +1014,23 @@ class CreateModelServiceRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ImageInfo: 镜像信息，配置服务运行所需的镜像地址等信息
-        :type ImageInfo: :class:`tencentcloud.tione.v20211111.models.ImageInfo`
         :param ServiceGroupId: 新增版本时需要填写
         :type ServiceGroupId: str
         :param ServiceGroupName: 不超过60个字，仅支持英文、数字、下划线"_"、短横"-"，只能以英文、数字开头
         :type ServiceGroupName: str
         :param ServiceDescription: 模型服务的描述
         :type ServiceDescription: str
-        :param ChargeType: 付费模式,有 PREPAID 、 POSTPAID_BY_HOUR 和 HYBRID_PAID 三种
+        :param ChargeType: 付费模式,有 PREPAID （包年包月）和 POSTPAID_BY_HOUR（按量付费）
         :type ChargeType: str
         :param ResourceGroupId: 预付费模式下所属的资源组id，同服务组下唯一
         :type ResourceGroupId: str
         :param ModelInfo: 模型信息，需要挂载模型时填写
         :type ModelInfo: :class:`tencentcloud.tione.v20211111.models.ModelInfo`
+        :param ImageInfo: 镜像信息，配置服务运行所需的镜像地址等信息
+        :type ImageInfo: :class:`tencentcloud.tione.v20211111.models.ImageInfo`
         :param Env: 环境变量，可选参数，用于配置容器中的环境变量
         :type Env: list of EnvVar
-        :param Resources: 资源描述，指定预付费模式下的cpu,mem,gpu等信息，后付费无需填写
+        :param Resources: 资源描述，指定包年包月模式下的cpu,mem,gpu等信息，后付费无需填写
         :type Resources: :class:`tencentcloud.tione.v20211111.models.ResourceInfo`
         :param InstanceType: 使用DescribeBillingSpecs接口返回的规格列表中的值，或者参考实例列表:
 TI.S.MEDIUM.POST	2C4G
@@ -1092,13 +1092,13 @@ HYBRID_PAID:
         :param CallbackUrl: 回调地址，用于回调创建服务状态信息，回调格式&内容详情见：[TI-ONE 接口回调说明](https://cloud.tencent.com/document/product/851/84292)
         :type CallbackUrl: str
         """
-        self.ImageInfo = None
         self.ServiceGroupId = None
         self.ServiceGroupName = None
         self.ServiceDescription = None
         self.ChargeType = None
         self.ResourceGroupId = None
         self.ModelInfo = None
+        self.ImageInfo = None
         self.Env = None
         self.Resources = None
         self.InstanceType = None
@@ -1122,9 +1122,6 @@ HYBRID_PAID:
 
 
     def _deserialize(self, params):
-        if params.get("ImageInfo") is not None:
-            self.ImageInfo = ImageInfo()
-            self.ImageInfo._deserialize(params.get("ImageInfo"))
         self.ServiceGroupId = params.get("ServiceGroupId")
         self.ServiceGroupName = params.get("ServiceGroupName")
         self.ServiceDescription = params.get("ServiceDescription")
@@ -1133,6 +1130,9 @@ HYBRID_PAID:
         if params.get("ModelInfo") is not None:
             self.ModelInfo = ModelInfo()
             self.ModelInfo._deserialize(params.get("ModelInfo"))
+        if params.get("ImageInfo") is not None:
+            self.ImageInfo = ImageInfo()
+            self.ImageInfo._deserialize(params.get("ImageInfo"))
         if params.get("Env") is not None:
             self.Env = []
             for item in params.get("Env"):
@@ -1447,7 +1447,8 @@ class CreateTrainingTaskRequest(AbstractModel):
         r"""
         :param Name: 训练任务名称，不超过60个字符，仅支持中英文、数字、下划线"_"、短横"-"，只能以中英文、数字开头
         :type Name: str
-        :param ChargeType: 计费模式，eg：PREPAID预付费，即包年包月；POSTPAID_BY_HOUR按小时后付费
+        :param ChargeType: 计费模式，eg：PREPAID 包年包月（资源组）;
+POSTPAID_BY_HOUR 按量计费
         :type ChargeType: str
         :param ResourceConfigInfos: 资源配置，需填写对应算力规格ID和节点数量，算力规格ID查询接口为DescribeBillingSpecsPrice，eg：[{"Role":"WORKER", "InstanceType": "TI.S.MEDIUM.POST", "InstanceNum": 1}]
         :type ResourceConfigInfos: list of ResourceConfigInfo
@@ -1796,6 +1797,9 @@ class DataConfig(AbstractModel):
         :param HDFSSource: 来自HDFS的数据
 注意：此字段可能返回 null，表示取不到有效值。
         :type HDFSSource: :class:`tencentcloud.tione.v20211111.models.HDFSConfig`
+        :param GooseFSSource: 配饰GooseFS的数据
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GooseFSSource: :class:`tencentcloud.tione.v20211111.models.GooseFS`
         """
         self.MappingPath = None
         self.DataSourceType = None
@@ -1803,6 +1807,7 @@ class DataConfig(AbstractModel):
         self.COSSource = None
         self.CFSSource = None
         self.HDFSSource = None
+        self.GooseFSSource = None
 
 
     def _deserialize(self, params):
@@ -1820,6 +1825,9 @@ class DataConfig(AbstractModel):
         if params.get("HDFSSource") is not None:
             self.HDFSSource = HDFSConfig()
             self.HDFSSource._deserialize(params.get("HDFSSource"))
+        if params.get("GooseFSSource") is not None:
+            self.GooseFSSource = GooseFS()
+            self.GooseFSSource._deserialize(params.get("GooseFSSource"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2995,7 +3003,7 @@ class DescribeBillingSpecsRequest(AbstractModel):
         r"""
         :param TaskType: 枚举值：TRAIN、NOTEBOOK、INFERENCE
         :type TaskType: str
-        :param ChargeType: 付费模式：POSTPAID_BY_HOUR后付费、PREPAID预付费
+        :param ChargeType: 付费模式：POSTPAID_BY_HOUR按量计费、PREPAID包年包月
         :type ChargeType: str
         :param ResourceType: 资源类型：CALC 计算资源、CPU CPU资源、GPU GPU资源、CBS云硬盘
         :type ResourceType: str
@@ -4948,6 +4956,31 @@ class FrameworkVersion(AbstractModel):
         
 
 
+class GooseFS(AbstractModel):
+    """配置GooseFS参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: goosefs实例id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Id: str
+        """
+        self.Id = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class GpuDetail(AbstractModel):
     """gpu 详情
 
@@ -6344,6 +6377,31 @@ class PushTrainingMetricsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class RDMAConfig(AbstractModel):
+    """RDMA配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Enable: 是否开启RDMA
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Enable: bool
+        """
+        self.Enable = None
+
+
+    def _deserialize(self, params):
+        self.Enable = params.get("Enable")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ResourceConfigInfo(AbstractModel):
     """资源配置
 
@@ -6401,6 +6459,9 @@ TI.GN7.20XLARGE320.POST: 80C32
 40C160G T4*2 
 80C32
         :type InstanceTypeAlias: str
+        :param RDMAConfig: RDMA配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RDMAConfig: :class:`tencentcloud.tione.v20211111.models.RDMAConfig`
         """
         self.Role = None
         self.Cpu = None
@@ -6410,6 +6471,7 @@ TI.GN7.20XLARGE320.POST: 80C32
         self.InstanceType = None
         self.InstanceNum = None
         self.InstanceTypeAlias = None
+        self.RDMAConfig = None
 
 
     def _deserialize(self, params):
@@ -6421,6 +6483,9 @@ TI.GN7.20XLARGE320.POST: 80C32
         self.InstanceType = params.get("InstanceType")
         self.InstanceNum = params.get("InstanceNum")
         self.InstanceTypeAlias = params.get("InstanceTypeAlias")
+        if params.get("RDMAConfig") is not None:
+            self.RDMAConfig = RDMAConfig()
+            self.RDMAConfig._deserialize(params.get("RDMAConfig"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6881,7 +6946,7 @@ class Service(AbstractModel):
         :param ChargeType: 付费类型
 注意：此字段可能返回 null，表示取不到有效值。
         :type ChargeType: str
-        :param ResourceGroupId: 后付费资源组id
+        :param ResourceGroupId: 包年包月服务的资源组id，按量计费的服务为空
 注意：此字段可能返回 null，表示取不到有效值。
         :type ResourceGroupId: str
         :param CreatedBy: 创建者
@@ -6948,7 +7013,7 @@ Waiting 就绪中
         :param CreateFailedReason: 服务创建失败的原因，创建成功后该字段为默认值 CREATE_SUCCEED
 注意：此字段可能返回 null，表示取不到有效值。
         :type CreateFailedReason: str
-        :param ResourceGroupName: 预付费服务对应的资源组名字
+        :param ResourceGroupName: 包年包月服务对应的资源组名字
 注意：此字段可能返回 null，表示取不到有效值。
         :type ResourceGroupName: str
         :param Tags: 服务的标签
@@ -7331,6 +7396,22 @@ HYBRID_PAID:
         :param PodInfos: Pod列表信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type PodInfos: list of Pod
+        :param ScaleStrategy: 定时伸缩策略
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ScaleStrategy: str
+        :param CronScaleJobs: 定时伸缩任务
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CronScaleJobs: list of CronScaleJob
+        :param ScaleMode: 实例数量调节方式,默认为手动
+支持：自动 - "AUTO", 手动 - "MANUAL"
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ScaleMode: str
+        :param ServiceLimit: 服务限速限流相关配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServiceLimit: :class:`tencentcloud.tione.v20211111.models.ServiceLimit`
+        :param ScheduledAction: 定时停止的配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ScheduledAction: str
         """
         self.Replicas = None
         self.ImageInfo = None
@@ -7352,6 +7433,11 @@ HYBRID_PAID:
         self.ModelHotUpdateEnable = None
         self.Pods = None
         self.PodInfos = None
+        self.ScaleStrategy = None
+        self.CronScaleJobs = None
+        self.ScaleMode = None
+        self.ServiceLimit = None
+        self.ScheduledAction = None
 
 
     def _deserialize(self, params):
@@ -7401,6 +7487,18 @@ HYBRID_PAID:
                 obj = Pod()
                 obj._deserialize(item)
                 self.PodInfos.append(obj)
+        self.ScaleStrategy = params.get("ScaleStrategy")
+        if params.get("CronScaleJobs") is not None:
+            self.CronScaleJobs = []
+            for item in params.get("CronScaleJobs"):
+                obj = CronScaleJob()
+                obj._deserialize(item)
+                self.CronScaleJobs.append(obj)
+        self.ScaleMode = params.get("ScaleMode")
+        if params.get("ServiceLimit") is not None:
+            self.ServiceLimit = ServiceLimit()
+            self.ServiceLimit._deserialize(params.get("ServiceLimit"))
+        self.ScheduledAction = params.get("ScheduledAction")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

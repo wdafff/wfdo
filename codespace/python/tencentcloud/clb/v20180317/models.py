@@ -6586,9 +6586,9 @@ class ModifyRuleRequest(AbstractModel):
         :type SessionExpireTime: int
         :param ForwardType: 负载均衡实例与后端服务之间的转发协议，默认HTTP，可取值：HTTP、HTTPS、TRPC。
         :type ForwardType: str
-        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时必填。
+        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时必填。目前暂未对外开放。
         :type TrpcCallee: str
-        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时必填。
+        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时必填。目前暂未对外开放。
         :type TrpcFunc: str
         """
         self.LoadBalancerId = None
@@ -7549,7 +7549,7 @@ class RuleInput(AbstractModel):
         :param Scheduler: 规则的请求转发方式，可选值：WRR、LEAST_CONN、IP_HASH
 分别表示按权重轮询、最小连接数、按IP哈希， 默认为 WRR。
         :type Scheduler: str
-        :param ForwardType: 负载均衡与后端服务之间的转发协议，目前支持 HTTP/HTTPS/TRPC
+        :param ForwardType: 负载均衡与后端服务之间的转发协议，目前支持 HTTP/HTTPS/TRPC，TRPC暂未对外开放。
         :type ForwardType: str
         :param DefaultServer: 是否将该域名设为默认域名，注意，一个监听器下只能设置一个默认域名。
         :type DefaultServer: bool
@@ -7557,9 +7557,9 @@ class RuleInput(AbstractModel):
         :type Http2: bool
         :param TargetType: 后端目标类型，NODE表示绑定普通节点，TARGETGROUP表示绑定目标组
         :type TargetType: str
-        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时必填
+        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时必填。目前暂未对外开放。
         :type TrpcCallee: str
-        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时必填
+        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时必填。目前暂未对外开放
         :type TrpcFunc: str
         :param Quic: 是否开启QUIC，注意，只有HTTPS域名才能开启QUIC
         :type Quic: bool
@@ -7666,10 +7666,10 @@ class RuleOutput(AbstractModel):
         :param WafDomainId: WAF实例ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type WafDomainId: str
-        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时有效
+        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时有效。目前暂未对外开放。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TrpcCallee: str
-        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时有效
+        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时有效。目前暂未对外开放。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TrpcFunc: str
         :param QuicStatus: QUIC状态

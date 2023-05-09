@@ -248,6 +248,9 @@ INVALIDPARAMETERVALUE_INVALIDIPV6 = 'InvalidParameterValue.InvalidIpv6'
 # 该Tag不合法。
 INVALIDPARAMETERVALUE_INVALIDTAG = 'InvalidParameterValue.InvalidTag'
 
+# 未查询到该IPv6翻译器。
+INVALIDPARAMETERVALUE_IP6TRANSLATORNOTFOUND = 'InvalidParameterValue.Ip6TranslatorNotFound'
+
 # 负载均衡实例已经绑定了EIP。
 INVALIDPARAMETERVALUE_LBALREADYBINDEIP = 'InvalidParameterValue.LBAlreadyBindEip'
 
@@ -448,6 +451,9 @@ LIMITEXCEEDED = 'LimitExceeded'
 
 # 账号退还配额超过限制。
 LIMITEXCEEDED_ACCOUNTRETURNQUOTA = 'LimitExceeded.AccountReturnQuota'
+
+# 接口请求次数超过限频。
+LIMITEXCEEDED_ACTIONLIMITED = 'LimitExceeded.ActionLimited'
 
 # 分配IP地址数量达到上限。
 LIMITEXCEEDED_ADDRESS = 'LimitExceeded.Address'
@@ -704,6 +710,9 @@ UNSUPPORTEDOPERATION_ECMPWITHCCNROUTE = 'UnsupportedOperation.EcmpWithCcnRoute'
 # 和用户自定义的路由形成ECMP。
 UNSUPPORTEDOPERATION_ECMPWITHUSERROUTE = 'UnsupportedOperation.EcmpWithUserRoute'
 
+# 当前地域不支持启用组播。
+UNSUPPORTEDOPERATION_ENABLEMULTICAST = 'UnsupportedOperation.EnableMulticast'
+
 # 终端节点服务本身不能是终端节点。
 UNSUPPORTEDOPERATION_ENDPOINTSERVICE = 'UnsupportedOperation.EndPointService'
 
@@ -782,6 +791,9 @@ UNSUPPORTEDOPERATION_NATGATEWAYRULEPIPEXISTS = 'UnsupportedOperation.NatGatewayR
 # SNAT转换规则的内网IP需为虚拟机上网卡所用的IP。
 UNSUPPORTEDOPERATION_NATGATEWAYSNATPIPNEEDVM = 'UnsupportedOperation.NatGatewaySnatPipNeedVm'
 
+# NAT网关的SNAT转换规则不存在。
+UNSUPPORTEDOPERATION_NATGATEWAYSNATRULENOTEXISTS = 'UnsupportedOperation.NatGatewaySnatRuleNotExists'
+
 # NAT网关类型不支持SNAT规则。
 UNSUPPORTEDOPERATION_NATGATEWAYTYPENOTSUPPORTSNAT = 'UnsupportedOperation.NatGatewayTypeNotSupportSNAT'
 
@@ -853,6 +865,9 @@ UNSUPPORTEDOPERATION_RECORDEXISTS = 'UnsupportedOperation.RecordExists'
 
 # 记录不存在。
 UNSUPPORTEDOPERATION_RECORDNOTEXISTS = 'UnsupportedOperation.RecordNotExists'
+
+# 资源处于不可用状态，禁止操作。
+UNSUPPORTEDOPERATION_RESOURCEISINVALIDSTATE = 'UnsupportedOperation.ResourceIsInvalidState'
 
 # 输入的资源ID与IP绑定的资源不匹配，请检查。
 UNSUPPORTEDOPERATION_RESOURCEMISMATCH = 'UnsupportedOperation.ResourceMismatch'

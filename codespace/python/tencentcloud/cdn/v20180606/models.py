@@ -5577,18 +5577,26 @@ class DescribePayTypeRequest(AbstractModel):
         :param Area: 指定服务地域查询
 mainland：境内计费方式查询
 overseas：境外计费方式查询
-未填充时默认为 mainland
+global：全球计费方式查询
+未填充时，默认为 mainland
         :type Area: str
         :param Product: 指定查询的产品数据，可选为cdn或者ecdn，默认为cdn
         :type Product: str
+        :param Type: 指定资源包查询
+flux：流量包
+https：HTTPS请求包
+未填充时，默认为 flux
+        :type Type: str
         """
         self.Area = None
         self.Product = None
+        self.Type = None
 
 
     def _deserialize(self, params):
         self.Area = params.get("Area")
         self.Product = params.get("Product")
+        self.Type = params.get("Type")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5605,7 +5613,7 @@ class DescribePayTypeResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param PayType: 计费类型：
+        :param PayType: 计费类型
 flux：流量计费
 bandwidth：带宽计费
 request：请求数计费
@@ -5613,22 +5621,23 @@ flux_sep：动静分离流量计费
 bandwidth_sep：动静分离带宽计费
 日结计费方式切换时，若当日产生消耗，则此字段表示第二天即将生效的计费方式，若未产生消耗，则表示已经生效的计费方式。
         :type PayType: str
-        :param BillingCycle: 计费周期：
+        :param BillingCycle: 计费周期
 day：日结计费
 month：月结计费
 hour：小时结计费
         :type BillingCycle: str
-        :param StatType: monthMax：日峰值月平均，月结模式
+        :param StatType: 统计类型
+monthMax：日峰值月平均，月结模式
 day95：日 95 带宽，月结模式
 month95：月95带宽，月结模式
 sum：总流量/总请求数，日结或月结模式
 max：峰值带宽，日结模式
         :type StatType: str
-        :param RegionType: 境外计费类型：
+        :param RegionType: 计费区域
 all：全地区统一计费
 multiple：分地区计费
         :type RegionType: str
-        :param CurrentPayType: 当前生效计费类型：
+        :param CurrentPayType: 当前生效计费类型
 flux：流量计费
 bandwidth：带宽计费
 request：请求数计费
@@ -8856,6 +8865,9 @@ global：全球
 2：用完续订
 3：到期或用完续订
         :type ExtensionMode: int
+        :param AutoExtension: HTTPS请求包是否自动续订
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoExtension: bool
         """
         self.Id = None
         self.Type = None
@@ -8875,6 +8887,7 @@ global：全球
         self.ContractExtension = None
         self.ExtensionAvailable = None
         self.ExtensionMode = None
+        self.AutoExtension = None
 
 
     def _deserialize(self, params):
@@ -8896,6 +8909,7 @@ global：全球
         self.ContractExtension = params.get("ContractExtension")
         self.ExtensionAvailable = params.get("ExtensionAvailable")
         self.ExtensionMode = params.get("ExtensionMode")
+        self.AutoExtension = params.get("AutoExtension")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

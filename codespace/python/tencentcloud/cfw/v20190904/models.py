@@ -282,15 +282,25 @@ class AddEnterpriseSecurityGroupRulesResponse(AbstractModel):
         r"""
         :param Status: 状态值，0：添加成功，非0：添加失败
         :type Status: int
+        :param Rules: 规则uuid
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Rules: list of SecurityGroupSimplifyRule
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Status = None
+        self.Rules = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.Status = params.get("Status")
+        if params.get("Rules") is not None:
+            self.Rules = []
+            for item in params.get("Rules"):
+                obj = SecurityGroupSimplifyRule()
+                obj._deserialize(item)
+                self.Rules.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -624,12 +634,10 @@ class CommonFilter(AbstractModel):
         r"""
         :param Name: 检索的键值
         :type Name: str
-        :param Values: 检索的值
+        :param Values: 检索的值，各检索值间为OR关系
         :type Values: list of str
-        :param OperatorType: 枚举类型，代表name与values之间的匹配关系
+        :param OperatorType: 枚举类型，代表Name与Values之间的匹配关系
 enum FilterOperatorType {
-    //INVALID
-    FILTER_OPERATOR_TYPE_INVALID = 0;
     //等于
     FILTER_OPERATOR_TYPE_EQUAL = 1;
     //大于
@@ -642,18 +650,10 @@ enum FilterOperatorType {
     FILTER_OPERATOR_TYPE_LESS_EQ = 5;
     //不等于
     FILTER_OPERATOR_TYPE_NO_EQ = 6;
-    //in，数组中包含
-    FILTER_OPERATOR_TYPE_IN = 7;
     //not in
     FILTER_OPERATOR_TYPE_NOT_IN = 8;
     //模糊匹配
     FILTER_OPERATOR_TYPE_FUZZINESS = 9;
-    //存在
-    FILTER_OPERATOR_TYPE_EXIST = 10;
-    //不存在
-    FILTER_OPERATOR_TYPE_NOT_EXIST = 11;
-    //正则
-    FILTER_OPERATOR_TYPE_REGULAR = 12;
 }
         :type OperatorType: int
         """
@@ -2238,6 +2238,8 @@ true为启用，false为不启用
         :type Protocol: str
         :param ServiceTemplateId: 端口协议类型参数模板id；协议端口模板id；与Protocol,Port互斥
         :type ServiceTemplateId: str
+        :param RuleUuid: 规则的uuid
+        :type RuleUuid: int
         """
         self.PageNo = None
         self.PageSize = None
@@ -2249,6 +2251,7 @@ true为启用，false为不启用
         self.Port = None
         self.Protocol = None
         self.ServiceTemplateId = None
+        self.RuleUuid = None
 
 
     def _deserialize(self, params):
@@ -2262,6 +2265,7 @@ true为启用，false为不启用
         self.Port = params.get("Port")
         self.Protocol = params.get("Protocol")
         self.ServiceTemplateId = params.get("ServiceTemplateId")
+        self.RuleUuid = params.get("RuleUuid")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2391,6 +2395,92 @@ class DescribeIPStatusListResponse(AbstractModel):
                 obj = IPDefendStatus()
                 obj._deserialize(item)
                 self.StatusList.append(obj)
+        self.ReturnCode = params.get("ReturnCode")
+        self.ReturnMsg = params.get("ReturnMsg")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeLogsRequest(AbstractModel):
+    """DescribeLogs请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Index: 日志类型标识
+流量日志：互联网边界防火墙netflow_border，NAT边界防火墙netflow_nat，VPC间防火墙vpcnetflow，内网流量日志netflow_fl
+入侵防御日志rule_threatinfo
+访问控制日志：互联网边界规则rule_acl，NAT边界规则rule_acl，内网间规则rule_vpcacl，企业安全组rule_sg
+操作日志：防火墙开关-开关操作operate_switch，防火墙开关-实例配置operate_instance，资产中心操作operate_assetgroup，访问控制操作operate_acl，零信任防护操作operate_identity，入侵防御操作-入侵防御operate_ids，入侵防御操作-安全基线operate_baseline，常用工具操作operate_tool，网络蜜罐操作operate_honeypot，日志投递操作operate_logdelivery，通用设置操作operate_logstorage，登录日志operate_login
+        :type Index: str
+        :param Limit: 每页条数，最大支持2000
+        :type Limit: int
+        :param Offset: 偏移值，最大支持60000
+        :type Offset: int
+        :param StartTime: 筛选开始时间
+        :type StartTime: str
+        :param EndTime: 筛选结束时间
+        :type EndTime: str
+        :param Filters: 过滤条件组合，各数组元素间为AND关系，查询字段名Name参考文档https://cloud.tencent.com/document/product/1132/87894，数值类型字段不支持模糊匹配
+        :type Filters: list of CommonFilter
+        """
+        self.Index = None
+        self.Limit = None
+        self.Offset = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.Index = params.get("Index")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = CommonFilter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeLogsResponse(AbstractModel):
+    """DescribeLogs返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 日志列表
+        :type Data: str
+        :param Total: 总条数
+        :type Total: int
+        :param ReturnCode: 返回状态码 0 成功 非0不成功
+        :type ReturnCode: int
+        :param ReturnMsg: 返回信息  success 成功 其他 不成功
+        :type ReturnMsg: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.Total = None
+        self.ReturnCode = None
+        self.ReturnMsg = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Data = params.get("Data")
+        self.Total = params.get("Total")
         self.ReturnCode = params.get("ReturnCode")
         self.ReturnMsg = params.get("ReturnMsg")
         self.RequestId = params.get("RequestId")
@@ -4071,7 +4161,7 @@ class ModifyBlockIgnoreListRequest(AbstractModel):
         r"""
         :param RuleType: 1封禁列表 2 放通列表
         :type RuleType: int
-        :param IOC: IP、Domain二选一，不能同时为空
+        :param IOC: IP、Domain二选一（注：封禁列表，只能填写IP），不能同时为空
         :type IOC: list of IocListData
         :param IocAction: 可选值：delete（删除）、edit（编辑）、add（添加）  其他值无效
         :type IocAction: str
@@ -5815,6 +5905,21 @@ class SecurityGroupListData(AbstractModel):
         :type Direction: int
         :param ProtocolPortType: 是否使用端口协议模板，0：否，1：是
         :type ProtocolPortType: int
+        :param Uuid: Uuid
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Uuid: str
+        :param Region: 地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        :param AssetGroupNameIn: 资产分组名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AssetGroupNameIn: str
+        :param AssetGroupNameOut: 资产分组名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AssetGroupNameOut: str
+        :param ParameterName: 模板名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ParameterName: str
         """
         self.OrderIndex = None
         self.SourceId = None
@@ -5839,6 +5944,11 @@ class SecurityGroupListData(AbstractModel):
         self.BothWayInfo = None
         self.Direction = None
         self.ProtocolPortType = None
+        self.Uuid = None
+        self.Region = None
+        self.AssetGroupNameIn = None
+        self.AssetGroupNameOut = None
+        self.ParameterName = None
 
 
     def _deserialize(self, params):
@@ -5870,6 +5980,11 @@ class SecurityGroupListData(AbstractModel):
                 self.BothWayInfo.append(obj)
         self.Direction = params.get("Direction")
         self.ProtocolPortType = params.get("ProtocolPortType")
+        self.Uuid = params.get("Uuid")
+        self.Region = params.get("Region")
+        self.AssetGroupNameIn = params.get("AssetGroupNameIn")
+        self.AssetGroupNameOut = params.get("AssetGroupNameOut")
+        self.ParameterName = params.get("ParameterName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5985,6 +6100,68 @@ drop：拒绝
         self.ServiceTemplateId = params.get("ServiceTemplateId")
         self.Id = params.get("Id")
         self.Enable = params.get("Enable")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SecurityGroupSimplifyRule(AbstractModel):
+    """安全组规则
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SourceContent: 访问源示例：
+net：IP/CIDR(192.168.0.2)
+template：参数模板(ipm-dyodhpby)
+instance：资产实例(ins-123456)
+resourcegroup：资产分组(/全部分组/分组1/子分组1)
+tag：资源标签({"Key":"标签key值","Value":"标签Value值"})
+region：地域(ap-gaungzhou)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SourceContent: str
+        :param DestContent: 访问目的示例：
+net：IP/CIDR(192.168.0.2)
+template：参数模板(ipm-dyodhpby)
+instance：资产实例(ins-123456)
+resourcegroup：资产分组(/全部分组/分组1/子分组1)
+tag：资源标签({"Key":"标签key值","Value":"标签Value值"})
+region：地域(ap-gaungzhou)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DestContent: str
+        :param Protocol: 协议；TCP/UDP/ICMP/ANY
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Protocol: str
+        :param Description: 描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
+        :param RuleUuid: 规则对应的唯一id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleUuid: int
+        :param Sequence: 规则序号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Sequence: int
+        """
+        self.SourceContent = None
+        self.DestContent = None
+        self.Protocol = None
+        self.Description = None
+        self.RuleUuid = None
+        self.Sequence = None
+
+
+    def _deserialize(self, params):
+        self.SourceContent = params.get("SourceContent")
+        self.DestContent = params.get("DestContent")
+        self.Protocol = params.get("Protocol")
+        self.Description = params.get("Description")
+        self.RuleUuid = params.get("RuleUuid")
+        self.Sequence = params.get("Sequence")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

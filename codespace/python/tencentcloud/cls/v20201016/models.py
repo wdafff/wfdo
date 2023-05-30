@@ -272,6 +272,10 @@ class AlarmTarget(AbstractModel):
         :type EndTimeOffset: int
         :param LogsetId: 日志集ID。
         :type LogsetId: str
+        :param SyntaxRule: 检索语法规则，默认值为0。
+0：Lucene语法，1：CQL语法。
+详细说明参见<a href="https://cloud.tencent.com/document/product/614/47044#RetrievesConditionalRules" target="_blank">检索条件语法规则</a>
+        :type SyntaxRule: int
         """
         self.TopicId = None
         self.Query = None
@@ -279,6 +283,7 @@ class AlarmTarget(AbstractModel):
         self.StartTimeOffset = None
         self.EndTimeOffset = None
         self.LogsetId = None
+        self.SyntaxRule = None
 
 
     def _deserialize(self, params):
@@ -288,6 +293,7 @@ class AlarmTarget(AbstractModel):
         self.StartTimeOffset = params.get("StartTimeOffset")
         self.EndTimeOffset = params.get("EndTimeOffset")
         self.LogsetId = params.get("LogsetId")
+        self.SyntaxRule = params.get("SyntaxRule")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1763,13 +1769,18 @@ class CreateCosRechargeResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param Id: cos_recharge记录id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Id: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.Id = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.Id = params.get("Id")
         self.RequestId = params.get("RequestId")
 
 
@@ -2074,6 +2085,10 @@ class CreateShipperRequest(AbstractModel):
         :type Content: :class:`tencentcloud.cls.v20201016.models.ContentInfo`
         :param FilenameMode: 投递文件命名配置，0：随机数命名，1：投递时间命名，默认0（随机数命名）
         :type FilenameMode: int
+        :param StartTime: 投递数据范围的开始时间点，不能超出日志主题的生命周期起点。如果用户不填写，默认为用户新建投递任务的时间。
+        :type StartTime: int
+        :param EndTime: 投递数据范围的结束时间点，不能填写未来时间。如果用户不填写，默认为持续投递，即无限。
+        :type EndTime: int
         """
         self.TopicId = None
         self.Bucket = None
@@ -2086,6 +2101,8 @@ class CreateShipperRequest(AbstractModel):
         self.Compress = None
         self.Content = None
         self.FilenameMode = None
+        self.StartTime = None
+        self.EndTime = None
 
 
     def _deserialize(self, params):
@@ -2109,6 +2126,8 @@ class CreateShipperRequest(AbstractModel):
             self.Content = ContentInfo()
             self.Content._deserialize(params.get("Content"))
         self.FilenameMode = params.get("FilenameMode")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3628,12 +3647,17 @@ class DescribeLogHistogramRequest(AbstractModel):
         :type TopicId: str
         :param Interval: 时间间隔: 单位ms  限制性条件：(To-From) / interval <= 200
         :type Interval: int
+        :param SyntaxRule: 检索语法规则，默认值为0。
+0：Lucene语法，1：CQL语法。
+详细说明参见<a href="https://cloud.tencent.com/document/product/614/47044#RetrievesConditionalRules" target="_blank">检索条件语法规则</a>
+        :type SyntaxRule: int
         """
         self.From = None
         self.To = None
         self.Query = None
         self.TopicId = None
         self.Interval = None
+        self.SyntaxRule = None
 
 
     def _deserialize(self, params):
@@ -3642,6 +3666,7 @@ class DescribeLogHistogramRequest(AbstractModel):
         self.Query = params.get("Query")
         self.TopicId = params.get("TopicId")
         self.Interval = params.get("Interval")
+        self.SyntaxRule = params.get("SyntaxRule")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4790,14 +4815,19 @@ class JsonInfo(AbstractModel):
         :param MetaFields: 元数据信息列表, 可选值为 __SOURCE__、__FILENAME__、__TIMESTAMP__、__HOSTNAME__。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MetaFields: list of str
+        :param JsonType: 投递Json格式，0：字符串方式投递；1:以结构化方式投递
+注意：此字段可能返回 null，表示取不到有效值。
+        :type JsonType: int
         """
         self.EnableTag = None
         self.MetaFields = None
+        self.JsonType = None
 
 
     def _deserialize(self, params):
         self.EnableTag = params.get("EnableTag")
         self.MetaFields = params.get("MetaFields")
+        self.JsonType = params.get("JsonType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

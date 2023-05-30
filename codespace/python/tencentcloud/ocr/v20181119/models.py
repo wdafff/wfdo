@@ -620,6 +620,10 @@ OCR_WARNING_TYPE_NOT_MATCH 非营业执照
 WARN_COPY_CARD 黑白复印件告警
 注：告警信息可以同时存在多个
         :type RecognizeWarnMsg: list of str
+        :param IsDuplication: 是否为副本。1为是，-1为不是。
+        :type IsDuplication: int
+        :param RegistrationDate: 登记日期
+        :type RegistrationDate: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -635,6 +639,8 @@ WARN_COPY_CARD 黑白复印件告警
         self.SetDate = None
         self.RecognizeWarnCode = None
         self.RecognizeWarnMsg = None
+        self.IsDuplication = None
+        self.RegistrationDate = None
         self.RequestId = None
 
 
@@ -651,6 +657,8 @@ WARN_COPY_CARD 黑白复印件告警
         self.SetDate = params.get("SetDate")
         self.RecognizeWarnCode = params.get("RecognizeWarnCode")
         self.RecognizeWarnMsg = params.get("RecognizeWarnMsg")
+        self.IsDuplication = params.get("IsDuplication")
+        self.RegistrationDate = params.get("RegistrationDate")
         self.RequestId = params.get("RequestId")
 
 
@@ -1349,10 +1357,13 @@ class CreateAIFormTaskRequest(AbstractModel):
         :type FirstNotes: str
         :param SecondNotes: 备注信息2
         :type SecondNotes: str
+        :param FileType: 文件类型
+        :type FileType: int
         """
         self.FileList = None
         self.FirstNotes = None
         self.SecondNotes = None
+        self.FileType = None
 
 
     def _deserialize(self, params):
@@ -1364,6 +1375,7 @@ class CreateAIFormTaskRequest(AbstractModel):
                 self.FileList.append(obj)
         self.FirstNotes = params.get("FirstNotes")
         self.SecondNotes = params.get("SecondNotes")
+        self.FileType = params.get("FileType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1816,12 +1828,13 @@ class EnglishOCRRequest(AbstractModel):
         r"""
         :param ImageBase64: 图片的 Base64 值。
 支持的图片格式：PNG、JPG、JPEG，暂不支持 GIF 格式。
-支持的图片大小：所下载图片经Base64编码后不超过 7M。图片下载时间不超过 3 秒。
+支持的图片大小：所下载图片经Base64编码后不超过 7M。图片下载时间不超过 3 秒。像素须介于20-10000px之间。
 图片的 ImageUrl、ImageBase64 必须提供一个，如果都提供，只使用 ImageUrl。
+
         :type ImageBase64: str
         :param ImageUrl: 图片的 Url 地址。
 支持的图片格式：PNG、JPG、JPEG，暂不支持 GIF 格式。
-支持的图片大小：所下载图片经 Base64 编码后不超过 7M。图片下载时间不超过 3 秒。
+支持的图片大小：所下载图片经 Base64 编码后不超过 7M。图片下载时间不超过 3 秒。像素须介于20-10000px之间。
 图片存储于腾讯云的 Url 可保障更高的下载速度和稳定性，建议图片存储于腾讯云。
 非腾讯云存储的 Url 速度和稳定性可能受一定影响。
         :type ImageUrl: str
@@ -3965,12 +3978,17 @@ class Key(AbstractModel):
         r"""
         :param AutoName: 自动识别的字段名称
         :type AutoName: str
+        :param ConfigName: 定义的字段名称（传key的名称）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConfigName: str
         """
         self.AutoName = None
+        self.ConfigName = None
 
 
     def _deserialize(self, params):
         self.AutoName = params.get("AutoName")
+        self.ConfigName = params.get("ConfigName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6517,11 +6535,13 @@ class RecognizeGeneralInvoiceRequest(AbstractModel):
         :param ImageBase64: 图片的 Base64 值。
 支持的图片格式：PNG、JPG、JPEG、PDF，暂不支持 GIF 格式。
 支持的图片大小：所下载图片经Base64编码后不超过 7M。图片下载时间不超过 3 秒。
+支持的图片像素：需介于20-10000px之间。
 图片的 ImageUrl、ImageBase64 必须提供一个，如果都提供，只使用 ImageUrl。
         :type ImageBase64: str
         :param ImageUrl: 图片的 Url 地址。
 支持的图片格式：PNG、JPG、JPEG、PDF，暂不支持 GIF 格式。
 支持的图片大小：所下载图片经 Base64 编码后不超过 7M。图片下载时间不超过 3 秒。
+支持的图片像素：需介于20-10000px之间。
 图片存储于腾讯云的 Url 可保障更高的下载速度和稳定性，建议图片存储于腾讯云。
 非腾讯云存储的 Url 速度和稳定性可能受一定影响。
         :type ImageUrl: str
@@ -6539,8 +6559,11 @@ class RecognizeGeneralInvoiceRequest(AbstractModel):
 13：过路过桥费发票
 15：非税发票
 16：全电发票
-----------------------
--1：其他发票,（只传入此类型时，图片均采用其他票类型进行识别）
+-1：其他发票
+
+默认为空，识别所有类型发票。
+当传入单个类型时，图片均采用该票类型进行处理。
+暂不支持多个参数进行局部控制。
         :type Types: list of int
         :param EnableOther: 是否开启其他票识别，默认值为true，开启后可支持其他发票的智能识别。	
         :type EnableOther: bool
@@ -7412,11 +7435,14 @@ class RecognizeTableAccurateOCRRequest(AbstractModel):
         r"""
         :param ImageBase64: 图片/PDF的 Base64 值。
 要求图片/PDF经Base64编码后不超过 7M，分辨率建议600*800以上，支持PNG、JPG、JPEG、BMP、PDF格式。
+图片支持的像素范围：需介于20-10000px之间。
 图片的 ImageUrl、ImageBase64 必须提供一个，如果都提供，只使用 ImageUrl。
         :type ImageBase64: str
         :param ImageUrl: 图片/PDF的 Url 地址。
 要求图片/PDF经Base64编码后不超过 7M，分辨率建议600*800以上，支持PNG、JPG、JPEG、BMP、PDF格式。
-图片存储于腾讯云的 Url 可保障更高的下载速度和稳定性，建议图片存储于腾讯云。非腾讯云存储的 Url 速度和稳定性可能受一定影响。
+图片支持的像素范围：需介于20-10000px之间。
+图片存储于腾讯云的 Url 可保障更高的下载速度和稳定性，建议图片存储于腾讯云。非腾讯云存储的 Url 速度和稳定
+性可能受一定影响。
         :type ImageUrl: str
         :param PdfPageNumber: 需要识别的PDF页面的对应页码，仅支持PDF单页识别，当上传文件为PDF且IsPdf参数值为true时有效，默认值为1。
         :type PdfPageNumber: int
@@ -9887,6 +9913,9 @@ class TextVehicleBack(AbstractModel):
         :param TotalQuasiMass: 准牵引总质量
 注意：此字段可能返回 null，表示取不到有效值。
         :type TotalQuasiMass: str
+        :param SubPageCode: 副页编码
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubPageCode: str
         """
         self.PlateNo = None
         self.FileNo = None
@@ -9898,6 +9927,7 @@ class TextVehicleBack(AbstractModel):
         self.Marks = None
         self.Record = None
         self.TotalQuasiMass = None
+        self.SubPageCode = None
 
 
     def _deserialize(self, params):
@@ -9911,6 +9941,7 @@ class TextVehicleBack(AbstractModel):
         self.Marks = params.get("Marks")
         self.Record = params.get("Record")
         self.TotalQuasiMass = params.get("TotalQuasiMass")
+        self.SubPageCode = params.get("SubPageCode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11360,6 +11391,20 @@ class VatInvoiceItem(AbstractModel):
         :type TaxAmount: str
         :param TaxClassifyCode: 税收分类编码
         :type TaxClassifyCode: str
+        :param VehicleType: 运输工具类型
+        :type VehicleType: str
+        :param VehicleBrand: 运输工具牌号
+        :type VehicleBrand: str
+        :param DeparturePlace: 起始地
+        :type DeparturePlace: str
+        :param ArrivalPlace: 到达地
+        :type ArrivalPlace: str
+        :param TransportItemsName: 运输货物名称
+        :type TransportItemsName: str
+        :param ConstructionPlace: 建筑服务发生地
+        :type ConstructionPlace: str
+        :param ConstructionName: 建筑项目名称
+        :type ConstructionName: str
         """
         self.LineNo = None
         self.Name = None
@@ -11371,6 +11416,13 @@ class VatInvoiceItem(AbstractModel):
         self.TaxRate = None
         self.TaxAmount = None
         self.TaxClassifyCode = None
+        self.VehicleType = None
+        self.VehicleBrand = None
+        self.DeparturePlace = None
+        self.ArrivalPlace = None
+        self.TransportItemsName = None
+        self.ConstructionPlace = None
+        self.ConstructionName = None
 
 
     def _deserialize(self, params):
@@ -11384,6 +11436,13 @@ class VatInvoiceItem(AbstractModel):
         self.TaxRate = params.get("TaxRate")
         self.TaxAmount = params.get("TaxAmount")
         self.TaxClassifyCode = params.get("TaxClassifyCode")
+        self.VehicleType = params.get("VehicleType")
+        self.VehicleBrand = params.get("VehicleBrand")
+        self.DeparturePlace = params.get("DeparturePlace")
+        self.ArrivalPlace = params.get("ArrivalPlace")
+        self.TransportItemsName = params.get("TransportItemsName")
+        self.ConstructionPlace = params.get("ConstructionPlace")
+        self.ConstructionName = params.get("ConstructionName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11471,11 +11530,13 @@ class VatInvoiceOCRRequest(AbstractModel):
         :param ImageBase64: 图片/PDF的 Base64 值。
 支持的文件格式：PNG、JPG、JPEG、PDF，暂不支持 GIF 格式。
 支持的图片/PDF大小：所下载文件经Base64编码后不超过 7M。文件下载时间不超过 3 秒。
+支持的图片像素：需介于20-10000px之间。
 输入参数 ImageUrl、ImageBase64 必须提供一个，如果都提供，只使用 ImageUrl。
         :type ImageBase64: str
         :param ImageUrl: 图片/PDF的 Url 地址。
 支持的文件格式：PNG、JPG、JPEG、PDF，暂不支持 GIF 格式。
 支持的图片/PDF大小：所下载文件经 Base64 编码后不超过 7M。文件下载时间不超过 3 秒。
+支持的图片像素：需介于20-10000px之间。
 图片存储于腾讯云的 Url 可保障更高的下载速度和稳定性，建议图片存储于腾讯云。
 非腾讯云存储的 Url 速度和稳定性可能受一定影响。
         :type ImageUrl: str

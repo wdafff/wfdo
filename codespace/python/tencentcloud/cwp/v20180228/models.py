@@ -6598,16 +6598,20 @@ class DescribeAlarmIncidentNodesRequest(AbstractModel):
         :type AlarmVid: str
         :param AlarmTime: 告警时间
         :type AlarmTime: int
+        :param TableId: 告警来源表ID
+        :type TableId: int
         """
         self.Uuid = None
         self.AlarmVid = None
         self.AlarmTime = None
+        self.TableId = None
 
 
     def _deserialize(self, params):
         self.Uuid = params.get("Uuid")
         self.AlarmVid = params.get("AlarmVid")
         self.AlarmTime = params.get("AlarmTime")
+        self.TableId = params.get("TableId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12153,12 +12157,15 @@ class DescribeEmergencyVulListRequest(AbstractModel):
         :type Order: str
         :param By: 排序字段 PublishDate  LastScanTime HostCount
         :type By: str
+        :param HotspotAttack: 是否热点漏洞
+        :type HotspotAttack: bool
         """
         self.Limit = None
         self.Offset = None
         self.Filters = None
         self.Order = None
         self.By = None
+        self.HotspotAttack = None
 
 
     def _deserialize(self, params):
@@ -12172,6 +12179,7 @@ class DescribeEmergencyVulListRequest(AbstractModel):
                 self.Filters.append(obj)
         self.Order = params.get("Order")
         self.By = params.get("By")
+        self.HotspotAttack = params.get("HotspotAttack")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13598,6 +13606,77 @@ class DescribeLicenseListResponse(AbstractModel):
                 obj = LicenseDetail()
                 obj._deserialize(item)
                 self.List.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeLogStorageConfigRequest(AbstractModel):
+    """DescribeLogStorageConfig请求参数结构体
+
+    """
+
+
+class DescribeLogStorageConfigResponse(AbstractModel):
+    """DescribeLogStorageConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Type: 存储类型，string数组
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: list of str
+        :param Period: 日志存储天数，3640表示不限
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Period: int
+        :param PeriodModifyCount: 本月Period的修改次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PeriodModifyCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Type = None
+        self.Period = None
+        self.PeriodModifyCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Type = params.get("Type")
+        self.Period = params.get("Period")
+        self.PeriodModifyCount = params.get("PeriodModifyCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeLogStorageRecordRequest(AbstractModel):
+    """DescribeLogStorageRecord请求参数结构体
+
+    """
+
+
+class DescribeLogStorageRecordResponse(AbstractModel):
+    """DescribeLogStorageRecord返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Records: 存储量记录
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Records: list of LogStorageRecord
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Records = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Records") is not None:
+            self.Records = []
+            for item in params.get("Records"):
+                obj = LogStorageRecord()
+                obj._deserialize(item)
+                self.Records.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -17747,6 +17826,11 @@ class DescribeVulListRequest(AbstractModel):
 <li>VulCategory- string - 是否必填：否 - 漏洞类别 1: web-cms漏洞 2:应用漏洞  4: Linux软件漏洞 5: Windows系统漏洞</li>
 <li>IsSupportDefense - int- 是否必填：否 - 是否支持防御 0:不支持 1:支持</li>
 <li>Labels- string- 是否必填：否 - 标签搜索</li>
+<li>IsSupportAutoFix- string- 是否必填：否 - 是否支持自动修复 0:不支持 1:支持</li>
+<li>CvssScore- string- 是否必填：否 - CvssScore大于多少</li>
+<li>AttackLevel- string- 是否必填：否 - 攻击热度大于多少</li>
+
+
         :type Filters: list of Filters
         :param By: 可选排序字段 Level，LastTime，HostCount
         :type By: str
@@ -18495,6 +18579,15 @@ class EmergencyVul(AbstractModel):
         :param DefenseAttackCount: 已防御的攻击次数
 注意：此字段可能返回 null，表示取不到有效值。
         :type DefenseAttackCount: int
+        :param Method: 检测规则 0 - 版本比对, 1 - POC验证
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Method: int
+        :param AttackLevel: 攻击热度级别
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AttackLevel: int
+        :param DefenseState: 是否有漏洞主机开启漏洞防御
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DefenseState: bool
         """
         self.VulId = None
         self.Level = None
@@ -18510,6 +18603,9 @@ class EmergencyVul(AbstractModel):
         self.HostCount = None
         self.IsSupportDefense = None
         self.DefenseAttackCount = None
+        self.Method = None
+        self.AttackLevel = None
+        self.DefenseState = None
 
 
     def _deserialize(self, params):
@@ -18527,6 +18623,9 @@ class EmergencyVul(AbstractModel):
         self.HostCount = params.get("HostCount")
         self.IsSupportDefense = params.get("IsSupportDefense")
         self.DefenseAttackCount = params.get("DefenseAttackCount")
+        self.Method = params.get("Method")
+        self.AttackLevel = params.get("AttackLevel")
+        self.DefenseState = params.get("DefenseState")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -21268,16 +21367,27 @@ class LicenseBindTaskDetail(AbstractModel):
         :type ErrMsg: str
         :param Status: 0 执行中, 1 成功,2失败
         :type Status: int
+        :param FixMessage: 修复建议
+        :type FixMessage: str
+        :param MachineExtraInfo: 机器额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Quuid = None
         self.ErrMsg = None
         self.Status = None
+        self.FixMessage = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
         self.Quuid = params.get("Quuid")
         self.ErrMsg = params.get("ErrMsg")
         self.Status = params.get("Status")
+        self.FixMessage = params.get("FixMessage")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -21433,6 +21543,41 @@ class LicenseUnBindRsp(AbstractModel):
     def _deserialize(self, params):
         self.Quuid = params.get("Quuid")
         self.ErrMsg = params.get("ErrMsg")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class LogStorageRecord(AbstractModel):
+    """日志存储量记录
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Month: 年月份
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Month: str
+        :param UsedSize: 存储量，字节
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UsedSize: int
+        :param InquireSize: 总量，字节
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InquireSize: int
+        """
+        self.Month = None
+        self.UsedSize = None
+        self.InquireSize = None
+
+
+    def _deserialize(self, params):
+        self.Month = params.get("Month")
+        self.UsedSize = params.get("UsedSize")
+        self.InquireSize = params.get("InquireSize")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -22771,6 +22916,55 @@ class ModifyLicenseUnBindsResponse(AbstractModel):
                 obj = LicenseUnBindRsp()
                 obj._deserialize(item)
                 self.ErrMsg.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyLogStorageConfigRequest(AbstractModel):
+    """ModifyLogStorageConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IsModifyPeriod: 是否修改有效期
+        :type IsModifyPeriod: bool
+        :param Type: 存储类型，string数组
+        :type Type: list of str
+        :param Period: 日志存储天数，3640表示不限
+        :type Period: int
+        """
+        self.IsModifyPeriod = None
+        self.Type = None
+        self.Period = None
+
+
+    def _deserialize(self, params):
+        self.IsModifyPeriod = params.get("IsModifyPeriod")
+        self.Type = params.get("Type")
+        self.Period = params.get("Period")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyLogStorageConfigResponse(AbstractModel):
+    """ModifyLogStorageConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -26630,6 +26824,15 @@ class VulInfoList(AbstractModel):
         :param VulCategory: 漏洞类别 1: web-cms漏洞 2:应用漏洞  4: Linux软件漏洞 5: Windows系统漏洞
 注意：此字段可能返回 null，表示取不到有效值。
         :type VulCategory: int
+        :param AttackLevel: 攻击热度级别
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AttackLevel: int
+        :param FixNoNeedRestart: 漏洞修复后是否需要重启
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FixNoNeedRestart: bool
+        :param Method: 检测方式0 - 版本比对, 1 - POC验证
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Method: int
         """
         self.Ids = None
         self.Name = None
@@ -26654,6 +26857,9 @@ class VulInfoList(AbstractModel):
         self.DefenseAttackCount = None
         self.FirstAppearTime = None
         self.VulCategory = None
+        self.AttackLevel = None
+        self.FixNoNeedRestart = None
+        self.Method = None
 
 
     def _deserialize(self, params):
@@ -26680,6 +26886,9 @@ class VulInfoList(AbstractModel):
         self.DefenseAttackCount = params.get("DefenseAttackCount")
         self.FirstAppearTime = params.get("FirstAppearTime")
         self.VulCategory = params.get("VulCategory")
+        self.AttackLevel = params.get("AttackLevel")
+        self.FixNoNeedRestart = params.get("FixNoNeedRestart")
+        self.Method = params.get("Method")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

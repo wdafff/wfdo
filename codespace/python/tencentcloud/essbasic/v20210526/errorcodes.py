@@ -35,6 +35,9 @@ FAILEDOPERATION_FLOWNUMEXCEED = 'FailedOperation.FlowNumExceed'
 # 已授权。
 FAILEDOPERATION_HASAUTHORIZED = 'FailedOperation.HasAuthorized'
 
+# 无角色授权，请确认数据是否存在
+FAILEDOPERATION_NOROLEAUTH = 'FailedOperation.NoRoleAuth'
+
 # 当前合同状态无法进行签署审批。
 FAILEDOPERATION_NOTAVAILABLESIGNREVIEW = 'FailedOperation.NotAvailableSignReview'
 
@@ -194,6 +197,9 @@ INVALIDPARAMETER_IMAGE = 'InvalidParameter.Image'
 # Id不存在或者符合规范。
 INVALIDPARAMETER_INVALIDID = 'InvalidParameter.InvalidId'
 
+# 参数Limit不正确
+INVALIDPARAMETER_LIMIT = 'InvalidParameter.Limit'
+
 # 印章名称长度超出。
 INVALIDPARAMETER_LIMITSEALNAME = 'InvalidParameter.LimitSealName'
 
@@ -212,6 +218,9 @@ INVALIDPARAMETER_NAME = 'InvalidParameter.Name'
 # 不支持的手机号。
 INVALIDPARAMETER_NONSUPPORTMOBILE = 'InvalidParameter.NonsupportMobile'
 
+# 参数Offset不正确
+INVALIDPARAMETER_OFFSET = 'InvalidParameter.Offset'
+
 # OpenId不合法。
 INVALIDPARAMETER_OPENID = 'InvalidParameter.OpenId'
 
@@ -226,6 +235,9 @@ INVALIDPARAMETER_PARAMERROR = 'InvalidParameter.ParamError'
 
 # 资源类型错误。
 INVALIDPARAMETER_RESOURCETYPE = 'InvalidParameter.ResourceType'
+
+# 角色ID不正确
+INVALIDPARAMETER_ROLEID = 'InvalidParameter.RoleId'
 
 # 文件内容敏感信息。
 INVALIDPARAMETER_SENSITIVEFILECONTENT = 'InvalidParameter.SensitiveFileContent'
@@ -374,6 +386,9 @@ OPERATIONDENIED_NOFLOWPERMISSION = 'OperationDenied.NoFlowPermission'
 # 未通过个人实名。
 OPERATIONDENIED_NOIDENTITYVERIFY = 'OperationDenied.NoIdentityVerify'
 
+# 无权限进行操作
+OPERATIONDENIED_NOPERMISSIONUSERESOURCE = 'OperationDenied.NoPermissionUseResource'
+
 # 流程配额不足。
 OPERATIONDENIED_NOQUOTA = 'OperationDenied.NoQuota'
 
@@ -391,6 +406,9 @@ OPERATIONDENIED_OUTQUERYLIMIT = 'OperationDenied.OutQueryLimit'
 
 # 当前企业员工没有开通境外签署能力。
 OPERATIONDENIED_OVERSEAABILITYNOTOPEN = 'OperationDenied.OverseaAbilityNotOpen'
+
+# 该用户已关闭或者未开启自动签服务
+OPERATIONDENIED_PERSONNOOPENSERVERSIGN = 'OperationDenied.PersonNoOpenServerSign'
 
 # 出证计费额度不足。
 OPERATIONDENIED_PROVENOQUOTA = 'OperationDenied.ProveNoQuota'

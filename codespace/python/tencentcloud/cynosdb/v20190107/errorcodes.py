@@ -41,6 +41,12 @@ FAILEDOPERATION_FLOWNOTFOUNDERROR = 'FailedOperation.FlowNotFoundError'
 # 获取备份策略失败，请稍后重试。如果持续不成功，请联系客服进行处理。
 FAILEDOPERATION_GETBACKUPSTRATEGYERROR = 'FailedOperation.GetBackupStrategyError'
 
+# 查询接入组网络信息失败。
+FAILEDOPERATION_GETNETSERVICEINFOERROR = 'FailedOperation.GetNetServiceInfoError'
+
+# 查询主实例详情失败。
+FAILEDOPERATION_GETOSSINFOERROR = 'FailedOperation.GetOssInfoError'
+
 # 账号余额不足。
 FAILEDOPERATION_INSUFFICIENTBALANCE = 'FailedOperation.InsufficientBalance'
 
@@ -82,6 +88,9 @@ INTERNALERROR_OPERATIONNOTSUPPORT = 'InternalError.OperationNotSupport'
 
 # 查询数据库失败。
 INTERNALERROR_QUERYDATABASEFAILED = 'InternalError.QueryDatabaseFailed'
+
+# 内部服务错误。
+INTERNALERROR_SERVICEERROR = 'InternalError.ServiceError'
 
 # 系统内部错误。
 INTERNALERROR_SYSTEMERROR = 'InternalError.SystemError'
@@ -184,6 +193,9 @@ INVALIDPARAMETERVALUE_STORAGEPOOLNOTFOUND = 'InvalidParameterValue.StoragePoolNo
 
 # 找不到所选子网。
 INVALIDPARAMETERVALUE_SUBNETNOTFOUND = 'InvalidParameterValue.SubnetNotFound'
+
+# 未找到该数据。
+INVALIDPARAMETERVALUE_VALUENOTFOUND = 'InvalidParameterValue.ValueNotFound'
 
 # 找不到所选VPC网络。
 INVALIDPARAMETERVALUE_VPCNOTFOUND = 'InvalidParameterValue.VpcNotFound'

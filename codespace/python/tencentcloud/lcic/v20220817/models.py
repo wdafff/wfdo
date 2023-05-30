@@ -954,9 +954,9 @@ video 纯视频
 0 自动取消连麦（默认值）
 1 保持连麦状态
         :type TurnOffMic: int
-        :param AudioQuality: 高音质模式。可以有以下取值：
-0 不开启高音质（默认值）
-1 开启高音质
+        :param AudioQuality: 声音音质。可以有以下取值：
+0：流畅模式（默认值），占用更小的带宽、拥有更好的降噪效果，适用于1对1、小班教学、多人音视频会议等场景。
+1：高音质模式，适合需要高保真传输音乐的场景，但降噪效果会被削弱，适用于音乐教学场景。
         :type AudioQuality: int
         :param DisableRecord: 上课后是否禁止自动录制。可以有以下取值：
 0 不禁止录制（自动开启录制，默认值）
@@ -967,13 +967,15 @@ video 纯视频
         :type Assistants: list of str
         :param RTCAudienceNumber: rtc人数。
         :type RTCAudienceNumber: int
-        :param AudienceType: 观看类型。0未知，1互动，2cdn或直播。 目前仅支持互动类型
+        :param AudienceType: 观看类型，互动直播（默认）。
         :type AudienceType: int
         :param RecordLayout: 录制布局。录制模板枚举值参考：https://cloud.tencent.com/document/product/1639/89744
         :type RecordLayout: int
         :param GroupId: 房间绑定的群组ID,非空时限制组成员进入
         :type GroupId: str
-        :param EnableDirectControl: 打开学生麦克风/摄像头的授权开关
+        :param EnableDirectControl: 是否允许老师/助教直接控制学生的摄像头/麦克风。可以有以下取值：
+0 不允许直接控制（需同意，默认值）
+1 允许直接控制（无需同意）
         :type EnableDirectControl: int
         """
         self.Name = None
@@ -1605,7 +1607,7 @@ class DescribeDeveloperResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DeveloperId: 服务商ID
+        :param DeveloperId: 开发商ID
         :type DeveloperId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -2727,6 +2729,14 @@ class EventInfo(AbstractModel):
         :type Timestamp: int
         :param EventType: 事件类型,有以下值:
 RoomStart:房间开始 RoomEnd:房间结束 MemberJoin:成员加入 MemberQuit:成员退出 RecordFinish:录制结束
+Camera0n: 摄像头打开
+Camera0ff: 摄像头关闭
+MicOn: 麦克风打开
+MicOff: 麦克风关闭
+ScreenOn: 屏幕共享打开
+ScreenOff: 屏幕共享关闭
+VisibleOn: 页面可见
+VisibleOff: 页面不可见
         :type EventType: str
         :param EventData: 事件详细内容，包含房间号,成员类型事件包含用户Id。
 注意：此字段可能返回 null，表示取不到有效值。
@@ -3104,6 +3114,65 @@ class GroupInfo(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class KickUserFromRoomRequest(AbstractModel):
+    """KickUserFromRoom请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RoomId: 房间Id。
+        :type RoomId: int
+        :param SdkAppId: 低代码平台的SdkAppId。
+        :type SdkAppId: int
+        :param UserId: 需要踢出成员Id
+        :type UserId: str
+        :param KickType: 踢出类型：
+1：临时踢出，可以使用Duration参数指定污点时间，污点时间间隔内用户无法进入房间。
+2：永久踢出
+        :type KickType: int
+        :param Duration: 污点时间(单位秒)，KickType = 1时生效，默认为0
+        :type Duration: int
+        """
+        self.RoomId = None
+        self.SdkAppId = None
+        self.UserId = None
+        self.KickType = None
+        self.Duration = None
+
+
+    def _deserialize(self, params):
+        self.RoomId = params.get("RoomId")
+        self.SdkAppId = params.get("SdkAppId")
+        self.UserId = params.get("UserId")
+        self.KickType = params.get("KickType")
+        self.Duration = params.get("Duration")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class KickUserFromRoomResponse(AbstractModel):
+    """KickUserFromRoom返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class LoginOriginIdRequest(AbstractModel):

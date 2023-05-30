@@ -212,6 +212,9 @@ INVALIDPARAMETER = 'InvalidParameter'
 # 最多指定一个参数。
 INVALIDPARAMETER_ATMOSTONE = 'InvalidParameter.AtMostOne'
 
+# 不支持参数CdcId。
+INVALIDPARAMETER_CDCNOTSUPPORTED = 'InvalidParameter.CdcNotSupported'
+
 # DataDiskIds不应该传入RootDisk的Id。
 INVALIDPARAMETER_DATADISKIDCONTAINSROOTDISK = 'InvalidParameter.DataDiskIdContainsRootDisk'
 
@@ -260,7 +263,7 @@ INVALIDPARAMETER_LACKCORECOUNTORTHREADPERCORE = 'InvalidParameter.LackCoreCountO
 # 本地数据盘不支持创建实例镜像。
 INVALIDPARAMETER_LOCALDATADISKNOTSUPPORT = 'InvalidParameter.LocalDataDiskNotSupport'
 
-# 不支持同时指定密钥登陆和保持镜像登陆方式。
+# 不支持同时指定密钥登录和保持镜像登录方式。
 INVALIDPARAMETER_PARAMETERCONFLICT = 'InvalidParameter.ParameterConflict'
 
 # 不支持设置登录密码。

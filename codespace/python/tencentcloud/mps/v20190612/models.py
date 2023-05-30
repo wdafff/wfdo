@@ -1411,7 +1411,7 @@ class AiQualityControlTaskInput(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Definition: 视频质检模板 ID 。
+        :param Definition: 视频质检模板 ID 。暂时可以直接使用 预设模板ID 10，后面控制台支持用户配置自定义模板。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Definition: int
         :param ChannelExtPara: 渠道扩展参数json序列化字符串。
@@ -1470,7 +1470,8 @@ class AiRecognitionResult(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type OcrFullTextTask: :class:`tencentcloud.mps.v20190612.models.AiRecognitionTaskOcrFullTextResult`
         :param TransTextTask: 翻译结果，当 Type 为
- TransTextRecognition 时有效。
+
+TransTextRecognition 时有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TransTextTask: :class:`tencentcloud.mps.v20190612.models.AiRecognitionTaskTransTextResult`
         """
@@ -4405,7 +4406,9 @@ class AwsS3FileUploadTrigger(AbstractModel):
         r"""
         :param S3Bucket: 绑定的 AWS S3 存储桶。
         :type S3Bucket: str
-        :param S3Region: 绑定的桶所在 AWS 区域。
+        :param S3Region: 绑定的桶所在 AWS 区域，目前支持：  
+us-east-1  
+eu-west-3
         :type S3Region: str
         :param Dir: 绑定的输入路径目录，必须为绝对路径，即以 `/` 开头和结尾。如`/movie/201907/`，不填代表根目录`/`。	
         :type Dir: str
@@ -9994,6 +9997,56 @@ class DescribeWorkflowsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DiagnoseResult(AbstractModel):
+    """诊断结果项。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Category: 诊断出的异常类别。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Category: str
+        :param Type: 诊断出的具体异常类型。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param Timestamp: 诊断出异常开始的PTS时间戳。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Timestamp: float
+        :param Description: 诊断出的异常描述。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
+        :param DateTime: 诊断到异常的北京时间，采用 ISO 日期格式。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DateTime: str
+        :param SeverityLevel: 诊断出的异常级别。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SeverityLevel: str
+        """
+        self.Category = None
+        self.Type = None
+        self.Timestamp = None
+        self.Description = None
+        self.DateTime = None
+        self.SeverityLevel = None
+
+
+    def _deserialize(self, params):
+        self.Category = params.get("Category")
+        self.Type = params.get("Type")
+        self.Timestamp = params.get("Timestamp")
+        self.Description = params.get("Description")
+        self.DateTime = params.get("DateTime")
+        self.SeverityLevel = params.get("SeverityLevel")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DisableScheduleRequest(AbstractModel):
     """DisableSchedule请求参数结构体
 
@@ -10315,9 +10368,13 @@ class EditMediaTaskOutput(AbstractModel):
         :type OutputStorage: :class:`tencentcloud.mps.v20190612.models.TaskOutputStorage`
         :param Path: 编辑后的视频文件路径。
         :type Path: str
+        :param MetaData: 编辑后的视频文件元信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MetaData: :class:`tencentcloud.mps.v20190612.models.MediaMetaData`
         """
         self.OutputStorage = None
         self.Path = None
+        self.MetaData = None
 
 
     def _deserialize(self, params):
@@ -10325,6 +10382,9 @@ class EditMediaTaskOutput(AbstractModel):
             self.OutputStorage = TaskOutputStorage()
             self.OutputStorage._deserialize(params.get("OutputStorage"))
         self.Path = params.get("Path")
+        if params.get("MetaData") is not None:
+            self.MetaData = MediaMetaData()
+            self.MetaData._deserialize(params.get("MetaData"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11808,6 +11868,112 @@ class InputAddress(AbstractModel):
         
 
 
+class LiveStreamAiAnalysisResultInfo(AbstractModel):
+    """直播流分析结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResultSet: 直播分析子任务结果，暂时只支持直播拆条。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResultSet: list of LiveStreamAiAnalysisResultItem
+        """
+        self.ResultSet = None
+
+
+    def _deserialize(self, params):
+        if params.get("ResultSet") is not None:
+            self.ResultSet = []
+            for item in params.get("ResultSet"):
+                obj = LiveStreamAiAnalysisResultItem()
+                obj._deserialize(item)
+                self.ResultSet.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class LiveStreamAiAnalysisResultItem(AbstractModel):
+    """直播流 AI 分析结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Type: 结果的类型，取值范围：
+<li>SegmentRecognition：拆条。</li>
+        :type Type: str
+        :param SegmentResultSet: 拆条结果，当 Type 为
+SegmentRecognition 时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SegmentResultSet: list of SegmentRecognitionItem
+        """
+        self.Type = None
+        self.SegmentResultSet = None
+
+
+    def _deserialize(self, params):
+        self.Type = params.get("Type")
+        if params.get("SegmentResultSet") is not None:
+            self.SegmentResultSet = []
+            for item in params.get("SegmentResultSet"):
+                obj = SegmentRecognitionItem()
+                obj._deserialize(item)
+                self.SegmentResultSet.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class LiveStreamAiQualityControlResultInfo(AbstractModel):
+    """直播流质检结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param QualityControlResults: 质检结果列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type QualityControlResults: list of QualityControlResult
+        :param DiagnoseResults: 格式诊断结果列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DiagnoseResults: list of DiagnoseResult
+        """
+        self.QualityControlResults = None
+        self.DiagnoseResults = None
+
+
+    def _deserialize(self, params):
+        if params.get("QualityControlResults") is not None:
+            self.QualityControlResults = []
+            for item in params.get("QualityControlResults"):
+                obj = QualityControlResult()
+                obj._deserialize(item)
+                self.QualityControlResults.append(obj)
+        if params.get("DiagnoseResults") is not None:
+            self.DiagnoseResults = []
+            for item in params.get("DiagnoseResults"):
+                obj = DiagnoseResult()
+                obj._deserialize(item)
+                self.DiagnoseResults.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class LiveStreamAiRecognitionResultInfo(AbstractModel):
     """直播流 AI 识别结果
 
@@ -12256,11 +12422,23 @@ class LiveStreamAsrFullTextRecognitionResult(AbstractModel):
         :type EndPtsTime: float
         :param Confidence: 识别片段置信度。取值：0~100。
         :type Confidence: float
+        :param StartTime: 识别开始UTC时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: str
+        :param EndTime: 识别结束UTC时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: str
+        :param SteadyState: 稳态标记。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SteadyState: bool
         """
         self.Text = None
         self.StartPtsTime = None
         self.EndPtsTime = None
         self.Confidence = None
+        self.StartTime = None
+        self.EndTime = None
+        self.SteadyState = None
 
 
     def _deserialize(self, params):
@@ -12268,6 +12446,9 @@ class LiveStreamAsrFullTextRecognitionResult(AbstractModel):
         self.StartPtsTime = params.get("StartPtsTime")
         self.EndPtsTime = params.get("EndPtsTime")
         self.Confidence = params.get("Confidence")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.SteadyState = params.get("SteadyState")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12577,12 +12758,24 @@ class LiveStreamTransTextRecognitionResult(AbstractModel):
         :type Confidence: float
         :param Trans: 翻译文本。
         :type Trans: str
+        :param StartTime: 翻译开始UTC时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: str
+        :param EndTime: 翻译结束UTC时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: str
+        :param SteadyState: 稳态标记。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SteadyState: bool
         """
         self.Text = None
         self.StartPtsTime = None
         self.EndPtsTime = None
         self.Confidence = None
         self.Trans = None
+        self.StartTime = None
+        self.EndTime = None
+        self.SteadyState = None
 
 
     def _deserialize(self, params):
@@ -12591,6 +12784,9 @@ class LiveStreamTransTextRecognitionResult(AbstractModel):
         self.EndPtsTime = params.get("EndPtsTime")
         self.Confidence = params.get("Confidence")
         self.Trans = params.get("Trans")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.SteadyState = params.get("SteadyState")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12965,11 +13161,19 @@ class MediaAudioStreamItem(AbstractModel):
         :param Channel: 音频声道数，例如 2。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Channel: int
+        :param Codecs: 音频Codecs。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Codecs: str
+        :param Loudness: 音频响度。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Loudness: float
         """
         self.Bitrate = None
         self.SamplingRate = None
         self.Codec = None
         self.Channel = None
+        self.Codecs = None
+        self.Loudness = None
 
 
     def _deserialize(self, params):
@@ -12977,6 +13181,8 @@ class MediaAudioStreamItem(AbstractModel):
         self.SamplingRate = params.get("SamplingRate")
         self.Codec = params.get("Codec")
         self.Channel = params.get("Channel")
+        self.Codecs = params.get("Codecs")
+        self.Loudness = params.get("Loudness")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13411,6 +13617,12 @@ class MediaProcessTaskAdaptiveDynamicStreamingResult(AbstractModel):
         :param Output: 对视频转自适应码流任务的输出。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Output: :class:`tencentcloud.mps.v20190612.models.AdaptiveDynamicStreamingInfoItem`
+        :param BeginProcessTime: 任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BeginProcessTime: str
+        :param FinishTime: 任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -13418,6 +13630,8 @@ class MediaProcessTaskAdaptiveDynamicStreamingResult(AbstractModel):
         self.Message = None
         self.Input = None
         self.Output = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -13431,6 +13645,8 @@ class MediaProcessTaskAdaptiveDynamicStreamingResult(AbstractModel):
         if params.get("Output") is not None:
             self.Output = AdaptiveDynamicStreamingInfoItem()
             self.Output._deserialize(params.get("Output"))
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13460,6 +13676,12 @@ class MediaProcessTaskAnimatedGraphicResult(AbstractModel):
         :param Output: 转动图任务的输出。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Output: :class:`tencentcloud.mps.v20190612.models.MediaAnimatedGraphicsItem`
+        :param BeginProcessTime: 任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BeginProcessTime: str
+        :param FinishTime: 任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -13467,6 +13689,8 @@ class MediaProcessTaskAnimatedGraphicResult(AbstractModel):
         self.Message = None
         self.Input = None
         self.Output = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -13480,6 +13704,8 @@ class MediaProcessTaskAnimatedGraphicResult(AbstractModel):
         if params.get("Output") is not None:
             self.Output = MediaAnimatedGraphicsItem()
             self.Output._deserialize(params.get("Output"))
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13509,6 +13735,12 @@ class MediaProcessTaskImageSpriteResult(AbstractModel):
         :param Output: 对视频截雪碧图任务的输出。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Output: :class:`tencentcloud.mps.v20190612.models.MediaImageSpriteItem`
+        :param BeginProcessTime: 任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BeginProcessTime: str
+        :param FinishTime: 任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -13516,6 +13748,8 @@ class MediaProcessTaskImageSpriteResult(AbstractModel):
         self.Message = None
         self.Input = None
         self.Output = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -13529,6 +13763,8 @@ class MediaProcessTaskImageSpriteResult(AbstractModel):
         if params.get("Output") is not None:
             self.Output = MediaImageSpriteItem()
             self.Output._deserialize(params.get("Output"))
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13705,6 +13941,12 @@ class MediaProcessTaskSampleSnapshotResult(AbstractModel):
         :param Output: 对视频做采样截图任务输出。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Output: :class:`tencentcloud.mps.v20190612.models.MediaSampleSnapshotItem`
+        :param BeginProcessTime: 任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BeginProcessTime: str
+        :param FinishTime: 任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -13712,6 +13954,8 @@ class MediaProcessTaskSampleSnapshotResult(AbstractModel):
         self.Message = None
         self.Input = None
         self.Output = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -13725,6 +13969,8 @@ class MediaProcessTaskSampleSnapshotResult(AbstractModel):
         if params.get("Output") is not None:
             self.Output = MediaSampleSnapshotItem()
             self.Output._deserialize(params.get("Output"))
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13754,6 +14000,12 @@ class MediaProcessTaskSnapshotByTimeOffsetResult(AbstractModel):
         :param Output: 对视频按指定时间点截图任务输出。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Output: :class:`tencentcloud.mps.v20190612.models.MediaSnapshotByTimeOffsetItem`
+        :param BeginProcessTime: 任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BeginProcessTime: str
+        :param FinishTime: 任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -13761,6 +14013,8 @@ class MediaProcessTaskSnapshotByTimeOffsetResult(AbstractModel):
         self.Message = None
         self.Input = None
         self.Output = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -13774,6 +14028,8 @@ class MediaProcessTaskSnapshotByTimeOffsetResult(AbstractModel):
         if params.get("Output") is not None:
             self.Output = MediaSnapshotByTimeOffsetItem()
             self.Output._deserialize(params.get("Output"))
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14067,6 +14323,9 @@ class MediaVideoStreamItem(AbstractModel):
         :param HdrType: HDR类型。
 注意：此字段可能返回 null，表示取不到有效值。
         :type HdrType: str
+        :param Codecs: 视频Codecs。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Codecs: str
         """
         self.Bitrate = None
         self.Height = None
@@ -14077,6 +14336,7 @@ class MediaVideoStreamItem(AbstractModel):
         self.ColorSpace = None
         self.ColorTransfer = None
         self.HdrType = None
+        self.Codecs = None
 
 
     def _deserialize(self, params):
@@ -14089,6 +14349,7 @@ class MediaVideoStreamItem(AbstractModel):
         self.ColorSpace = params.get("ColorSpace")
         self.ColorTransfer = params.get("ColorTransfer")
         self.HdrType = params.get("HdrType")
+        self.Codecs = params.get("Codecs")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15871,6 +16132,12 @@ class ParseLiveStreamProcessNotificationResponse(AbstractModel):
         :param AiRecognitionResultInfo: 内容识别结果，当 NotificationType 为 AiRecognitionResult 时有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type AiRecognitionResultInfo: :class:`tencentcloud.mps.v20190612.models.LiveStreamAiRecognitionResultInfo`
+        :param AiAnalysisResultInfo: 内容分析结果，当 NotificationType 为 AiAnalysisResult 时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AiAnalysisResultInfo: :class:`tencentcloud.mps.v20190612.models.LiveStreamAiAnalysisResultInfo`
+        :param AiQualityControlResultInfo: 媒体质检结果，当 NotificationType 为 AiQualityControlResult 时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AiQualityControlResultInfo: :class:`tencentcloud.mps.v20190612.models.LiveStreamAiQualityControlResultInfo`
         :param SessionId: 用于去重的识别码，如果七天内曾有过相同的识别码的请求，则本次的请求会返回错误。最长50个字符，不带或者带空字符串表示不做去重。
         :type SessionId: str
         :param SessionContext: 来源上下文，用于透传用户请求信息，任务流状态变更回调将返回该字段值，最长1000个字符。
@@ -15883,6 +16150,8 @@ class ParseLiveStreamProcessNotificationResponse(AbstractModel):
         self.ProcessEofInfo = None
         self.AiReviewResultInfo = None
         self.AiRecognitionResultInfo = None
+        self.AiAnalysisResultInfo = None
+        self.AiQualityControlResultInfo = None
         self.SessionId = None
         self.SessionContext = None
         self.RequestId = None
@@ -15900,6 +16169,12 @@ class ParseLiveStreamProcessNotificationResponse(AbstractModel):
         if params.get("AiRecognitionResultInfo") is not None:
             self.AiRecognitionResultInfo = LiveStreamAiRecognitionResultInfo()
             self.AiRecognitionResultInfo._deserialize(params.get("AiRecognitionResultInfo"))
+        if params.get("AiAnalysisResultInfo") is not None:
+            self.AiAnalysisResultInfo = LiveStreamAiAnalysisResultInfo()
+            self.AiAnalysisResultInfo._deserialize(params.get("AiAnalysisResultInfo"))
+        if params.get("AiQualityControlResultInfo") is not None:
+            self.AiQualityControlResultInfo = LiveStreamAiQualityControlResultInfo()
+            self.AiQualityControlResultInfo._deserialize(params.get("AiQualityControlResultInfo"))
         self.SessionId = params.get("SessionId")
         self.SessionContext = params.get("SessionContext")
         self.RequestId = params.get("RequestId")
@@ -17604,7 +17879,10 @@ class S3InputInfo(AbstractModel):
         r"""
         :param S3Bucket: S3 bucket。
         :type S3Bucket: str
-        :param S3Region: S3 bucket 对应的区域。
+        :param S3Region: S3 bucket 对应的区域，目前支持：  
+us-east-1  
+eu-west-3
+
         :type S3Region: str
         :param S3Object: S3 bucket 中的媒体资源路径。
         :type S3Object: str
@@ -17918,6 +18196,12 @@ class ScheduleAnalysisTaskResult(AbstractModel):
         :param Output: 分析任务的输出。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Output: list of AiAnalysisResult
+        :param BeginProcessTime: 任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BeginProcessTime: str
+        :param FinishTime: 任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -17925,6 +18209,8 @@ class ScheduleAnalysisTaskResult(AbstractModel):
         self.Message = None
         self.Input = None
         self.Output = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -17941,6 +18227,8 @@ class ScheduleAnalysisTaskResult(AbstractModel):
                 obj = AiAnalysisResult()
                 obj._deserialize(item)
                 self.Output.append(obj)
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18019,6 +18307,12 @@ class ScheduleRecognitionTaskResult(AbstractModel):
         :param Output: 识别任务的输出。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Output: list of AiRecognitionResult
+        :param BeginProcessTime: 任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BeginProcessTime: str
+        :param FinishTime: 任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -18026,6 +18320,8 @@ class ScheduleRecognitionTaskResult(AbstractModel):
         self.Message = None
         self.Input = None
         self.Output = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -18042,6 +18338,8 @@ class ScheduleRecognitionTaskResult(AbstractModel):
                 obj = AiRecognitionResult()
                 obj._deserialize(item)
                 self.Output.append(obj)
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18071,6 +18369,12 @@ class ScheduleReviewTaskResult(AbstractModel):
         :param Output: 审核任务的输出。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Output: list of AiContentReviewResult
+        :param BeginProcessTime: 任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BeginProcessTime: str
+        :param FinishTime: 任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/862/37710#52)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -18078,6 +18382,8 @@ class ScheduleReviewTaskResult(AbstractModel):
         self.Message = None
         self.Input = None
         self.Output = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -18094,6 +18400,8 @@ class ScheduleReviewTaskResult(AbstractModel):
                 obj = AiContentReviewResult()
                 obj._deserialize(item)
                 self.Output.append(obj)
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18271,6 +18579,43 @@ class ScratchRepairConfig(AbstractModel):
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
         self.Intensity = params.get("Intensity")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SegmentRecognitionItem(AbstractModel):
+    """智能拆条片段。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Confidence: 置信度。
+        :type Confidence: float
+        :param StartTimeOffset: 片段起始时间偏移。
+        :type StartTimeOffset: float
+        :param EndTimeOffset: 片段结束时间偏移。
+        :type EndTimeOffset: float
+        :param SegmentUrl: 拆条片段URL。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SegmentUrl: str
+        """
+        self.Confidence = None
+        self.StartTimeOffset = None
+        self.EndTimeOffset = None
+        self.SegmentUrl = None
+
+
+    def _deserialize(self, params):
+        self.Confidence = params.get("Confidence")
+        self.StartTimeOffset = params.get("StartTimeOffset")
+        self.EndTimeOffset = params.get("EndTimeOffset")
+        self.SegmentUrl = params.get("SegmentUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18759,7 +19104,8 @@ class TEHDConfig(AbstractModel):
     def __init__(self):
         r"""
         :param Type: 极速高清类型，可选值：
-<li>TEHD-100：极速高清-100。</li>
+<li>TEHD-100：极速高清-100（视频极速高清）。</li>
+<li>TEHD-200：极速高清-200（音频极速高清）。</li>
 不填代表不启用极速高清。
         :type Type: str
         :param MaxVideoBitrate: 视频码率上限，当 Type 指定了极速高清类型时有效。
@@ -18790,7 +19136,8 @@ class TEHDConfigForUpdate(AbstractModel):
     def __init__(self):
         r"""
         :param Type: 极速高清类型，可选值：
-<li>TEHD-100：极速高清-100。</li>
+<li>TEHD-100：极速高清-100（视频极速高清）。</li>
+<li>TEHD-200：极速高清-200（音频极速高清）。</li>
 不填代表不修改。
         :type Type: str
         :param MaxVideoBitrate: 视频码率上限，不填代表不修改。

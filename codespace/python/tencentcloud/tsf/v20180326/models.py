@@ -5073,6 +5073,61 @@ class CreateTaskResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateUnitNamespacesRequest(AbstractModel):
+    """CreateUnitNamespaces请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GatewayInstanceId: 网关实体ID
+        :type GatewayInstanceId: str
+        :param UnitNamespaceList: 单元化命名空间对象列表
+        :type UnitNamespaceList: list of UnitNamespace
+        """
+        self.GatewayInstanceId = None
+        self.UnitNamespaceList = None
+
+
+    def _deserialize(self, params):
+        self.GatewayInstanceId = params.get("GatewayInstanceId")
+        if params.get("UnitNamespaceList") is not None:
+            self.UnitNamespaceList = []
+            for item in params.get("UnitNamespaceList"):
+                obj = UnitNamespace()
+                obj._deserialize(item)
+                self.UnitNamespaceList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateUnitNamespacesResponse(AbstractModel):
+    """CreateUnitNamespaces返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 是否成功
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateUnitRuleRequest(AbstractModel):
     """CreateUnitRule请求参数结构体
 
@@ -5592,6 +5647,55 @@ class DeleteFileConfigResponse(AbstractModel):
         r"""
         :param Result: 删除结果
 注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteGatewayApiRequest(AbstractModel):
+    """DeleteGatewayApi请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 分组ID
+        :type GroupId: str
+        :param ApiList: Api ID 数组
+        :type ApiList: list of str
+        """
+        self.GroupId = None
+        self.ApiList = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.ApiList = params.get("ApiList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteGatewayApiResponse(AbstractModel):
+    """DeleteGatewayApi返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 是否成功
         :type Result: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -22006,6 +22110,15 @@ class UnitRuleItem(AbstractModel):
         :param UnitRuleTagList: 规则标签列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type UnitRuleTagList: list of UnitRuleTag
+        :param ItemIndex: 项目id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ItemIndex: int
+        :param CreatedTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreatedTime: str
+        :param UpdatedTime: 修改时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdatedTime: str
         """
         self.Relationship = None
         self.DestNamespaceId = None
@@ -22016,6 +22129,9 @@ class UnitRuleItem(AbstractModel):
         self.Priority = None
         self.Description = None
         self.UnitRuleTagList = None
+        self.ItemIndex = None
+        self.CreatedTime = None
+        self.UpdatedTime = None
 
 
     def _deserialize(self, params):
@@ -22033,6 +22149,9 @@ class UnitRuleItem(AbstractModel):
                 obj = UnitRuleTag()
                 obj._deserialize(item)
                 self.UnitRuleTagList.append(obj)
+        self.ItemIndex = params.get("ItemIndex")
+        self.CreatedTime = params.get("CreatedTime")
+        self.UpdatedTime = params.get("UpdatedTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

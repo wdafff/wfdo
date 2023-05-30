@@ -98,7 +98,7 @@ class EssClient(AbstractClient):
 
 
     def CreateBatchCancelFlowUrl(self, request):
-        """注：此接口建会废弃，请使用撤销单个签署流程（CancelFlow）接口。
+        """注：此接口将会废弃，请使用撤销单个签署流程（CancelFlow）接口。
         指定需要批量撤回的签署流程Id，获取批量撤销链接。
         客户指定需要撤回的签署流程Id，最多100个，超过100不处理；接口调用成功返回批量撤回合同的链接，通过链接跳转到电子签小程序完成批量撤回。
 
@@ -113,6 +113,29 @@ class EssClient(AbstractClient):
             body = self.call("CreateBatchCancelFlowUrl", params, headers=headers)
             response = json.loads(body)
             model = models.CreateBatchCancelFlowUrlResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateChannelSubOrganizationModifyQrCode(self, request):
+        """生成子客编辑企业信息二维码
+
+        :param request: Request instance for CreateChannelSubOrganizationModifyQrCode.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreateChannelSubOrganizationModifyQrCodeRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreateChannelSubOrganizationModifyQrCodeResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateChannelSubOrganizationModifyQrCode", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateChannelSubOrganizationModifyQrCodeResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -171,7 +194,7 @@ class EssClient(AbstractClient):
 
 
     def CreateFlow(self, request):
-        """创建签署流程
+        """通过模板创建签署流程
         适用场景：在标准制式的合同场景中，可通过提前预制好模板文件，每次调用模板文件的id，补充合同内容信息及签署信息生成电子合同。
         注：该接口是通过模板生成合同流程的前置接口，先创建一个不包含签署文件的流程。配合“创建电子文档”接口和“发起流程”接口使用。
 
@@ -326,7 +349,11 @@ class EssClient(AbstractClient):
 
 
     def CreateFlowSignUrl(self, request):
-        """创建集成页面签署链接，请联系客户经理申请使用
+        """创建个人H5签署链接，请联系客户经理申请使用 <br/>
+        该接口用于发起合同后，生成C端签署人的签署链接 <br/>
+        注意：该接口目前签署人类型仅支持个人签署方（PERSON） <br/>
+        注意：该接口可生成签署链接的C端签署人必须仅有手写签名和时间类型的签署控件<br/>
+        注意：该接口返回的签署链接是用于APP集成的场景，支持APP打开或浏览器直接打开，不支持微信小程序嵌入。微信小程序请使用小程序跳转或半屏弹窗的方式<br/>
 
         :param request: Request instance for CreateFlowSignUrl.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateFlowSignUrlRequest`
@@ -451,7 +478,7 @@ class EssClient(AbstractClient):
 
 
     def CreatePreparedPersonalEsign(self, request):
-        """本接口（CreatePreparedPersonalEsign）用于创建导入个人印章（处方单场景专用，在开通个人自动签之后调用，使用此接口请与客户经理确认）。
+        """本接口（CreatePreparedPersonalEsign）用于创建导入个人印章（处方单场景专用，使用此接口请与客户经理确认）。
 
         :param request: Request instance for CreatePreparedPersonalEsign.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreatePreparedPersonalEsignRequest`

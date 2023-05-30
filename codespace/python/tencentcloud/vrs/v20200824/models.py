@@ -31,7 +31,7 @@ class CreateVRSTaskRequest(AbstractModel):
         :type VoiceName: str
         :param SampleRate: 音频采样率：
 
-16000：16k（默认）
+16000：16k
         :type SampleRate: int
         :param VoiceGender: 音色性别:
 
@@ -41,14 +41,14 @@ class CreateVRSTaskRequest(AbstractModel):
         :type VoiceGender: int
         :param VoiceLanguage: 语言类型：
 
-1-中文（默认）
+1-中文
         :type VoiceLanguage: int
         :param Codec: 音频格式，音频类型(wav,mp3,aac,m4a)
         :type Codec: str
         :param AudioIdList: 音频ID集合
         :type AudioIdList: list of str
         :param CallbackUrl: 回调 URL，用户自行搭建的用于接收结果的服务URL。如果用户使用轮询方式获取识别结果，则无需提交该参数。
-回调采用POST请求方式，Content-Type为application/x-www-form-urlencoded，回调数据格式如下:callback_body=checksum=&data={"TaskId":"xxxxxxxxxxxxxx","Status":2,"StatusStr":"success","VoiceType":xxxxx,"ErrorMsg":""}
+回调采用POST请求方式，Content-Type为application/json，回调数据格式如下:{"TaskId":"xxxxxxxxxxxxxx","Status":2,"StatusStr":"success","VoiceType":xxxxx,"ErrorMsg":""}
         :type CallbackUrl: str
         """
         self.SessionId = None
@@ -228,7 +228,7 @@ class DetectEnvAndSoundQualityRequest(AbstractModel):
         r"""
         :param TextId: 标注文本信息 ID
         :type TextId: str
-        :param AudioData: 语音数据 要使用base64编码(采用python语言时注意读取文件应该为string而不是byte，以byte格式读取后要decode()。编码后的数据不可带有回车换行符)。
+        :param AudioData: 语音数据 要使用base64编码(采用python语言时注意读取文件时需要转成base64字符串编码，例如：str(base64.b64encode(open("input.aac", mode="rb").read()), encoding='utf-8') )。
         :type AudioData: str
         :param Codec: 音频格式，音频类型(wav,mp3,aac,m4a)
         :type Codec: str

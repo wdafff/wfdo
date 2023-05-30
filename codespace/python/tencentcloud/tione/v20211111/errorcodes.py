@@ -101,6 +101,9 @@ FAILEDOPERATION_EXECDATABASEFAIL = 'FailedOperation.ExecDatabaseFail'
 # 标签操作失败。
 FAILEDOPERATION_EXECTAGFAIL = 'FailedOperation.ExecTagFail'
 
+# 余额不足冻结失败。
+FAILEDOPERATION_FREEZEBILLFAILED = 'FailedOperation.FreezeBillFailed'
+
 # 白名单免费配额不足。
 FAILEDOPERATION_INSUFFICIENTWHITELISTQUOTA = 'FailedOperation.InsufficientWhitelistQuota'
 
@@ -136,6 +139,9 @@ FAILEDOPERATION_QUERYMODELSBYTAGSFAILED = 'FailedOperation.QueryModelsByTagsFail
 
 # 查询计费价格失败。
 FAILEDOPERATION_QUERYPRICEFAILED = 'FailedOperation.QueryPriceFailed'
+
+# 查询计费项详情失败。
+FAILEDOPERATION_QUERYRESOURCESPECFAILED = 'FailedOperation.QueryResourceSpecFailed'
 
 # 查询计费项失败。
 FAILEDOPERATION_QUERYSPECSFAILED = 'FailedOperation.QuerySpecsFailed'
@@ -185,6 +191,9 @@ INTERNALERROR_QUERYHDFSINFOFAILED = 'InternalError.QueryHDFSInfoFailed'
 # 查询预付费资源组详情失败。
 INTERNALERROR_QUERYRESOURCEGROUPFAILED = 'InternalError.QueryResourceGroupFailed'
 
+# 查询资源套餐规格失败
+INTERNALERROR_QUERYRESOURCESPECFAILED = 'InternalError.QueryResourceSpecFailed'
+
 # 查询子网信息失败。
 INTERNALERROR_QUERYSUBNETINFOFAILED = 'InternalError.QuerySubnetInfoFailed'
 
@@ -208,6 +217,9 @@ INVALIDPARAMETER_VALIDATEERROR = 'InvalidParameter.ValidateError'
 
 # 参数取值错误。
 INVALIDPARAMETERVALUE = 'InvalidParameterValue'
+
+# AI市场公共算法版本Id不存在
+INVALIDPARAMETERVALUE_AIMARKETPUBLICALGOVERSIONNOTEXIST = 'InvalidParameterValue.AIMarketPublicAlgoVersionNotExist'
 
 # 名称不合法。
 INVALIDPARAMETERVALUE_BADNAME = 'InvalidParameterValue.BadName'
@@ -259,6 +271,12 @@ INVALIDPARAMETERVALUE_LIMITEXCEEDED = 'InvalidParameterValue.LimitExceeded'
 
 # 操作不允许。
 INVALIDPARAMETERVALUE_NOTALLOW = 'InvalidParameterValue.NotAllow'
+
+# 资源配置不合法
+INVALIDPARAMETERVALUE_RESOURCECONFIGILLEGAL = 'InvalidParameterValue.ResourceConfigIllegal'
+
+# 裸金属类型资源组不支持配置输入数据
+INVALIDPARAMETERVALUE_UNSUPPORTEDDATACONFIG = 'InvalidParameterValue.UnsupportedDataConfig'
 
 # 超过配额限制。
 LIMITEXCEEDED = 'LimitExceeded'

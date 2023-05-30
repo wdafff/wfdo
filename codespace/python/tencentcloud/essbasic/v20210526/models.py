@@ -197,6 +197,10 @@ class BaseFlowInfo(AbstractModel):
         :type NeedSignReview: bool
         :param UserData: 用户流程自定义数据参数
         :type UserData: str
+        :param CcInfos: 抄送人信息
+        :type CcInfos: list of CcInfo
+        :param NeedCreateReview: 是否需要发起前审核，当指定NeedCreateReview=true，则发起后，需要使用接口：ChannelCreateFlowSignReview，来完成发起前审核，审核通过后，可以继续查看，签署合同
+        :type NeedCreateReview: bool
         """
         self.FlowName = None
         self.FlowType = None
@@ -207,6 +211,8 @@ class BaseFlowInfo(AbstractModel):
         self.FormFields = None
         self.NeedSignReview = None
         self.UserData = None
+        self.CcInfos = None
+        self.NeedCreateReview = None
 
 
     def _deserialize(self, params):
@@ -224,6 +230,13 @@ class BaseFlowInfo(AbstractModel):
                 self.FormFields.append(obj)
         self.NeedSignReview = params.get("NeedSignReview")
         self.UserData = params.get("UserData")
+        if params.get("CcInfos") is not None:
+            self.CcInfos = []
+            for item in params.get("CcInfos"):
+                obj = CcInfo()
+                obj._deserialize(item)
+                self.CcInfos.append(obj)
+        self.NeedCreateReview = params.get("NeedCreateReview")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -283,7 +296,7 @@ class ChannelBatchCancelFlowsRequest(AbstractModel):
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
         :param FlowIds: 签署流程Id数组，最多100个，超过100不处理
         :type FlowIds: list of str
-        :param CancelMessage: 撤销理由
+        :param CancelMessage: 撤销理由,不超过200个字符
         :type CancelMessage: str
         :param CancelMessageFormat: 撤销理由自定义格式；选项：
 0 默认格式
@@ -743,7 +756,7 @@ class ChannelCreateFlowByFilesRequest(AbstractModel):
         :type FlowDescription: str
         :param CustomShowMap: 合同显示的页卡模板，说明：只支持{合同名称}, {发起方企业}, {发起方姓名}, {签署方N企业}, {签署方N姓名}，且N不能超过签署人的数量，N从1开始
         :type CustomShowMap: str
-        :param CustomerData: 业务信息，最大长度1000个字符。发起自动签署时，需设置对应自动签署场景，目前仅支持场景：处方单-E_PRESCRIPTION_AUTO_SIGN
+        :param CustomerData: 业务信息，最大长度1000个字符。
         :type CustomerData: str
         :param NeedSignReview: 发起方企业的签署人进行签署操作是否需要企业内部审批。 若设置为true,审核结果需通过接口 ChannelCreateFlowSignReview 通知电子签，审核通过后，发起方企业签署人方可进行签署操作，否则会阻塞其签署操作。  注：企业可以通过此功能与企业内部的审批流程进行关联，支持手动、静默签署合同。
         :type NeedSignReview: bool
@@ -760,6 +773,8 @@ MobileCheck：手机号验证
         :type CcInfos: list of CcInfo
         :param CcNotifyType: 给关注人发送短信通知的类型，0-合同发起时通知 1-签署完成后通知
         :type CcNotifyType: int
+        :param AutoSignScene: 个人自动签场景。发起自动签署时，需设置对应自动签署场景，目前仅支持场景：处方单-E_PRESCRIPTION_AUTO_SIGN
+        :type AutoSignScene: str
         """
         self.Agent = None
         self.FlowName = None
@@ -779,6 +794,7 @@ MobileCheck：手机号验证
         self.Operator = None
         self.CcInfos = None
         self.CcNotifyType = None
+        self.AutoSignScene = None
 
 
     def _deserialize(self, params):
@@ -819,6 +835,7 @@ MobileCheck：手机号验证
                 obj._deserialize(item)
                 self.CcInfos.append(obj)
         self.CcNotifyType = params.get("CcNotifyType")
+        self.AutoSignScene = params.get("AutoSignScene")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1006,12 +1023,18 @@ SIGN_REJECT:拒签(流程结束)
         :type ReviewMessage: str
         :param RecipientId: 签署节点审核时需要指定
         :type RecipientId: str
+        :param OperateType: 操作类型，默认：SignReview；SignReview:签署审核，CreateReview：发起审核
+注：接口通过该字段区分操作类型
+该字段不传或者为空，则默认为SignReview签署审核，走签署审核流程
+若想使用发起审核，请指定该字段为：CreateReview
+        :type OperateType: str
         """
         self.Agent = None
         self.FlowId = None
         self.ReviewType = None
         self.ReviewMessage = None
         self.RecipientId = None
+        self.OperateType = None
 
 
     def _deserialize(self, params):
@@ -1022,6 +1045,7 @@ SIGN_REJECT:拒签(流程结束)
         self.ReviewType = params.get("ReviewType")
         self.ReviewMessage = params.get("ReviewMessage")
         self.RecipientId = params.get("RecipientId")
+        self.OperateType = params.get("OperateType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1247,7 +1271,7 @@ class ChannelCreatePrepareFlowRequest(AbstractModel):
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
         :param FlowOption: 合同流程配置信息
         :type FlowOption: :class:`tencentcloud.essbasic.v20210526.models.CreateFlowOption`
-        :param FlowId: 该参数不可用，请通过获取 web 可嵌入接口获取合同流程预览 URL
+        :param FlowId: 通过flowid快速获得之前成功通过页面发起的合同生成链接
         :type FlowId: str
         :param NeedPreview: 该参数不可用，请通过获取 web 可嵌入接口获取合同流程预览 URL
         :type NeedPreview: bool
@@ -1552,7 +1576,7 @@ class ChannelDeleteRoleUsersRequest(AbstractModel):
         r"""
         :param Agent: 代理信息
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
-        :param RoleId: 角色Id
+        :param RoleId: 角色Id（非超管或法人角色Id）
         :type RoleId: str
         :param UserIds: 用户列表
         :type UserIds: list of str
@@ -1853,18 +1877,18 @@ class ChannelDescribeRolesRequest(AbstractModel):
         :type Offset: int
         :param Limit: 查询数量，最大200
         :type Limit: str
-        :param Operator: 操作人信息
-        :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
         :param Filters: 查询的关键字段:
-Key:"RoleType",Vales:["1"]查询系统角色，Values:["2]查询自定义角色
+Key:"RoleType",Values:["1"]查询系统角色，Values:["2"]查询自定义角色
 Key:"RoleStatus",Values:["1"]查询启用角色，Values:["2"]查询禁用角色
         :type Filters: list of Filter
+        :param Operator: 操作人信息
+        :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
         """
         self.Agent = None
         self.Offset = None
         self.Limit = None
-        self.Operator = None
         self.Filters = None
+        self.Operator = None
 
 
     def _deserialize(self, params):
@@ -1873,15 +1897,15 @@ Key:"RoleStatus",Values:["1"]查询启用角色，Values:["2"]查询禁用角色
             self.Agent._deserialize(params.get("Agent"))
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
-        if params.get("Operator") is not None:
-            self.Operator = UserInfo()
-            self.Operator._deserialize(params.get("Operator"))
         if params.get("Filters") is not None:
             self.Filters = []
             for item in params.get("Filters"):
                 obj = Filter()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1999,7 +2023,8 @@ ProcessTimeout - 转换文件超时
         :type TaskMessage: str
         :param ResourceId: 资源Id，也是FileId，用于文件发起使用
         :type ResourceId: str
-        :param PreviewUrl: 预览文件Url，有效期30分钟
+        :param PreviewUrl: 预览文件Url，有效期30分钟 
+当前字段返回为空，发起的时候，将ResourceId 放入发起即可
 注意：此字段可能返回 null，表示取不到有效值。
         :type PreviewUrl: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -2320,10 +2345,10 @@ MULTI_LINE_TEXT - 多行文本控件，输入文本字符串；
 CHECK_BOX - 勾选框控件，若选中填写ComponentValue 填写 true或者 false 字符串；
 FILL_IMAGE - 图片控件，ComponentValue 填写图片的资源 ID；
 DYNAMIC_TABLE - 动态表格控件；
-ATTACHMENT - 附件控件,ComponentValue 填写福建图片的资源 ID列表，以逗号分割；
+ATTACHMENT - 附件控件,ComponentValue 填写附件图片的资源 ID列表，以逗号分割；
 SELECTOR - 选择器控件，ComponentValue填写选择的字符串内容；
 DATE - 日期控件；默认是格式化为xxxx年xx月xx日字符串；
-DISTRICT - 省市区行政区划控件，ComponentValue填写省市区行政区划字符串内容；
+DISTRICT - 省市区行政区控件，ComponentValue填写省市区行政区字符串内容；
 
 如果是SignComponent控件类型，则可选的字段为
 SIGN_SEAL - 签署印章控件；
@@ -2382,6 +2407,7 @@ HANDWRITE – 手写签名
 BORDERLESS_ESIGN – 自动生成无边框腾讯体
 OCR_ESIGN -- AI智能识别手写签名
 ESIGN -- 个人印章类型
+SYSTEM_ESIGN -- 系统签名（该类型可以在用户签署时根据用户姓名一键生成一个签名来进行签署）
 如：{“ComponentTypeLimit”: [“BORDERLESS_ESIGN”]}
 
 ComponentType为SIGN_DATE时，支持以下参数：
@@ -3945,6 +3971,8 @@ RELIEVED 解除
         :type FlowApproverInfos: list of FlowApproverDetail
         :param CcInfos: 合同(流程)关注方信息列表
         :type CcInfos: list of FlowApproverDetail
+        :param NeedCreateReview: 是否需要发起前审批，当NeedCreateReview为true，表明当前流程是需要发起前审核的合同，可能无法进行查看，签署操作，需要等审核完成后，才可以继续后续流程
+        :type NeedCreateReview: bool
         """
         self.FlowId = None
         self.FlowName = None
@@ -3956,6 +3984,7 @@ RELIEVED 解除
         self.CustomData = None
         self.FlowApproverInfos = None
         self.CcInfos = None
+        self.NeedCreateReview = None
 
 
     def _deserialize(self, params):
@@ -3979,6 +4008,7 @@ RELIEVED 解除
                 obj = FlowApproverDetail()
                 obj._deserialize(item)
                 self.CcInfos.append(obj)
+        self.NeedCreateReview = params.get("NeedCreateReview")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4193,7 +4223,7 @@ class FlowInfo(AbstractModel):
         :type FlowType: str
         :param FlowDescription: 合同描述，最大长度1000个字符
         :type FlowDescription: str
-        :param CustomerData:  第三方应用平台的业务信息，最大长度1000个字符。发起自动签署时，需设置对应自动签署场景，目前仅支持场景：处方单-E_PRESCRIPTION_AUTO_SIGN
+        :param CustomerData:  第三方应用平台的业务信息，最大长度1000个字符。
         :type CustomerData: str
         :param CustomShowMap: 合同显示的页卡模板，说明：只支持{合同名称}, {发起方企业}, {发起方姓名}, {签署方N企业}, {签署方N姓名}，且N不能超过签署人的数量，N从1开始
         :type CustomShowMap: str
@@ -4206,6 +4236,8 @@ class FlowInfo(AbstractModel):
         :type NeedSignReview: bool
         :param CcNotifyType: 给关注人发送短信通知的类型，0-合同发起时通知 1-签署完成后通知
         :type CcNotifyType: int
+        :param AutoSignScene: 个人自动签场景。发起自动签署时，需设置对应自动签署场景，目前仅支持场景：处方单-E_PRESCRIPTION_AUTO_SIGN
+        :type AutoSignScene: str
         """
         self.FlowName = None
         self.Deadline = None
@@ -4220,6 +4252,7 @@ class FlowInfo(AbstractModel):
         self.CcInfos = None
         self.NeedSignReview = None
         self.CcNotifyType = None
+        self.AutoSignScene = None
 
 
     def _deserialize(self, params):
@@ -4251,6 +4284,7 @@ class FlowInfo(AbstractModel):
                 self.CcInfos.append(obj)
         self.NeedSignReview = params.get("NeedSignReview")
         self.CcNotifyType = params.get("CcNotifyType")
+        self.AutoSignScene = params.get("AutoSignScene")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

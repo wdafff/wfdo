@@ -2368,6 +2368,8 @@ class DescribeInstanceTypeConfigsRequest(AbstractModel):
 <p style="padding-left: 30px;">按照【<strong>可用区</strong>】进行过滤。可用区形如：ap-guangzhou-1。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p><p style="padding-left: 30px;">可选项：<a href="https://cloud.tencent.com/document/product/213/6091">可用区列表</a></p>
 <li><strong>instance-family</strong></li>
 <p style="padding-left: 30px;">按照【<strong>实例机型系列</strong>】进行过滤。实例机型系列形如：S1、I1、M1等。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>instance-type</strong></li>
+<p style="padding-left: 30px;">按照【<strong>实例类型</strong>】进行过滤。实例类型形如：S5.12XLARGE128、S5.12XLARGE96等。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 每次请求的`Filters`的上限为10，`Filter.Values`的上限为1。
         :type Filters: list of Filter
         """
@@ -5518,6 +5520,8 @@ class InstanceTypeConfig(AbstractModel):
         :type Memory: int
         :param FPGA: FPGA核数，单位：核。
         :type FPGA: int
+        :param GpuCount: 实例机型映射的物理GPU卡数，单位：卡。vGPU卡型小于1，直通卡型大于等于1。vGPU是通过分片虚拟化技术，将物理GPU卡重新划分，同一块GPU卡经虚拟化分割后可分配至不同的实例使用。直通卡型会将GPU设备直接挂载给实例使用。
+        :type GpuCount: float
         """
         self.Zone = None
         self.InstanceType = None
@@ -5526,6 +5530,7 @@ class InstanceTypeConfig(AbstractModel):
         self.CPU = None
         self.Memory = None
         self.FPGA = None
+        self.GpuCount = None
 
 
     def _deserialize(self, params):
@@ -5536,6 +5541,7 @@ class InstanceTypeConfig(AbstractModel):
         self.CPU = params.get("CPU")
         self.Memory = params.get("Memory")
         self.FPGA = params.get("FPGA")
+        self.GpuCount = params.get("GpuCount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6583,7 +6589,7 @@ class ModifyImageAttributeRequest(AbstractModel):
         r"""
         :param ImageId: 镜像ID，形如`img-gvbnzy6f`。镜像ID可以通过如下方式获取：<br><li>通过[DescribeImages](https://cloud.tencent.com/document/api/213/15715)接口返回的`ImageId`获取。<br><li>通过[镜像控制台](https://console.cloud.tencent.com/cvm/image)获取。
         :type ImageId: str
-        :param ImageName: 设置新的镜像名称；必须满足下列限制：<br> <li> 不得超过20个字符。<br> <li> 镜像名称不能与已有镜像重复。
+        :param ImageName: 设置新的镜像名称；必须满足下列限制：<br> <li> 不得超过60个字符。<br> <li> 镜像名称不能与已有镜像重复。
         :type ImageName: str
         :param ImageDescription: 设置新的镜像描述；必须满足下列限制：<br> <li> 不得超过60个字符。
         :type ImageDescription: str
@@ -9242,6 +9248,7 @@ class SystemDisk(AbstractModel):
         :param DiskSize: 系统盘大小，单位：GB。默认值为 50
         :type DiskSize: int
         :param CdcId: 所属的独享集群ID。
+注意：此字段可能返回 null，表示取不到有效值。
         :type CdcId: str
         """
         self.DiskType = None

@@ -4547,6 +4547,55 @@ class DescribeBackupDatabasesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeBackupDecryptionKeyRequest(AbstractModel):
+    """DescribeBackupDecryptionKey请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID，格式如：cdb-XXXX。与云数据库控制台页面中显示的实例 ID 相同。
+        :type InstanceId: str
+        :param BackupId: 实例的备份ID，可通过DescribeBackups接口查询备份的ID。
+        :type BackupId: int
+        """
+        self.InstanceId = None
+        self.BackupId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.BackupId = params.get("BackupId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBackupDecryptionKeyResponse(AbstractModel):
+    """DescribeBackupDecryptionKey返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DecryptionKey: 备份文件解密密钥。
+        :type DecryptionKey: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DecryptionKey = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.DecryptionKey = params.get("DecryptionKey")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeBackupDownloadRestrictionRequest(AbstractModel):
     """DescribeBackupDownloadRestriction请求参数结构体
 
@@ -4779,80 +4828,6 @@ class DescribeBackupSummariesResponse(AbstractModel):
                 obj._deserialize(item)
                 self.Items.append(obj)
         self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeBackupTablesRequest(AbstractModel):
-    """DescribeBackupTables请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param InstanceId: 实例ID，格式如：cdb-c1nl9rpv。与云数据库控制台页面中显示的实例ID相同。
-        :type InstanceId: str
-        :param StartTime: 开始时间，格式为：2017-07-12 10:29:20。
-        :type StartTime: str
-        :param DatabaseName: 指定的数据库名。
-        :type DatabaseName: str
-        :param SearchTable: 要查询的数据表名前缀。
-        :type SearchTable: str
-        :param Offset: 分页偏移。
-        :type Offset: int
-        :param Limit: 分页大小，最小值为1，最大值为2000。
-        :type Limit: int
-        """
-        self.InstanceId = None
-        self.StartTime = None
-        self.DatabaseName = None
-        self.SearchTable = None
-        self.Offset = None
-        self.Limit = None
-
-
-    def _deserialize(self, params):
-        self.InstanceId = params.get("InstanceId")
-        self.StartTime = params.get("StartTime")
-        self.DatabaseName = params.get("DatabaseName")
-        self.SearchTable = params.get("SearchTable")
-        self.Offset = params.get("Offset")
-        self.Limit = params.get("Limit")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeBackupTablesResponse(AbstractModel):
-    """DescribeBackupTables返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param TotalCount: 返回的数据个数。
-        :type TotalCount: int
-        :param Items: 符合条件的数据表数组。
-        :type Items: list of TableName
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.TotalCount = None
-        self.Items = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.TotalCount = params.get("TotalCount")
-        if params.get("Items") is not None:
-            self.Items = []
-            for item in params.get("Items"):
-                obj = TableName()
-                obj._deserialize(item)
-                self.Items.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -5947,7 +5922,7 @@ class DescribeDBPriceRequest(AbstractModel):
         :type PayType: str
         :param ProtectMode: 数据复制方式，默认为 0，支持值包括：0 - 表示异步复制，1 - 表示半同步复制，2 - 表示强同步复制。
         :type ProtectMode: int
-        :param DeviceType: 实例隔离类型。支持值包括： "UNIVERSAL" - 通用型实例， "EXCLUSIVE" - 独享型实例， "BASIC" - 基础版实例。 不指定则默认为通用型实例。
+        :param DeviceType: 实例隔离类型。支持值包括： "UNIVERSAL" - 通用型实例， "EXCLUSIVE" - 独享型实例， "BASIC_V2" - 单节点云盘版实例。 不指定则默认为通用型实例。
         :type DeviceType: str
         :param InstanceNodes: 实例节点数。对于 RO 和 基础版实例， 该值默认为1。 如果需要询价三节点实例， 请将该值设置为3。其余主实例该值默认为2。
         :type InstanceNodes: int
@@ -6791,6 +6766,9 @@ class DescribeParamTemplateInfoResponse(AbstractModel):
         :type Description: str
         :param TemplateType: 参数模板类型。支持值包括："HIGH_STABILITY" - 高稳定模板，"HIGH_PERFORMANCE" - 高性能模板。
         :type TemplateType: str
+        :param EngineType: 参数模板引擎。支持值包括："InnoDB"，"RocksDB"。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EngineType: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -6801,6 +6779,7 @@ class DescribeParamTemplateInfoResponse(AbstractModel):
         self.Items = None
         self.Description = None
         self.TemplateType = None
+        self.EngineType = None
         self.RequestId = None
 
 
@@ -6817,6 +6796,7 @@ class DescribeParamTemplateInfoResponse(AbstractModel):
                 self.Items.append(obj)
         self.Description = params.get("Description")
         self.TemplateType = params.get("TemplateType")
+        self.EngineType = params.get("EngineType")
         self.RequestId = params.get("RequestId")
 
 
@@ -7323,12 +7303,20 @@ class DescribeRollbackRangeTimeRequest(AbstractModel):
         r"""
         :param InstanceIds: 实例 ID 列表，单个实例 ID 的格式如：cdb-c1nl9rpv。与云数据库控制台页面中显示的实例 ID 相同。
         :type InstanceIds: list of str
+        :param IsRemoteZone: 克隆实例与源实例是否在同一可用区，是:"false"，否:"true"
+        :type IsRemoteZone: str
+        :param BackupRegion: 克隆实例与源实例不在同一地域时需填写克隆实例所在地域，例："ap-guangzhou"
+        :type BackupRegion: str
         """
         self.InstanceIds = None
+        self.IsRemoteZone = None
+        self.BackupRegion = None
 
 
     def _deserialize(self, params):
         self.InstanceIds = params.get("InstanceIds")
+        self.IsRemoteZone = params.get("IsRemoteZone")
+        self.BackupRegion = params.get("BackupRegion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11232,12 +11220,16 @@ class ParamTemplateInfo(AbstractModel):
         :type EngineVersion: str
         :param TemplateType: 参数模板类型
         :type TemplateType: str
+        :param EngineType: 参数模板引擎
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EngineType: str
         """
         self.TemplateId = None
         self.Name = None
         self.Description = None
         self.EngineVersion = None
         self.TemplateType = None
+        self.EngineType = None
 
 
     def _deserialize(self, params):
@@ -11246,6 +11238,7 @@ class ParamTemplateInfo(AbstractModel):
         self.Description = params.get("Description")
         self.EngineVersion = params.get("EngineVersion")
         self.TemplateType = params.get("TemplateType")
+        self.EngineType = params.get("EngineType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12453,7 +12446,7 @@ class RoGroup(AbstractModel):
         :type MinRoInGroup: int
         :param WeightMode: 读写权重分配模式，可选值：system-系统自动分配；custom-自定义。
         :type WeightMode: str
-        :param Weight: 权重值。
+        :param Weight: 该字段已经废弃，无意义。查看只读实例的权重，请查看 RoInstances 字段里的 Weight 值。
         :type Weight: int
         :param RoInstances: 只读组中的只读实例详情。
         :type RoInstances: list of RoInstanceInfo
@@ -13772,30 +13765,6 @@ class SwitchForUpgradeResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
-
-
-class TableName(AbstractModel):
-    """表名
-
-    """
-
-    def __init__(self):
-        r"""
-        :param TableName: 表名
-        :type TableName: str
-        """
-        self.TableName = None
-
-
-    def _deserialize(self, params):
-        self.TableName = params.get("TableName")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
 
 
 class TablePrivilege(AbstractModel):

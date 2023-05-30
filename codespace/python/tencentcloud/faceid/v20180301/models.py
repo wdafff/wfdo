@@ -1048,6 +1048,12 @@ class DetectInfoText(AbstractModel):
         :param IdCard: 本次验证使用的身份证号。
 注意：此字段可能返回 null，表示取不到有效值。
         :type IdCard: str
+        :param UseIDType: 用户认证时使用的证件号码类型：
+0：二代身份证的证件号码
+1：港澳台居住证的证件号码
+2：其他（核验使用的证件号码非合法身份号码）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UseIDType: int
         :param Name: 本次验证使用的姓名。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
@@ -1137,6 +1143,7 @@ class DetectInfoText(AbstractModel):
         self.ErrCode = None
         self.ErrMsg = None
         self.IdCard = None
+        self.UseIDType = None
         self.Name = None
         self.OcrNation = None
         self.OcrAddress = None
@@ -1168,6 +1175,7 @@ class DetectInfoText(AbstractModel):
         self.ErrCode = params.get("ErrCode")
         self.ErrMsg = params.get("ErrMsg")
         self.IdCard = params.get("IdCard")
+        self.UseIDType = params.get("UseIDType")
         self.Name = params.get("Name")
         self.OcrNation = params.get("OcrNation")
         self.OcrAddress = params.get("OcrAddress")
@@ -1775,6 +1783,8 @@ class GetEidTokenConfig(AbstractModel):
         :type IntentionQuestions: list of IntentionQuestion
         :param IntentionRecognition: 意愿核身过程中识别用户的回答意图，开启后除了IntentionQuestions的Answers列表中的标准回答会通过，近似意图的回答也会通过，默认不开启。
         :type IntentionRecognition: bool
+        :param IsSupportHMTResidentPermitOCR: 是否支持港澳台居住证识别
+        :type IsSupportHMTResidentPermitOCR: bool
         """
         self.InputType = None
         self.UseIntentionVerify = None
@@ -1782,6 +1792,7 @@ class GetEidTokenConfig(AbstractModel):
         self.IntentionVerifyText = None
         self.IntentionQuestions = None
         self.IntentionRecognition = None
+        self.IsSupportHMTResidentPermitOCR = None
 
 
     def _deserialize(self, params):
@@ -1796,6 +1807,7 @@ class GetEidTokenConfig(AbstractModel):
                 obj._deserialize(item)
                 self.IntentionQuestions.append(obj)
         self.IntentionRecognition = params.get("IntentionRecognition")
+        self.IsSupportHMTResidentPermitOCR = params.get("IsSupportHMTResidentPermitOCR")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

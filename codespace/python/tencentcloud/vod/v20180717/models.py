@@ -621,6 +621,10 @@ class AiAnalysisTaskClassificationResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiAnalysisTaskClassificationOutput`
         :param Progress: 智能分类任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 智能分类任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 智能分类任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -629,6 +633,8 @@ class AiAnalysisTaskClassificationResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -643,6 +649,8 @@ class AiAnalysisTaskClassificationResult(AbstractModel):
             self.Output = AiAnalysisTaskClassificationOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -736,6 +744,10 @@ class AiAnalysisTaskCoverResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiAnalysisTaskCoverOutput`
         :param Progress: 智能封面任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 智能封面任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 智能封面任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -744,6 +756,8 @@ class AiAnalysisTaskCoverResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -758,6 +772,8 @@ class AiAnalysisTaskCoverResult(AbstractModel):
             self.Output = AiAnalysisTaskCoverOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -851,6 +867,10 @@ class AiAnalysisTaskFrameTagResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiAnalysisTaskFrameTagOutput`
         :param Progress: 智能按帧标签任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 智能按帧标签任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 智能按帧标签任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -859,6 +879,8 @@ class AiAnalysisTaskFrameTagResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -873,6 +895,8 @@ class AiAnalysisTaskFrameTagResult(AbstractModel):
             self.Output = AiAnalysisTaskFrameTagOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -966,6 +990,10 @@ class AiAnalysisTaskHighlightResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiAnalysisTaskHighlightOutput`
         :param Progress: 智能精彩片段任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 智能精彩片段任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 智能精彩片段任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -974,6 +1002,8 @@ class AiAnalysisTaskHighlightResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -988,6 +1018,8 @@ class AiAnalysisTaskHighlightResult(AbstractModel):
             self.Output = AiAnalysisTaskHighlightOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1105,6 +1137,10 @@ class AiAnalysisTaskTagResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiAnalysisTaskTagOutput`
         :param Progress: 智能标签任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 智能标签任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 智能标签任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -1113,6 +1149,8 @@ class AiAnalysisTaskTagResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -1127,6 +1165,8 @@ class AiAnalysisTaskTagResult(AbstractModel):
             self.Output = AiAnalysisTaskTagOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1379,8 +1419,12 @@ class AiRecognitionTaskAsrFullTextResult(AbstractModel):
         :param Output: 语音全文识别任务输出信息。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiRecognitionTaskAsrFullTextResultOutput`
-        :param Progress: 任务进度，取值范围 [0-100] 。
+        :param Progress: 语音全文识别任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 语音全文识别任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 语音全文识别任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -1389,6 +1433,8 @@ class AiRecognitionTaskAsrFullTextResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -1403,6 +1449,8 @@ class AiRecognitionTaskAsrFullTextResult(AbstractModel):
             self.Output = AiRecognitionTaskAsrFullTextResultOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1575,6 +1623,10 @@ class AiRecognitionTaskAsrWordsResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiRecognitionTaskAsrWordsResultOutput`
         :param Progress: 语音关键词识别任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 语音关键词识别任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 语音关键词识别任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -1583,6 +1635,8 @@ class AiRecognitionTaskAsrWordsResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -1597,6 +1651,8 @@ class AiRecognitionTaskAsrWordsResult(AbstractModel):
             self.Output = AiRecognitionTaskAsrWordsResultOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1755,6 +1811,10 @@ class AiRecognitionTaskFaceResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiRecognitionTaskFaceResultOutput`
         :param Progress: 人脸识别任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 人脸识别任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 人脸识别任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -1763,6 +1823,8 @@ class AiRecognitionTaskFaceResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -1777,6 +1839,8 @@ class AiRecognitionTaskFaceResult(AbstractModel):
             self.Output = AiRecognitionTaskFaceResultOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1949,6 +2013,10 @@ class AiRecognitionTaskHeadTailResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiRecognitionTaskHeadTailResultOutput`
         :param Progress: 视频片头片尾识别任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 视频片头片尾识别任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 视频片头片尾识别任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -1957,6 +2025,8 @@ class AiRecognitionTaskHeadTailResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -1971,6 +2041,8 @@ class AiRecognitionTaskHeadTailResult(AbstractModel):
             self.Output = AiRecognitionTaskHeadTailResultOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2086,6 +2158,10 @@ class AiRecognitionTaskObjectResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiRecognitionTaskObjectResultOutput`
         :param Progress: 物体识别任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 物体识别任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 物体识别任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -2094,6 +2170,8 @@ class AiRecognitionTaskObjectResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -2108,6 +2186,8 @@ class AiRecognitionTaskObjectResult(AbstractModel):
             self.Output = AiRecognitionTaskObjectResultOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2270,6 +2350,10 @@ class AiRecognitionTaskOcrFullTextResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiRecognitionTaskOcrFullTextResultOutput`
         :param Progress: 文本全文识别任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 文本全文识别任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 文本全文识别任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -2278,6 +2362,8 @@ class AiRecognitionTaskOcrFullTextResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -2292,6 +2378,8 @@ class AiRecognitionTaskOcrFullTextResult(AbstractModel):
             self.Output = AiRecognitionTaskOcrFullTextResultOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2454,6 +2542,10 @@ class AiRecognitionTaskOcrWordsResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiRecognitionTaskOcrWordsResultOutput`
         :param Progress: 文本关键词识别任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 文本关键词识别任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 文本关键词识别任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -2462,6 +2554,8 @@ class AiRecognitionTaskOcrWordsResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -2476,6 +2570,8 @@ class AiRecognitionTaskOcrWordsResult(AbstractModel):
             self.Output = AiRecognitionTaskOcrWordsResultOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2639,6 +2735,10 @@ class AiRecognitionTaskSegmentResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiRecognitionTaskSegmentResultOutput`
         :param Progress: 视频拆条任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 视频拆条任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 视频拆条任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -2647,6 +2747,8 @@ class AiRecognitionTaskSegmentResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -2661,6 +2763,8 @@ class AiRecognitionTaskSegmentResult(AbstractModel):
             self.Output = AiRecognitionTaskSegmentResultOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3452,6 +3556,8 @@ class AiReviewTaskPoliticalOcrResult(AbstractModel):
         :param Output: 音视频审核 Ocr 文字涉及令人不适宜信息的任务输出。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Output: :class:`tencentcloud.vod.v20180717.models.AiReviewPoliticalOcrTaskOutput`
+        :param Progress: 音视频审核 Ocr 文字涉及令人不适宜信息的任务进度，取值范围 [0-100] 。
+        :type Progress: int
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -3459,6 +3565,7 @@ class AiReviewTaskPoliticalOcrResult(AbstractModel):
         self.Message = None
         self.Input = None
         self.Output = None
+        self.Progress = None
 
 
     def _deserialize(self, params):
@@ -3472,6 +3579,7 @@ class AiReviewTaskPoliticalOcrResult(AbstractModel):
         if params.get("Output") is not None:
             self.Output = AiReviewPoliticalOcrTaskOutput()
             self.Output._deserialize(params.get("Output"))
+        self.Progress = params.get("Progress")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6648,6 +6756,101 @@ class CreateContentReviewTemplateResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateEnhanceMediaTemplateRequest(AbstractModel):
+    """CreateEnhanceMediaTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Container: 输出文件封装格式，可选值：mp4、flv、hls。
+        :type Container: str
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        :param Name: 音画质重生模板名称，长度限制：64 个字符。
+        :type Name: str
+        :param Comment: 模板描述信息，长度限制：256 个字符。
+        :type Comment: str
+        :param RebuildVideoInfo: 音画质重生视频控制控制信息。
+        :type RebuildVideoInfo: :class:`tencentcloud.vod.v20180717.models.RebuildVideoInfo`
+        :param RebuildAudioInfo: 音画质重生音频控制控制信息。
+        :type RebuildAudioInfo: :class:`tencentcloud.vod.v20180717.models.RebuildAudioInfo`
+        :param TargetVideoInfo: 输出目标视频控制信息。
+        :type TargetVideoInfo: :class:`tencentcloud.vod.v20180717.models.RebuildMediaTargetVideoStream`
+        :param TargetAudioInfo: 输出目标音频控制信息。
+        :type TargetAudioInfo: :class:`tencentcloud.vod.v20180717.models.RebuildMediaTargetAudioStream`
+        :param RemoveVideo: 是否去除视频数据，可选值：
+<li>0：保留</li>
+<li>1：去除</li>
+默认值 0。
+        :type RemoveVideo: int
+        :param RemoveAudio: 是否去除音频数据，可选值：
+<li>0：保留</li>
+<li>1：去除</li>
+默认值 0。
+        :type RemoveAudio: int
+        """
+        self.Container = None
+        self.SubAppId = None
+        self.Name = None
+        self.Comment = None
+        self.RebuildVideoInfo = None
+        self.RebuildAudioInfo = None
+        self.TargetVideoInfo = None
+        self.TargetAudioInfo = None
+        self.RemoveVideo = None
+        self.RemoveAudio = None
+
+
+    def _deserialize(self, params):
+        self.Container = params.get("Container")
+        self.SubAppId = params.get("SubAppId")
+        self.Name = params.get("Name")
+        self.Comment = params.get("Comment")
+        if params.get("RebuildVideoInfo") is not None:
+            self.RebuildVideoInfo = RebuildVideoInfo()
+            self.RebuildVideoInfo._deserialize(params.get("RebuildVideoInfo"))
+        if params.get("RebuildAudioInfo") is not None:
+            self.RebuildAudioInfo = RebuildAudioInfo()
+            self.RebuildAudioInfo._deserialize(params.get("RebuildAudioInfo"))
+        if params.get("TargetVideoInfo") is not None:
+            self.TargetVideoInfo = RebuildMediaTargetVideoStream()
+            self.TargetVideoInfo._deserialize(params.get("TargetVideoInfo"))
+        if params.get("TargetAudioInfo") is not None:
+            self.TargetAudioInfo = RebuildMediaTargetAudioStream()
+            self.TargetAudioInfo._deserialize(params.get("TargetAudioInfo"))
+        self.RemoveVideo = params.get("RemoveVideo")
+        self.RemoveAudio = params.get("RemoveAudio")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateEnhanceMediaTemplateResponse(AbstractModel):
+    """CreateEnhanceMediaTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Definition: 音画质重生模板 ID。
+        :type Definition: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Definition = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Definition = params.get("Definition")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateHeadTailTemplateRequest(AbstractModel):
     """CreateHeadTailTemplate请求参数结构体
 
@@ -7287,12 +7490,18 @@ class CreateRoundPlayRequest(AbstractModel):
         :type Name: str
         :param Desc: 轮播播单描述信息，长度限制：256 个字符。
         :type Desc: str
+        :param PlayBackMode: 播放模式，可选值：
+<li>Loop：循环播放播单；</li>
+<li>Linear：单次播放，播单播放完停止播放。</li>
+默认值：Loop。
+        :type PlayBackMode: str
         """
         self.StartTime = None
         self.RoundPlaylist = None
         self.SubAppId = None
         self.Name = None
         self.Desc = None
+        self.PlayBackMode = None
 
 
     def _deserialize(self, params):
@@ -7306,6 +7515,7 @@ class CreateRoundPlayRequest(AbstractModel):
         self.SubAppId = params.get("SubAppId")
         self.Name = params.get("Name")
         self.Desc = params.get("Desc")
+        self.PlayBackMode = params.get("PlayBackMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8350,6 +8560,51 @@ class DeleteContentReviewTemplateRequest(AbstractModel):
 
 class DeleteContentReviewTemplateResponse(AbstractModel):
     """DeleteContentReviewTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteEnhanceMediaTemplateRequest(AbstractModel):
+    """DeleteEnhanceMediaTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Definition: 音画质重生模板号。
+        :type Definition: int
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        """
+        self.Definition = None
+        self.SubAppId = None
+
+
+    def _deserialize(self, params):
+        self.Definition = params.get("Definition")
+        self.SubAppId = params.get("SubAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteEnhanceMediaTemplateResponse(AbstractModel):
+    """DeleteEnhanceMediaTemplate返回参数结构体
 
     """
 
@@ -10148,6 +10403,78 @@ class DescribeDrmKeyProviderInfoResponse(AbstractModel):
         if params.get("SDMCInfo") is not None:
             self.SDMCInfo = SDMCDrmKeyProviderInfo()
             self.SDMCInfo._deserialize(params.get("SDMCInfo"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeEnhanceMediaTemplatesRequest(AbstractModel):
+    """DescribeEnhanceMediaTemplates请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        :param Definitions: 音画质重生模板列表。长度限制：100。
+        :type Definitions: list of int
+        :param Type: 模板类型过滤条件，可选值：
+<li>Preset：系统预置模板；</li>
+<li>Custom：用户自定义模板。</li>
+        :type Type: str
+        :param Offset: 分页偏移量，默认值：0。
+        :type Offset: int
+        :param Limit: 返回记录条数，默认值：10，最大值：100。
+        :type Limit: int
+        """
+        self.SubAppId = None
+        self.Definitions = None
+        self.Type = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.SubAppId = params.get("SubAppId")
+        self.Definitions = params.get("Definitions")
+        self.Type = params.get("Type")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeEnhanceMediaTemplatesResponse(AbstractModel):
+    """DescribeEnhanceMediaTemplates返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 符合过滤条件的记录总数。
+        :type TotalCount: int
+        :param RebuildMediaTemplateSet: 音画质重生模板详情列表。
+        :type RebuildMediaTemplateSet: list of RebuildMediaTemplate
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.RebuildMediaTemplateSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("RebuildMediaTemplateSet") is not None:
+            self.RebuildMediaTemplateSet = []
+            for item in params.get("RebuildMediaTemplateSet"):
+                obj = RebuildMediaTemplate()
+                obj._deserialize(item)
+                self.RebuildMediaTemplateSet.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -13187,16 +13514,22 @@ class EditMediaVideoStream(AbstractModel):
 <li>当 Width、Height 均非 0，则分辨率按用户指定。</li>
 默认值：0。
         :type Height: int
+        :param Fps: 视频帧率，取值范围：[0, 100]，单位：Hz。
+当取值为0，将自动为视频设置帧率。
+默认值为 0。
+        :type Fps: int
         """
         self.ResolutionAdaptive = None
         self.Width = None
         self.Height = None
+        self.Fps = None
 
 
     def _deserialize(self, params):
         self.ResolutionAdaptive = params.get("ResolutionAdaptive")
         self.Width = params.get("Width")
         self.Height = params.get("Height")
+        self.Fps = params.get("Fps")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13228,6 +13561,89 @@ class EmptyTrackItem(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class EnhanceMediaByTemplateRequest(AbstractModel):
+    """EnhanceMediaByTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FileId: 媒体文件 ID。
+        :type FileId: str
+        :param Definition: 音画质重生模板 ID。
+        :type Definition: int
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        :param StartTimeOffset: 起始偏移时间，单位：秒，不填表示从视频开始截取。
+        :type StartTimeOffset: float
+        :param EndTimeOffset: 结束偏移时间，单位：秒，不填表示截取到视频末尾。
+        :type EndTimeOffset: float
+        :param OutputConfig: 音画质重生后的文件配置。
+        :type OutputConfig: :class:`tencentcloud.vod.v20180717.models.RebuildMediaOutputConfig`
+        :param SessionId: 用于去重的识别码，如果三天内曾有过相同的识别码的请求，则本次的请求会返回错误。最长 50 个字符，不带或者带空字符串表示不做去重。
+        :type SessionId: str
+        :param SessionContext: 来源上下文，用于透传用户请求信息，任务流状态变更回调将返回该字段值，最长 1000 个字符。
+        :type SessionContext: str
+        :param TasksPriority: 任务的优先级，数值越大优先级越高，取值范围是 -10 到 10，不填代表 0。
+        :type TasksPriority: int
+        :param ExtInfo: 保留字段，特殊用途时使用。
+        :type ExtInfo: str
+        """
+        self.FileId = None
+        self.Definition = None
+        self.SubAppId = None
+        self.StartTimeOffset = None
+        self.EndTimeOffset = None
+        self.OutputConfig = None
+        self.SessionId = None
+        self.SessionContext = None
+        self.TasksPriority = None
+        self.ExtInfo = None
+
+
+    def _deserialize(self, params):
+        self.FileId = params.get("FileId")
+        self.Definition = params.get("Definition")
+        self.SubAppId = params.get("SubAppId")
+        self.StartTimeOffset = params.get("StartTimeOffset")
+        self.EndTimeOffset = params.get("EndTimeOffset")
+        if params.get("OutputConfig") is not None:
+            self.OutputConfig = RebuildMediaOutputConfig()
+            self.OutputConfig._deserialize(params.get("OutputConfig"))
+        self.SessionId = params.get("SessionId")
+        self.SessionContext = params.get("SessionContext")
+        self.TasksPriority = params.get("TasksPriority")
+        self.ExtInfo = params.get("ExtInfo")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EnhanceMediaByTemplateResponse(AbstractModel):
+    """EnhanceMediaByTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 音画质重生的任务 ID，可以通过该 ID 查询音画质重生任务的状态。
+        :type TaskId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
 
 
 class EventContent(AbstractModel):
@@ -13634,12 +14050,16 @@ class ExtractTraceWatermarkTaskInput(AbstractModel):
         r"""
         :param Url: 需要提取水印的媒体 URL。
         :type Url: str
+        :param FileId: 媒体文件 ID。Url 对应的原始媒体文件 ID。
+        :type FileId: str
         """
         self.Url = None
+        self.FileId = None
 
 
     def _deserialize(self, params):
         self.Url = params.get("Url")
+        self.FileId = params.get("FileId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14206,6 +14626,10 @@ class HeadTailTemplate(AbstractModel):
 <li> black：留黑，保持视频宽高比不变，边缘剩余部分使用黑色填充。</li>
 默认值：stretch 。
         :type FillType: str
+        :param CreateTime: 模板创建时间，使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type CreateTime: str
+        :param UpdateTime: 模板最后修改时间，使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type UpdateTime: str
         """
         self.Definition = None
         self.Name = None
@@ -14213,6 +14637,8 @@ class HeadTailTemplate(AbstractModel):
         self.HeadCandidateSet = None
         self.TailCandidateSet = None
         self.FillType = None
+        self.CreateTime = None
+        self.UpdateTime = None
 
 
     def _deserialize(self, params):
@@ -14222,6 +14648,8 @@ class HeadTailTemplate(AbstractModel):
         self.HeadCandidateSet = params.get("HeadCandidateSet")
         self.TailCandidateSet = params.get("TailCandidateSet")
         self.FillType = params.get("FillType")
+        self.CreateTime = params.get("CreateTime")
+        self.UpdateTime = params.get("UpdateTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16481,6 +16909,10 @@ class MediaProcessTaskAdaptiveDynamicStreamingResult(AbstractModel):
         :type Input: :class:`tencentcloud.vod.v20180717.models.AdaptiveDynamicStreamingTaskInput`
         :param Output: 对视频转自适应码流任务的输出。
         :type Output: :class:`tencentcloud.vod.v20180717.models.AdaptiveDynamicStreamingInfoItem`
+        :param BeginProcessTime: 转自适应码流任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 转自适应码流任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -16489,6 +16921,8 @@ class MediaProcessTaskAdaptiveDynamicStreamingResult(AbstractModel):
         self.Progress = None
         self.Input = None
         self.Output = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -16503,6 +16937,8 @@ class MediaProcessTaskAdaptiveDynamicStreamingResult(AbstractModel):
         if params.get("Output") is not None:
             self.Output = AdaptiveDynamicStreamingInfoItem()
             self.Output._deserialize(params.get("Output"))
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16534,6 +16970,10 @@ class MediaProcessTaskAnimatedGraphicResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.MediaAnimatedGraphicsItem`
         :param Progress: 转动图任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 转动图任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 转动图任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -16542,6 +16982,8 @@ class MediaProcessTaskAnimatedGraphicResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -16556,6 +16998,8 @@ class MediaProcessTaskAnimatedGraphicResult(AbstractModel):
             self.Output = MediaAnimatedGraphicsItem()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16586,6 +17030,10 @@ class MediaProcessTaskCoverBySnapshotResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.CoverBySnapshotTaskOutput`
         :param Progress: 对视频截图做封面任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 截图做封面任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 截图做封面任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -16594,6 +17042,8 @@ class MediaProcessTaskCoverBySnapshotResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -16608,6 +17058,8 @@ class MediaProcessTaskCoverBySnapshotResult(AbstractModel):
             self.Output = CoverBySnapshotTaskOutput()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16639,6 +17091,10 @@ class MediaProcessTaskImageSpriteResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.MediaImageSpriteItem`
         :param Progress: 对视频截雪碧图任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 截雪碧图任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 截雪碧图任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -16647,6 +17103,8 @@ class MediaProcessTaskImageSpriteResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -16661,6 +17119,8 @@ class MediaProcessTaskImageSpriteResult(AbstractModel):
             self.Output = MediaImageSpriteItem()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16855,6 +17315,10 @@ class MediaProcessTaskSampleSnapshotResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.MediaSampleSnapshotItem`
         :param Progress: 对视频做采样截图任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 采样截图任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 采样截图任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -16863,6 +17327,8 @@ class MediaProcessTaskSampleSnapshotResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -16877,6 +17343,8 @@ class MediaProcessTaskSampleSnapshotResult(AbstractModel):
             self.Output = MediaSampleSnapshotItem()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16908,6 +17376,10 @@ class MediaProcessTaskSnapshotByTimeOffsetResult(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.MediaSnapshotByTimeOffsetItem`
         :param Progress: 对视频按指定时间点截图任务进度，取值范围 [0-100] 。
         :type Progress: int
+        :param BeginProcessTime: 时间点截图任务开始执行的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type BeginProcessTime: str
+        :param FinishTime: 时间点截图任务执行完毕的时间，采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type FinishTime: str
         """
         self.Status = None
         self.ErrCodeExt = None
@@ -16916,6 +17388,8 @@ class MediaProcessTaskSnapshotByTimeOffsetResult(AbstractModel):
         self.Input = None
         self.Output = None
         self.Progress = None
+        self.BeginProcessTime = None
+        self.FinishTime = None
 
 
     def _deserialize(self, params):
@@ -16930,6 +17404,8 @@ class MediaProcessTaskSnapshotByTimeOffsetResult(AbstractModel):
             self.Output = MediaSnapshotByTimeOffsetItem()
             self.Output._deserialize(params.get("Output"))
         self.Progress = params.get("Progress")
+        self.BeginProcessTime = params.get("BeginProcessTime")
+        self.FinishTime = params.get("FinishTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18216,6 +18692,101 @@ class ModifyDefaultStorageRegionResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ModifyEnhanceMediaTemplateRequest(AbstractModel):
+    """ModifyEnhanceMediaTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Definition: 音画质重生模板号。
+        :type Definition: int
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        :param Name: 音画质重生模板名称，长度限制：64 个字符。
+        :type Name: str
+        :param Comment: 模板描述信息，长度限制：256 个字符。
+        :type Comment: str
+        :param RebuildVideoInfo: 音画质重生视频控制控制信息。
+        :type RebuildVideoInfo: :class:`tencentcloud.vod.v20180717.models.RebuildVideoInfo`
+        :param RebuildAudioInfo: 音画质重生音频控制控制信息。
+        :type RebuildAudioInfo: :class:`tencentcloud.vod.v20180717.models.RebuildAudioInfo`
+        :param TargetVideoInfo: 输出目标视频控制信息。
+        :type TargetVideoInfo: :class:`tencentcloud.vod.v20180717.models.RebuildMediaTargetVideoStream`
+        :param TargetAudioInfo: 输出目标音频控制信息。
+        :type TargetAudioInfo: :class:`tencentcloud.vod.v20180717.models.RebuildMediaTargetAudioStream`
+        :param Container: 输出文件封装格式，可选值：mp4、flv、hls。
+        :type Container: str
+        :param RemoveVideo: 是否去除视频数据，可选值：
+<li>0：保留</li>
+<li>1：去除</li>
+默认值 0。
+        :type RemoveVideo: int
+        :param RemoveAudio: 是否去除音频数据，可选值：
+<li>0：保留</li>
+<li>1：去除</li>
+默认值 0。
+        :type RemoveAudio: int
+        """
+        self.Definition = None
+        self.SubAppId = None
+        self.Name = None
+        self.Comment = None
+        self.RebuildVideoInfo = None
+        self.RebuildAudioInfo = None
+        self.TargetVideoInfo = None
+        self.TargetAudioInfo = None
+        self.Container = None
+        self.RemoveVideo = None
+        self.RemoveAudio = None
+
+
+    def _deserialize(self, params):
+        self.Definition = params.get("Definition")
+        self.SubAppId = params.get("SubAppId")
+        self.Name = params.get("Name")
+        self.Comment = params.get("Comment")
+        if params.get("RebuildVideoInfo") is not None:
+            self.RebuildVideoInfo = RebuildVideoInfo()
+            self.RebuildVideoInfo._deserialize(params.get("RebuildVideoInfo"))
+        if params.get("RebuildAudioInfo") is not None:
+            self.RebuildAudioInfo = RebuildAudioInfo()
+            self.RebuildAudioInfo._deserialize(params.get("RebuildAudioInfo"))
+        if params.get("TargetVideoInfo") is not None:
+            self.TargetVideoInfo = RebuildMediaTargetVideoStream()
+            self.TargetVideoInfo._deserialize(params.get("TargetVideoInfo"))
+        if params.get("TargetAudioInfo") is not None:
+            self.TargetAudioInfo = RebuildMediaTargetAudioStream()
+            self.TargetAudioInfo._deserialize(params.get("TargetAudioInfo"))
+        self.Container = params.get("Container")
+        self.RemoveVideo = params.get("RemoveVideo")
+        self.RemoveAudio = params.get("RemoveAudio")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyEnhanceMediaTemplateResponse(AbstractModel):
+    """ModifyEnhanceMediaTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class ModifyEventConfigRequest(AbstractModel):
     """ModifyEventConfig请求参数结构体
 
@@ -18907,6 +19478,14 @@ class ModifyRoundPlayRequest(AbstractModel):
         :type Name: str
         :param Desc: 轮播播单描述信息，长度限制：256 个字符。
         :type Desc: str
+        :param Status: 播放状态，可选值：
+<li>Disabled：结束播放，结束后轮播任务不能再次启动。</li>
+
+        :type Status: str
+        :param PlayBackMode: 播放模式，可选值：
+<li>Loop：循环播放播单；</li>
+<li>Linear：单次播放，播单播放完停止播放。</li>
+        :type PlayBackMode: str
         """
         self.RoundPlayId = None
         self.SubAppId = None
@@ -18914,6 +19493,8 @@ class ModifyRoundPlayRequest(AbstractModel):
         self.RoundPlaylist = None
         self.Name = None
         self.Desc = None
+        self.Status = None
+        self.PlayBackMode = None
 
 
     def _deserialize(self, params):
@@ -18928,6 +19509,8 @@ class ModifyRoundPlayRequest(AbstractModel):
                 self.RoundPlaylist.append(obj)
         self.Name = params.get("Name")
         self.Desc = params.get("Desc")
+        self.Status = params.get("Status")
+        self.PlayBackMode = params.get("PlayBackMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -24469,12 +25052,27 @@ class RoundPlayInfo(AbstractModel):
         :type Name: str
         :param Desc: 轮播播单描述信息，长度限制：256 个字符。
         :type Desc: str
+        :param Status: 播放状态，可选值：
+<li>Enabled：启动状态；</li>
+<li>Disabled：停止状态。</li>
+默认值：Enabled。
+        :type Status: str
+        :param PlayBackMode: 播放模式，可选值：
+<li>Loop：循环播放播单；</li>
+<li>Linear：单次播放，播单播放完停止播放。</li>
+默认值：Loop。
+        :type PlayBackMode: str
+        :param Url: 轮播播放地址。
+        :type Url: str
         """
         self.RoundPlayId = None
         self.StartTime = None
         self.RoundPlaylist = None
         self.Name = None
         self.Desc = None
+        self.Status = None
+        self.PlayBackMode = None
+        self.Url = None
 
 
     def _deserialize(self, params):
@@ -24488,6 +25086,9 @@ class RoundPlayInfo(AbstractModel):
                 self.RoundPlaylist.append(obj)
         self.Name = params.get("Name")
         self.Desc = params.get("Desc")
+        self.Status = params.get("Status")
+        self.PlayBackMode = params.get("PlayBackMode")
+        self.Url = params.get("Url")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

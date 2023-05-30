@@ -26,6 +26,9 @@ FAILEDOPERATION = 'FailedOperation'
 # 创建镜像失败。
 FAILEDOPERATION_CREATEBLUEPRINTFAILED = 'FailedOperation.CreateBlueprintFailed'
 
+# 创建云硬盘失败。
+FAILEDOPERATION_CREATEDISKSFAILED = 'FailedOperation.CreateDisksFailed'
+
 # 创建实例失败。
 FAILEDOPERATION_CREATEINSTANCESFAILED = 'FailedOperation.CreateInstancesFailed'
 
@@ -77,8 +80,8 @@ FAILEDOPERATION_MODIFYINSTANCESBUNDLEFAILED = 'FailedOperation.ModifyInstancesBu
 # 变更资源属性失败，请稍后重新操作。
 FAILEDOPERATION_MODIFYRESOURCESATTRIBUTEFAILED = 'FailedOperation.ModifyResourcesAttributeFailed'
 
-# 续费实例失败。
-FAILEDOPERATION_RENEWINSTANCESFAILED = 'FailedOperation.RenewInstancesFailed'
+# 续费资源失败。
+FAILEDOPERATION_RENEWRESOURCESFAILED = 'FailedOperation.RenewResourcesFailed'
 
 # 请求错误。
 FAILEDOPERATION_REQUESTERROR = 'FailedOperation.RequestError'
@@ -131,7 +134,7 @@ INTERNALERROR_INVALIDACTIONNOTFOUND = 'InternalError.InvalidActionNotFound'
 # 套餐价格错误。
 INTERNALERROR_INVALIDBUNDLEPRICE = 'InternalError.InvalidBundlePrice'
 
-# 命令 `DescribeInstanceLoginKeyPair` 无法找到。
+# 命令无法找到。
 INTERNALERROR_INVALIDCOMMANDNOTFOUND = 'InternalError.InvalidCommandNotFound'
 
 # 请求出现错误。
@@ -218,6 +221,9 @@ INVALIDPARAMETERVALUE_DISKBACKUPIDMALFORMED = 'InvalidParameterValue.DiskBackupI
 # 指定的云盘备份点名称不可大于最大长度。
 INVALIDPARAMETERVALUE_DISKBACKUPNAMETOOLONG = 'InvalidParameterValue.DiskBackupNameTooLong'
 
+# 云硬盘的可用区与实例的可用区不匹配。
+INVALIDPARAMETERVALUE_DISKINSTANCEZONENOTMATCH = 'InvalidParameterValue.DiskInstanceZoneNotMatch'
+
 # 磁盘名称长度超出限制。
 INVALIDPARAMETERVALUE_DISKNAMETOOLONG = 'InvalidParameterValue.DiskNameTooLong'
 
@@ -257,8 +263,14 @@ INVALIDPARAMETERVALUE_INVALIDBUNDLE = 'InvalidParameterValue.InvalidBundle'
 # 控制台显示类型不合法。
 INVALIDPARAMETERVALUE_INVALIDCONSOLEDISPLAYTYPES = 'InvalidParameterValue.InvalidConsoleDisplayTypes'
 
+# 当前实例到期时间不能早于云硬盘到期时间。
+INVALIDPARAMETERVALUE_INVALIDCURINSTANCEDEADLINE = 'InvalidParameterValue.InvalidCurInstanceDeadline'
+
 # 参数值非法，磁盘 ID 格式非法。
 INVALIDPARAMETERVALUE_INVALIDDISKIDMALFORMED = 'InvalidParameterValue.InvalidDiskIdMalformed'
+
+# 云硬盘类型非法。
+INVALIDPARAMETERVALUE_INVALIDDISKTYPE = 'InvalidParameterValue.InvalidDiskType'
 
 # 设置是否使用默认密钥对登录的值不正确。
 INVALIDPARAMETERVALUE_INVALIDINSTANCELOGINKEYPAIRPERMITLOGIN = 'InvalidParameterValue.InvalidInstanceLoginKeyPairPermitLogin'
@@ -311,6 +323,12 @@ INVALIDPARAMETERVALUE_NOTALLOWTOCHANGEPLATFORMTYPE = 'InvalidParameterValue.NotA
 # 参数值非法，不在合法范围内。
 INVALIDPARAMETERVALUE_OUTOFRANGE = 'InvalidParameterValue.OutOfRange'
 
+# 实例操作系统不支持该文件系统。
+INVALIDPARAMETERVALUE_PLATFORMTYPENOTSUPPORTFILESYSTEM = 'InvalidParameterValue.PlatformTypeNotSupportFileSystem'
+
+# 实例操作系统不支持指定挂载点。
+INVALIDPARAMETERVALUE_PLATFORMTYPENOTSUPPORTMOUNTPOINT = 'InvalidParameterValue.PlatformTypeNotSupportMountPoint'
+
 # 地域不存在。
 INVALIDPARAMETERVALUE_REGIONNOTFOUND = 'InvalidParameterValue.RegionNotFound'
 
@@ -347,6 +365,9 @@ LIMITEXCEEDED_BLUEPRINTQUOTALIMITEXCEEDED = 'LimitExceeded.BlueprintQuotaLimitEx
 # 超过磁盘备份点配额限制。
 LIMITEXCEEDED_DISKBACKUPQUOTALIMITEXCEEDED = 'LimitExceeded.DiskBackupQuotaLimitExceeded'
 
+# 当前配额不足，无法创建新的云硬盘。
+LIMITEXCEEDED_DISKQUOTALIMITEXCEEDED = 'LimitExceeded.DiskQuotaLimitExceeded'
+
 # 超过防火墙规则配额。
 LIMITEXCEEDED_FIREWALLRULESLIMITEXCEEDED = 'LimitExceeded.FirewallRulesLimitExceeded'
 
@@ -364,6 +385,9 @@ LIMITEXCEEDED_SNAPSHOTQUOTALIMITEXCEEDED = 'LimitExceeded.SnapshotQuotaLimitExce
 
 # 缺少参数错误。
 MISSINGPARAMETER = 'MissingParameter'
+
+# 必须传入参数Period或CurInstanceDeadline。
+MISSINGPARAMETER_MISSINGPARAMETERPERIODCURINSTANCEDEADLINE = 'MissingParameter.MissingParameterPeriodCurInstanceDeadline'
 
 # 该实例不支持升级套餐操作。
 OPERATIONDENIED_BUNDLENOTSUPPORTMODIFY = 'OperationDenied.BundleNotSupportModify'
@@ -586,6 +610,9 @@ UNSUPPORTEDOPERATION_SNAPSHOTBUSY = 'UnsupportedOperation.SnapshotBusy'
 
 # 系统忙。
 UNSUPPORTEDOPERATION_SYSTEMBUSY = 'UnsupportedOperation.SystemBusy'
+
+# 实例上腾讯云助手 agent 不在线。
+UNSUPPORTEDOPERATION_TATAGENTNOTONLINE = 'UnsupportedOperation.TatAgentNotOnline'
 
 # Windows实例不支持绑定密钥对。
 UNSUPPORTEDOPERATION_WINDOWSNOTALLOWTOASSOCIATEKEYPAIR = 'UnsupportedOperation.WindowsNotAllowToAssociateKeyPair'

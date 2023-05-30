@@ -2105,6 +2105,76 @@ class CreateEnvironmentRoleResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateRabbitMQUserRequest(AbstractModel):
+    """CreateRabbitMQUser请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 集群实例Id
+        :type InstanceId: str
+        :param User: 用户名，登录时使用
+        :type User: str
+        :param Password: 密码，登录时使用
+        :type Password: str
+        :param Description: 描述
+        :type Description: str
+        :param Tags: 用户标签，用于决定改用户访问RabbitMQ Management的权限范围
+management：普通控制台用户，monitoring：管理型控制台用户，其他值：非控制台用户
+        :type Tags: list of str
+        :param MaxConnections: 该用户的最大连接数，不填写则不限制
+        :type MaxConnections: int
+        :param MaxChannels: 该用户的最大channel数，不填写则不限制
+        :type MaxChannels: int
+        """
+        self.InstanceId = None
+        self.User = None
+        self.Password = None
+        self.Description = None
+        self.Tags = None
+        self.MaxConnections = None
+        self.MaxChannels = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.User = params.get("User")
+        self.Password = params.get("Password")
+        self.Description = params.get("Description")
+        self.Tags = params.get("Tags")
+        self.MaxConnections = params.get("MaxConnections")
+        self.MaxChannels = params.get("MaxChannels")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateRabbitMQUserResponse(AbstractModel):
+    """CreateRabbitMQUser返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param User: 用户名，登录时使用
+        :type User: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.User = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.User = params.get("User")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateRabbitMQVipInstanceRequest(AbstractModel):
     """CreateRabbitMQVipInstance请求参数结构体
 
@@ -2189,6 +2259,63 @@ class CreateRabbitMQVipInstanceResponse(AbstractModel):
     def _deserialize(self, params):
         self.TranId = params.get("TranId")
         self.InstanceId = params.get("InstanceId")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateRabbitMQVirtualHostRequest(AbstractModel):
+    """CreateRabbitMQVirtualHost请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 集群实例Id
+        :type InstanceId: str
+        :param VirtualHost: vhost名
+        :type VirtualHost: str
+        :param Description: 描述
+        :type Description: str
+        :param TraceFlag: 消息轨迹开关,true打开,false关闭,默认关闭
+        :type TraceFlag: bool
+        """
+        self.InstanceId = None
+        self.VirtualHost = None
+        self.Description = None
+        self.TraceFlag = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.VirtualHost = params.get("VirtualHost")
+        self.Description = params.get("Description")
+        self.TraceFlag = params.get("TraceFlag")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateRabbitMQVirtualHostResponse(AbstractModel):
+    """CreateRabbitMQVirtualHost返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param VirtualHost: vhost名
+        :type VirtualHost: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.VirtualHost = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.VirtualHost = params.get("VirtualHost")
         self.RequestId = params.get("RequestId")
 
 
@@ -5839,6 +5966,102 @@ class DescribeRocketMQGroupsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeRocketMQMsgRequest(AbstractModel):
+    """DescribeRocketMQMsg请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群id
+        :type ClusterId: str
+        :param EnvironmentId: 命名空间
+        :type EnvironmentId: str
+        :param TopicName: 主题，查询死信时传groupId
+        :type TopicName: str
+        :param MsgId: 消息id
+        :type MsgId: str
+        :param PulsarMsgId: pulsar消息id
+        :type PulsarMsgId: str
+        :param QueryDlqMsg: 查询死信时该值为true，只对Rocketmq有效
+        :type QueryDlqMsg: bool
+        """
+        self.ClusterId = None
+        self.EnvironmentId = None
+        self.TopicName = None
+        self.MsgId = None
+        self.PulsarMsgId = None
+        self.QueryDlqMsg = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.EnvironmentId = params.get("EnvironmentId")
+        self.TopicName = params.get("TopicName")
+        self.MsgId = params.get("MsgId")
+        self.PulsarMsgId = params.get("PulsarMsgId")
+        self.QueryDlqMsg = params.get("QueryDlqMsg")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRocketMQMsgResponse(AbstractModel):
+    """DescribeRocketMQMsg返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Body: 消息体
+        :type Body: str
+        :param Properties: 详情参数
+        :type Properties: str
+        :param ProduceTime: 生产时间
+        :type ProduceTime: str
+        :param MsgId: 消息id
+        :type MsgId: str
+        :param ProducerAddr: 生产者地址
+        :type ProducerAddr: str
+        :param MessageTracks: 消费组消费情况
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MessageTracks: list of RocketMQMessageTrack
+        :param ShowTopicName: 详情页展示的topic名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ShowTopicName: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Body = None
+        self.Properties = None
+        self.ProduceTime = None
+        self.MsgId = None
+        self.ProducerAddr = None
+        self.MessageTracks = None
+        self.ShowTopicName = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Body = params.get("Body")
+        self.Properties = params.get("Properties")
+        self.ProduceTime = params.get("ProduceTime")
+        self.MsgId = params.get("MsgId")
+        self.ProducerAddr = params.get("ProducerAddr")
+        if params.get("MessageTracks") is not None:
+            self.MessageTracks = []
+            for item in params.get("MessageTracks"):
+                obj = RocketMQMessageTrack()
+                obj._deserialize(item)
+                self.MessageTracks.append(obj)
+        self.ShowTopicName = params.get("ShowTopicName")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeRocketMQNamespacesRequest(AbstractModel):
     """DescribeRocketMQNamespaces请求参数结构体
 
@@ -6271,6 +6494,8 @@ class DescribeTopicsRequest(AbstractModel):
         r"""
         :param EnvironmentId: 环境（命名空间）名称。
         :type EnvironmentId: str
+        :param ClusterId: Pulsar 集群的ID
+        :type ClusterId: str
         :param TopicName: 主题名模糊匹配。
         :type TopicName: str
         :param Offset: 起始下标，不填默认为0。
@@ -6283,8 +6508,6 @@ class DescribeTopicsRequest(AbstractModel):
 2：持久非分区主题类型；
 3：持久分区主题类型；
         :type TopicType: int
-        :param ClusterId: Pulsar 集群的ID
-        :type ClusterId: str
         :param Filters: * TopicName
 按照主题名字查询，精确查询。
 类型：String
@@ -6296,22 +6519,22 @@ class DescribeTopicsRequest(AbstractModel):
         :type TopicCreator: int
         """
         self.EnvironmentId = None
+        self.ClusterId = None
         self.TopicName = None
         self.Offset = None
         self.Limit = None
         self.TopicType = None
-        self.ClusterId = None
         self.Filters = None
         self.TopicCreator = None
 
 
     def _deserialize(self, params):
         self.EnvironmentId = params.get("EnvironmentId")
+        self.ClusterId = params.get("ClusterId")
         self.TopicName = params.get("TopicName")
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
         self.TopicType = params.get("TopicType")
-        self.ClusterId = params.get("ClusterId")
         if params.get("Filters") is not None:
             self.Filters = []
             for item in params.get("Filters"):
@@ -8107,6 +8330,9 @@ class PulsarProClusterInfo(AbstractModel):
         :type NodeDistribution: list of InstanceNodeDistribution
         :param MaxStorage: 最大储存容量，单位：MB
         :type MaxStorage: int
+        :param CanEditRoute: 是否可以修改路由
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CanEditRoute: bool
         """
         self.ClusterId = None
         self.ClusterName = None
@@ -8116,6 +8342,7 @@ class PulsarProClusterInfo(AbstractModel):
         self.Version = None
         self.NodeDistribution = None
         self.MaxStorage = None
+        self.CanEditRoute = None
 
 
     def _deserialize(self, params):
@@ -8132,6 +8359,7 @@ class PulsarProClusterInfo(AbstractModel):
                 obj._deserialize(item)
                 self.NodeDistribution.append(obj)
         self.MaxStorage = params.get("MaxStorage")
+        self.CanEditRoute = params.get("CanEditRoute")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9388,6 +9616,43 @@ class RocketMQInstanceConfig(AbstractModel):
                 obj._deserialize(item)
                 self.TopicDistribution.append(obj)
         self.MaxQueuesPerTopic = params.get("MaxQueuesPerTopic")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RocketMQMessageTrack(AbstractModel):
+    """Rocketmq消息消费track信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Group: 消费者组
+        :type Group: str
+        :param ConsumeStatus: 消费状态
+        :type ConsumeStatus: str
+        :param TrackType: 消息track类型
+        :type TrackType: str
+        :param ExceptionDesc: 异常信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExceptionDesc: str
+        """
+        self.Group = None
+        self.ConsumeStatus = None
+        self.TrackType = None
+        self.ExceptionDesc = None
+
+
+    def _deserialize(self, params):
+        self.Group = params.get("Group")
+        self.ConsumeStatus = params.get("ConsumeStatus")
+        self.TrackType = params.get("TrackType")
+        self.ExceptionDesc = params.get("ExceptionDesc")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -1245,6 +1245,29 @@ class CkafkaClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeTaskStatus(self, request):
+        """查询任务状态
+
+        :param request: Request instance for DescribeTaskStatus.
+        :type request: :class:`tencentcloud.ckafka.v20190819.models.DescribeTaskStatusRequest`
+        :rtype: :class:`tencentcloud.ckafka.v20190819.models.DescribeTaskStatusResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeTaskStatus", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeTaskStatusResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeTopic(self, request):
         """接口请求域名：https://ckafka.tencentcloudapi.com
         本接口（DescribeTopic）用于在用户获取消息队列 CKafka 实例的主题列表
@@ -1306,6 +1329,29 @@ class CkafkaClient(AbstractClient):
             body = self.call("DescribeTopicDetail", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeTopicDetailResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeTopicFlowRanking(self, request):
+        """获取Topic流量排行，消费者流量排行
+
+        :param request: Request instance for DescribeTopicFlowRanking.
+        :type request: :class:`tencentcloud.ckafka.v20190819.models.DescribeTopicFlowRankingRequest`
+        :rtype: :class:`tencentcloud.ckafka.v20190819.models.DescribeTopicFlowRankingResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeTopicFlowRanking", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeTopicFlowRankingResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

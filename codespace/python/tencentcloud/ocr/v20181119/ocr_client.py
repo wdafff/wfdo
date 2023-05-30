@@ -204,6 +204,8 @@ class OcrClient(AbstractClient):
     def CarInvoiceOCR(self, request):
         """本接口支持机动车销售统一发票和二手车销售统一发票的识别，包括发票号码、发票代码、合计金额、合计税额等二十多个字段。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for CarInvoiceOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.CarInvoiceOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.CarInvoiceOCRResponse`
@@ -1432,9 +1434,133 @@ class OcrClient(AbstractClient):
 
 
     def RecognizeGeneralInvoice(self, request):
-        """本接口支持 单张、多张、多类型 票据的混合识别，同时支持自选需要识别的票据类型，已支持票种包括：增值税发票（专票、普票、卷票）、全电发票、非税发票、定额发票、通用机打发票、购车发票、火车票、出租车发票、机票行程单、汽车票、轮船票、过路过桥费发票共14种标准报销发票，并支持其他类发票的识别。
+        """本接口支持 PDF多页（最多30页）、一页中单张、多张、类型票据的混合识别，同时支持单选识别某类票据，已支持票种包括：增值税发票（专票、普票、卷票、区块链发票、通行费发票）、全电发票（专票、普票）、非税发票（通用票据、统一缴纳书）、定额发票、通用机打发票、购车发票（机动车销售发票、二手车发票）、火车票、出租车发票、机票行程单、汽车票、轮船票、过路过桥费发票共14种标准报销发票，并支持非上述类型的其他发票的智能识别，点击[立即试用](https://cloud.tencent.com/product/ocr)。
 
         默认接口请求频率限制：5次/秒。
+
+
+        支持返回的细项目子票种SubType、子票种中文TypeDescription、以及对应所属大类票种Type 的说明如下列表：
+        <table style="width:715px">
+              <thead>
+                <tr>
+                  <th style="width:200px">SubType 子票种英文</th>
+                  <th style="width:200px">TypeDescription子票种中文</th>
+                  <th >Type 所属大类票种</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td> VatSpecialInvoice</td>
+                  <td> 增值税专用发票 </td>
+                  <td> 3 </td>
+                </tr>
+                <tr>
+                  <td> VatCommonInvoice</td>
+                  <td> 增值税普通发票 </td>
+                  <td> 3 </td>
+                </tr>
+                <tr>
+                  <td> VatElectronicCommonInvoice </td>
+                  <td> 增值税电子普通发票 </td>
+                  <td> 3 </td>
+                </tr>
+                <tr>
+                  <td> VatElectronicSpecialInvoice </td>
+                  <td> 增值税电子专用发票 </td>
+                  <td> 3 </td>
+                </tr>
+                <tr>
+                  <td> VatElectronicInvoiceBlockchain</td>
+                  <td> 区块链电子发票 </td>
+                  <td> 3 </td>
+                </tr>
+                <tr>
+                  <td> VatElectronicInvoiceToll</td>
+                  <td> 增值税电子普通发票(通行费)</td>
+                  <td> 3 </td>
+                </tr>
+                <tr>
+                  <td> VatElectronicSpecialInvoiceFull</td>
+                  <td> 电子发票(专用发票)</td>
+                  <td> 16 </td>
+                </tr>
+                <tr>
+                  <td> VatElectronicSpecialInvoiceFull</td>
+                  <td> 电子发票(普通发票) </td>
+                  <td> 16 </td>
+                </tr>
+                <tr>
+                  <td> MotorVehicleSaleInvoice </td>
+                  <td> 机动车销售统一发票 </td>
+                  <td> 12 </td>
+                </tr>
+                <tr>
+                  <td> UsedCarPurchaseInvoice </td>
+                  <td> 二手车销售统一发票 </td>
+                  <td> 12 </td>
+                </tr>
+                <tr>
+                  <td> VatInvoiceRoll </td>
+                  <td> 增值税普通发票(卷票) </td>
+                  <td> 11 </td>
+                </tr>
+                <tr>
+                  <td> TaxiTicket </td>
+                  <td> 出租车发票 </td>
+                  <td> 0 </td>
+                </tr>
+                <tr>
+                  <td> QuotaInvoice </td>
+                  <td> 定额发票 </td>
+                  <td> 1 </td>
+                </tr>
+                <tr>
+                  <td> TrainTicket </td>
+                  <td> 火车票 </td>
+                  <td> 2 </td>
+                </tr>
+                <tr>
+                  <td> AirTransport </td>
+                  <td> 机票行程单 </td>
+                  <td> 5 </td>
+                </tr>
+                <tr>
+                  <td> MachinePrintedInvoice </td>
+                  <td> 通用机打发票 </td>
+                  <td> 8 </td>
+                </tr>
+                <tr>
+                  <td> BusInvoice </td>
+                  <td> 汽车票 </td>
+                  <td> 9 </td>
+                </tr>
+                <tr>
+                  <td> ShippingInvoice </td>
+                  <td> 轮船票 </td>
+                  <td> 10 </td>
+                </tr>
+                <tr>
+                  <td> NonTaxIncomeGeneralBill </td>
+                  <td> 非税收入通用票据 </td>
+                  <td> 15 </td>
+                </tr>
+                <tr>
+                  <td> NonTaxIncomeElectronicBill </td>
+                  <td> 非税收入一般缴款书(电子) </td>
+                  <td> 15 </td>
+                </tr>
+                <tr>
+                  <td> TollInvoice </td>
+                  <td> 过路过桥费发票 </td>
+                  <td> 13 </td>
+                </tr>
+                <tr>
+                  <td> OtherInvoice </td>
+                  <td> 其他发票 </td>
+                  <td> -1 </td>
+                </tr>
+              </tbody>
+            </table>
 
         :param request: Request instance for RecognizeGeneralInvoice.
         :type request: :class:`tencentcloud.ocr.v20181119.models.RecognizeGeneralInvoiceRequest`
@@ -1651,7 +1777,9 @@ class OcrClient(AbstractClient):
 
 
     def RecognizeTableAccurateOCR(self, request):
-        """本接口支持中英文图片/PDF内常规表格、无线表格、多表格的检测和识别，返回每个单元格的文字内容，支持旋转的表格图片识别，且支持将识别结果保存为 Excel 格式。识别效果比表格识别V2更好，覆盖场景更加广泛，对表格难例场景，如无线表格、嵌套表格（有线表格中包含无线表格）的识别效果均优于表格识别V2。
+        """本接口支持中英文图片/PDF内常规表格、无线表格、多表格的检测和识别，返回每个单元格的文字内容，支持旋转的表格图片识别，且支持将识别结果保存为 Excel 格式。识别效果比表格识别V2更好，覆盖场景更加广泛，对表格难例场景，如无线表格、嵌套表格（有线表格中包含无线表格）的识别效果均优于表格识别V2。点击[立即体验](https://cloud.tencent.com/product/smart-ocr)。
+
+        默认接口请求频率限制：2次/秒。
 
         :param request: Request instance for RecognizeTableAccurateOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.RecognizeTableAccurateOCRRequest`
@@ -2048,7 +2176,7 @@ class OcrClient(AbstractClient):
 
 
     def VatInvoiceOCR(self, request):
-        """本接口支持增值税专用发票、增值税普通发票、增值税电子发票全字段的内容检测和识别，包括发票代码、发票号码、打印发票代码、打印发票号码、开票日期、合计金额、校验码、税率、合计税额、价税合计、购买方识别号、复核、销售方识别号、开票人、密码区1、密码区2、密码区3、密码区4、发票名称、购买方名称、销售方名称、服务名称、备注、规格型号、数量、单价、金额、税额、收款人等字段。
+        """本接口支持增值税专用发票、增值税普通发票、增值税电子专票、增值税电子普票、电子发票（普通发票）、电子发票（增值税专用发票）德全字段的内容检测和识别，包括发票代码、发票号码、打印发票代码、打印发票号码、开票日期、合计金额、校验码、税率、合计税额、价税合计、购买方识别号、复核、销售方识别号、开票人、密码区1、密码区2、密码区3、密码区4、发票名称、购买方名称、销售方名称、服务名称、备注、规格型号、数量、单价、金额、税额、收款人等字段，点击[立即试用](https://cloud.tencent.com/product/ocr)。
 
         默认接口请求频率限制：10次/秒。
 

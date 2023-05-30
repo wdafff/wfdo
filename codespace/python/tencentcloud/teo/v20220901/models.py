@@ -808,6 +808,8 @@ class ApplicationProxy(AbstractModel):
         :type UpdateTime: str
         :param ApplicationProxyRules: 规则列表。
         :type ApplicationProxyRules: list of ApplicationProxyRule
+        :param AccelerateMainland: 中国大陆加速优化配置。
+        :type AccelerateMainland: :class:`tencentcloud.teo.v20220901.models.AccelerateMainland`
         """
         self.ZoneId = None
         self.ZoneName = None
@@ -826,6 +828,7 @@ class ApplicationProxy(AbstractModel):
         self.Ipv6 = None
         self.UpdateTime = None
         self.ApplicationProxyRules = None
+        self.AccelerateMainland = None
 
 
     def _deserialize(self, params):
@@ -853,6 +856,9 @@ class ApplicationProxy(AbstractModel):
                 obj = ApplicationProxyRule()
                 obj._deserialize(item)
                 self.ApplicationProxyRules.append(obj)
+        if params.get("AccelerateMainland") is not None:
+            self.AccelerateMainland = AccelerateMainland()
+            self.AccelerateMainland._deserialize(params.get("AccelerateMainland"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1099,7 +1105,6 @@ class BotExtendAction(AbstractModel):
         r"""
         :param Action: 处置动作，取值有：
 <li>monitor：观察；</li>
-<li>trans：放行；</li>
 <li>alg：JavaScript挑战；</li>
 <li>captcha：托管挑战；</li>
 <li>random：随机，按照ExtendActions分配处置动作和比例；</li>
@@ -1249,6 +1254,7 @@ class BotUserRule(AbstractModel):
 <li>trans：放行；</li>
 <li>alg：JavaScript挑战；</li>
 <li>captcha：托管挑战；</li>
+<li>random：随机处置；</li>
 <li>silence：静默；</li>
 <li>shortdelay：短时响应；</li>
 <li>longdelay：长时响应。</li>
@@ -3312,7 +3318,7 @@ class DescribeAccelerationDomainsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ZoneId: 加速域名所属站点ID。不填写该参数默认返回所有站点下的加速域名。
+        :param ZoneId: 加速域名所属站点ID。
         :type ZoneId: str
         :param Filters: 过滤条件，Filters.Values的上限为20。详细的过滤条件如下：
 <li>domain-name<br>   按照【<strong>加速域名名称</strong>】进行过滤。<br>   类型：String<br>   必选：否

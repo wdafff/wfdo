@@ -609,7 +609,7 @@ DYNAMIC_TABLE - 动态表格控件；
 ATTACHMENT - 附件控件,ComponentValue 填写附件图片的资源 ID列表，以逗号分割；
 SELECTOR - 选择器控件，ComponentValue填写选择的字符串内容；
 DATE - 日期控件；默认是格式化为xxxx年xx月xx日字符串；
-DISTRICT - 省市区行政区划控件，ComponentValue填写省市区行政区划字符串内容；
+DISTRICT - 省市区行政区控件，ComponentValue填写省市区行政区字符串内容；
 
 如果是SignComponent控件类型，则可选的字段为
 SIGN_SEAL - 签署印章控件；
@@ -656,6 +656,7 @@ HANDWRITE – 手写签名
 BORDERLESS_ESIGN – 自动生成无边框腾讯体
 OCR_ESIGN -- AI智能识别手写签名
 ESIGN -- 个人印章类型
+SYSTEM_ESIGN -- 系统签名（该类型可以在用户签署时根据用户姓名一键生成一个签名来进行签署）
 如：{“ComponentTypeLimit”: [“BORDERLESS_ESIGN”]}
 
 ComponentType为SIGN_DATE时，支持以下参数：
@@ -887,6 +888,61 @@ class CreateBatchCancelFlowUrlResponse(AbstractModel):
         self.BatchCancelFlowUrl = params.get("BatchCancelFlowUrl")
         self.FailMessages = params.get("FailMessages")
         self.UrlExpireOn = params.get("UrlExpireOn")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateChannelSubOrganizationModifyQrCodeRequest(AbstractModel):
+    """CreateChannelSubOrganizationModifyQrCode请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Operator: 操作人
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param ApplicationId: 应用编号
+        :type ApplicationId: str
+        """
+        self.Operator = None
+        self.ApplicationId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        self.ApplicationId = params.get("ApplicationId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateChannelSubOrganizationModifyQrCodeResponse(AbstractModel):
+    """CreateChannelSubOrganizationModifyQrCode返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param QrCodeUrl: 二维码下载链接
+        :type QrCodeUrl: str
+        :param ExpiredTime: 二维码失效时间 UNIX 时间戳 精确到秒
+        :type ExpiredTime: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.QrCodeUrl = None
+        self.ExpiredTime = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.QrCodeUrl = params.get("QrCodeUrl")
+        self.ExpiredTime = params.get("ExpiredTime")
         self.RequestId = params.get("RequestId")
 
 
@@ -1172,6 +1228,8 @@ MobileCheck：手机号验证
         :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
         :param CcNotifyType: 给关注人发送短信通知的类型，0-合同发起时通知 1-签署完成后通知
         :type CcNotifyType: int
+        :param AutoSignScene: 个人自动签场景。发起自动签署时，需设置对应自动签署场景，目前仅支持场景：处方单-E_PRESCRIPTION_AUTO_SIGN
+        :type AutoSignScene: str
         """
         self.Operator = None
         self.FlowName = None
@@ -1192,6 +1250,7 @@ MobileCheck：手机号验证
         self.SignBeanTag = None
         self.Agent = None
         self.CcNotifyType = None
+        self.AutoSignScene = None
 
 
     def _deserialize(self, params):
@@ -1233,6 +1292,7 @@ MobileCheck：手机号验证
             self.Agent = Agent()
             self.Agent._deserialize(params.get("Agent"))
         self.CcNotifyType = params.get("CcNotifyType")
+        self.AutoSignScene = params.get("AutoSignScene")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1436,6 +1496,8 @@ false：有序签
         :param CcInfos: 被抄送人的信息列表。
 注: 此功能为白名单功能，若有需要，请联系电子签客服开白使用。
         :type CcInfos: list of CcInfo
+        :param AutoSignScene: 个人自动签场景。发起自动签署时，需设置对应自动签署场景，目前仅支持场景：处方单-E_PRESCRIPTION_AUTO_SIGN
+        :type AutoSignScene: str
         """
         self.Operator = None
         self.FlowName = None
@@ -1452,6 +1514,7 @@ false：有序签
         self.CallbackUrl = None
         self.Agent = None
         self.CcInfos = None
+        self.AutoSignScene = None
 
 
     def _deserialize(self, params):
@@ -1484,6 +1547,7 @@ false：有序签
                 obj = CcInfo()
                 obj._deserialize(item)
                 self.CcInfos.append(obj)
+        self.AutoSignScene = params.get("AutoSignScene")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1997,7 +2061,7 @@ HONGKONG_AND_MACAO 中国香港
 FOREIGN_ID_CARD 境外身份
 HONGKONG_MACAO_AND_TAIWAN 中国台湾
         :type IdCardType: str
-        :param Mobile: 手机号码
+        :param Mobile: 手机号码；当需要开通自动签时，该参数必传
         :type Mobile: str
         :param EnableAutoSign: 是否开通自动签，该功能需联系运营工作人员开通后使用
         :type EnableAutoSign: bool
@@ -2344,6 +2408,8 @@ E_PRESCRIPTION_AUTO_SIGN 电子处方
         :type NotifyType: str
         :param NotifyAddress: 若上方填写为 SMS，则此处为手机号
         :type NotifyAddress: str
+        :param ExpiredTime: 链接的过期时间，格式为Unix时间戳，不能早于当前时间，且最大为30天。如果不传，默认有效期为7天。
+        :type ExpiredTime: int
         """
         self.Operator = None
         self.SceneKey = None
@@ -2351,6 +2417,7 @@ E_PRESCRIPTION_AUTO_SIGN 电子处方
         self.UrlType = None
         self.NotifyType = None
         self.NotifyAddress = None
+        self.ExpiredTime = None
 
 
     def _deserialize(self, params):
@@ -2364,6 +2431,7 @@ E_PRESCRIPTION_AUTO_SIGN 电子处方
         self.UrlType = params.get("UrlType")
         self.NotifyType = params.get("NotifyType")
         self.NotifyAddress = params.get("NotifyAddress")
+        self.ExpiredTime = params.get("ExpiredTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3212,7 +3280,7 @@ class DescribeIntegrationRolesRequest(AbstractModel):
         :param Agent: 代理相关应用信息，如集团主企业代子企业操作的场景中ProxyOrganizationId必填
         :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
         :param Filters: 查询的关键字段:
-Key:"RoleType",Vales:["1"]查询系统角色，Values:["2]查询自定义角色
+Key:"RoleType",Values:["1"]查询系统角色，Values:["2"]查询自定义角色
 Key:"RoleStatus",Values:["1"]查询启用角色，Values:["2"]查询禁用角色
 Key:"IsGroupRole"，Values:["0"],查询非集团角色，Values:["1"]表示查询集团角色
         :type Filters: list of Filter
@@ -3562,17 +3630,25 @@ class DescribeUserAutoSignStatusResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param IsOpen: 是否开通
+        :param IsOpen: 是否已开通自动签
         :type IsOpen: bool
+        :param LicenseFrom: 自动签许可生效时间。当且仅当已开通自动签时有值。
+        :type LicenseFrom: int
+        :param LicenseTo: 自动签许可到期时间。当且仅当已开通自动签时有值。
+        :type LicenseTo: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.IsOpen = None
+        self.LicenseFrom = None
+        self.LicenseTo = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.IsOpen = params.get("IsOpen")
+        self.LicenseFrom = params.get("LicenseFrom")
+        self.LicenseTo = params.get("LicenseTo")
         self.RequestId = params.get("RequestId")
 
 
@@ -4066,6 +4142,9 @@ class FlowBrief(AbstractModel):
         :param Creator:  合同发起人userId
 注意：此字段可能返回 null，表示取不到有效值。
         :type Creator: str
+        :param Deadline: 合同过期时间，时间戳，单位秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Deadline: int
         """
         self.FlowId = None
         self.FlowName = None
@@ -4075,6 +4154,7 @@ class FlowBrief(AbstractModel):
         self.CreatedOn = None
         self.FlowMessage = None
         self.Creator = None
+        self.Deadline = None
 
 
     def _deserialize(self, params):
@@ -4086,6 +4166,7 @@ class FlowBrief(AbstractModel):
         self.CreatedOn = params.get("CreatedOn")
         self.FlowMessage = params.get("FlowMessage")
         self.Creator = params.get("Creator")
+        self.Deadline = params.get("Deadline")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4612,7 +4693,7 @@ class IntegrateRole(AbstractModel):
         :param RoleName: 角色名
 注意：此字段可能返回 null，表示取不到有效值。
         :type RoleName: str
-        :param RoleStatus: 角色类型：1-系统角色，2-自定义角色
+        :param RoleStatus: 角色状态，1-启用，2-禁用
 注意：此字段可能返回 null，表示取不到有效值。
         :type RoleStatus: int
         :param IsGroupRole: 是否是集团角色

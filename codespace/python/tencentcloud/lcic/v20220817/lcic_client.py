@@ -579,7 +579,7 @@ class LcicClient(AbstractClient):
 
 
     def DescribeDeveloper(self, request):
-        """服务商信息获取
+        """开发商信息获取
 
         :param request: Request instance for DescribeDeveloper.
         :type request: :class:`tencentcloud.lcic.v20220817.models.DescribeDeveloperRequest`
@@ -985,6 +985,29 @@ class LcicClient(AbstractClient):
             body = self.call("GetWatermark", params, headers=headers)
             response = json.loads(body)
             model = models.GetWatermarkResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def KickUserFromRoom(self, request):
+        """从房间里面踢出用户
+
+        :param request: Request instance for KickUserFromRoom.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.KickUserFromRoomRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.KickUserFromRoomResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("KickUserFromRoom", params, headers=headers)
+            response = json.loads(body)
+            model = models.KickUserFromRoomResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

@@ -1230,9 +1230,9 @@ class ChannelCreateEmbedWebUrlRequest(AbstractModel):
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
         :param _EmbedType: WEB嵌入资源类型。
 CREATE_SEAL: 创建印章
-CREATE_TEMPLATE：创建模版
-MODIFY_TEMPLATE：修改模版
-PREVIEW_TEMPLATE：预览模版
+CREATE_TEMPLATE：创建模板
+MODIFY_TEMPLATE：修改模板
+PREVIEW_TEMPLATE：预览模板
 PREVIEW_FLOW：预览合同文档
 PREVIEW_FLOW_DETAIL：预览合同详情
 PREVIEW_SEAL_LIST：预览印章列表
@@ -1240,7 +1240,7 @@ PREVIEW_SEAL_DETAIL：预览印章详情
 EXTEND_SERVICE：扩展服务
         :type EmbedType: str
         :param _BusinessId: WEB嵌入的业务资源ID
-EmbedType取值MODIFY_TEMPLATE，PREVIEW_TEMPLATE时必填，取值为模版id
+EmbedType取值MODIFY_TEMPLATE，PREVIEW_TEMPLATE时必填，取值为模板id
 PREVIEW_FLOW，PREVIEW_FLOW_DETAIL时必填，取值为合同id
 PREVIEW_SEAL_DETAIL，必填，取值为印章id
         :type BusinessId: str
@@ -2521,6 +2521,90 @@ class ChannelCreateMultiFlowSignQRCodeResponse(AbstractModel):
         if params.get("SignUrls") is not None:
             self._SignUrls = SignUrl()
             self._SignUrls._deserialize(params.get("SignUrls"))
+        self._RequestId = params.get("RequestId")
+
+
+class ChannelCreateOrganizationModifyQrCodeRequest(AbstractModel):
+    """ChannelCreateOrganizationModifyQrCode请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Agent: 应用相关信息。 此接口Agent.AppId 必填。
+        :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
+        """
+        self._Agent = None
+
+    @property
+    def Agent(self):
+        return self._Agent
+
+    @Agent.setter
+    def Agent(self, Agent):
+        self._Agent = Agent
+
+
+    def _deserialize(self, params):
+        if params.get("Agent") is not None:
+            self._Agent = Agent()
+            self._Agent._deserialize(params.get("Agent"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChannelCreateOrganizationModifyQrCodeResponse(AbstractModel):
+    """ChannelCreateOrganizationModifyQrCode返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _QrCodeUrl: 二维码下载链接
+        :type QrCodeUrl: str
+        :param _ExpiredTime: 二维码失效时间 UNIX 时间戳 精确到秒
+        :type ExpiredTime: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._QrCodeUrl = None
+        self._ExpiredTime = None
+        self._RequestId = None
+
+    @property
+    def QrCodeUrl(self):
+        return self._QrCodeUrl
+
+    @QrCodeUrl.setter
+    def QrCodeUrl(self, QrCodeUrl):
+        self._QrCodeUrl = QrCodeUrl
+
+    @property
+    def ExpiredTime(self):
+        return self._ExpiredTime
+
+    @ExpiredTime.setter
+    def ExpiredTime(self, ExpiredTime):
+        self._ExpiredTime = ExpiredTime
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._QrCodeUrl = params.get("QrCodeUrl")
+        self._ExpiredTime = params.get("ExpiredTime")
         self._RequestId = params.get("RequestId")
 
 
@@ -5578,8 +5662,23 @@ class CreateFlowOption(AbstractModel):
         r"""
         :param _CanEditFlow: 是否允许修改合同信息，true-是，false-否
         :type CanEditFlow: bool
+        :param _HideShowFlowName: 是否允许发起合同弹窗隐藏合同名称，true-允许，false-不允许
+        :type HideShowFlowName: bool
+        :param _HideShowFlowType: 是否允许发起合同弹窗隐藏合同类型，true-允许，false-不允许
+        :type HideShowFlowType: bool
+        :param _HideShowDeadline: 是否允许发起合同弹窗隐藏合同到期时间，true-允许，false-不允许
+        :type HideShowDeadline: bool
+        :param _CanSkipAddApprover: 是否允许发起合同步骤跳过指定签署方步骤，true-允许，false-不允许
+        :type CanSkipAddApprover: bool
+        :param _CustomCreateFlowDescription: 定制化发起合同弹窗的描述信息，描述信息最长500
+        :type CustomCreateFlowDescription: str
         """
         self._CanEditFlow = None
+        self._HideShowFlowName = None
+        self._HideShowFlowType = None
+        self._HideShowDeadline = None
+        self._CanSkipAddApprover = None
+        self._CustomCreateFlowDescription = None
 
     @property
     def CanEditFlow(self):
@@ -5589,9 +5688,54 @@ class CreateFlowOption(AbstractModel):
     def CanEditFlow(self, CanEditFlow):
         self._CanEditFlow = CanEditFlow
 
+    @property
+    def HideShowFlowName(self):
+        return self._HideShowFlowName
+
+    @HideShowFlowName.setter
+    def HideShowFlowName(self, HideShowFlowName):
+        self._HideShowFlowName = HideShowFlowName
+
+    @property
+    def HideShowFlowType(self):
+        return self._HideShowFlowType
+
+    @HideShowFlowType.setter
+    def HideShowFlowType(self, HideShowFlowType):
+        self._HideShowFlowType = HideShowFlowType
+
+    @property
+    def HideShowDeadline(self):
+        return self._HideShowDeadline
+
+    @HideShowDeadline.setter
+    def HideShowDeadline(self, HideShowDeadline):
+        self._HideShowDeadline = HideShowDeadline
+
+    @property
+    def CanSkipAddApprover(self):
+        return self._CanSkipAddApprover
+
+    @CanSkipAddApprover.setter
+    def CanSkipAddApprover(self, CanSkipAddApprover):
+        self._CanSkipAddApprover = CanSkipAddApprover
+
+    @property
+    def CustomCreateFlowDescription(self):
+        return self._CustomCreateFlowDescription
+
+    @CustomCreateFlowDescription.setter
+    def CustomCreateFlowDescription(self, CustomCreateFlowDescription):
+        self._CustomCreateFlowDescription = CustomCreateFlowDescription
+
 
     def _deserialize(self, params):
         self._CanEditFlow = params.get("CanEditFlow")
+        self._HideShowFlowName = params.get("HideShowFlowName")
+        self._HideShowFlowType = params.get("HideShowFlowType")
+        self._HideShowDeadline = params.get("HideShowDeadline")
+        self._CanSkipAddApprover = params.get("CanSkipAddApprover")
+        self._CustomCreateFlowDescription = params.get("CustomCreateFlowDescription")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7633,8 +7777,11 @@ ENTERPRISESERVER-企业静默签（文件发起时的企业静默签字）。
         :type CallbackUrl: str
         :param _SignComponents: 使用PDF文件直接发起合同时，签署人指定的签署控件
         :type SignComponents: list of Component
-        :param _ComponentLimitType: 个人签署方指定签署控件类型，目前支持：OCR_ESIGN -AI智慧手写签名
-HANDWRITE -手写签名
+        :param _ComponentLimitType: 	签署方控件类型为 SIGN_SIGNATURE时，可以指定签署方签名方式
+	HANDWRITE – 手写签名
+	OCR_ESIGN -- AI智能识别手写签名
+	ESIGN -- 个人印章类型
+	SYSTEM_ESIGN -- 系统签名（该类型可以在用户签署时根据用户姓名一键生成一个签名来进行签署）
         :type ComponentLimitType: list of str
         :param _PreReadTime: 合同的强制预览时间：3~300s，未指定则按合同页数计算
         :type PreReadTime: int
@@ -7654,8 +7801,8 @@ HANDWRITE -手写签名
 - 发起流程时系统自动补充
 - 创建签署链接时，可以通过查询详情接口获得签署人的SignId，然后可传入此值为该签署人创建签署链接，无需再传姓名、手机号、证件号等其他信息
         :type SignId: str
-        :param _NotifyType: SMS: 短信; NONE: 不发信息
-默认为SMS(该字段对子客无效)
+        :param _NotifyType: SMS: 短信(需确保“电子签短信通知签署方”功能是开启状态才能生效); NONE: 不发信息
+默认为SMS(签署方为子客时该字段不生效)
         :type NotifyType: str
         """
         self._Name = None
@@ -8725,10 +8872,14 @@ CreateFlowsByTemplates 接口不使用此字段。
         :param _ComponentName: 控件的名字，跟ComponentId二选一，不能全为空
 注意：此字段可能返回 null，表示取不到有效值。
         :type ComponentName: str
+        :param _LockComponentValue: 是否锁定模版控件值，锁定后无法修改（用于嵌入式发起合同），true-锁定，false-不锁定
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LockComponentValue: bool
         """
         self._ComponentValue = None
         self._ComponentId = None
         self._ComponentName = None
+        self._LockComponentValue = None
 
     @property
     def ComponentValue(self):
@@ -8754,11 +8905,20 @@ CreateFlowsByTemplates 接口不使用此字段。
     def ComponentName(self, ComponentName):
         self._ComponentName = ComponentName
 
+    @property
+    def LockComponentValue(self):
+        return self._LockComponentValue
+
+    @LockComponentValue.setter
+    def LockComponentValue(self, LockComponentValue):
+        self._LockComponentValue = LockComponentValue
+
 
     def _deserialize(self, params):
         self._ComponentValue = params.get("ComponentValue")
         self._ComponentId = params.get("ComponentId")
         self._ComponentName = params.get("ComponentName")
+        self._LockComponentValue = params.get("LockComponentValue")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -9271,7 +9431,7 @@ class OperateChannelTemplateResponse(AbstractModel):
         :param _TemplateId: 第三方应用平台模板库模板唯一标识
 注意：此字段可能返回 null，表示取不到有效值。
         :type TemplateId: str
-        :param _OperateResult: 描述模版可见性更改的结果，和参数中Available无关，全部成功-"all-success",部分成功-"part-success", 全部失败-"fail"失败的会在FailMessageList中展示。
+        :param _OperateResult: 描述模板可见性更改的结果，和参数中Available无关，全部成功-"all-success",部分成功-"part-success", 全部失败-"fail"失败的会在FailMessageList中展示。
 注意：此字段可能返回 null，表示取不到有效值。
         :type OperateResult: str
         :param _AuthTag: 模板可见性, 全部可见-"all", 部分可见-"part"

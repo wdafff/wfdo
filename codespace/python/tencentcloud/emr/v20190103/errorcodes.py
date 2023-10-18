@@ -20,6 +20,9 @@ FAILEDOPERATION = 'FailedOperation'
 # 操作失败。
 FAILEDOPERATION_CHECKIFSUPPORTPODSTRETCH = 'FailedOperation.CheckIfSupportPodStretch'
 
+# 拉取资源标签失败
+FAILEDOPERATION_DESCRIBERESOURCETAGSFAILED = 'FailedOperation.DescribeResourceTagsFailed'
+
 # 重复的订单，请检查emr控制台。
 FAILEDOPERATION_DUPLICATEORDERNOTALLOWED = 'FailedOperation.DuplicateOrderNotAllowed'
 
@@ -119,6 +122,9 @@ INVALIDPARAMETER_DISPLAYSTRATEGYNOTMATCH = 'InvalidParameter.DisplayStrategyNotM
 # 参数错误。
 INVALIDPARAMETER_HALESSMASTERCOUNT = 'InvalidParameter.HALessMasterCount'
 
+# impala查询参数异常。
+INVALIDPARAMETER_IMPALAQUERYEXCEPTION = 'InvalidParameter.ImpalaQueryException'
+
 # Common节点数量无效。
 INVALIDPARAMETER_INCORRECTCOMMONCOUNT = 'InvalidParameter.IncorrectCommonCount'
 
@@ -181,6 +187,9 @@ INVALIDPARAMETER_INVALIDEXTENDFIELD = 'InvalidParameter.InvalidExtendField'
 
 # 无效的任务失败处理策略。
 INVALIDPARAMETER_INVALIDFAILUREPOLICY = 'InvalidParameter.InvalidFailurePolicy'
+
+# 无效过滤参数。
+INVALIDPARAMETER_INVALIDFILTERKEY = 'InvalidParameter.InvalidFilterKey'
 
 # 无效参数，EMR实例不符合要求。
 INVALIDPARAMETER_INVALIDINSTANCE = 'InvalidParameter.InvalidInstance'
@@ -283,6 +292,9 @@ INVALIDPARAMETER_INVALIDSOFTWARENAME = 'InvalidParameter.InvalidSoftWareName'
 
 # 软件版本无效。
 INVALIDPARAMETER_INVALIDSOFTWAREVERSION = 'InvalidParameter.InvalidSoftWareVersion'
+
+# invalid Parameter StartTime or EndTime.参数无效
+INVALIDPARAMETER_INVALIDSTARTTIMEORENDTIME = 'InvalidParameter.InvalidStartTimeOrEndTime'
 
 # 无效的子网ID。
 INVALIDPARAMETER_INVALIDSUBNETID = 'InvalidParameter.InvalidSubnetId'
@@ -404,6 +416,9 @@ RESOURCESSOLDOUT_CBSSOLDOUT = 'ResourcesSoldOut.CbsSoldOut'
 # 云服务器已售罄。
 RESOURCESSOLDOUT_CVMSOLDOUT = 'ResourcesSoldOut.CvmSoldOut'
 
+# appid不一致。
+UNAUTHORIZEDOPERATION_APPIDMISMATCHED = 'UnauthorizedOperation.AppIdMismatched'
+
 # 校验账号操作无权限。
 UNAUTHORIZEDOPERATION_CHECKCAMAUTH = 'UnauthorizedOperation.CheckCamAuth'
 
@@ -412,6 +427,9 @@ UNKNOWNPARAMETER = 'UnknownParameter'
 
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'
+
+# 该功能白名单支持。
+UNSUPPORTEDOPERATION_NOTINWHITELIST = 'UnsupportedOperation.NotInWhiteList'
 
 # 该服务不支持此操作。
 UNSUPPORTEDOPERATION_SERVICENOTSUPPORT = 'UnsupportedOperation.ServiceNotSupport'

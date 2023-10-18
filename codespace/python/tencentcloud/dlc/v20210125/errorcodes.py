@@ -44,6 +44,9 @@ FAILEDOPERATION_BINDTOOMANYTAGS = 'FailedOperation.BindTooManyTags'
 # 创建引擎失败。
 FAILEDOPERATION_CREATEDATAENGINEFAILED = 'FailedOperation.CreateDataEngineFailed'
 
+# 删除数据引擎失败。
+FAILEDOPERATION_DELETEDATAENGINEFAILED = 'FailedOperation.DeleteDataEngineFailed'
+
 # 发货失败。
 FAILEDOPERATION_DELIVERGOODSFAILED = 'FailedOperation.DeliverGoodsFailed'
 
@@ -59,7 +62,7 @@ FAILEDOPERATION_GETPOLICYFAILED = 'FailedOperation.GetPolicyFailed'
 # 获取商品信息失败。
 FAILEDOPERATION_GETPRODUCTINFORMATIONFAILED = 'FailedOperation.GetProductInformationFailed'
 
-# 获取用户信息失败。
+# 获取用户信息失败，请重试或提工单联系我们
 FAILEDOPERATION_GETUSERINFOFAILED = 'FailedOperation.GetUserInfoFailed'
 
 # 获取工作组信息失败。
@@ -83,11 +86,17 @@ FAILEDOPERATION_ILLEGALTAGVALUE = 'FailedOperation.IllegalTagValue'
 # 询价失败。
 FAILEDOPERATION_INQUIREPRICEFAILED = 'FailedOperation.InquirePriceFailed'
 
+# 元数据错误，请重试，或者提交工单联系我们
+FAILEDOPERATION_METASTOREERROR = 'FailedOperation.MetastoreError'
+
 # 实例变配失败。
 FAILEDOPERATION_MODIFYINSTANCEFAILED = 'FailedOperation.ModifyInstanceFailed'
 
 # 没有操作权限。
 FAILEDOPERATION_NOPERMISSION = 'FailedOperation.NoPermission'
+
+# 用户没有指定引擎的使用权限
+FAILEDOPERATION_NOPERMISSIONTOUSETHEDATAENGINE = 'FailedOperation.NoPermissionToUseTheDataEngine'
 
 # 账号未进行实名认证。
 FAILEDOPERATION_NOREALNAMEAUTHENTICATION = 'FailedOperation.NoRealNameAuthentication'
@@ -128,8 +137,29 @@ INTERNALERROR = 'InternalError'
 # 数据库错误。
 INTERNALERROR_DBERROR = 'InternalError.DBError'
 
+# 业务系统异常，请重试或提工单联系我们。
+INTERNALERROR_INTERNALSYSTEMEXCEPTION = 'InternalError.InternalSystemException'
+
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
+
+# 指定集群参数已存在
+INVALIDPARAMETER_DATAENGINECONFIGPAIRSDUPLICATE = 'InvalidParameter.DataEngineConfigPairsDuplicate'
+
+# 指定集群传参ExecType不匹配，当前仅支持SQL或BATCH
+INVALIDPARAMETER_DATAENGINEEXECTYPENOTMATCH = 'InvalidParameter.DataEngineExecTypeNotMatch'
+
+# 指定集群镜像操作不匹配，当前仅支持: InitImage/UpgradeImage/SwitchImage/RollbackImage/ModifyResource
+INVALIDPARAMETER_DATAENGINEIMAGEOPERATENOTMATCH = 'InvalidParameter.DataEngineImageOperateNotMatch'
+
+# 指定集群付费类型不匹配，当前仅支持: 0: 后付费, 1: 预付费
+INVALIDPARAMETER_DATAENGINEPAYMODETYPENOTMATCH = 'InvalidParameter.DataEnginePayModeTypeNotMatch'
+
+# 指定集群类型不匹配，当前仅支持: spark/presto
+INVALIDPARAMETER_DATAENGINETYPENOTMATCH = 'InvalidParameter.DataEngineTypeNotMatch'
+
+# 数据源类型错误。
+INVALIDPARAMETER_DATASOURCETYPEERROR = 'InvalidParameter.DatasourceTypeError'
 
 # 重复的引擎名称。
 INVALIDPARAMETER_DUPLICATEDATAENGINENAME = 'InvalidParameter.DuplicateDataEngineName'
@@ -140,8 +170,44 @@ INVALIDPARAMETER_DUPLICATEGROUPNAME = 'InvalidParameter.DuplicateGroupName'
 # 重复的用户名。
 INVALIDPARAMETER_DUPLICATEUSERNAME = 'InvalidParameter.DuplicateUserName'
 
+# 指定集群镜像Cluster参数格式非JSON
+INVALIDPARAMETER_IMAGECLUSTERPARAMETERSFORMATNOTJSON = 'InvalidParameter.ImageClusterParametersFormatNotJson'
+
+# 指定引擎类型不匹配，当前仅支持: SparkSQL, PrestoSQL, SparkBatch
+INVALIDPARAMETER_IMAGEENGINETYPENOTMATCH = 'InvalidParameter.ImageEngineTypeNotMatch'
+
+# 指定isPublic不匹配，当前仅支持: 1:公共, 2:私有
+INVALIDPARAMETER_IMAGEISPUBLICNOTMATCH = 'InvalidParameter.ImageIsPublicNotMatch'
+
+# 指定集群镜像参数不存在
+INVALIDPARAMETER_IMAGEPARAMETERNOTFOUND = 'InvalidParameter.ImageParameterNotFound'
+
+# 指定集群镜像ParameterSubmitMethod不匹配，当前仅支持: User, BackGround
+INVALIDPARAMETER_IMAGEPARAMETERSUBMITMETHODNOTMATCH = 'InvalidParameter.ImageParameterSubmitMethodNotMatch'
+
+# 指定集群镜像ParameterType不匹配，当前仅支持: 1: session , 2: common, 3: cluster
+INVALIDPARAMETER_IMAGEPARAMETERTYPENOTMATCH = 'InvalidParameter.ImageParameterTypeNotMatch'
+
+# 指定集群镜像Session参数格式非JSON
+INVALIDPARAMETER_IMAGESESSIONPARAMETERSFORMATNOTJSON = 'InvalidParameter.ImageSessionParametersFormatNotJson'
+
+# 指定state不匹配，当前仅支持: 1:初始化, 2:上线, 3:下线
+INVALIDPARAMETER_IMAGESTATENOTMATCH = 'InvalidParameter.ImageStateNotMatch'
+
+# 指定集群镜像UserRecords不匹配，当前仅支持: 1: parentVersion, 2: childVersion, 3: pySpark
+INVALIDPARAMETER_IMAGEUSERRECORDSTYPENOTMATCH = 'InvalidParameter.ImageUserRecordsTypeNotMatch'
+
+# 实例在其他流程中。
+INVALIDPARAMETER_INSTANCEINPROCESS = 'InvalidParameter.InstanceInProcess'
+
 # 无效的访问策略。
 INVALIDPARAMETER_INVALIDACCESSPOLICY = 'InvalidParameter.InvalidAccessPolicy'
+
+# 指定集群参数无效，请校验后重试
+INVALIDPARAMETER_INVALIDDATAENGINECONFIGPAIRS = 'InvalidParameter.InvalidDataEngineConfigPairs'
+
+# 无效的引擎描述信息。
+INVALIDPARAMETER_INVALIDDATAENGINEDESCRIPTION = 'InvalidParameter.InvalidDataEngineDescription'
 
 # 无效的数据引擎模式。
 INVALIDPARAMETER_INVALIDDATAENGINEMODE = 'InvalidParameter.InvalidDataEngineMode'
@@ -152,23 +218,32 @@ INVALIDPARAMETER_INVALIDDATAENGINENAME = 'InvalidParameter.InvalidDataEngineName
 # 无效的数据引擎规格。
 INVALIDPARAMETER_INVALIDDATAENGINESPECS = 'InvalidParameter.InvalidDataEngineSpecs'
 
+# 无效的默认数据引擎参数。
+INVALIDPARAMETER_INVALIDDEFAULTDATAENGINE = 'InvalidParameter.InvalidDefaultDataEngine'
+
 # 无效的描述信息。
 INVALIDPARAMETER_INVALIDDESCRIPTION = 'InvalidParameter.InvalidDescription'
 
-# 无效的引擎类型。
+# 引擎类型不合法
 INVALIDPARAMETER_INVALIDENGINETYPE = 'InvalidParameter.InvalidEngineType'
 
-# 无效的容错策略。
+# 任务容错类型错误，当前仅支持: Proceed/Terminate
 INVALIDPARAMETER_INVALIDFAILURETOLERANCE = 'InvalidParameter.InvalidFailureTolerance'
 
-# 无效的过滤条件。
+# 不支持此过滤条件
 INVALIDPARAMETER_INVALIDFILTERKEY = 'InvalidParameter.InvalidFilterKey'
 
 # 无效的工作组Id。
 INVALIDPARAMETER_INVALIDGROUPID = 'InvalidParameter.InvalidGroupId'
 
+# 请求的消息类型无效。
+INVALIDPARAMETER_INVALIDINFOTYPE = 'InvalidParameter.InvalidInfoType'
+
 # 无效的最大结果数。
 INVALIDPARAMETER_INVALIDMAXRESULTS = 'InvalidParameter.InvalidMaxResults'
+
+# 无效的最小集群数量。
+INVALIDPARAMETER_INVALIDMINCLUSTERS = 'InvalidParameter.InvalidMinClusters'
 
 # 无效的Offset值。
 INVALIDPARAMETER_INVALIDOFFSET = 'InvalidParameter.InvalidOffset'
@@ -182,7 +257,7 @@ INVALIDPARAMETER_INVALIDROLEARN = 'InvalidParameter.InvalidRoleArn'
 # SQL解析失败。
 INVALIDPARAMETER_INVALIDSQL = 'InvalidParameter.InvalidSQL'
 
-# SQL数量不符合规范。
+# 执行SQL数量错误，SQL数量要大于等于1个且小于等于50个
 INVALIDPARAMETER_INVALIDSQLNUM = 'InvalidParameter.InvalidSQLNum'
 
 # 不支持的排序类型。
@@ -197,7 +272,7 @@ INVALIDPARAMETER_INVALIDSTORELOCATION = 'InvalidParameter.InvalidStoreLocation'
 # 无效的taskid。
 INVALIDPARAMETER_INVALIDTASKID = 'InvalidParameter.InvalidTaskId'
 
-# 无效的任务类型。
+# 任务类型TaskType错误，Spark引擎任务类型为SparkSQLTask,Presto引擎任务类型为SQLTask
 INVALIDPARAMETER_INVALIDTASKTYPE = 'InvalidParameter.InvalidTaskType'
 
 # 无效的计费时长。
@@ -215,8 +290,14 @@ INVALIDPARAMETER_INVALIDUSERNAME = 'InvalidParameter.InvalidUserName'
 # 无效的用户类型。
 INVALIDPARAMETER_INVALIDUSERTYPE = 'InvalidParameter.InvalidUserType'
 
+# 获取白名单错误，请重试，或者提交工单联系我们
+INVALIDPARAMETER_INVALIDWHITELISTKEY = 'InvalidParameter.InvalidWhiteListKey'
+
 # 无效的工作组名。
 INVALIDPARAMETER_INVALIDWORKGROUPNAME = 'InvalidParameter.InvalidWorkGroupName'
+
+# 找不到参数或参数为空
+INVALIDPARAMETER_PARAMETERNOTFOUNDORBENONE = 'InvalidParameter.ParameterNotFoundOrBeNone'
 
 # 任务已经结束，不能取消。
 INVALIDPARAMETER_TASKALREADYFINISHED = 'InvalidParameter.TaskAlreadyFinished'
@@ -236,23 +317,74 @@ MISSINGPARAMETER = 'MissingParameter'
 # 操作被拒绝。
 OPERATIONDENIED = 'OperationDenied'
 
+# 资源被占用。
+RESOURCEINUSE = 'ResourceInUse'
+
+# 有SQL任务尚未执行完成。
+RESOURCEINUSE_UNFINISHEDSQLS = 'ResourceInUse.UnfinishedSQLs'
+
 # 资源不存在。
 RESOURCENOTFOUND = 'ResourceNotFound'
 
-# 指定数据源连接没有找到。
+# 指定集群配置实例不存在
+RESOURCENOTFOUND_DATAENGINECONFIGINSTANCENOTFOUND = 'ResourceNotFound.DataEngineConfigInstanceNotFound'
+
+# 指定集群配置实例已存在
+RESOURCENOTFOUND_DATAENGINECONFIGINSTANCENOTUNIQUE = 'ResourceNotFound.DataEngineConfigInstanceNotUnique'
+
+# 指定集群未处于运行状态
+RESOURCENOTFOUND_DATAENGINENOTACTIVITY = 'ResourceNotFound.DataEngineNotActivity'
+
+# 指定的引擎不存在
+RESOURCENOTFOUND_DATAENGINENOTFOUND = 'ResourceNotFound.DataEngineNotFound'
+
+# 指定集群为非多版本类型，不支持该项操作
+RESOURCENOTFOUND_DATAENGINENOTMULTIVERSION = 'ResourceNotFound.DataEngineNotMultiVersion'
+
+# 指定的引擎未处于运行中
+RESOURCENOTFOUND_DATAENGINENOTRUNNING = 'ResourceNotFound.DataEngineNotRunning'
+
+# 指定的引擎已存在
+RESOURCENOTFOUND_DATAENGINENOTUNIQUE = 'ResourceNotFound.DataEngineNotUnique'
+
+# 指定集群为非Spark批作业类型，不支持该项操作
+RESOURCENOTFOUND_DATAENGINETYPEONLYSUPPORTBATCH = 'ResourceNotFound.DataEngineTypeOnlySupportBatch'
+
+# 数据源连接不存在，请重试，或者提交工单联系我们
 RESOURCENOTFOUND_DATASOURCENOTFOUND = 'ResourceNotFound.DatasourceNotFound'
 
-# 当前无资源创建session，请稍后重试或使用包年包月集群。
-RESOURCENOTFOUND_RESOURCENOTFOUNDCODE_SESSIONINSUFFICIENTRESOURCES = 'ResourceNotFound.ResourceNotFoundCode_SessionInsufficientResources'
+# 找不到默认引擎
+RESOURCENOTFOUND_DEFAULTDATAENGINENOTFOUND = 'ResourceNotFound.DefaultDataEngineNotFound'
+
+# 指定集群镜像Session配置不存在
+RESOURCENOTFOUND_IMAGESESSIONCONFIGNOTFOUND = 'ResourceNotFound.ImageSessionConfigNotFound'
+
+# 指定集群镜像Session配置已存在
+RESOURCENOTFOUND_IMAGESESSIONCONFIGNOTUNIQUE = 'ResourceNotFound.ImageSessionConfigNotUnique'
+
+# 指定集群镜像未激活
+RESOURCENOTFOUND_IMAGEVERSIONNOTACTIVITY = 'ResourceNotFound.ImageVersionNotActivity'
+
+# 指定集群镜像版本不存在
+RESOURCENOTFOUND_IMAGEVERSIONNOTFOUND = 'ResourceNotFound.ImageVersionNotFound'
+
+# 指定集群镜像版本已存在
+RESOURCENOTFOUND_IMAGEVERSIONNOTUNIQUE = 'ResourceNotFound.ImageVersionNotUnique'
 
 # 未找到结果路径。
 RESOURCENOTFOUND_RESULTOUTPUTPATHNOTFOUND = 'ResourceNotFound.ResultOutputPathNotFound'
+
+# 当前无资源创建session，请稍后重试或使用包年包月集群。
+RESOURCENOTFOUND_SESSIONINSUFFICIENTRESOURCES = 'ResourceNotFound.SessionInsufficientResources'
 
 # session不存在。
 RESOURCENOTFOUND_SESSIONNOTFOUND = 'ResourceNotFound.SessionNotFound'
 
 # session已消亡。
 RESOURCENOTFOUND_SESSIONSTATEDEAD = 'ResourceNotFound.SessionStateDead'
+
+# 任务已经失败
+RESOURCENOTFOUND_TASKALREADYFAILED = 'ResourceNotFound.TaskAlreadyFailed'
 
 # 资源不可用。
 RESOURCEUNAVAILABLE = 'ResourceUnavailable'
@@ -284,6 +416,9 @@ UNAUTHORIZEDOPERATION_BINDWORKGROUPSTOUSER = 'UnauthorizedOperation.BindWorkgrou
 # 子用户不是管理员，无权创建工作组。
 UNAUTHORIZEDOPERATION_CREATEWORKGROUP = 'UnauthorizedOperation.CreateWorkgroup'
 
+# 子用户无权删除计算引擎。
+UNAUTHORIZEDOPERATION_DELETECOMPUTINGENGINE = 'UnauthorizedOperation.DeleteComputingEngine'
+
 # 子用户不是管理员，无权删除用户。
 UNAUTHORIZEDOPERATION_DELETEUSER = 'UnauthorizedOperation.DeleteUser'
 
@@ -296,8 +431,14 @@ UNAUTHORIZEDOPERATION_DELETEWORKGROUP = 'UnauthorizedOperation.DeleteWorkgroup'
 # 子用户无权授予特定权限。
 UNAUTHORIZEDOPERATION_GRANTPOLICY = 'UnauthorizedOperation.GrantPolicy'
 
+# 子用户无权修改引擎配置。
+UNAUTHORIZEDOPERATION_MODIFYCOMPUTINGENGINE = 'UnauthorizedOperation.ModifyComputingEngine'
+
 # 子用户不是管理员，无权修改用户信息。
 UNAUTHORIZEDOPERATION_MODIFYUSERINFO = 'UnauthorizedOperation.ModifyUserInfo'
+
+# 子用户不是管理员，无权修改用户类型。
+UNAUTHORIZEDOPERATION_MODIFYUSERTYPE = 'UnauthorizedOperation.ModifyUserType'
 
 # 子用户不是管理员，无权修改工作组信息。
 UNAUTHORIZEDOPERATION_MODIFYWORKGROUPINFO = 'UnauthorizedOperation.ModifyWorkgroupInfo'

@@ -404,7 +404,7 @@ class AddInstancesRequest(AbstractModel):
         :type Cpu: int
         :param _Memory: 内存，单位为GB
         :type Memory: int
-        :param _ReadOnlyCount: 新增只读实例数，取值范围为[0,4]
+        :param _ReadOnlyCount: 新增只读实例数，取值范围为(0,15]
         :type ReadOnlyCount: int
         :param _InstanceGrpId: 实例组ID，在已有RO组中新增实例时使用，不传则新增RO组。当前版本不建议传输该值。当前版本已废弃。
         :type InstanceGrpId: str
@@ -694,7 +694,7 @@ class Addr(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _IP: IP
+        :param _IP: IP地址
         :type IP: str
         :param _Port: 端口
         :type Port: int
@@ -867,6 +867,9 @@ class AuditLog(AbstractModel):
         :param _NsTime: 开始时间，与timestamp构成一个精确到纳秒的时间。
 注意：此字段可能返回 null，表示取不到有效值。
         :type NsTime: int
+        :param _TemplateInfo: 日志命中规则模板的基本信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TemplateInfo: list of LogRuleTemplateInfo
         """
         self._AffectRows = None
         self._ErrCode = None
@@ -888,6 +891,7 @@ class AuditLog(AbstractModel):
         self._LockWaitTime = None
         self._TrxLivingTime = None
         self._NsTime = None
+        self._TemplateInfo = None
 
     @property
     def AffectRows(self):
@@ -1049,6 +1053,14 @@ class AuditLog(AbstractModel):
     def NsTime(self, NsTime):
         self._NsTime = NsTime
 
+    @property
+    def TemplateInfo(self):
+        return self._TemplateInfo
+
+    @TemplateInfo.setter
+    def TemplateInfo(self, TemplateInfo):
+        self._TemplateInfo = TemplateInfo
+
 
     def _deserialize(self, params):
         self._AffectRows = params.get("AffectRows")
@@ -1071,6 +1083,12 @@ class AuditLog(AbstractModel):
         self._LockWaitTime = params.get("LockWaitTime")
         self._TrxLivingTime = params.get("TrxLivingTime")
         self._NsTime = params.get("NsTime")
+        if params.get("TemplateInfo") is not None:
+            self._TemplateInfo = []
+            for item in params.get("TemplateInfo"):
+                obj = LogRuleTemplateInfo()
+                obj._deserialize(item)
+                self._TemplateInfo.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1365,6 +1383,7 @@ class AuditRuleFilters(AbstractModel):
     def __init__(self):
         r"""
         :param _RuleFilters: 单条审计规则。
+注意：此字段可能返回 null，表示取不到有效值。
         :type RuleFilters: list of RuleFilters
         """
         self._RuleFilters = None
@@ -1396,29 +1415,49 @@ class AuditRuleFilters(AbstractModel):
 
 
 class AuditRuleTemplateInfo(AbstractModel):
-    """审计规则模版的详情
+    """审计规则模板的详情
 
     """
 
     def __init__(self):
         r"""
-        :param _RuleTemplateId: 规则模版ID。
+        :param _RuleTemplateId: 规则模板ID。
         :type RuleTemplateId: str
-        :param _RuleTemplateName: 规则模版名称。
+        :param _RuleTemplateName: 规则模板名称。
         :type RuleTemplateName: str
-        :param _RuleFilters: 规则模版的过滤条件
+        :param _RuleFilters: 规则模板的过滤条件
         :type RuleFilters: list of RuleFilters
-        :param _Description: 规则模版描述。
+        :param _Description: 规则模板描述。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Description: str
-        :param _CreateAt: 规则模版创建时间。
+        :param _CreateAt: 规则模板创建时间。
         :type CreateAt: str
+        :param _UpdateAt: 规则模板修改时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateAt: str
+        :param _AlarmLevel: 告警等级。1-低风险，2-中风险，3-高风险。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlarmLevel: int
+        :param _AlarmPolicy: 告警策略。0-不告警，1-告警。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlarmPolicy: int
+        :param _Status: 模板状态。0-无任务 ，1-修改中。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: int
+        :param _AffectedInstances: 规则模板应用在哪些在实例。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AffectedInstances: list of str
         """
         self._RuleTemplateId = None
         self._RuleTemplateName = None
         self._RuleFilters = None
         self._Description = None
         self._CreateAt = None
+        self._UpdateAt = None
+        self._AlarmLevel = None
+        self._AlarmPolicy = None
+        self._Status = None
+        self._AffectedInstances = None
 
     @property
     def RuleTemplateId(self):
@@ -1460,6 +1499,46 @@ class AuditRuleTemplateInfo(AbstractModel):
     def CreateAt(self, CreateAt):
         self._CreateAt = CreateAt
 
+    @property
+    def UpdateAt(self):
+        return self._UpdateAt
+
+    @UpdateAt.setter
+    def UpdateAt(self, UpdateAt):
+        self._UpdateAt = UpdateAt
+
+    @property
+    def AlarmLevel(self):
+        return self._AlarmLevel
+
+    @AlarmLevel.setter
+    def AlarmLevel(self, AlarmLevel):
+        self._AlarmLevel = AlarmLevel
+
+    @property
+    def AlarmPolicy(self):
+        return self._AlarmPolicy
+
+    @AlarmPolicy.setter
+    def AlarmPolicy(self, AlarmPolicy):
+        self._AlarmPolicy = AlarmPolicy
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def AffectedInstances(self):
+        return self._AffectedInstances
+
+    @AffectedInstances.setter
+    def AffectedInstances(self, AffectedInstances):
+        self._AffectedInstances = AffectedInstances
+
 
     def _deserialize(self, params):
         self._RuleTemplateId = params.get("RuleTemplateId")
@@ -1472,6 +1551,11 @@ class AuditRuleTemplateInfo(AbstractModel):
                 self._RuleFilters.append(obj)
         self._Description = params.get("Description")
         self._CreateAt = params.get("CreateAt")
+        self._UpdateAt = params.get("UpdateAt")
+        self._AlarmLevel = params.get("AlarmLevel")
+        self._AlarmPolicy = params.get("AlarmPolicy")
+        self._Status = params.get("Status")
+        self._AffectedInstances = params.get("AffectedInstances")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1784,7 +1868,7 @@ class BindInstanceInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _InstanceId: 绑定的实例ID
+        :param _InstanceId: 绑定的集群ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceId: str
         :param _InstanceRegion: 绑定的实例所在的地域
@@ -1793,10 +1877,14 @@ class BindInstanceInfo(AbstractModel):
         :param _InstanceType: 绑定的实例类型
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceType: str
+        :param _ExtendIds: 绑定集群下的实例ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExtendIds: list of str
         """
         self._InstanceId = None
         self._InstanceRegion = None
         self._InstanceType = None
+        self._ExtendIds = None
 
     @property
     def InstanceId(self):
@@ -1822,11 +1910,20 @@ class BindInstanceInfo(AbstractModel):
     def InstanceType(self, InstanceType):
         self._InstanceType = InstanceType
 
+    @property
+    def ExtendIds(self):
+        return self._ExtendIds
+
+    @ExtendIds.setter
+    def ExtendIds(self, ExtendIds):
+        self._ExtendIds = ExtendIds
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
         self._InstanceRegion = params.get("InstanceRegion")
         self._InstanceType = params.get("InstanceType")
+        self._ExtendIds = params.get("ExtendIds")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2247,6 +2344,18 @@ class ClusterInstanceDetail(AbstractModel):
         :type InstanceStorage: int
         :param _InstanceRole: 实例角色
         :type InstanceRole: str
+        :param _MaintainStartTime: 执行开始时间(距离0点的秒数)	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MaintainStartTime: int
+        :param _MaintainDuration: 持续的时间(单位：秒)	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MaintainDuration: int
+        :param _MaintainWeekDays: 可以执行的时间，枚举值：["Mon","Tue","Wed","Thu","Fri", "Sat", "Sun"]
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MaintainWeekDays: list of str
+        :param _ServerlessStatus: serverless实例子状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServerlessStatus: str
         """
         self._InstanceId = None
         self._InstanceName = None
@@ -2257,6 +2366,10 @@ class ClusterInstanceDetail(AbstractModel):
         self._InstanceMemory = None
         self._InstanceStorage = None
         self._InstanceRole = None
+        self._MaintainStartTime = None
+        self._MaintainDuration = None
+        self._MaintainWeekDays = None
+        self._ServerlessStatus = None
 
     @property
     def InstanceId(self):
@@ -2330,6 +2443,38 @@ class ClusterInstanceDetail(AbstractModel):
     def InstanceRole(self, InstanceRole):
         self._InstanceRole = InstanceRole
 
+    @property
+    def MaintainStartTime(self):
+        return self._MaintainStartTime
+
+    @MaintainStartTime.setter
+    def MaintainStartTime(self, MaintainStartTime):
+        self._MaintainStartTime = MaintainStartTime
+
+    @property
+    def MaintainDuration(self):
+        return self._MaintainDuration
+
+    @MaintainDuration.setter
+    def MaintainDuration(self, MaintainDuration):
+        self._MaintainDuration = MaintainDuration
+
+    @property
+    def MaintainWeekDays(self):
+        return self._MaintainWeekDays
+
+    @MaintainWeekDays.setter
+    def MaintainWeekDays(self, MaintainWeekDays):
+        self._MaintainWeekDays = MaintainWeekDays
+
+    @property
+    def ServerlessStatus(self):
+        return self._ServerlessStatus
+
+    @ServerlessStatus.setter
+    def ServerlessStatus(self, ServerlessStatus):
+        self._ServerlessStatus = ServerlessStatus
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
@@ -2341,6 +2486,10 @@ class ClusterInstanceDetail(AbstractModel):
         self._InstanceMemory = params.get("InstanceMemory")
         self._InstanceStorage = params.get("InstanceStorage")
         self._InstanceRole = params.get("InstanceRole")
+        self._MaintainStartTime = params.get("MaintainStartTime")
+        self._MaintainDuration = params.get("MaintainDuration")
+        self._MaintainWeekDays = params.get("MaintainWeekDays")
+        self._ServerlessStatus = params.get("ServerlessStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2475,9 +2624,9 @@ class CopyClusterPasswordComplexityRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _ClusterIds: 复制集群ID数组
+        :param _ClusterIds: 复制集群ID数组，例如["cynosdbmysql-bzxxrmtq","cynosdbmysql-qwer"]
         :type ClusterIds: list of str
-        :param _SourceClusterId: 集群id
+        :param _SourceClusterId: 集群id，例如"cynosdbmysql-bzxxrmtq"
         :type SourceClusterId: str
         """
         self._ClusterIds = None
@@ -2786,14 +2935,20 @@ class CreateAuditRuleTemplateRequest(AbstractModel):
         r"""
         :param _RuleFilters: 审计规则。
         :type RuleFilters: list of RuleFilters
-        :param _RuleTemplateName: 规则模版名称。
+        :param _RuleTemplateName: 规则模板名称。
         :type RuleTemplateName: str
-        :param _Description: 规则模版描述。
+        :param _Description: 规则模板描述。
         :type Description: str
+        :param _AlarmLevel: 告警等级。1-低风险，2-中风险，3-高风险
+        :type AlarmLevel: int
+        :param _AlarmPolicy: 告警策略。0-不告警，1-告警。
+        :type AlarmPolicy: int
         """
         self._RuleFilters = None
         self._RuleTemplateName = None
         self._Description = None
+        self._AlarmLevel = None
+        self._AlarmPolicy = None
 
     @property
     def RuleFilters(self):
@@ -2819,6 +2974,22 @@ class CreateAuditRuleTemplateRequest(AbstractModel):
     def Description(self, Description):
         self._Description = Description
 
+    @property
+    def AlarmLevel(self):
+        return self._AlarmLevel
+
+    @AlarmLevel.setter
+    def AlarmLevel(self, AlarmLevel):
+        self._AlarmLevel = AlarmLevel
+
+    @property
+    def AlarmPolicy(self):
+        return self._AlarmPolicy
+
+    @AlarmPolicy.setter
+    def AlarmPolicy(self, AlarmPolicy):
+        self._AlarmPolicy = AlarmPolicy
+
 
     def _deserialize(self, params):
         if params.get("RuleFilters") is not None:
@@ -2829,6 +3000,8 @@ class CreateAuditRuleTemplateRequest(AbstractModel):
                 self._RuleFilters.append(obj)
         self._RuleTemplateName = params.get("RuleTemplateName")
         self._Description = params.get("Description")
+        self._AlarmLevel = params.get("AlarmLevel")
+        self._AlarmPolicy = params.get("AlarmPolicy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2846,7 +3019,7 @@ class CreateAuditRuleTemplateResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _RuleTemplateId: 生成的规则模版ID。
+        :param _RuleTemplateId: 生成的规则模板ID。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RuleTemplateId: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -3148,10 +3321,10 @@ class CreateClustersRequest(AbstractModel):
 普通实例Cpu核数
         :type Cpu: int
         :param _Memory: 当DbMode为NORMAL或不填时必选
-普通实例内存,单位G
+普通实例内存,单位GB
         :type Memory: int
         :param _Storage: 该参数无实际意义，已废弃。
-存储大小，单位G。
+存储大小，单位GB。
         :type Storage: int
         :param _ClusterName: 集群名称，长度小于64个字符，每个字符取值范围：大/小写字母，数字，特殊符号（'-','_','.'）
         :type ClusterName: str
@@ -3186,7 +3359,8 @@ timeRollback，时间点回档
         :type TimeSpan: int
         :param _TimeUnit: 包年包月购买时长单位，['s','d','m','y']
         :type TimeUnit: str
-        :param _AutoRenewFlag: 包年包月购买是否自动续费，默认为0
+        :param _AutoRenewFlag: 包年包月购买是否自动续费，默认为0。
+0标识默认续费方式，1表示自动续费，2表示手不自动续费。
         :type AutoRenewFlag: int
         :param _AutoVoucher: 是否自动选择代金券 1是 0否 默认为0
         :type AutoVoucher: int
@@ -3227,7 +3401,7 @@ cpu最大值，可选范围参考DescribeServerlessInstanceSpecs接口返回
         :type ClusterParams: list of ParamItem
         :param _DealMode: 交易模式，0-下单且支付，1-下单
         :type DealMode: int
-        :param _ParamTemplateId: 参数模版ID，可以通过查询参数模板信息DescribeParamTemplates获得参数模板ID
+        :param _ParamTemplateId: 参数模板ID，可以通过查询参数模板信息DescribeParamTemplates获得参数模板ID
         :type ParamTemplateId: int
         :param _SlaveZone: 多可用区地址
         :type SlaveZone: str
@@ -3916,18 +4090,21 @@ class CreateProxyEndPointRequest(AbstractModel):
         :type OpenConnectionPool: str
         :param _ConnectionPoolTimeOut: 连接池阈值：单位（秒）
         :type ConnectionPoolTimeOut: int
-        :param _SecurityGroupIds: 安全组ID数组
+        :param _SecurityGroupIds: 绑定的安全组ID数组
         :type SecurityGroupIds: list of str
         :param _Description: 描述说明
         :type Description: str
-        :param _Vip: vip信息
+        :param _Vip: 想要绑定的vip信息，需与UniqueVpcId对应。
         :type Vip: str
         :param _WeightMode: 权重模式：
 system-系统分配，custom-自定义
         :type WeightMode: str
         :param _AutoAddRo: 是否自动添加只读实例，yes-是，no-不自动添加
         :type AutoAddRo: str
-        :param _FailOver: 是否开启故障转移
+        :param _FailOver: 是否开启故障转移。
+yes：开启
+no：不开启。
+数据库代理出现故障时，链接地址将会路由到主实例
         :type FailOver: str
         :param _ConsistencyType: 一致性类型：
 eventual,global,session
@@ -3935,9 +4112,9 @@ eventual,global,session
         :param _RwType: 读写属性：
 READWRITE,READONLY
         :type RwType: str
-        :param _ConsistencyTimeOut: 一致性超时时间
+        :param _ConsistencyTimeOut: 一致性超时时间。取值范围：0~1000000（微秒）,设置0则表示若只读实例出现延迟, 导致一致性策略不满足, 请求将一直等待
         :type ConsistencyTimeOut: int
-        :param _TransSplit: 事务拆分
+        :param _TransSplit: 是否开启事务拆分。在一个事务中拆分读和写到不同的实例上去执行
         :type TransSplit: bool
         :param _AccessMode: 连接模式：
 nearby,balance
@@ -5279,7 +5456,7 @@ pausing
         :type Vip: str
         :param _Vport: vport端口
         :type Vport: int
-        :param _RoAddr: 读写分离Vport
+        :param _RoAddr: 集群只读实例的vip地址和vport端口
         :type RoAddr: list of Addr
         :param _Ability: 集群支持的功能
 注意：此字段可能返回 null，表示取不到有效值。
@@ -5339,6 +5516,9 @@ pausing
         :param _RenewFlag: 自动续费标识，1为自动续费，0为到期不续
 注意：此字段可能返回 null，表示取不到有效值。
         :type RenewFlag: int
+        :param _NetworkType: 节点网络类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NetworkType: str
         """
         self._ClusterId = None
         self._ClusterName = None
@@ -5388,6 +5568,7 @@ pausing
         self._NetworkStatus = None
         self._ResourcePackages = None
         self._RenewFlag = None
+        self._NetworkType = None
 
     @property
     def ClusterId(self):
@@ -5773,6 +5954,14 @@ pausing
     def RenewFlag(self, RenewFlag):
         self._RenewFlag = RenewFlag
 
+    @property
+    def NetworkType(self):
+        return self._NetworkType
+
+    @NetworkType.setter
+    def NetworkType(self, NetworkType):
+        self._NetworkType = NetworkType
+
 
     def _deserialize(self, params):
         self._ClusterId = params.get("ClusterId")
@@ -5850,6 +6039,7 @@ pausing
                 obj._deserialize(item)
                 self._ResourcePackages.append(obj)
         self._RenewFlag = params.get("RenewFlag")
+        self._NetworkType = params.get("NetworkType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7323,8 +7513,10 @@ class DatabasePrivileges(AbstractModel):
     def __init__(self):
         r"""
         :param _Db: 数据库
+注意：此字段可能返回 null，表示取不到有效值。
         :type Db: str
         :param _Privileges: 权限列表
+注意：此字段可能返回 null，表示取不到有效值。
         :type Privileges: list of str
         """
         self._Db = None
@@ -7782,7 +7974,7 @@ class DeleteAuditRuleTemplatesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _RuleTemplateIds: 审计规则模版ID。
+        :param _RuleTemplateIds: 审计规则模板ID。
         :type RuleTemplateIds: list of str
         """
         self._RuleTemplateIds = None
@@ -8277,7 +8469,7 @@ class DescribeAccountPrivilegesResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Privileges: 权限列表，示例值为：["select","update","delete","create","drop","references","index","alter","show_db","create_tmp_table","lock_tables","execute","create_view","show_view","create_routine","alter_routine","event","trigger"]
+        :param _Privileges: 权限列表，示例值为：["","select","update","delete","create","drop","references","index","alter","show_db","create_tmp_table","lock_tables","execute","create_view","show_view","create_routine","alter_routine","event","trigger"]
         :type Privileges: list of str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -8328,6 +8520,8 @@ class DescribeAccountsRequest(AbstractModel):
         :type Limit: int
         :param _Offset: 偏移量
         :type Offset: int
+        :param _AccountRegular: 模糊匹配关键字(同时匹配AccountName和AccountHost，返回并集结果，支持正则)
+        :type AccountRegular: str
         """
         self._ClusterId = None
         self._AccountNames = None
@@ -8335,6 +8529,7 @@ class DescribeAccountsRequest(AbstractModel):
         self._Hosts = None
         self._Limit = None
         self._Offset = None
+        self._AccountRegular = None
 
     @property
     def ClusterId(self):
@@ -8384,6 +8579,14 @@ class DescribeAccountsRequest(AbstractModel):
     def Offset(self, Offset):
         self._Offset = Offset
 
+    @property
+    def AccountRegular(self):
+        return self._AccountRegular
+
+    @AccountRegular.setter
+    def AccountRegular(self, AccountRegular):
+        self._AccountRegular = AccountRegular
+
 
     def _deserialize(self, params):
         self._ClusterId = params.get("ClusterId")
@@ -8392,6 +8595,7 @@ class DescribeAccountsRequest(AbstractModel):
         self._Hosts = params.get("Hosts")
         self._Limit = params.get("Limit")
         self._Offset = params.get("Offset")
+        self._AccountRegular = params.get("AccountRegular")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8606,7 +8810,7 @@ class DescribeAuditLogsRequest(AbstractModel):
         :type Limit: int
         :param _Offset: 分页偏移量。
         :type Offset: int
-        :param _LogFilter: 审计日志过滤条件。
+        :param _LogFilter: 过滤条件。多个值之前是且的关系。
         :type LogFilter: list of InstanceAuditLogFilter
         """
         self._InstanceId = None
@@ -8781,19 +8985,25 @@ class DescribeAuditRuleTemplatesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _RuleTemplateIds: 规则模版ID。
+        :param _RuleTemplateIds: 规则模板ID。
         :type RuleTemplateIds: list of str
-        :param _RuleTemplateNames: 规则模版名称
+        :param _RuleTemplateNames: 规则模板名称
         :type RuleTemplateNames: list of str
         :param _Limit: 单次请求返回的数量。默认值20。
         :type Limit: int
         :param _Offset: 偏移量，默认值为 0。
         :type Offset: int
+        :param _AlarmLevel: 告警等级。1-低风险，2-中风险，3-高风险。
+        :type AlarmLevel: int
+        :param _AlarmPolicy: 告警策略。0-不告警，1-告警。
+        :type AlarmPolicy: int
         """
         self._RuleTemplateIds = None
         self._RuleTemplateNames = None
         self._Limit = None
         self._Offset = None
+        self._AlarmLevel = None
+        self._AlarmPolicy = None
 
     @property
     def RuleTemplateIds(self):
@@ -8827,12 +9037,30 @@ class DescribeAuditRuleTemplatesRequest(AbstractModel):
     def Offset(self, Offset):
         self._Offset = Offset
 
+    @property
+    def AlarmLevel(self):
+        return self._AlarmLevel
+
+    @AlarmLevel.setter
+    def AlarmLevel(self, AlarmLevel):
+        self._AlarmLevel = AlarmLevel
+
+    @property
+    def AlarmPolicy(self):
+        return self._AlarmPolicy
+
+    @AlarmPolicy.setter
+    def AlarmPolicy(self, AlarmPolicy):
+        self._AlarmPolicy = AlarmPolicy
+
 
     def _deserialize(self, params):
         self._RuleTemplateIds = params.get("RuleTemplateIds")
         self._RuleTemplateNames = params.get("RuleTemplateNames")
         self._Limit = params.get("Limit")
         self._Offset = params.get("Offset")
+        self._AlarmLevel = params.get("AlarmLevel")
+        self._AlarmPolicy = params.get("AlarmPolicy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8852,7 +9080,7 @@ class DescribeAuditRuleTemplatesResponse(AbstractModel):
         r"""
         :param _TotalCount: 符合查询条件的实例总数。
         :type TotalCount: int
-        :param _Items: 规则模版详细信息列表。
+        :param _Items: 规则模板详细信息列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Items: list of AuditRuleTemplateInfo
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -9038,6 +9266,9 @@ class DescribeBackupConfigResponse(AbstractModel):
         :param _BackupType: 备份方式，logic-逻辑备份，snapshot-快照备份
 注意：此字段可能返回 null，表示取不到有效值。
         :type BackupType: str
+        :param _LogicCrossRegionsConfigUpdateTime: 跨地域逻辑备份配置修改时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogicCrossRegionsConfigUpdateTime: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -9046,6 +9277,7 @@ class DescribeBackupConfigResponse(AbstractModel):
         self._ReserveDuration = None
         self._BackupFreq = None
         self._BackupType = None
+        self._LogicCrossRegionsConfigUpdateTime = None
         self._RequestId = None
 
     @property
@@ -9089,6 +9321,14 @@ class DescribeBackupConfigResponse(AbstractModel):
         self._BackupType = BackupType
 
     @property
+    def LogicCrossRegionsConfigUpdateTime(self):
+        return self._LogicCrossRegionsConfigUpdateTime
+
+    @LogicCrossRegionsConfigUpdateTime.setter
+    def LogicCrossRegionsConfigUpdateTime(self, LogicCrossRegionsConfigUpdateTime):
+        self._LogicCrossRegionsConfigUpdateTime = LogicCrossRegionsConfigUpdateTime
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -9103,6 +9343,7 @@ class DescribeBackupConfigResponse(AbstractModel):
         self._ReserveDuration = params.get("ReserveDuration")
         self._BackupFreq = params.get("BackupFreq")
         self._BackupType = params.get("BackupType")
+        self._LogicCrossRegionsConfigUpdateTime = params.get("LogicCrossRegionsConfigUpdateTime")
         self._RequestId = params.get("RequestId")
 
 
@@ -9222,6 +9463,10 @@ class DescribeBackupListRequest(AbstractModel):
         :type BackupNames: list of str
         :param _SnapshotIdList: 快照备份Id列表
         :type SnapshotIdList: list of int
+        :param _BackupRegion: 备份地域
+        :type BackupRegion: str
+        :param _IsCrossRegionsBackup: 是否跨地域备份
+        :type IsCrossRegionsBackup: str
         """
         self._ClusterId = None
         self._Limit = None
@@ -9236,6 +9481,8 @@ class DescribeBackupListRequest(AbstractModel):
         self._FileNames = None
         self._BackupNames = None
         self._SnapshotIdList = None
+        self._BackupRegion = None
+        self._IsCrossRegionsBackup = None
 
     @property
     def ClusterId(self):
@@ -9341,6 +9588,22 @@ class DescribeBackupListRequest(AbstractModel):
     def SnapshotIdList(self, SnapshotIdList):
         self._SnapshotIdList = SnapshotIdList
 
+    @property
+    def BackupRegion(self):
+        return self._BackupRegion
+
+    @BackupRegion.setter
+    def BackupRegion(self, BackupRegion):
+        self._BackupRegion = BackupRegion
+
+    @property
+    def IsCrossRegionsBackup(self):
+        return self._IsCrossRegionsBackup
+
+    @IsCrossRegionsBackup.setter
+    def IsCrossRegionsBackup(self, IsCrossRegionsBackup):
+        self._IsCrossRegionsBackup = IsCrossRegionsBackup
+
 
     def _deserialize(self, params):
         self._ClusterId = params.get("ClusterId")
@@ -9356,6 +9619,8 @@ class DescribeBackupListRequest(AbstractModel):
         self._FileNames = params.get("FileNames")
         self._BackupNames = params.get("BackupNames")
         self._SnapshotIdList = params.get("SnapshotIdList")
+        self._BackupRegion = params.get("BackupRegion")
+        self._IsCrossRegionsBackup = params.get("IsCrossRegionsBackup")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -12092,7 +12357,7 @@ class DescribeProxiesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _ClusterId: 集群ID
+        :param _ClusterId: 集群ID（该参数必传，例如cynosdbmysql-xxxxxx）
         :type ClusterId: str
         :param _Limit: 返回数量，默认为 20，最大值为 100
         :type Limit: int
@@ -12461,7 +12726,7 @@ class DescribeResourcePackageDetailRequest(AbstractModel):
         r"""
         :param _PackageId: 资源包唯一ID
         :type PackageId: str
-        :param _ClusterIds: 实例ID
+        :param _ClusterIds: 集群ID
         :type ClusterIds: list of str
         :param _StartTime: 开始时间
         :type StartTime: str
@@ -12471,6 +12736,8 @@ class DescribeResourcePackageDetailRequest(AbstractModel):
         :type Offset: str
         :param _Limit: 限制
         :type Limit: str
+        :param _InstanceIds: 实例D
+        :type InstanceIds: list of str
         """
         self._PackageId = None
         self._ClusterIds = None
@@ -12478,6 +12745,7 @@ class DescribeResourcePackageDetailRequest(AbstractModel):
         self._EndTime = None
         self._Offset = None
         self._Limit = None
+        self._InstanceIds = None
 
     @property
     def PackageId(self):
@@ -12527,6 +12795,14 @@ class DescribeResourcePackageDetailRequest(AbstractModel):
     def Limit(self, Limit):
         self._Limit = Limit
 
+    @property
+    def InstanceIds(self):
+        return self._InstanceIds
+
+    @InstanceIds.setter
+    def InstanceIds(self, InstanceIds):
+        self._InstanceIds = InstanceIds
+
 
     def _deserialize(self, params):
         self._PackageId = params.get("PackageId")
@@ -12535,6 +12811,7 @@ class DescribeResourcePackageDetailRequest(AbstractModel):
         self._EndTime = params.get("EndTime")
         self._Offset = params.get("Offset")
         self._Limit = params.get("Limit")
+        self._InstanceIds = params.get("InstanceIds")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -12552,7 +12829,7 @@ class DescribeResourcePackageDetailResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Total: 总使用明细数
+        :param _Total: 资源包抵扣总数
         :type Total: int
         :param _Detail: 资源包明细说明
         :type Detail: list of PackageDetail
@@ -12745,7 +13022,7 @@ class DescribeResourcePackageListResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Total: 总配置数
+        :param _Total: 资源包总数
         :type Total: int
         :param _Detail: 资源包明细
 注意：此字段可能返回 null，表示取不到有效值。
@@ -12939,9 +13216,11 @@ class DescribeResourcesByDealNameRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _DealName: 计费订单ID（如果计费还没回调业务发货，可能出现错误码InvalidParameterValue.DealNameNotFound，这种情况需要业务重试DescribeResourcesByDealName接口直到成功）
+        :param _DealName: 计费订单ID（如果计费还没回调业务发货，可能出现错误码InvalidParameterValue.DealNameNotFound，这种情况需要业务重试DescribeResourcesByDealName接口直到成功）。
+DealName与DealNames至少应输入一项，两者都传时以DealName为准。
         :type DealName: str
-        :param _DealNames: 计费订单ID列表，可以一次查询若干条订单ID对应资源信息（如果计费还没回调业务发货，可能出现错误码InvalidParameterValue.DealNameNotFound，这种情况需要业务重试DescribeResourcesByDealName接口直到成功）
+        :param _DealNames: 计费订单ID列表，可以一次查询若干条订单ID对应资源信息（如果计费还没回调业务发货，可能出现错误码InvalidParameterValue.DealNameNotFound，这种情况需要业务重试DescribeResourcesByDealName接口直到成功）。
+DealName与DealNames至少应输入一项，两者都传时以DealName为准。
         :type DealNames: list of str
         """
         self._DealName = None
@@ -13784,6 +14063,10 @@ class ExportInstanceSlowQueriesRequest(AbstractModel):
         :type Database: str
         :param _FileType: 文件类型，可选值：csv, original
         :type FileType: str
+        :param _OrderBy: 排序字段，可选值： QueryTime,LockTime,RowsExamined,RowsSent
+        :type OrderBy: str
+        :param _OrderByType: 排序类型，可选值：asc,desc
+        :type OrderByType: str
         """
         self._InstanceId = None
         self._StartTime = None
@@ -13794,6 +14077,8 @@ class ExportInstanceSlowQueriesRequest(AbstractModel):
         self._Host = None
         self._Database = None
         self._FileType = None
+        self._OrderBy = None
+        self._OrderByType = None
 
     @property
     def InstanceId(self):
@@ -13867,6 +14152,22 @@ class ExportInstanceSlowQueriesRequest(AbstractModel):
     def FileType(self, FileType):
         self._FileType = FileType
 
+    @property
+    def OrderBy(self):
+        return self._OrderBy
+
+    @OrderBy.setter
+    def OrderBy(self, OrderBy):
+        self._OrderBy = OrderBy
+
+    @property
+    def OrderByType(self):
+        return self._OrderByType
+
+    @OrderByType.setter
+    def OrderByType(self, OrderByType):
+        self._OrderByType = OrderByType
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
@@ -13878,6 +14179,8 @@ class ExportInstanceSlowQueriesRequest(AbstractModel):
         self._Host = params.get("Host")
         self._Database = params.get("Database")
         self._FileType = params.get("FileType")
+        self._OrderBy = params.get("OrderBy")
+        self._OrderByType = params.get("OrderByType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -14419,37 +14722,26 @@ class InstanceAuditLogFilter(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Type: 过滤项。支持以下搜索条件:
+        :param _Type: 过滤项。目前支持以下搜索条件：
 
-等于、不等于、包含、不包含：
-host - 客户端地址；
-user - 用户名；
-dbName - 数据库名称；
+包含、不包含、包含（分词维度）、不包含（分词维度）: sql - SQL详情；alarmLevel - 告警等级；ruleTemplateId - 规则模板Id
 
-等于、不等于：
-sqlType - SQL类型；
-errCode - 错误码；
-threadId - 线程ID；
+等于、不等于、包含、不包含： host - 客户端地址； user - 用户名； dbName - 数据库名称；
 
-范围搜索（时间类型统一为微妙）：
-execTime - 执行时间；
-lockWaitTime - 执行时间；
-ioWaitTime - IO等待时间；
-trxLivingTime - 事物持续时间；
-cpuTime - cpu时间；
-checkRows - 扫描行数；
-affectRows - 影响行数；
-sentRows - 返回行数。
+等于、不等于： sqlType - SQL类型； errCode - 错误码； threadId - 线程ID；
 
+范围搜索（时间类型统一为微秒）： execTime - 执行时间； lockWaitTime - 执行时间； ioWaitTime - IO等待时间； trxLivingTime - 事物持续时间； cpuTime - cpu时间； checkRows - 扫描行数； affectRows - 影响行数； sentRows - 返回行数。
         :type Type: str
-        :param _Compare: 过滤条件。支持以下选项:
+        :param _Compare: 过滤条件。支持以下条件：
+WINC-包含（分词维度），
+WEXC-不包含（分词维度）,
 INC - 包含,
 EXC - 不包含,
 EQS - 等于,
 NEQ - 不等于,
-RA - 范围.
+RA - 范围。
         :type Compare: str
-        :param _Value: 过滤的值。
+        :param _Value: 过滤的值。反向查询时，多个值之前是且的关系，正向查询多个值是或的关系。
         :type Value: list of str
         """
         self._Type = None
@@ -14496,7 +14788,7 @@ RA - 范围.
 
 
 class InstanceAuditRule(AbstractModel):
-    """实例的审计规则详情，DescribeAuditRuleWithInstanceIds接口的出参。
+    """实例的审计规则详情。
 
     """
 
@@ -14510,10 +14802,18 @@ class InstanceAuditRule(AbstractModel):
         :param _AuditRuleFilters: 审计规则详情。仅当AuditRule=true时有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type AuditRuleFilters: list of AuditRuleFilters
+        :param _OldRule: 是否是审计策略
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OldRule: bool
+        :param _RuleTemplates: 实例应用的规则模板详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleTemplates: list of RuleTemplateInfo
         """
         self._InstanceId = None
         self._AuditRule = None
         self._AuditRuleFilters = None
+        self._OldRule = None
+        self._RuleTemplates = None
 
     @property
     def InstanceId(self):
@@ -14539,6 +14839,22 @@ class InstanceAuditRule(AbstractModel):
     def AuditRuleFilters(self, AuditRuleFilters):
         self._AuditRuleFilters = AuditRuleFilters
 
+    @property
+    def OldRule(self):
+        return self._OldRule
+
+    @OldRule.setter
+    def OldRule(self, OldRule):
+        self._OldRule = OldRule
+
+    @property
+    def RuleTemplates(self):
+        return self._RuleTemplates
+
+    @RuleTemplates.setter
+    def RuleTemplates(self, RuleTemplates):
+        self._RuleTemplates = RuleTemplates
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
@@ -14549,6 +14865,13 @@ class InstanceAuditRule(AbstractModel):
                 obj = AuditRuleFilters()
                 obj._deserialize(item)
                 self._AuditRuleFilters.append(obj)
+        self._OldRule = params.get("OldRule")
+        if params.get("RuleTemplates") is not None:
+            self._RuleTemplates = []
+            for item in params.get("RuleTemplates"):
+                obj = RuleTemplateInfo()
+                obj._deserialize(item)
+                self._RuleTemplates.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -14574,11 +14897,23 @@ class InstanceInitInfo(AbstractModel):
         :type InstanceType: str
         :param _InstanceCount: 实例个数,范围[1,15]
         :type InstanceCount: int
+        :param _MinRoCount: Serverless实例个数最小值，范围[1,15]
+        :type MinRoCount: int
+        :param _MaxRoCount: Serverless实例个数最大值，范围[1,15]
+        :type MaxRoCount: int
+        :param _MinRoCpu: Serverless实例最小规格
+        :type MinRoCpu: float
+        :param _MaxRoCpu: Serverless实例最大规格
+        :type MaxRoCpu: float
         """
         self._Cpu = None
         self._Memory = None
         self._InstanceType = None
         self._InstanceCount = None
+        self._MinRoCount = None
+        self._MaxRoCount = None
+        self._MinRoCpu = None
+        self._MaxRoCpu = None
 
     @property
     def Cpu(self):
@@ -14612,12 +14947,48 @@ class InstanceInitInfo(AbstractModel):
     def InstanceCount(self, InstanceCount):
         self._InstanceCount = InstanceCount
 
+    @property
+    def MinRoCount(self):
+        return self._MinRoCount
+
+    @MinRoCount.setter
+    def MinRoCount(self, MinRoCount):
+        self._MinRoCount = MinRoCount
+
+    @property
+    def MaxRoCount(self):
+        return self._MaxRoCount
+
+    @MaxRoCount.setter
+    def MaxRoCount(self, MaxRoCount):
+        self._MaxRoCount = MaxRoCount
+
+    @property
+    def MinRoCpu(self):
+        return self._MinRoCpu
+
+    @MinRoCpu.setter
+    def MinRoCpu(self, MinRoCpu):
+        self._MinRoCpu = MinRoCpu
+
+    @property
+    def MaxRoCpu(self):
+        return self._MaxRoCpu
+
+    @MaxRoCpu.setter
+    def MaxRoCpu(self, MaxRoCpu):
+        self._MaxRoCpu = MaxRoCpu
+
 
     def _deserialize(self, params):
         self._Cpu = params.get("Cpu")
         self._Memory = params.get("Memory")
         self._InstanceType = params.get("InstanceType")
         self._InstanceCount = params.get("InstanceCount")
+        self._MinRoCount = params.get("MinRoCount")
+        self._MaxRoCount = params.get("MaxRoCount")
+        self._MinRoCpu = params.get("MinRoCpu")
+        self._MaxRoCpu = params.get("MaxRoCpu")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -14659,7 +15030,7 @@ class InstanceNetInfo(AbstractModel):
         :param _WanDomain: 外网域名
 注意：此字段可能返回 null，表示取不到有效值。
         :type WanDomain: str
-        :param _WanIP: 外网Ip
+        :param _WanIP: 外网IP
 注意：此字段可能返回 null，表示取不到有效值。
         :type WanIP: str
         :param _WanPort: 外网端口
@@ -15095,7 +15466,7 @@ class IsolateInstanceRequest(AbstractModel):
         r"""
         :param _ClusterId: 集群ID
         :type ClusterId: str
-        :param _InstanceIdList: 实例ID数组
+        :param _InstanceIdList: 实例ID数组，例如["cynosdbbmysql-ins-asd","cynosdbmysql-ins-zxc"]
         :type InstanceIdList: list of str
         :param _DbType: 该参数已废弃
         :type DbType: str
@@ -15191,6 +15562,178 @@ class IsolateInstanceResponse(AbstractModel):
         self._FlowId = params.get("FlowId")
         self._DealNames = params.get("DealNames")
         self._RequestId = params.get("RequestId")
+
+
+class LogRuleTemplateInfo(AbstractModel):
+    """审计日志命中规则模板的基本信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RuleTemplateId: 模板ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleTemplateId: str
+        :param _RuleTemplateName: 规则模板名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleTemplateName: str
+        :param _AlarmLevel: 告警等级。1-低风险，2-中风险，3-高风险。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlarmLevel: str
+        :param _RuleTemplateStatus: 规则模板变更状态：0-未变更；1-已变更；2-已删除
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleTemplateStatus: int
+        """
+        self._RuleTemplateId = None
+        self._RuleTemplateName = None
+        self._AlarmLevel = None
+        self._RuleTemplateStatus = None
+
+    @property
+    def RuleTemplateId(self):
+        return self._RuleTemplateId
+
+    @RuleTemplateId.setter
+    def RuleTemplateId(self, RuleTemplateId):
+        self._RuleTemplateId = RuleTemplateId
+
+    @property
+    def RuleTemplateName(self):
+        return self._RuleTemplateName
+
+    @RuleTemplateName.setter
+    def RuleTemplateName(self, RuleTemplateName):
+        self._RuleTemplateName = RuleTemplateName
+
+    @property
+    def AlarmLevel(self):
+        return self._AlarmLevel
+
+    @AlarmLevel.setter
+    def AlarmLevel(self, AlarmLevel):
+        self._AlarmLevel = AlarmLevel
+
+    @property
+    def RuleTemplateStatus(self):
+        return self._RuleTemplateStatus
+
+    @RuleTemplateStatus.setter
+    def RuleTemplateStatus(self, RuleTemplateStatus):
+        self._RuleTemplateStatus = RuleTemplateStatus
+
+
+    def _deserialize(self, params):
+        self._RuleTemplateId = params.get("RuleTemplateId")
+        self._RuleTemplateName = params.get("RuleTemplateName")
+        self._AlarmLevel = params.get("AlarmLevel")
+        self._RuleTemplateStatus = params.get("RuleTemplateStatus")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class LogicBackupConfigInfo(AbstractModel):
+    """逻辑备份配置信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _LogicBackupEnable: 是否开启自动逻辑备份
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogicBackupEnable: str
+        :param _LogicBackupTimeBeg: 自动逻辑备份开始时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogicBackupTimeBeg: int
+        :param _LogicBackupTimeEnd: 自动逻辑备份结束时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogicBackupTimeEnd: int
+        :param _LogicReserveDuration: 自动逻辑备份保留时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogicReserveDuration: int
+        :param _LogicCrossRegionsEnable: 是否开启跨地域逻辑备份
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogicCrossRegionsEnable: str
+        :param _LogicCrossRegions: 逻辑备份所跨地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogicCrossRegions: list of str
+        """
+        self._LogicBackupEnable = None
+        self._LogicBackupTimeBeg = None
+        self._LogicBackupTimeEnd = None
+        self._LogicReserveDuration = None
+        self._LogicCrossRegionsEnable = None
+        self._LogicCrossRegions = None
+
+    @property
+    def LogicBackupEnable(self):
+        return self._LogicBackupEnable
+
+    @LogicBackupEnable.setter
+    def LogicBackupEnable(self, LogicBackupEnable):
+        self._LogicBackupEnable = LogicBackupEnable
+
+    @property
+    def LogicBackupTimeBeg(self):
+        return self._LogicBackupTimeBeg
+
+    @LogicBackupTimeBeg.setter
+    def LogicBackupTimeBeg(self, LogicBackupTimeBeg):
+        self._LogicBackupTimeBeg = LogicBackupTimeBeg
+
+    @property
+    def LogicBackupTimeEnd(self):
+        return self._LogicBackupTimeEnd
+
+    @LogicBackupTimeEnd.setter
+    def LogicBackupTimeEnd(self, LogicBackupTimeEnd):
+        self._LogicBackupTimeEnd = LogicBackupTimeEnd
+
+    @property
+    def LogicReserveDuration(self):
+        return self._LogicReserveDuration
+
+    @LogicReserveDuration.setter
+    def LogicReserveDuration(self, LogicReserveDuration):
+        self._LogicReserveDuration = LogicReserveDuration
+
+    @property
+    def LogicCrossRegionsEnable(self):
+        return self._LogicCrossRegionsEnable
+
+    @LogicCrossRegionsEnable.setter
+    def LogicCrossRegionsEnable(self, LogicCrossRegionsEnable):
+        self._LogicCrossRegionsEnable = LogicCrossRegionsEnable
+
+    @property
+    def LogicCrossRegions(self):
+        return self._LogicCrossRegions
+
+    @LogicCrossRegions.setter
+    def LogicCrossRegions(self, LogicCrossRegions):
+        self._LogicCrossRegions = LogicCrossRegions
+
+
+    def _deserialize(self, params):
+        self._LogicBackupEnable = params.get("LogicBackupEnable")
+        self._LogicBackupTimeBeg = params.get("LogicBackupTimeBeg")
+        self._LogicBackupTimeEnd = params.get("LogicBackupTimeEnd")
+        self._LogicReserveDuration = params.get("LogicReserveDuration")
+        self._LogicCrossRegionsEnable = params.get("LogicCrossRegionsEnable")
+        self._LogicCrossRegions = params.get("LogicCrossRegions")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class ModifiableInfo(AbstractModel):
@@ -15591,19 +16134,25 @@ class ModifyAuditRuleTemplatesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _RuleTemplateIds: 审计规则模版ID。
+        :param _RuleTemplateIds: 审计规则模板ID。
         :type RuleTemplateIds: list of str
         :param _RuleFilters: 修改后的审计规则。
         :type RuleFilters: list of RuleFilters
-        :param _RuleTemplateName: 修改后的规则模版名称。
+        :param _RuleTemplateName: 修改后的规则模板名称。
         :type RuleTemplateName: str
-        :param _Description: 修改后的规则模版描述。
+        :param _Description: 修改后的规则模板描述。
         :type Description: str
+        :param _AlarmLevel: 告警等级。1-低风险，2-中风险，3-高风险。
+        :type AlarmLevel: int
+        :param _AlarmPolicy: 告警策略。0-不告警，1-告警。
+        :type AlarmPolicy: int
         """
         self._RuleTemplateIds = None
         self._RuleFilters = None
         self._RuleTemplateName = None
         self._Description = None
+        self._AlarmLevel = None
+        self._AlarmPolicy = None
 
     @property
     def RuleTemplateIds(self):
@@ -15637,6 +16186,22 @@ class ModifyAuditRuleTemplatesRequest(AbstractModel):
     def Description(self, Description):
         self._Description = Description
 
+    @property
+    def AlarmLevel(self):
+        return self._AlarmLevel
+
+    @AlarmLevel.setter
+    def AlarmLevel(self, AlarmLevel):
+        self._AlarmLevel = AlarmLevel
+
+    @property
+    def AlarmPolicy(self):
+        return self._AlarmPolicy
+
+    @AlarmPolicy.setter
+    def AlarmPolicy(self, AlarmPolicy):
+        self._AlarmPolicy = AlarmPolicy
+
 
     def _deserialize(self, params):
         self._RuleTemplateIds = params.get("RuleTemplateIds")
@@ -15648,6 +16213,8 @@ class ModifyAuditRuleTemplatesRequest(AbstractModel):
                 self._RuleFilters.append(obj)
         self._RuleTemplateName = params.get("RuleTemplateName")
         self._Description = params.get("Description")
+        self._AlarmLevel = params.get("AlarmLevel")
+        self._AlarmPolicy = params.get("AlarmPolicy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -15700,7 +16267,7 @@ class ModifyAuditServiceRequest(AbstractModel):
         :type AuditAll: bool
         :param _AuditRuleFilters: 规则审计。
         :type AuditRuleFilters: list of AuditRuleFilters
-        :param _RuleTemplateIds: 规则模版ID。
+        :param _RuleTemplateIds: 规则模板ID。
         :type RuleTemplateIds: list of str
         """
         self._InstanceId = None
@@ -15815,23 +16382,29 @@ class ModifyBackupConfigRequest(AbstractModel):
         r"""
         :param _ClusterId: 集群ID
         :type ClusterId: str
-        :param _ReserveDuration: 表示保留备份时长, 单位秒，超过该时间将被清理, 七天表示为3600*24*7=604800，最大为158112000
-        :type ReserveDuration: int
         :param _BackupTimeBeg: 表示全备开始时间，[0-24*3600]， 如0:00, 1:00, 2:00 分别为 0，3600， 7200
         :type BackupTimeBeg: int
         :param _BackupTimeEnd: 表示全备结束时间，[0-24*3600]， 如0:00, 1:00, 2:00 分别为 0，3600， 7200
         :type BackupTimeEnd: int
+        :param _ReserveDuration: 表示保留备份时长, 单位秒，超过该时间将被清理, 七天表示为3600*24*7=604800，最大为158112000
+        :type ReserveDuration: int
         :param _BackupFreq: 该参数目前不支持修改，无需填写。备份频率，长度为7的数组，分别对应周一到周日的备份方式，full-全量备份，increment-增量备份
         :type BackupFreq: list of str
         :param _BackupType: 该参数目前不支持修改，无需填写。备份方式，logic-逻辑备份，snapshot-快照备份
         :type BackupType: str
+        :param _LogicBackupConfig: 逻辑备份配置
+        :type LogicBackupConfig: :class:`tencentcloud.cynosdb.v20190107.models.LogicBackupConfigInfo`
+        :param _DeleteAutoLogicBackup: 是否删除自动逻辑备份
+        :type DeleteAutoLogicBackup: bool
         """
         self._ClusterId = None
-        self._ReserveDuration = None
         self._BackupTimeBeg = None
         self._BackupTimeEnd = None
+        self._ReserveDuration = None
         self._BackupFreq = None
         self._BackupType = None
+        self._LogicBackupConfig = None
+        self._DeleteAutoLogicBackup = None
 
     @property
     def ClusterId(self):
@@ -15840,14 +16413,6 @@ class ModifyBackupConfigRequest(AbstractModel):
     @ClusterId.setter
     def ClusterId(self, ClusterId):
         self._ClusterId = ClusterId
-
-    @property
-    def ReserveDuration(self):
-        return self._ReserveDuration
-
-    @ReserveDuration.setter
-    def ReserveDuration(self, ReserveDuration):
-        self._ReserveDuration = ReserveDuration
 
     @property
     def BackupTimeBeg(self):
@@ -15866,6 +16431,14 @@ class ModifyBackupConfigRequest(AbstractModel):
         self._BackupTimeEnd = BackupTimeEnd
 
     @property
+    def ReserveDuration(self):
+        return self._ReserveDuration
+
+    @ReserveDuration.setter
+    def ReserveDuration(self, ReserveDuration):
+        self._ReserveDuration = ReserveDuration
+
+    @property
     def BackupFreq(self):
         return self._BackupFreq
 
@@ -15881,14 +16454,34 @@ class ModifyBackupConfigRequest(AbstractModel):
     def BackupType(self, BackupType):
         self._BackupType = BackupType
 
+    @property
+    def LogicBackupConfig(self):
+        return self._LogicBackupConfig
+
+    @LogicBackupConfig.setter
+    def LogicBackupConfig(self, LogicBackupConfig):
+        self._LogicBackupConfig = LogicBackupConfig
+
+    @property
+    def DeleteAutoLogicBackup(self):
+        return self._DeleteAutoLogicBackup
+
+    @DeleteAutoLogicBackup.setter
+    def DeleteAutoLogicBackup(self, DeleteAutoLogicBackup):
+        self._DeleteAutoLogicBackup = DeleteAutoLogicBackup
+
 
     def _deserialize(self, params):
         self._ClusterId = params.get("ClusterId")
-        self._ReserveDuration = params.get("ReserveDuration")
         self._BackupTimeBeg = params.get("BackupTimeBeg")
         self._BackupTimeEnd = params.get("BackupTimeEnd")
+        self._ReserveDuration = params.get("ReserveDuration")
         self._BackupFreq = params.get("BackupFreq")
         self._BackupType = params.get("BackupType")
+        if params.get("LogicBackupConfig") is not None:
+            self._LogicBackupConfig = LogicBackupConfigInfo()
+            self._LogicBackupConfig._deserialize(params.get("LogicBackupConfig"))
+        self._DeleteAutoLogicBackup = params.get("DeleteAutoLogicBackup")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -16893,9 +17486,9 @@ class ModifyInstanceParamRequest(AbstractModel):
         :type ClusterId: str
         :param _InstanceIds: 实例ID
         :type InstanceIds: list of str
-        :param _ClusterParamList: 集群参数列表
+        :param _ClusterParamList: 集群参数列表，例如 [{           "CurrentValue":"2",        "ParamName":"auto_increment_increment"}]
         :type ClusterParamList: list of ModifyParamItem
-        :param _InstanceParamList: 实例参数列表
+        :param _InstanceParamList: 实例参数列表，例如[{           "CurrentValue":"2",        "ParamName":"innodb_stats_transient_sample_pages"}]
         :type InstanceParamList: list of ModifyParamItem
         :param _IsInMaintainPeriod: yes：在运维时间窗内修改，no：立即执行（默认值）
         :type IsInMaintainPeriod: str
@@ -17350,28 +17943,32 @@ class ModifyProxyRwSplitRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _ClusterId: 集群ID
+        :param _ClusterId: 集群ID，例如cynosdbmysql-asd123
         :type ClusterId: str
-        :param _ProxyGroupId: 数据库代理组ID
+        :param _ProxyGroupId: 数据库代理组ID，例如cynosdbmysql-proxy-qwe123
         :type ProxyGroupId: str
         :param _ConsistencyType: 一致性类型；“eventual"-最终一致性, "session"-会话一致性, "global"-全局一致性
         :type ConsistencyType: str
-        :param _ConsistencyTimeOut: 一致性超时时间
+        :param _ConsistencyTimeOut: 一致性超时时间。
+取值范围：0~1000000（微秒）,设置0则表示若只读实例出现延迟, 导致一致性策略不满足, 请求将一直等待。
         :type ConsistencyTimeOut: str
         :param _WeightMode: 读写权重分配模式；系统自动分配："system"， 自定义："custom"
         :type WeightMode: str
-        :param _InstanceWeights: 实例只读权重
+        :param _InstanceWeights: 实例只读权重。
+该参数必填。
         :type InstanceWeights: list of ProxyInstanceWeight
         :param _FailOver: 是否开启故障转移，代理出现故障后，连接地址将路由到主实例，取值："yes" , "no"
         :type FailOver: str
         :param _AutoAddRo: 是否自动添加只读实例，取值："yes" , "no"
         :type AutoAddRo: str
-        :param _OpenRw: 是否打开读写分离
+        :param _OpenRw: 是否打开读写分离。
+该参数已废弃，请通过RwType设置读写属性。
         :type OpenRw: str
         :param _RwType: 读写类型：
 READWRITE,READONLY
         :type RwType: str
-        :param _TransSplit: 事务拆分
+        :param _TransSplit: 事务拆分。
+在一个事务中拆分读和写到不同的实例上去执行。
         :type TransSplit: bool
         :param _AccessMode: 连接模式：
 nearby,balance
@@ -17382,7 +17979,8 @@ yes,no
         :param _ConnectionPoolType: 连接池类型：
 SessionConnectionPool
         :type ConnectionPoolType: str
-        :param _ConnectionPoolTimeOut: 连接池时间
+        :param _ConnectionPoolTimeOut: 连接池时间。
+可选范围:0~300（秒）
         :type ConnectionPoolTimeOut: int
         """
         self._ClusterId = None
@@ -18101,11 +18699,11 @@ class NewAccount(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _AccountName: 账户名，包含字母数字_,以字母开头，字母或数字结尾，长度1-16
+        :param _AccountName: 账户名，包含字母数字_,以字母开头，字母或数字结尾，长度1-30
         :type AccountName: str
         :param _AccountPassword: 密码，密码长度范围为8到64个字符
         :type AccountPassword: str
-        :param _Host: 主机
+        :param _Host: 主机(%或ipv4地址)
         :type Host: str
         :param _Description: 描述
         :type Description: str
@@ -18488,14 +19086,17 @@ class OpenAuditServiceRequest(AbstractModel):
         :type HighLogExpireDay: int
         :param _AuditRuleFilters: 审计规则。同RuleTemplateIds都不填是全审计。
         :type AuditRuleFilters: list of AuditRuleFilters
-        :param _RuleTemplateIds: 规则模版ID。同AuditRuleFilters都不填是全审计。
+        :param _RuleTemplateIds: 规则模板ID。同AuditRuleFilters都不填是全审计。
         :type RuleTemplateIds: list of str
+        :param _AuditAll: 审计类型。true-全审计；默认false-规则审计。
+        :type AuditAll: bool
         """
         self._InstanceId = None
         self._LogExpireDay = None
         self._HighLogExpireDay = None
         self._AuditRuleFilters = None
         self._RuleTemplateIds = None
+        self._AuditAll = None
 
     @property
     def InstanceId(self):
@@ -18537,6 +19138,14 @@ class OpenAuditServiceRequest(AbstractModel):
     def RuleTemplateIds(self, RuleTemplateIds):
         self._RuleTemplateIds = RuleTemplateIds
 
+    @property
+    def AuditAll(self):
+        return self._AuditAll
+
+    @AuditAll.setter
+    def AuditAll(self, AuditAll):
+        self._AuditAll = AuditAll
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
@@ -18549,6 +19158,7 @@ class OpenAuditServiceRequest(AbstractModel):
                 obj._deserialize(item)
                 self._AuditRuleFilters.append(obj)
         self._RuleTemplateIds = params.get("RuleTemplateIds")
+        self._AuditAll = params.get("AuditAll")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -18723,6 +19333,37 @@ class OpenClusterPasswordComplexityResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._FlowId = params.get("FlowId")
+        self._RequestId = params.get("RequestId")
+
+
+class OpenClusterReadOnlyInstanceGroupAccessRequest(AbstractModel):
+    """OpenClusterReadOnlyInstanceGroupAccess请求参数结构体
+
+    """
+
+
+class OpenClusterReadOnlyInstanceGroupAccessResponse(AbstractModel):
+    """OpenClusterReadOnlyInstanceGroupAccess返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
         self._RequestId = params.get("RequestId")
 
 
@@ -18965,7 +19606,7 @@ refund-已退费。
         :param _PackageUsedSpec: 资源包已使用量
 注意：此字段可能返回 null，表示取不到有效值。
         :type PackageUsedSpec: float
-        :param _HasQuota: 资源包已使用量
+        :param _HasQuota: 是否还有库存余量
 注意：此字段可能返回 null，表示取不到有效值。
         :type HasQuota: bool
         :param _BindInstanceInfos: 绑定实例信息
@@ -20721,6 +21362,8 @@ class ProxyNodeInfo(AbstractModel):
         :type Region: str
         :param _Zone: 可用区
         :type Zone: str
+        :param _OssProxyNodeName: 数据库代理节点名字
+        :type OssProxyNodeName: str
         """
         self._ProxyNodeId = None
         self._ProxyNodeConnections = None
@@ -20732,6 +21375,7 @@ class ProxyNodeInfo(AbstractModel):
         self._AppId = None
         self._Region = None
         self._Zone = None
+        self._OssProxyNodeName = None
 
     @property
     def ProxyNodeId(self):
@@ -20813,6 +21457,14 @@ class ProxyNodeInfo(AbstractModel):
     def Zone(self, Zone):
         self._Zone = Zone
 
+    @property
+    def OssProxyNodeName(self):
+        return self._OssProxyNodeName
+
+    @OssProxyNodeName.setter
+    def OssProxyNodeName(self, OssProxyNodeName):
+        self._OssProxyNodeName = OssProxyNodeName
+
 
     def _deserialize(self, params):
         self._ProxyNodeId = params.get("ProxyNodeId")
@@ -20825,6 +21477,7 @@ class ProxyNodeInfo(AbstractModel):
         self._AppId = params.get("AppId")
         self._Region = params.get("Region")
         self._Zone = params.get("Zone")
+        self._OssProxyNodeName = params.get("OssProxyNodeName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -21703,9 +22356,11 @@ class RollBackClusterRequest(AbstractModel):
         :type ClusterId: str
         :param _RollbackStrategy: 回档策略 timeRollback-按时间点回档 snapRollback-按备份文件回档
         :type RollbackStrategy: str
-        :param _RollbackId: 回档ID
+        :param _RollbackId: 备份文件ID。
+回档策略为按备份文件回档时必填。
         :type RollbackId: int
-        :param _ExpectTime: 期望回档时间
+        :param _ExpectTime: 期望回档时间。
+回档策略为timeRollback按时间点回档时必填。
         :type ExpectTime: str
         :param _ExpectTimeThresh: 期望阈值（已废弃）
         :type ExpectTimeThresh: int
@@ -21959,8 +22614,10 @@ class RollbackTableInfo(AbstractModel):
     def __init__(self):
         r"""
         :param _OldTable: 旧表名称
+注意：此字段可能返回 null，表示取不到有效值。
         :type OldTable: str
         :param _NewTable: 新表名称
+注意：此字段可能返回 null，表示取不到有效值。
         :type NewTable: str
         """
         self._OldTable = None
@@ -22088,6 +22745,110 @@ class RuleFilters(AbstractModel):
         self._Type = params.get("Type")
         self._Compare = params.get("Compare")
         self._Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RuleTemplateInfo(AbstractModel):
+    """规则模板内容
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RuleTemplateId: 规则模板ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleTemplateId: str
+        :param _RuleTemplateName: 规则模板名称。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleTemplateName: str
+        :param _RuleFilters: 规则内容。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleFilters: list of RuleFilters
+        :param _AlarmLevel: 告警等级。1-低风险，2-中风险，3-高风险。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlarmLevel: int
+        :param _AlarmPolicy: 告警策略。0-不告警，1-告警。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlarmPolicy: int
+        :param _Description: 规则描述。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
+        """
+        self._RuleTemplateId = None
+        self._RuleTemplateName = None
+        self._RuleFilters = None
+        self._AlarmLevel = None
+        self._AlarmPolicy = None
+        self._Description = None
+
+    @property
+    def RuleTemplateId(self):
+        return self._RuleTemplateId
+
+    @RuleTemplateId.setter
+    def RuleTemplateId(self, RuleTemplateId):
+        self._RuleTemplateId = RuleTemplateId
+
+    @property
+    def RuleTemplateName(self):
+        return self._RuleTemplateName
+
+    @RuleTemplateName.setter
+    def RuleTemplateName(self, RuleTemplateName):
+        self._RuleTemplateName = RuleTemplateName
+
+    @property
+    def RuleFilters(self):
+        return self._RuleFilters
+
+    @RuleFilters.setter
+    def RuleFilters(self, RuleFilters):
+        self._RuleFilters = RuleFilters
+
+    @property
+    def AlarmLevel(self):
+        return self._AlarmLevel
+
+    @AlarmLevel.setter
+    def AlarmLevel(self, AlarmLevel):
+        self._AlarmLevel = AlarmLevel
+
+    @property
+    def AlarmPolicy(self):
+        return self._AlarmPolicy
+
+    @AlarmPolicy.setter
+    def AlarmPolicy(self, AlarmPolicy):
+        self._AlarmPolicy = AlarmPolicy
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+
+    def _deserialize(self, params):
+        self._RuleTemplateId = params.get("RuleTemplateId")
+        self._RuleTemplateName = params.get("RuleTemplateName")
+        if params.get("RuleFilters") is not None:
+            self._RuleFilters = []
+            for item in params.get("RuleFilters"):
+                obj = RuleFilters()
+                obj._deserialize(item)
+                self._RuleFilters.append(obj)
+        self._AlarmLevel = params.get("AlarmLevel")
+        self._AlarmPolicy = params.get("AlarmPolicy")
+        self._Description = params.get("Description")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -22759,7 +23520,7 @@ class SetRenewFlagRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _ResourceIds: 需操作的实例ID
+        :param _ResourceIds: 需操作的集群ID
         :type ResourceIds: list of str
         :param _AutoRenewFlag: 自动续费标志位，续费标记 0:正常续费  1:自动续费 2:到期不续
         :type AutoRenewFlag: int
@@ -23325,10 +24086,13 @@ class TablePrivileges(AbstractModel):
     def __init__(self):
         r"""
         :param _Db: 数据库名
+注意：此字段可能返回 null，表示取不到有效值。
         :type Db: str
         :param _TableName: 表名
+注意：此字段可能返回 null，表示取不到有效值。
         :type TableName: str
         :param _Privileges: 权限列表
+注意：此字段可能返回 null，表示取不到有效值。
         :type Privileges: list of str
         """
         self._Db = None

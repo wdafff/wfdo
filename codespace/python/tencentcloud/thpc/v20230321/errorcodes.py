@@ -26,6 +26,9 @@ FAILEDOPERATION = 'FailedOperation'
 # 内部错误。
 INTERNALERROR = 'InternalError'
 
+# CAM服务调用失败。
+INTERNALERROR_CALLCAM = 'InternalError.CallCAM'
+
 # cvm调用失败。
 INTERNALERROR_CALLCVM = 'InternalError.CallCvm'
 
@@ -94,6 +97,9 @@ RESOURCENOTFOUND_CLUSTERID = 'ResourceNotFound.ClusterId'
 
 # 无法找到镜像ID。
 RESOURCENOTFOUND_IMAGEID = 'ResourceNotFound.ImageId'
+
+# 无法找到本地挂载路径。
+RESOURCENOTFOUND_LOCALPATH = 'ResourceNotFound.LocalPath'
 
 # 无法找到ID对应节点。
 RESOURCENOTFOUND_NODEID = 'ResourceNotFound.NodeId'

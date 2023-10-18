@@ -2558,9 +2558,9 @@ class DataDisk(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type SnapshotId: str
         :param _Encrypt: 数据盘是加密。取值范围：
-<li>TRUE：加密
-<li>FALSE：不加密<br>
-默认取值：FALSE<br>
+<li>true：加密
+<li>false：不加密<br>
+默认取值：false<br>
 该参数目前仅用于 `RunInstances` 接口。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Encrypt: bool
@@ -4312,9 +4312,9 @@ class DescribeInstanceTypeConfigsRequest(AbstractModel):
         :param _Filters: <li><strong>zone</strong></li>
 <p style="padding-left: 30px;">按照【<strong>可用区</strong>】进行过滤。可用区形如：ap-guangzhou-1。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p><p style="padding-left: 30px;">可选项：<a href="https://cloud.tencent.com/document/product/213/6091">可用区列表</a></p>
 <li><strong>instance-family</strong></li>
-<p style="padding-left: 30px;">按照【<strong>实例机型系列</strong>】进行过滤。实例机型系列形如：S1、I1、M1等。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<p style="padding-left: 30px;">按照【<strong>实例机型系列</strong>】进行过滤。实例机型系列形如：S1、I1、M1等。具体取值参见[实例类型](https://cloud.tencent.com/document/product/213/11518)描述。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 <li><strong>instance-type</strong></li>
-<p style="padding-left: 30px;">按照【<strong>实例类型</strong>】进行过滤。实例类型形如：S5.12XLARGE128、S5.12XLARGE96等。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<p style="padding-left: 30px;">按照【<strong>实例类型</strong>】进行过滤。实例类型形如：S5.12XLARGE128、S5.12XLARGE96等。具体取值参见[实例规格](https://cloud.tencent.com/document/product/213/11518)描述。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 每次请求的`Filters`的上限为10，`Filter.Values`的上限为1。
         :type Filters: list of Filter
         """
@@ -6106,7 +6106,7 @@ class DescribeZoneInstanceConfigInfosRequest(AbstractModel):
         :param _Filters: <li><strong>zone</strong></li>
 <p style="padding-left: 30px;">按照【<strong>可用区</strong>】进行过滤。可用区形如：ap-guangzhou-1。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p><p style="padding-left: 30px;">可选项：<a href="https://cloud.tencent.com/document/product/213/6091">可用区列表</a></p>
 <li><strong>instance-family</strong></li>
-<p style="padding-left: 30px;">按照【<strong>实例机型系列</strong>】进行过滤。实例机型系列形如：S1、I1、M1等。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<p style="padding-left: 30px;">按照【<strong>实例机型系列</strong>】进行过滤。实例机型系列形如：S1、I1、M1等。具体取值参见[实例类型](https://cloud.tencent.com/document/product/213/11518)描述。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 <li><strong>instance-type</strong></li>
 <p style="padding-left: 30px;">按照【<strong>实例机型</strong>】进行过滤。不同实例机型指定了不同的资源规格，具体取值可通过调用接口 [DescribeInstanceTypeConfigs](https://cloud.tencent.com/document/product/213/15749) 来获得最新的规格表或参见[实例类型](https://cloud.tencent.com/document/product/213/11518)描述。若不指定该参数，则默认机型为S1.SMALL1。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 <li><strong>instance-charge-type</strong></li>
@@ -7015,6 +7015,9 @@ class HostItem(AbstractModel):
         :param _CageId: 专用宿主机所属的围笼ID。该字段仅对金融专区围笼内的专用宿主机有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type CageId: str
+        :param _Tags: 专用宿主机关联的标签列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of Tag
         """
         self._Placement = None
         self._HostId = None
@@ -7029,6 +7032,7 @@ class HostItem(AbstractModel):
         self._HostIp = None
         self._HostResource = None
         self._CageId = None
+        self._Tags = None
 
     @property
     def Placement(self):
@@ -7134,6 +7138,14 @@ class HostItem(AbstractModel):
     def CageId(self, CageId):
         self._CageId = CageId
 
+    @property
+    def Tags(self):
+        return self._Tags
+
+    @Tags.setter
+    def Tags(self, Tags):
+        self._Tags = Tags
+
 
     def _deserialize(self, params):
         if params.get("Placement") is not None:
@@ -7153,6 +7165,12 @@ class HostItem(AbstractModel):
             self._HostResource = HostResource()
             self._HostResource._deserialize(params.get("HostResource"))
         self._CageId = params.get("CageId")
+        if params.get("Tags") is not None:
+            self._Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self._Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7223,6 +7241,9 @@ class HostResource(AbstractModel):
         :type GpuTotal: int
         :param _GpuAvailable: 专用宿主机实例可用GPU卡数
         :type GpuAvailable: int
+        :param _ExclusiveOwner: CDH owner
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExclusiveOwner: str
         """
         self._CpuTotal = None
         self._CpuAvailable = None
@@ -7233,6 +7254,7 @@ class HostResource(AbstractModel):
         self._DiskType = None
         self._GpuTotal = None
         self._GpuAvailable = None
+        self._ExclusiveOwner = None
 
     @property
     def CpuTotal(self):
@@ -7306,6 +7328,14 @@ class HostResource(AbstractModel):
     def GpuAvailable(self, GpuAvailable):
         self._GpuAvailable = GpuAvailable
 
+    @property
+    def ExclusiveOwner(self):
+        return self._ExclusiveOwner
+
+    @ExclusiveOwner.setter
+    def ExclusiveOwner(self, ExclusiveOwner):
+        self._ExclusiveOwner = ExclusiveOwner
+
 
     def _deserialize(self, params):
         self._CpuTotal = params.get("CpuTotal")
@@ -7317,6 +7347,7 @@ class HostResource(AbstractModel):
         self._DiskType = params.get("DiskType")
         self._GpuTotal = params.get("GpuTotal")
         self._GpuAvailable = params.get("GpuAvailable")
+        self._ExclusiveOwner = params.get("ExclusiveOwner")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -10362,6 +10393,9 @@ class InstanceTypeQuotaItem(AbstractModel):
         :type GpuCount: float
         :param _Frequency: 实例的CPU主频信息
         :type Frequency: str
+        :param _StatusCategory: 描述库存情况。取值范围： <br><li> UnderStock：表示对应库存即将售罄<br><li> NormalStock：表示对应库存供应有保障<br><li> EnoughStock：表示对应库存非常充足<br><li> WithoutStock：表示对应库存已经售罄
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StatusCategory: str
         """
         self._Zone = None
         self._InstanceType = None
@@ -10385,6 +10419,7 @@ class InstanceTypeQuotaItem(AbstractModel):
         self._Remark = None
         self._GpuCount = None
         self._Frequency = None
+        self._StatusCategory = None
 
     @property
     def Zone(self):
@@ -10562,6 +10597,14 @@ class InstanceTypeQuotaItem(AbstractModel):
     def Frequency(self, Frequency):
         self._Frequency = Frequency
 
+    @property
+    def StatusCategory(self):
+        return self._StatusCategory
+
+    @StatusCategory.setter
+    def StatusCategory(self, StatusCategory):
+        self._StatusCategory = StatusCategory
+
 
     def _deserialize(self, params):
         self._Zone = params.get("Zone")
@@ -10595,6 +10638,7 @@ class InstanceTypeQuotaItem(AbstractModel):
         self._Remark = params.get("Remark")
         self._GpuCount = params.get("GpuCount")
         self._Frequency = params.get("Frequency")
+        self._StatusCategory = params.get("StatusCategory")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -12418,9 +12462,9 @@ class ModifyImageSharePermissionRequest(AbstractModel):
         r"""
         :param _ImageId: 镜像ID，形如`img-gvbnzy6f`。镜像Id可以通过如下方式获取：<br><li>通过[DescribeImages](https://cloud.tencent.com/document/api/213/15715)接口返回的`ImageId`获取。<br><li>通过[镜像控制台](https://console.cloud.tencent.com/cvm/image)获取。 <br>镜像ID必须指定为状态为`NORMAL`的镜像。镜像状态请参考[镜像数据表](https://cloud.tencent.com/document/product/213/15753#Image)。
         :type ImageId: str
-        :param _AccountIds: 接收分享镜像的账号Id列表，array型参数的格式可以参考[API简介](/document/api/213/568)。帐号ID不同于QQ号，查询用户帐号ID请查看[帐号信息](https://console.cloud.tencent.com/developer)中的帐号ID栏。
+        :param _AccountIds: 接收共享镜像的账号Id列表，array型参数的格式可以参考[API简介](/document/api/213/568)。账号ID不同于QQ号，查询用户账号ID请查看[账号信息](https://console.cloud.tencent.com/developer)中的账号ID栏。
         :type AccountIds: list of str
-        :param _Permission: 操作，包括 `SHARE`，`CANCEL`。其中`SHARE`代表分享操作，`CANCEL`代表取消分享操作。
+        :param _Permission: 操作，包括 `SHARE`，`CANCEL`。其中`SHARE`代表共享操作，`CANCEL`代表取消共享操作。
         :type Permission: str
         """
         self._ImageId = None
@@ -12587,18 +12631,18 @@ class ModifyInstancesAttributeRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _InstanceIds: 一个或多个待操作的实例ID。可通过[`DescribeInstances`](https://cloud.tencent.com/document/api/213/15728) API返回值中的`InstanceId`获取。每次请求允许操作的实例数量上限是100。
+        :param _InstanceIds: 一个或多个待操作的实例ID。可通过[DescribeInstances](https://cloud.tencent.com/document/api/213/15728) API返回值中的`InstanceId`获取。每次请求允许操作的实例数量上限是100。
         :type InstanceIds: list of str
-        :param _InstanceName: 实例名称。可任意命名，但不得超过60个字符。
+        :param _InstanceName: 修改后实例名称。可任意命名，但不得超过60个字符。
 <dx-alert infotype="explain" title="">必须指定InstanceName与SecurityGroups的其中一个，但不能同时设置</dx-alert>
         :type InstanceName: str
-        :param _SecurityGroups: 指定实例的安全组Id列表，子机将重新关联指定列表的安全组，原本关联的安全组会被解绑。<dx-alert infotype="explain" title="">必须指定SecurityGroups与InstanceName的其中一个，但不能同时设置</dx-alert>
+        :param _SecurityGroups: 指定实例的修改后的安全组Id列表，子机将重新关联指定列表的安全组，原本关联的安全组会被解绑。<dx-alert infotype="explain" title="">必须指定SecurityGroups与InstanceName的其中一个，但不能同时设置</dx-alert>
         :type SecurityGroups: list of str
         :param _CamRoleName: 给实例绑定用户角色，传空值为解绑操作
         :type CamRoleName: str
-        :param _HostName: 实例的主机名。<br><li>点号（.）和短横线（-）不能作为 HostName 的首尾字符，不能连续使用。<br><li>Windows 实例：主机名字符长度为[2, 15]，允许字母（不限制大小写）、数字和短横线（-）组成，不支持点号（.），不能全是数字。<br><li>其他类型（Linux 等）实例：主机名字符长度为[2, 60]，允许支持多个点号，点之间为一段，每段允许字母（不限制大小写）、数字和短横线（-）组成。
+        :param _HostName: 修改后实例的主机名。<br><li>点号（.）和短横线（-）不能作为 HostName 的首尾字符，不能连续使用。<br><li>Windows 实例：主机名字符长度为[2, 15]，允许字母（不限制大小写）、数字和短横线（-）组成，不支持点号（.），不能全是数字。<br><li>其他类型（Linux 等）实例：主机名字符长度为[2, 60]，允许支持多个点号，点之间为一段，每段允许字母（不限制大小写）、数字和短横线（-）组成。<br> 注意点：修改主机名后实例会立即重启，重启后新的主机名生效。
         :type HostName: str
-        :param _DisableApiTermination: 实例销毁保护标志，表示是否允许通过api接口删除实例。取值范围：<br><li>TRUE：表示开启实例保护，不允许通过api接口删除实例<br><li>FALSE：表示关闭实例保护，允许通过api接口删除实例<br><br>默认取值：FALSE。
+        :param _DisableApiTermination: 实例销毁保护标志，表示是否允许通过api接口删除实例。取值范围：<br><li>true：表示开启实例保护，不允许通过api接口删除实例<br><li>false：表示关闭实例保护，允许通过api接口删除实例<br><br>默认取值：false。
         :type DisableApiTermination: bool
         :param _CamRoleType: 角色类别，与CamRoleName搭配使用，该值可从CAM DescribeRoleList, GetRole接口返回RoleType字段获取，当前只接受user、system和service_linked三种类别。
 举例：一般CamRoleName中包含“LinkedRoleIn”（如TKE_QCSLinkedRoleInPrometheusService）时，DescribeRoleList和GetRole返回的RoleType为service_linked，则本参数也需要传递service_linked。
@@ -12816,7 +12860,7 @@ class ModifyInstancesProjectRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _InstanceIds: 一个或多个待操作的实例ID。可通过[`DescribeInstances`](https://cloud.tencent.com/document/api/213/15728) API返回值中的`InstanceId`获取。每次请求允许操作的实例数量上限是100。
+        :param _InstanceIds: 一个或多个待操作的实例ID。可通过 [DescribeInstances](https://cloud.tencent.com/document/api/213/15728) API返回值中的`InstanceId`获取。每次请求允许操作的实例数量上限是100。
         :type InstanceIds: list of str
         :param _ProjectId: 项目ID。项目可以使用[AddProject](https://cloud.tencent.com/document/product/651/81952)接口创建。可通过[`DescribeProject`](https://cloud.tencent.com/document/product/378/4400) API返回值中的`projectId`获取。后续使用[DescribeInstances](https://cloud.tencent.com/document/api/213/15728)接口查询实例时，项目ID可用于过滤结果。
         :type ProjectId: int
@@ -13336,15 +13380,12 @@ class Placement(AbstractModel):
         :type ProjectId: int
         :param _HostIds: 实例所属的专用宿主机ID列表，仅用于入参。如果您有购买专用宿主机并且指定了该参数，则您购买的实例就会随机的部署在这些专用宿主机上。
         :type HostIds: list of str
-        :param _HostIps: 指定母机IP生产子机
-        :type HostIps: list of str
         :param _HostId: 实例所属的专用宿主机ID，仅用于出参。
         :type HostId: str
         """
         self._Zone = None
         self._ProjectId = None
         self._HostIds = None
-        self._HostIps = None
         self._HostId = None
 
     @property
@@ -13372,14 +13413,6 @@ class Placement(AbstractModel):
         self._HostIds = HostIds
 
     @property
-    def HostIps(self):
-        return self._HostIps
-
-    @HostIps.setter
-    def HostIps(self, HostIps):
-        self._HostIps = HostIps
-
-    @property
     def HostId(self):
         return self._HostId
 
@@ -13392,7 +13425,6 @@ class Placement(AbstractModel):
         self._Zone = params.get("Zone")
         self._ProjectId = params.get("ProjectId")
         self._HostIds = params.get("HostIds")
-        self._HostIps = params.get("HostIps")
         self._HostId = params.get("HostId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -16100,7 +16132,7 @@ class RunAutomationServiceEnabled(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Enabled: 是否开启云自动化助手。取值范围：<br><li>TRUE：表示开启云自动化助手服务<br><li>FALSE：表示不开启云自动化助手服务<br><br>默认取值：FALSE。
+        :param _Enabled: 是否开启云自动化助手。取值范围：<br><li>true：表示开启云自动化助手服务<br><li>false：表示不开启云自动化助手服务<br><br>默认取值：false。
         :type Enabled: bool
         """
         self._Enabled = None
@@ -16564,7 +16596,8 @@ class RunMonitorServiceEnabled(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Enabled: 是否开启[云监控](/document/product/248)服务。取值范围：<br><li>TRUE：表示开启云监控服务<br><li>FALSE：表示不开启云监控服务<br><br>默认取值：TRUE。
+        :param _Enabled: 是否开启[云监控](/document/product/248)服务。取值范围：<br><li>true：表示开启云监控服务<br><li>false：表示不开启云监控服务<br><br>默认取值：true。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Enabled: bool
         """
         self._Enabled = None
@@ -16848,7 +16881,7 @@ class StartInstancesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _InstanceIds: 一个或多个待操作的实例ID。可通过[`DescribeInstances`](https://cloud.tencent.com/document/api/213/15728)接口返回值中的`InstanceId`获取。每次请求批量实例的上限为100。
+        :param _InstanceIds: 一个或多个待操作的实例ID。可通过[DescribeInstances](https://cloud.tencent.com/document/api/213/15728)接口返回值中的`InstanceId`获取。每次请求批量实例的上限为100。
         :type InstanceIds: list of str
         """
         self._InstanceIds = None
@@ -17230,7 +17263,7 @@ class SystemDisk(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _DiskType: 系统盘类型。系统盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><li>CLOUD_BSSD：通用性SSD云硬盘<br><br>默认取值：当前有库存的硬盘类型。
+        :param _DiskType: 系统盘类型。系统盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><li>CLOUD_BSSD：通用性SSD云硬盘<br><li>CLOUD_HSSD：增强型SSD云硬盘<br><li>CLOUD_TSSD：极速型SSD云硬盘<br><br>默认取值：当前有库存的硬盘类型。
         :type DiskType: str
         :param _DiskId: 系统盘ID。LOCAL_BASIC 和 LOCAL_SSD 类型没有ID。暂时不支持该参数。
 该参数目前仅用于`DescribeInstances`等查询类接口的返回参数，不可用于`RunInstances`等写接口的入参。
@@ -17472,7 +17505,7 @@ class VirtualPrivateCloud(AbstractModel):
         :type VpcId: str
         :param _SubnetId: 私有网络子网ID，形如`subnet-xxx`。有效的私有网络子网ID可通过登录[控制台](https://console.cloud.tencent.com/vpc/subnet?rid=1)查询；也可以调用接口  [DescribeSubnets](/document/api/215/15784) ，从接口返回中的`unSubnetId`字段获取。若在创建子机时SubnetId与VpcId同时传入`DEFAULT`，则强制使用默认vpc网络。
         :type SubnetId: str
-        :param _AsVpcGateway: 是否用作公网网关。公网网关只有在实例拥有公网IP以及处于私有网络下时才能正常使用。取值范围：<br><li>TRUE：表示用作公网网关<br><li>FALSE：表示不作为公网网关<br><br>默认取值：FALSE。
+        :param _AsVpcGateway: 是否用作公网网关。公网网关只有在实例拥有公网IP以及处于私有网络下时才能正常使用。取值范围：<br><li>true：表示用作公网网关<br><li>false：表示不作为公网网关<br><br>默认取值：false。
         :type AsVpcGateway: bool
         :param _PrivateIpAddresses: 私有网络子网 IP 数组，在创建实例、修改实例vpc属性操作中可使用此参数。当前仅批量创建多台实例时支持传入相同子网的多个 IP。
         :type PrivateIpAddresses: list of str

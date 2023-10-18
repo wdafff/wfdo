@@ -27,7 +27,7 @@ class CarClient(AbstractClient):
 
 
     def ApplyConcurrent(self, request):
-        """申请并发
+        """本接口用于申请并发。接口超时时间：20秒。
 
         :param request: Request instance for ApplyConcurrent.
         :type request: :class:`tencentcloud.car.v20220110.models.ApplyConcurrentRequest`
@@ -50,7 +50,7 @@ class CarClient(AbstractClient):
 
 
     def CreateSession(self, request):
-        """创建会话
+        """本接口用于创建会话。接口超时时间：5秒。
 
         :param request: Request instance for CreateSession.
         :type request: :class:`tencentcloud.car.v20220110.models.CreateSessionRequest`
@@ -109,6 +109,29 @@ class CarClient(AbstractClient):
             body = self.call("StartPublishStream", params, headers=headers)
             response = json.loads(body)
             model = models.StartPublishStreamResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def StartPublishStreamWithURL(self, request):
+        """开始云端推流到指定URL。该推流方式需要单独计费，详细计费方式请查看[指定地址推流费用说明](https://cloud.tencent.com/document/product/1547/72168#98ac188a-d122-4caf-88be-05268ecefdf6)
+
+        :param request: Request instance for StartPublishStreamWithURL.
+        :type request: :class:`tencentcloud.car.v20220110.models.StartPublishStreamWithURLRequest`
+        :rtype: :class:`tencentcloud.car.v20220110.models.StartPublishStreamWithURLResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("StartPublishStreamWithURL", params, headers=headers)
+            response = json.loads(body)
+            model = models.StartPublishStreamWithURLResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

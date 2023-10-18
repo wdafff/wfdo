@@ -1210,6 +1210,76 @@ class AutoScalingNotification(AbstractModel):
         
 
 
+class CancelInstanceRefreshRequest(AbstractModel):
+    """CancelInstanceRefresh请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _AutoScalingGroupId: 伸缩组ID。
+        :type AutoScalingGroupId: str
+        :param _RefreshActivityId: 刷新活动ID。
+        :type RefreshActivityId: str
+        """
+        self._AutoScalingGroupId = None
+        self._RefreshActivityId = None
+
+    @property
+    def AutoScalingGroupId(self):
+        return self._AutoScalingGroupId
+
+    @AutoScalingGroupId.setter
+    def AutoScalingGroupId(self, AutoScalingGroupId):
+        self._AutoScalingGroupId = AutoScalingGroupId
+
+    @property
+    def RefreshActivityId(self):
+        return self._RefreshActivityId
+
+    @RefreshActivityId.setter
+    def RefreshActivityId(self, RefreshActivityId):
+        self._RefreshActivityId = RefreshActivityId
+
+
+    def _deserialize(self, params):
+        self._AutoScalingGroupId = params.get("AutoScalingGroupId")
+        self._RefreshActivityId = params.get("RefreshActivityId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CancelInstanceRefreshResponse(AbstractModel):
+    """CancelInstanceRefresh返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class ClearLaunchConfigurationAttributesRequest(AbstractModel):
     """ClearLaunchConfigurationAttributes请求参数结构体
 
@@ -4506,6 +4576,139 @@ class DescribeNotificationConfigurationsResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeRefreshActivitiesRequest(AbstractModel):
+    """DescribeRefreshActivities请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RefreshActivityIds: 刷新活动ID列表。ID形如：`asr-5l2ejpfo`。每次请求的上限为100。参数不支持同时指定`RefreshActivityIds`和`Filters`。
+        :type RefreshActivityIds: list of str
+        :param _Filters: 过滤条件。
+<li> auto-scaling-group-id - String - 是否必填：否 -（过滤条件）按照伸缩组ID过滤。</li>
+<li> refresh-activity-status-code - String - 是否必填：否 -（过滤条件）按照刷新活动状态过滤。（INIT：初始化中 | RUNNING：运行中 | SUCCESSFUL：活动成功 | FAILED_PAUSE：失败暂停 | AUTO_PAUSE：自动暂停 | MANUAL_PAUSE：手动暂停 | CANCELLED：活动取消 | FAILED：活动失败）</li>
+<li> refresh-activity-type - String - 是否必填：否 -（过滤条件）按照刷新活动类型过滤。（NORMAL：正常刷新活动 | ROLLBACK：回滚刷新活动）</li>
+<li> refresh-activity-id - String - 是否必填：否 -（过滤条件）按照刷新活动ID过滤。</li>
+<li> 每次请求的Filters的上限为10，Filter.Values的上限为5。参数不支持同时指定RefreshActivityIds和Filters。
+        :type Filters: list of Filter
+        :param _Limit: 返回数量，默认为20，最大值为100。关于`Limit`的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
+        :type Limit: int
+        :param _Offset: 偏移量，默认为0。关于`Offset`的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
+        :type Offset: int
+        """
+        self._RefreshActivityIds = None
+        self._Filters = None
+        self._Limit = None
+        self._Offset = None
+
+    @property
+    def RefreshActivityIds(self):
+        return self._RefreshActivityIds
+
+    @RefreshActivityIds.setter
+    def RefreshActivityIds(self, RefreshActivityIds):
+        self._RefreshActivityIds = RefreshActivityIds
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+
+    def _deserialize(self, params):
+        self._RefreshActivityIds = params.get("RefreshActivityIds")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        self._Limit = params.get("Limit")
+        self._Offset = params.get("Offset")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRefreshActivitiesResponse(AbstractModel):
+    """DescribeRefreshActivities返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 符合条件的刷新活动数量。
+        :type TotalCount: int
+        :param _RefreshActivitySet: 符合条件的刷新活动信息集合。
+        :type RefreshActivitySet: list of RefreshActivity
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._TotalCount = None
+        self._RefreshActivitySet = None
+        self._RequestId = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def RefreshActivitySet(self):
+        return self._RefreshActivitySet
+
+    @RefreshActivitySet.setter
+    def RefreshActivitySet(self, RefreshActivitySet):
+        self._RefreshActivitySet = RefreshActivitySet
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("RefreshActivitySet") is not None:
+            self._RefreshActivitySet = []
+            for item in params.get("RefreshActivitySet"):
+                obj = RefreshActivity()
+                obj._deserialize(item)
+                self._RefreshActivitySet.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeScalingPoliciesRequest(AbstractModel):
     """DescribeScalingPolicies请求参数结构体
 
@@ -5350,6 +5553,89 @@ class ExecuteScalingPolicyResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class ExitStandbyRequest(AbstractModel):
+    """ExitStandby请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _AutoScalingGroupId: 伸缩组 ID。
+        :type AutoScalingGroupId: str
+        :param _InstanceIds: 备用中状态 CVM 实例列表。
+        :type InstanceIds: list of str
+        """
+        self._AutoScalingGroupId = None
+        self._InstanceIds = None
+
+    @property
+    def AutoScalingGroupId(self):
+        return self._AutoScalingGroupId
+
+    @AutoScalingGroupId.setter
+    def AutoScalingGroupId(self, AutoScalingGroupId):
+        self._AutoScalingGroupId = AutoScalingGroupId
+
+    @property
+    def InstanceIds(self):
+        return self._InstanceIds
+
+    @InstanceIds.setter
+    def InstanceIds(self, InstanceIds):
+        self._InstanceIds = InstanceIds
+
+
+    def _deserialize(self, params):
+        self._AutoScalingGroupId = params.get("AutoScalingGroupId")
+        self._InstanceIds = params.get("InstanceIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ExitStandbyResponse(AbstractModel):
+    """ExitStandby返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ActivityId: 伸缩活动ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ActivityId: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._ActivityId = None
+        self._RequestId = None
+
+    @property
+    def ActivityId(self):
+        return self._ActivityId
+
+    @ActivityId.setter
+    def ActivityId(self, ActivityId):
+        self._ActivityId = ActivityId
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._ActivityId = params.get("ActivityId")
+        self._RequestId = params.get("RequestId")
+
+
 class Filter(AbstractModel):
     """>描述键值对过滤器，用于条件过滤查询。例如过滤ID、名称、状态等
     > * 若存在多个`Filter`时，`Filter`间的关系为逻辑与（`AND`）关系。
@@ -5988,10 +6274,7 @@ class InstanceNameSettings(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _InstanceName: 云服务器的实例名。
-
-点号（.）和短横线（-）不能作为 InstanceName 的首尾字符，不能连续使用。
-字符长度为[2, 40]，允许支持多个点号，点之间为一段，每段允许字母（不限制大小写）、数字和短横线（-）组成。不允许为纯数字。
+        :param _InstanceName: 云服务器的实例名。字符长度为[2, 108]。
         :type InstanceName: str
         :param _InstanceNameStyle: 云服务器实例名的风格，取值范围包括 ORIGINAL 和 UNIQUE，默认为 ORIGINAL。
 
@@ -7706,6 +7989,8 @@ InstanceType 指定单一实例类型，通过设置 InstanceTypes可以指定�
         :type IPv6InternetAccessible: :class:`tencentcloud.autoscaling.v20180419.models.IPv6InternetAccessible`
         :param _DisasterRecoverGroupIds: 置放群组id，仅支持指定一个。
         :type DisasterRecoverGroupIds: list of str
+        :param _LoginSettings: 实例登录设置，包括密码、密钥或保持镜像的原始登录设置。<br>请注意，指定新的登录设置会覆盖原有登录设置。例如，如果您之前使用密码登录，使用该参数将登录设置修改为密钥，则原有密码被清除。
+        :type LoginSettings: :class:`tencentcloud.autoscaling.v20180419.models.LoginSettings`
         """
         self._LaunchConfigurationId = None
         self._ImageId = None
@@ -7728,6 +8013,7 @@ InstanceType 指定单一实例类型，通过设置 InstanceTypes可以指定�
         self._HpcClusterId = None
         self._IPv6InternetAccessible = None
         self._DisasterRecoverGroupIds = None
+        self._LoginSettings = None
 
     @property
     def LaunchConfigurationId(self):
@@ -7897,6 +8183,14 @@ InstanceType 指定单一实例类型，通过设置 InstanceTypes可以指定�
     def DisasterRecoverGroupIds(self, DisasterRecoverGroupIds):
         self._DisasterRecoverGroupIds = DisasterRecoverGroupIds
 
+    @property
+    def LoginSettings(self):
+        return self._LoginSettings
+
+    @LoginSettings.setter
+    def LoginSettings(self, LoginSettings):
+        self._LoginSettings = LoginSettings
+
 
     def _deserialize(self, params):
         self._LaunchConfigurationId = params.get("LaunchConfigurationId")
@@ -7941,6 +8235,9 @@ InstanceType 指定单一实例类型，通过设置 InstanceTypes可以指定�
             self._IPv6InternetAccessible = IPv6InternetAccessible()
             self._IPv6InternetAccessible._deserialize(params.get("IPv6InternetAccessible"))
         self._DisasterRecoverGroupIds = params.get("DisasterRecoverGroupIds")
+        if params.get("LoginSettings") is not None:
+            self._LoginSettings = LoginSettings()
+            self._LoginSettings._deserialize(params.get("LoginSettings"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8834,6 +9131,391 @@ class NotificationTarget(AbstractModel):
         
 
 
+class RefreshActivity(AbstractModel):
+    """实例刷新活动。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _AutoScalingGroupId: 伸缩组 ID。
+        :type AutoScalingGroupId: str
+        :param _RefreshActivityId: 刷新活动 ID。
+        :type RefreshActivityId: str
+        :param _OriginRefreshActivityId: 原始刷新活动ID，仅在回滚刷新活动中存在。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OriginRefreshActivityId: str
+        :param _RefreshBatchSet: 刷新批次信息列表。
+        :type RefreshBatchSet: list of RefreshBatch
+        :param _RefreshMode: 刷新模式。
+        :type RefreshMode: str
+        :param _RefreshSettings: 实例更新设置参数。
+        :type RefreshSettings: :class:`tencentcloud.autoscaling.v20180419.models.RefreshSettings`
+        :param _ActivityType: 刷新活动类型。取值如下：<br><li>NORMAL：正常刷新活动</li><li>ROLLBACK：回滚刷新活动
+        :type ActivityType: str
+        :param _Status: 刷新活动状态。取值如下：<br><li>INIT：初始化中</li><li>RUNNING：运行中</li><li>SUCCESSFUL：活动成功</li><li>FAILED_PAUSE：因刷新批次失败暂停</li><li>AUTO_PAUSE：因暂停策略自动暂停</li><li>MANUAL_PAUSE：手动暂停</li><li>CANCELLED：活动取消</li><li>FAILED：活动失败
+        :type Status: str
+        :param _CurrentRefreshBatchNum: 当前刷新批次序号。例如，2 表示当前活动正在刷新第二批次的实例。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CurrentRefreshBatchNum: int
+        :param _StartTime: 刷新活动开始时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: str
+        :param _EndTime: 刷新活动结束时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: str
+        :param _CreatedTime: 刷新活动创建时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreatedTime: str
+        """
+        self._AutoScalingGroupId = None
+        self._RefreshActivityId = None
+        self._OriginRefreshActivityId = None
+        self._RefreshBatchSet = None
+        self._RefreshMode = None
+        self._RefreshSettings = None
+        self._ActivityType = None
+        self._Status = None
+        self._CurrentRefreshBatchNum = None
+        self._StartTime = None
+        self._EndTime = None
+        self._CreatedTime = None
+
+    @property
+    def AutoScalingGroupId(self):
+        return self._AutoScalingGroupId
+
+    @AutoScalingGroupId.setter
+    def AutoScalingGroupId(self, AutoScalingGroupId):
+        self._AutoScalingGroupId = AutoScalingGroupId
+
+    @property
+    def RefreshActivityId(self):
+        return self._RefreshActivityId
+
+    @RefreshActivityId.setter
+    def RefreshActivityId(self, RefreshActivityId):
+        self._RefreshActivityId = RefreshActivityId
+
+    @property
+    def OriginRefreshActivityId(self):
+        return self._OriginRefreshActivityId
+
+    @OriginRefreshActivityId.setter
+    def OriginRefreshActivityId(self, OriginRefreshActivityId):
+        self._OriginRefreshActivityId = OriginRefreshActivityId
+
+    @property
+    def RefreshBatchSet(self):
+        return self._RefreshBatchSet
+
+    @RefreshBatchSet.setter
+    def RefreshBatchSet(self, RefreshBatchSet):
+        self._RefreshBatchSet = RefreshBatchSet
+
+    @property
+    def RefreshMode(self):
+        return self._RefreshMode
+
+    @RefreshMode.setter
+    def RefreshMode(self, RefreshMode):
+        self._RefreshMode = RefreshMode
+
+    @property
+    def RefreshSettings(self):
+        return self._RefreshSettings
+
+    @RefreshSettings.setter
+    def RefreshSettings(self, RefreshSettings):
+        self._RefreshSettings = RefreshSettings
+
+    @property
+    def ActivityType(self):
+        return self._ActivityType
+
+    @ActivityType.setter
+    def ActivityType(self, ActivityType):
+        self._ActivityType = ActivityType
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def CurrentRefreshBatchNum(self):
+        return self._CurrentRefreshBatchNum
+
+    @CurrentRefreshBatchNum.setter
+    def CurrentRefreshBatchNum(self, CurrentRefreshBatchNum):
+        self._CurrentRefreshBatchNum = CurrentRefreshBatchNum
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def CreatedTime(self):
+        return self._CreatedTime
+
+    @CreatedTime.setter
+    def CreatedTime(self, CreatedTime):
+        self._CreatedTime = CreatedTime
+
+
+    def _deserialize(self, params):
+        self._AutoScalingGroupId = params.get("AutoScalingGroupId")
+        self._RefreshActivityId = params.get("RefreshActivityId")
+        self._OriginRefreshActivityId = params.get("OriginRefreshActivityId")
+        if params.get("RefreshBatchSet") is not None:
+            self._RefreshBatchSet = []
+            for item in params.get("RefreshBatchSet"):
+                obj = RefreshBatch()
+                obj._deserialize(item)
+                self._RefreshBatchSet.append(obj)
+        self._RefreshMode = params.get("RefreshMode")
+        if params.get("RefreshSettings") is not None:
+            self._RefreshSettings = RefreshSettings()
+            self._RefreshSettings._deserialize(params.get("RefreshSettings"))
+        self._ActivityType = params.get("ActivityType")
+        self._Status = params.get("Status")
+        self._CurrentRefreshBatchNum = params.get("CurrentRefreshBatchNum")
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        self._CreatedTime = params.get("CreatedTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RefreshBatch(AbstractModel):
+    """实例刷新批次信息，包含该批次的刷新状态、实例、起止时间等信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RefreshBatchNum: 刷新批次序号。例如，2 表示当前批次实例会在第二批次进行实例刷新。
+        :type RefreshBatchNum: int
+        :param _RefreshBatchStatus: 刷新批次状态。取值如下：<br><li>WAITING：待刷新</li><li>INIT：初始化中</li><li>RUNNING：刷新中</li><li>FAILED:  刷新失败</li><li>PARTIALLY_SUCCESSFUL：批次部分成功</li><li>CANCELLED：已取消</li><li>SUCCESSFUL：刷新成功
+        :type RefreshBatchStatus: str
+        :param _RefreshBatchRelatedInstanceSet: 刷新批次关联实例列表。
+        :type RefreshBatchRelatedInstanceSet: list of RefreshBatchRelatedInstance
+        :param _StartTime: 刷新批次开始时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: str
+        :param _EndTime: 刷新批次结束时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: str
+        """
+        self._RefreshBatchNum = None
+        self._RefreshBatchStatus = None
+        self._RefreshBatchRelatedInstanceSet = None
+        self._StartTime = None
+        self._EndTime = None
+
+    @property
+    def RefreshBatchNum(self):
+        return self._RefreshBatchNum
+
+    @RefreshBatchNum.setter
+    def RefreshBatchNum(self, RefreshBatchNum):
+        self._RefreshBatchNum = RefreshBatchNum
+
+    @property
+    def RefreshBatchStatus(self):
+        return self._RefreshBatchStatus
+
+    @RefreshBatchStatus.setter
+    def RefreshBatchStatus(self, RefreshBatchStatus):
+        self._RefreshBatchStatus = RefreshBatchStatus
+
+    @property
+    def RefreshBatchRelatedInstanceSet(self):
+        return self._RefreshBatchRelatedInstanceSet
+
+    @RefreshBatchRelatedInstanceSet.setter
+    def RefreshBatchRelatedInstanceSet(self, RefreshBatchRelatedInstanceSet):
+        self._RefreshBatchRelatedInstanceSet = RefreshBatchRelatedInstanceSet
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+
+    def _deserialize(self, params):
+        self._RefreshBatchNum = params.get("RefreshBatchNum")
+        self._RefreshBatchStatus = params.get("RefreshBatchStatus")
+        if params.get("RefreshBatchRelatedInstanceSet") is not None:
+            self._RefreshBatchRelatedInstanceSet = []
+            for item in params.get("RefreshBatchRelatedInstanceSet"):
+                obj = RefreshBatchRelatedInstance()
+                obj._deserialize(item)
+                self._RefreshBatchRelatedInstanceSet.append(obj)
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RefreshBatchRelatedInstance(AbstractModel):
+    """刷新批次关联实例，包含单个实例的刷新活动状态、对应伸缩活动等信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceId: 实例 ID。
+        :type InstanceId: str
+        :param _InstanceStatus: 刷新实例状态。如果在刷新时实例被移出或销毁，状态会更新为 NOT_FOUND。取值如下：<br><li>WAITING：待刷新</li><li>INIT：初始化中</li><li>RUNNING：刷新中</li><li>FAILED：刷新失败</li><li>CANCELLED：已取消</li><li>SUCCESSFUL：刷新成功</li><li>NOT_FOUND：实例不存在
+        :type InstanceStatus: str
+        :param _LastActivityId: 实例刷新中最近一次伸缩活动 ID，可通过 DescribeAutoScalingActivities 接口查询。
+需注意伸缩活动与实例刷新活动不同，一次实例刷新活动可能包括多次伸缩活动。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastActivityId: str
+        :param _InstanceStatusMessage: 实例刷新状态信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceStatusMessage: str
+        """
+        self._InstanceId = None
+        self._InstanceStatus = None
+        self._LastActivityId = None
+        self._InstanceStatusMessage = None
+
+    @property
+    def InstanceId(self):
+        return self._InstanceId
+
+    @InstanceId.setter
+    def InstanceId(self, InstanceId):
+        self._InstanceId = InstanceId
+
+    @property
+    def InstanceStatus(self):
+        return self._InstanceStatus
+
+    @InstanceStatus.setter
+    def InstanceStatus(self, InstanceStatus):
+        self._InstanceStatus = InstanceStatus
+
+    @property
+    def LastActivityId(self):
+        return self._LastActivityId
+
+    @LastActivityId.setter
+    def LastActivityId(self, LastActivityId):
+        self._LastActivityId = LastActivityId
+
+    @property
+    def InstanceStatusMessage(self):
+        return self._InstanceStatusMessage
+
+    @InstanceStatusMessage.setter
+    def InstanceStatusMessage(self, InstanceStatusMessage):
+        self._InstanceStatusMessage = InstanceStatusMessage
+
+
+    def _deserialize(self, params):
+        self._InstanceId = params.get("InstanceId")
+        self._InstanceStatus = params.get("InstanceStatus")
+        self._LastActivityId = params.get("LastActivityId")
+        self._InstanceStatusMessage = params.get("InstanceStatusMessage")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RefreshSettings(AbstractModel):
+    """实例刷新设置。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RollingUpdateSettings: 滚动更新设置参数。RefreshMode 为滚动更新该参数必须填写。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RollingUpdateSettings: :class:`tencentcloud.autoscaling.v20180419.models.RollingUpdateSettings`
+        :param _CheckInstanceTargetHealth: 实例后端服务健康状态检查，默认为 FALSE。仅针对绑定应用型负载均衡器的伸缩组生效，开启该检查后，如刷新后实例未通过检查，负载均衡器端口权重始终为 0，且标记为刷新失败。取值范围如下：<br><li>TRUE：开启检查</li><li>FALSE：不开启检查
+        :type CheckInstanceTargetHealth: bool
+        """
+        self._RollingUpdateSettings = None
+        self._CheckInstanceTargetHealth = None
+
+    @property
+    def RollingUpdateSettings(self):
+        return self._RollingUpdateSettings
+
+    @RollingUpdateSettings.setter
+    def RollingUpdateSettings(self, RollingUpdateSettings):
+        self._RollingUpdateSettings = RollingUpdateSettings
+
+    @property
+    def CheckInstanceTargetHealth(self):
+        return self._CheckInstanceTargetHealth
+
+    @CheckInstanceTargetHealth.setter
+    def CheckInstanceTargetHealth(self, CheckInstanceTargetHealth):
+        self._CheckInstanceTargetHealth = CheckInstanceTargetHealth
+
+
+    def _deserialize(self, params):
+        if params.get("RollingUpdateSettings") is not None:
+            self._RollingUpdateSettings = RollingUpdateSettings()
+            self._RollingUpdateSettings._deserialize(params.get("RollingUpdateSettings"))
+        self._CheckInstanceTargetHealth = params.get("CheckInstanceTargetHealth")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class RelatedInstance(AbstractModel):
     """与本次伸缩活动相关的实例信息。
 
@@ -8963,6 +9645,241 @@ class RemoveInstancesResponse(AbstractModel):
     def _deserialize(self, params):
         self._ActivityId = params.get("ActivityId")
         self._RequestId = params.get("RequestId")
+
+
+class ResumeInstanceRefreshRequest(AbstractModel):
+    """ResumeInstanceRefresh请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _AutoScalingGroupId: 伸缩组ID。
+        :type AutoScalingGroupId: str
+        :param _RefreshActivityId: 刷新活动ID。
+        :type RefreshActivityId: str
+        :param _ResumeMode: 当前批次刷新失败实例的恢复方式，如不存在失败实例，该参数无效。默认值为RETRY，取值范围如下：<br><li>RETRY: 重试当前批次刷新失败实例</li><li>CONTINUE: 跳过当前批次刷新失败实例
+        :type ResumeMode: str
+        """
+        self._AutoScalingGroupId = None
+        self._RefreshActivityId = None
+        self._ResumeMode = None
+
+    @property
+    def AutoScalingGroupId(self):
+        return self._AutoScalingGroupId
+
+    @AutoScalingGroupId.setter
+    def AutoScalingGroupId(self, AutoScalingGroupId):
+        self._AutoScalingGroupId = AutoScalingGroupId
+
+    @property
+    def RefreshActivityId(self):
+        return self._RefreshActivityId
+
+    @RefreshActivityId.setter
+    def RefreshActivityId(self, RefreshActivityId):
+        self._RefreshActivityId = RefreshActivityId
+
+    @property
+    def ResumeMode(self):
+        return self._ResumeMode
+
+    @ResumeMode.setter
+    def ResumeMode(self, ResumeMode):
+        self._ResumeMode = ResumeMode
+
+
+    def _deserialize(self, params):
+        self._AutoScalingGroupId = params.get("AutoScalingGroupId")
+        self._RefreshActivityId = params.get("RefreshActivityId")
+        self._ResumeMode = params.get("ResumeMode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ResumeInstanceRefreshResponse(AbstractModel):
+    """ResumeInstanceRefresh返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class RollbackInstanceRefreshRequest(AbstractModel):
+    """RollbackInstanceRefresh请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _AutoScalingGroupId: 伸缩组ID。
+        :type AutoScalingGroupId: str
+        :param _RefreshSettings: 刷新设置。
+        :type RefreshSettings: :class:`tencentcloud.autoscaling.v20180419.models.RefreshSettings`
+        :param _OriginRefreshActivityId: 原始刷新活动 ID。
+        :type OriginRefreshActivityId: str
+        :param _RefreshMode: 刷新模式，目前仅支持滚动更新，默认值为 ROLLING_UPDATE_RESET。
+        :type RefreshMode: str
+        """
+        self._AutoScalingGroupId = None
+        self._RefreshSettings = None
+        self._OriginRefreshActivityId = None
+        self._RefreshMode = None
+
+    @property
+    def AutoScalingGroupId(self):
+        return self._AutoScalingGroupId
+
+    @AutoScalingGroupId.setter
+    def AutoScalingGroupId(self, AutoScalingGroupId):
+        self._AutoScalingGroupId = AutoScalingGroupId
+
+    @property
+    def RefreshSettings(self):
+        return self._RefreshSettings
+
+    @RefreshSettings.setter
+    def RefreshSettings(self, RefreshSettings):
+        self._RefreshSettings = RefreshSettings
+
+    @property
+    def OriginRefreshActivityId(self):
+        return self._OriginRefreshActivityId
+
+    @OriginRefreshActivityId.setter
+    def OriginRefreshActivityId(self, OriginRefreshActivityId):
+        self._OriginRefreshActivityId = OriginRefreshActivityId
+
+    @property
+    def RefreshMode(self):
+        return self._RefreshMode
+
+    @RefreshMode.setter
+    def RefreshMode(self, RefreshMode):
+        self._RefreshMode = RefreshMode
+
+
+    def _deserialize(self, params):
+        self._AutoScalingGroupId = params.get("AutoScalingGroupId")
+        if params.get("RefreshSettings") is not None:
+            self._RefreshSettings = RefreshSettings()
+            self._RefreshSettings._deserialize(params.get("RefreshSettings"))
+        self._OriginRefreshActivityId = params.get("OriginRefreshActivityId")
+        self._RefreshMode = params.get("RefreshMode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RollbackInstanceRefreshResponse(AbstractModel):
+    """RollbackInstanceRefresh返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RefreshActivityId: 刷新活动 ID。
+        :type RefreshActivityId: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RefreshActivityId = None
+        self._RequestId = None
+
+    @property
+    def RefreshActivityId(self):
+        return self._RefreshActivityId
+
+    @RefreshActivityId.setter
+    def RefreshActivityId(self, RefreshActivityId):
+        self._RefreshActivityId = RefreshActivityId
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RefreshActivityId = params.get("RefreshActivityId")
+        self._RequestId = params.get("RequestId")
+
+
+class RollingUpdateSettings(AbstractModel):
+    """滚动更新设置。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _BatchNumber: 批次数量。批次数量为大于 0 的正整数，但不能大于待刷新实例数量。
+        :type BatchNumber: int
+        :param _BatchPause: 批次间暂停策略。默认值为 Automatic，取值范围如下：<br><li>FIRST_BATCH_PAUSE：第一批次更新完成后暂停</li><li>BATCH_INTERVAL_PAUSE：批次间暂停</li><li>AUTOMATIC：不暂停
+        :type BatchPause: str
+        """
+        self._BatchNumber = None
+        self._BatchPause = None
+
+    @property
+    def BatchNumber(self):
+        return self._BatchNumber
+
+    @BatchNumber.setter
+    def BatchNumber(self, BatchNumber):
+        self._BatchNumber = BatchNumber
+
+    @property
+    def BatchPause(self):
+        return self._BatchPause
+
+    @BatchPause.setter
+    def BatchPause(self, BatchPause):
+        self._BatchPause = BatchPause
+
+
+    def _deserialize(self, params):
+        self._BatchNumber = params.get("BatchNumber")
+        self._BatchPause = params.get("BatchPause")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class RunAutomationServiceEnabled(AbstractModel):
@@ -9937,6 +10854,102 @@ class StartAutoScalingInstancesResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class StartInstanceRefreshRequest(AbstractModel):
+    """StartInstanceRefresh请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _AutoScalingGroupId: 伸缩组ID。
+        :type AutoScalingGroupId: str
+        :param _RefreshSettings: 刷新设置。
+        :type RefreshSettings: :class:`tencentcloud.autoscaling.v20180419.models.RefreshSettings`
+        :param _RefreshMode: 刷新模式，目前仅支持滚动更新，默认值为 ROLLING_UPDATE_RESET。
+        :type RefreshMode: str
+        """
+        self._AutoScalingGroupId = None
+        self._RefreshSettings = None
+        self._RefreshMode = None
+
+    @property
+    def AutoScalingGroupId(self):
+        return self._AutoScalingGroupId
+
+    @AutoScalingGroupId.setter
+    def AutoScalingGroupId(self, AutoScalingGroupId):
+        self._AutoScalingGroupId = AutoScalingGroupId
+
+    @property
+    def RefreshSettings(self):
+        return self._RefreshSettings
+
+    @RefreshSettings.setter
+    def RefreshSettings(self, RefreshSettings):
+        self._RefreshSettings = RefreshSettings
+
+    @property
+    def RefreshMode(self):
+        return self._RefreshMode
+
+    @RefreshMode.setter
+    def RefreshMode(self, RefreshMode):
+        self._RefreshMode = RefreshMode
+
+
+    def _deserialize(self, params):
+        self._AutoScalingGroupId = params.get("AutoScalingGroupId")
+        if params.get("RefreshSettings") is not None:
+            self._RefreshSettings = RefreshSettings()
+            self._RefreshSettings._deserialize(params.get("RefreshSettings"))
+        self._RefreshMode = params.get("RefreshMode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StartInstanceRefreshResponse(AbstractModel):
+    """StartInstanceRefresh返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RefreshActivityId: 刷新活动 ID。
+        :type RefreshActivityId: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RefreshActivityId = None
+        self._RequestId = None
+
+    @property
+    def RefreshActivityId(self):
+        return self._RefreshActivityId
+
+    @RefreshActivityId.setter
+    def RefreshActivityId(self, RefreshActivityId):
+        self._RefreshActivityId = RefreshActivityId
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RefreshActivityId = params.get("RefreshActivityId")
+        self._RequestId = params.get("RequestId")
+
+
 class StopAutoScalingInstancesRequest(AbstractModel):
     """StopAutoScalingInstances请求参数结构体
 
@@ -10031,6 +11044,76 @@ class StopAutoScalingInstancesResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._ActivityId = params.get("ActivityId")
+        self._RequestId = params.get("RequestId")
+
+
+class StopInstanceRefreshRequest(AbstractModel):
+    """StopInstanceRefresh请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _AutoScalingGroupId: 伸缩组ID。
+        :type AutoScalingGroupId: str
+        :param _RefreshActivityId: 刷新活动ID。
+        :type RefreshActivityId: str
+        """
+        self._AutoScalingGroupId = None
+        self._RefreshActivityId = None
+
+    @property
+    def AutoScalingGroupId(self):
+        return self._AutoScalingGroupId
+
+    @AutoScalingGroupId.setter
+    def AutoScalingGroupId(self, AutoScalingGroupId):
+        self._AutoScalingGroupId = AutoScalingGroupId
+
+    @property
+    def RefreshActivityId(self):
+        return self._RefreshActivityId
+
+    @RefreshActivityId.setter
+    def RefreshActivityId(self, RefreshActivityId):
+        self._RefreshActivityId = RefreshActivityId
+
+
+    def _deserialize(self, params):
+        self._AutoScalingGroupId = params.get("AutoScalingGroupId")
+        self._RefreshActivityId = params.get("RefreshActivityId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StopInstanceRefreshResponse(AbstractModel):
+    """StopInstanceRefresh返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
         self._RequestId = params.get("RequestId")
 
 
@@ -10219,7 +11302,7 @@ class UpgradeLaunchConfigurationRequest(AbstractModel):
         :type InstanceTypesCheckPolicy: str
         :param _InternetAccessible: 公网带宽相关信息设置。若不指定该参数，则默认公网带宽为0Mbps。
         :type InternetAccessible: :class:`tencentcloud.autoscaling.v20180419.models.InternetAccessible`
-        :param _LoginSettings: 实例登录设置。通过该参数可以设置实例的登录方式密码、密钥或保持镜像的原始登录设置。默认情况下会随机生成密码，并以站内信方式知会到用户。
+        :param _LoginSettings: 该参数已失效，请勿使用。升级启动配置接口无法修改或覆盖 LoginSettings 参数，升级后 LoginSettings 不会发生变化。
         :type LoginSettings: :class:`tencentcloud.autoscaling.v20180419.models.LoginSettings`
         :param _ProjectId: 实例所属项目ID。不填为默认项目。
         :type ProjectId: int

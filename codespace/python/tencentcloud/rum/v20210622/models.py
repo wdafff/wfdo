@@ -5342,7 +5342,7 @@ class DescribeDataPvUrlStatisticsRequest(AbstractModel):
         :type NetType: str
         :param _Device: 机型
         :type Device: str
-        :param _IsAbroad: 是否海外
+        :param _IsAbroad: 显示是否海外
         :type IsAbroad: str
         :param _Os: 操作系统
         :type Os: str
@@ -5350,6 +5350,11 @@ class DescribeDataPvUrlStatisticsRequest(AbstractModel):
         :type Browser: str
         :param _Env: 环境
         :type Env: str
+        :param _GroupByType: group by 参数值枚举1:1m  2:5m  3:30m  4:1h 
+ 5:1d
+        :type GroupByType: int
+        :param _IsNewData: 无需关注，是否查询zhiyan
+        :type IsNewData: int
         """
         self._StartTime = None
         self._Type = None
@@ -5372,6 +5377,8 @@ class DescribeDataPvUrlStatisticsRequest(AbstractModel):
         self._Os = None
         self._Browser = None
         self._Env = None
+        self._GroupByType = None
+        self._IsNewData = None
 
     @property
     def StartTime(self):
@@ -5541,6 +5548,22 @@ class DescribeDataPvUrlStatisticsRequest(AbstractModel):
     def Env(self, Env):
         self._Env = Env
 
+    @property
+    def GroupByType(self):
+        return self._GroupByType
+
+    @GroupByType.setter
+    def GroupByType(self, GroupByType):
+        self._GroupByType = GroupByType
+
+    @property
+    def IsNewData(self):
+        return self._IsNewData
+
+    @IsNewData.setter
+    def IsNewData(self, IsNewData):
+        self._IsNewData = IsNewData
+
 
     def _deserialize(self, params):
         self._StartTime = params.get("StartTime")
@@ -5564,6 +5587,8 @@ class DescribeDataPvUrlStatisticsRequest(AbstractModel):
         self._Os = params.get("Os")
         self._Browser = params.get("Browser")
         self._Env = params.get("Env")
+        self._GroupByType = params.get("GroupByType")
+        self._IsNewData = params.get("IsNewData")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

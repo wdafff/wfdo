@@ -43,6 +43,7 @@ import static org.hamcrest.Matchers.containsString;
  * @author Andy Wilkinson
  * @author Ali Shahbour
  * @author Alexey Vinogradov
+ * @author Moritz Halbritter
  */
 abstract class AbstractLaunchScriptIntegrationTests {
 
@@ -99,9 +100,7 @@ abstract class AbstractLaunchScriptIntegrationTests {
 	private static final class LaunchScriptTestContainer extends GenericContainer<LaunchScriptTestContainer> {
 
 		private LaunchScriptTestContainer(String os, String version, String scriptsDir, String testScript) {
-			super(new ImageFromDockerfile("spring-boot-launch-script/" + os.toLowerCase() + "-" + version)
-				.withFileFromFile("Dockerfile",
-						new File("src/intTest/resources/conf/" + os + "/" + version + "/Dockerfile")));
+			super(createImage(os, version));
 			withCopyFileToContainer(MountableFile.forHostPath(findApplication().getAbsolutePath()), "/app.jar");
 			withCopyFileToContainer(
 					MountableFile.forHostPath("src/intTest/resources/scripts/" + scriptsDir + "test-functions.sh"),
@@ -112,6 +111,17 @@ abstract class AbstractLaunchScriptIntegrationTests {
 			withCommand("/bin/bash", "-c",
 					"chown root:root *.sh && chown root:root *.jar && chmod +x " + testScript + " && ./" + testScript);
 			withStartupCheckStrategy(new OneShotStartupCheckStrategy().withTimeout(Duration.ofMinutes(5)));
+		}
+
+		private static ImageFromDockerfile createImage(String os, String version) {
+			ImageFromDockerfile image = new ImageFromDockerfile(
+					"spring-boot-launch-script/" + os.toLowerCase() + "-" + version);
+			image.withFileFromFile("Dockerfile",
+					new File("src/intTest/resources/conf/" + os + "/" + version + "/Dockerfile"));
+			for (File file : new File("build/downloads/jdk/bellsoft").listFiles()) {
+				image.withFileFromFile("downloads/" + file.getName(), file);
+			}
+			return image;
 		}
 
 		private static File findApplication() {

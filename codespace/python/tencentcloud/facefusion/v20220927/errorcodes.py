@@ -29,6 +29,9 @@ FAILEDOPERATION_FACEFUSIONERROR = 'FailedOperation.FaceFusionError'
 # 人脸框不合法。
 FAILEDOPERATION_FACERECTINVALID = 'FailedOperation.FaceRectInvalid'
 
+# 人脸配准失败。
+FAILEDOPERATION_FACESHAPEFAILED = 'FailedOperation.FaceShapeFailed'
+
 # 人脸因太小被过滤，建议人脸分辨率不小于34*34。
 FAILEDOPERATION_FACESIZETOOSMALL = 'FailedOperation.FaceSizeTooSmall'
 
@@ -98,6 +101,9 @@ FAILEDOPERATION_SERVERERROR = 'FailedOperation.ServerError'
 # 素材人脸ID不存在。
 FAILEDOPERATION_TEMPLATEFACEIDNOTEXIST = 'FailedOperation.TemplateFaceIDNotExist'
 
+# 未知错误。
+FAILEDOPERATION_UNKNOWN = 'FailedOperation.Unknown'
+
 # 未查找到活动id。
 INVALIDPARAMETERVALUE_ACTIVITYIDNOTFOUND = 'InvalidParameterValue.ActivityIdNotFound'
 
@@ -122,13 +128,13 @@ RESOURCENOTFOUND = 'ResourceNotFound'
 # 资源正在发货中。
 RESOURCEUNAVAILABLE_DELIVERING = 'ResourceUnavailable.Delivering'
 
-# 帐号已被冻结。
+# 账号已被冻结。
 RESOURCEUNAVAILABLE_FREEZE = 'ResourceUnavailable.Freeze'
 
 # 获取认证信息失败。
 RESOURCEUNAVAILABLE_GETAUTHINFOERROR = 'ResourceUnavailable.GetAuthInfoError'
 
-# 帐号已欠费。
+# 账号已欠费。
 RESOURCEUNAVAILABLE_INARREARS = 'ResourceUnavailable.InArrears'
 
 # 余额不足。
@@ -143,11 +149,11 @@ RESOURCEUNAVAILABLE_NOTREADY = 'ResourceUnavailable.NotReady'
 # 资源已被回收。
 RESOURCEUNAVAILABLE_RECOVER = 'ResourceUnavailable.Recover'
 
-# 帐号已停服。
+# 账号已停服。
 RESOURCEUNAVAILABLE_STOPUSING = 'ResourceUnavailable.StopUsing'
 
 # 计费状态未知。
 RESOURCEUNAVAILABLE_UNKNOWNSTATUS = 'ResourceUnavailable.UnknownStatus'
 
-# 帐号已欠费。
+# 账号已欠费。
 RESOURCESSOLDOUT_CHARGESTATUSEXCEPTION = 'ResourcesSoldOut.ChargeStatusException'

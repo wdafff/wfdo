@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.testcontainers.containers.GenericContainer;
@@ -34,7 +33,6 @@ import org.testcontainers.utility.DockerImageName;
 import org.testcontainers.utility.MountableFile;
 
 import org.springframework.boot.system.JavaVersion;
-import org.springframework.boot.testsupport.junit.DisabledOnOs;
 import org.springframework.boot.testsupport.testcontainers.DisabledIfDockerUnavailable;
 import org.springframework.util.Assert;
 
@@ -47,8 +45,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Moritz Halbritter
  */
 @DisabledIfDockerUnavailable
-@DisabledOnOs(os = { OS.LINUX, OS.MAC }, architecture = "aarch64",
-		disabledReason = "Not all docker images have ARM support")
 class LoaderIntegrationTests {
 
 	private final ToStringConsumer output = new ToStringConsumer();
@@ -56,7 +52,7 @@ class LoaderIntegrationTests {
 	@ParameterizedTest
 	@MethodSource("javaRuntimes")
 	void readUrlsWithoutWarning(JavaRuntime javaRuntime) {
-		try (GenericContainer<?> container = createContainer(javaRuntime)) {
+		try (GenericContainer<?> container = createContainer(javaRuntime, "spring-boot-loader-tests-app", null)) {
 			container.start();
 			System.out.println(this.output.toUtf8String());
 			assertThat(this.output.toUtf8String()).contains(">>>>> 287649 BYTES from")
@@ -66,18 +62,45 @@ class LoaderIntegrationTests {
 		}
 	}
 
-	private GenericContainer<?> createContainer(JavaRuntime javaRuntime) {
+	@ParameterizedTest
+	@MethodSource("javaRuntimes")
+	void runSignedJar(JavaRuntime javaRuntime) {
+		try (GenericContainer<?> container = createContainer(javaRuntime, "spring-boot-loader-tests-signed-jar",
+				null)) {
+			container.start();
+			System.out.println(this.output.toUtf8String());
+			assertThat(this.output.toUtf8String()).contains("Legion of the Bouncy Castle");
+		}
+	}
+
+	@ParameterizedTest
+	@MethodSource("javaRuntimes")
+	void runSignedJarWhenUnpack(JavaRuntime javaRuntime) {
+		try (GenericContainer<?> container = createContainer(javaRuntime, "spring-boot-loader-tests-signed-jar",
+				"unpack")) {
+			container.start();
+			System.out.println(this.output.toUtf8String());
+			assertThat(this.output.toUtf8String()).contains("Legion of the Bouncy Castle");
+		}
+	}
+
+	private GenericContainer<?> createContainer(JavaRuntime javaRuntime, String name, String classifier) {
 		return javaRuntime.getContainer()
 			.withLogConsumer(this.output)
-			.withCopyFileToContainer(MountableFile.forHostPath(findApplication().toPath()), "/app.jar")
+			.withCopyFileToContainer(findApplication(name, classifier), "/app.jar")
 			.withStartupCheckStrategy(new OneShotStartupCheckStrategy().withTimeout(Duration.ofMinutes(5)))
 			.withCommand("java", "-jar", "app.jar");
 	}
 
-	private File findApplication() {
-		String name = String.format("build/%1$s/build/libs/%1$s.jar", "spring-boot-loader-tests-app");
-		File jar = new File(name);
-		Assert.state(jar.isFile(), () -> "Could not find " + name + ". Have you built it?");
+	private MountableFile findApplication(String name, String classifier) {
+		return MountableFile.forHostPath(findJarFile(name, classifier).toPath());
+	}
+
+	private File findJarFile(String name, String classifier) {
+		classifier = (classifier != null) ? "-" + classifier : "";
+		String path = String.format("build/%1$s/build/libs/%1$s%2$s.jar", name, classifier);
+		File jar = new File(path);
+		Assert.state(jar.isFile(), () -> "Could not find " + path + ". Have you built it?");
 		return jar;
 	}
 
@@ -131,8 +154,11 @@ class LoaderIntegrationTests {
 		}
 
 		static JavaRuntime oracleJdk17() {
-			ImageFromDockerfile image = new ImageFromDockerfile("spring-boot-loader/oracle-jdk-17")
-				.withFileFromFile("Dockerfile", new File("src/intTest/resources/conf/oracle-jdk-17/Dockerfile"));
+			ImageFromDockerfile image = new ImageFromDockerfile("spring-boot-loader/oracle-jdk");
+			image.withFileFromFile("Dockerfile", new File("src/intTest/resources/conf/oracle-jdk-17/Dockerfile"));
+			for (File file : new File("build/downloads/jdk/oracle").listFiles()) {
+				image.withFileFromFile("downloads/" + file.getName(), file);
+			}
 			return new JavaRuntime("Oracle JDK 17", JavaVersion.SEVENTEEN, () -> new GenericContainer<>(image));
 		}
 

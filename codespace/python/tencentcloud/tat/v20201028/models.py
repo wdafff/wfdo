@@ -216,6 +216,9 @@ class Command(AbstractModel):
         :type EnableParameter: bool
         :param _DefaultParameters: 自定义参数的默认取值。
         :type DefaultParameters: str
+        :param _DefaultParameterConfs: 自定义参数的默认取值。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DefaultParameterConfs: list of DefaultParameterConf
         :param _FormattedDescription: 命令的结构化描述。公共命令有值，用户命令为空字符串。
         :type FormattedDescription: str
         :param _CreatedBy: 命令创建者。TAT 代表公共命令，USER 代表个人命令。
@@ -240,6 +243,7 @@ class Command(AbstractModel):
         self._UpdatedTime = None
         self._EnableParameter = None
         self._DefaultParameters = None
+        self._DefaultParameterConfs = None
         self._FormattedDescription = None
         self._CreatedBy = None
         self._Tags = None
@@ -336,6 +340,14 @@ class Command(AbstractModel):
         self._DefaultParameters = DefaultParameters
 
     @property
+    def DefaultParameterConfs(self):
+        return self._DefaultParameterConfs
+
+    @DefaultParameterConfs.setter
+    def DefaultParameterConfs(self, DefaultParameterConfs):
+        self._DefaultParameterConfs = DefaultParameterConfs
+
+    @property
     def FormattedDescription(self):
         return self._FormattedDescription
 
@@ -396,6 +408,12 @@ class Command(AbstractModel):
         self._UpdatedTime = params.get("UpdatedTime")
         self._EnableParameter = params.get("EnableParameter")
         self._DefaultParameters = params.get("DefaultParameters")
+        if params.get("DefaultParameterConfs") is not None:
+            self._DefaultParameterConfs = []
+            for item in params.get("DefaultParameterConfs"):
+                obj = DefaultParameterConf()
+                obj._deserialize(item)
+                self._DefaultParameterConfs.append(obj)
         self._FormattedDescription = params.get("FormattedDescription")
         self._CreatedBy = params.get("CreatedBy")
         if params.get("Tags") is not None:
@@ -551,6 +569,10 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
 自定义参数最多20个。
 自定义参数名称需符合以下规范：字符数目上限64，可选范围【a-zA-Z0-9-_】。
         :type DefaultParameters: str
+        :param _DefaultParameterConfs: 自定义参数数组。
+如果InvokeCommand时未提供参数取值，将使用这里的默认值进行替换。
+自定义参数最多20个。
+        :type DefaultParameterConfs: list of DefaultParameterConf
         :param _Tags: 为命令关联的标签，列表长度不超过10。
         :type Tags: list of Tag
         :param _Username: 在 CVM 或 Lighthouse 实例中执行命令的用户名称。
@@ -572,6 +594,7 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
         self._Timeout = None
         self._EnableParameter = None
         self._DefaultParameters = None
+        self._DefaultParameterConfs = None
         self._Tags = None
         self._Username = None
         self._OutputCOSBucketUrl = None
@@ -642,6 +665,14 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
         self._DefaultParameters = DefaultParameters
 
     @property
+    def DefaultParameterConfs(self):
+        return self._DefaultParameterConfs
+
+    @DefaultParameterConfs.setter
+    def DefaultParameterConfs(self, DefaultParameterConfs):
+        self._DefaultParameterConfs = DefaultParameterConfs
+
+    @property
     def Tags(self):
         return self._Tags
 
@@ -683,6 +714,12 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
         self._Timeout = params.get("Timeout")
         self._EnableParameter = params.get("EnableParameter")
         self._DefaultParameters = params.get("DefaultParameters")
+        if params.get("DefaultParameterConfs") is not None:
+            self._DefaultParameterConfs = []
+            for item in params.get("DefaultParameterConfs"):
+                obj = DefaultParameterConf()
+                obj._deserialize(item)
+                self._DefaultParameterConfs.append(obj)
         if params.get("Tags") is not None:
             self._Tags = []
             for item in params.get("Tags"):
@@ -883,6 +920,196 @@ class CreateInvokerResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class CreateRegisterCodeRequest(AbstractModel):
+    """CreateRegisterCode请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Description: 注册码描述。
+        :type Description: str
+        :param _InstanceNamePrefix: 注册实列名称前缀。
+        :type InstanceNamePrefix: str
+        :param _RegisterLimit: 该注册码允许注册的实列数目。默认限制为10个。
+        :type RegisterLimit: int
+        :param _EffectiveTime: 该注册码的有效时间，单位为小时。默认为4小时。
+        :type EffectiveTime: int
+        :param _IpAddressRange: 该注册码限制tat_agent只能从IpAddressRange所描述公网出口进行注册。默认不做限制。
+        :type IpAddressRange: str
+        """
+        self._Description = None
+        self._InstanceNamePrefix = None
+        self._RegisterLimit = None
+        self._EffectiveTime = None
+        self._IpAddressRange = None
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+    @property
+    def InstanceNamePrefix(self):
+        return self._InstanceNamePrefix
+
+    @InstanceNamePrefix.setter
+    def InstanceNamePrefix(self, InstanceNamePrefix):
+        self._InstanceNamePrefix = InstanceNamePrefix
+
+    @property
+    def RegisterLimit(self):
+        return self._RegisterLimit
+
+    @RegisterLimit.setter
+    def RegisterLimit(self, RegisterLimit):
+        self._RegisterLimit = RegisterLimit
+
+    @property
+    def EffectiveTime(self):
+        return self._EffectiveTime
+
+    @EffectiveTime.setter
+    def EffectiveTime(self, EffectiveTime):
+        self._EffectiveTime = EffectiveTime
+
+    @property
+    def IpAddressRange(self):
+        return self._IpAddressRange
+
+    @IpAddressRange.setter
+    def IpAddressRange(self, IpAddressRange):
+        self._IpAddressRange = IpAddressRange
+
+
+    def _deserialize(self, params):
+        self._Description = params.get("Description")
+        self._InstanceNamePrefix = params.get("InstanceNamePrefix")
+        self._RegisterLimit = params.get("RegisterLimit")
+        self._EffectiveTime = params.get("EffectiveTime")
+        self._IpAddressRange = params.get("IpAddressRange")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateRegisterCodeResponse(AbstractModel):
+    """CreateRegisterCode返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegisterCodeId: 注册码ID。
+        :type RegisterCodeId: str
+        :param _RegisterCodeValue: 注册码值。
+        :type RegisterCodeValue: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RegisterCodeId = None
+        self._RegisterCodeValue = None
+        self._RequestId = None
+
+    @property
+    def RegisterCodeId(self):
+        return self._RegisterCodeId
+
+    @RegisterCodeId.setter
+    def RegisterCodeId(self, RegisterCodeId):
+        self._RegisterCodeId = RegisterCodeId
+
+    @property
+    def RegisterCodeValue(self):
+        return self._RegisterCodeValue
+
+    @RegisterCodeValue.setter
+    def RegisterCodeValue(self, RegisterCodeValue):
+        self._RegisterCodeValue = RegisterCodeValue
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RegisterCodeId = params.get("RegisterCodeId")
+        self._RegisterCodeValue = params.get("RegisterCodeValue")
+        self._RequestId = params.get("RequestId")
+
+
+class DefaultParameterConf(AbstractModel):
+    """自定义参数。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ParameterName: 参数名。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ParameterName: str
+        :param _ParameterValue: 参数默认值。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ParameterValue: str
+        :param _ParameterDescription: 参数描述。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ParameterDescription: str
+        """
+        self._ParameterName = None
+        self._ParameterValue = None
+        self._ParameterDescription = None
+
+    @property
+    def ParameterName(self):
+        return self._ParameterName
+
+    @ParameterName.setter
+    def ParameterName(self, ParameterName):
+        self._ParameterName = ParameterName
+
+    @property
+    def ParameterValue(self):
+        return self._ParameterValue
+
+    @ParameterValue.setter
+    def ParameterValue(self, ParameterValue):
+        self._ParameterValue = ParameterValue
+
+    @property
+    def ParameterDescription(self):
+        return self._ParameterDescription
+
+    @ParameterDescription.setter
+    def ParameterDescription(self, ParameterDescription):
+        self._ParameterDescription = ParameterDescription
+
+
+    def _deserialize(self, params):
+        self._ParameterName = params.get("ParameterName")
+        self._ParameterValue = params.get("ParameterValue")
+        self._ParameterDescription = params.get("ParameterDescription")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DeleteCommandRequest(AbstractModel):
     """DeleteCommand请求参数结构体
 
@@ -941,6 +1168,64 @@ class DeleteCommandResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DeleteCommandsRequest(AbstractModel):
+    """DeleteCommands请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CommandIds: 待删除命令id
+        :type CommandIds: list of str
+        """
+        self._CommandIds = None
+
+    @property
+    def CommandIds(self):
+        return self._CommandIds
+
+    @CommandIds.setter
+    def CommandIds(self, CommandIds):
+        self._CommandIds = CommandIds
+
+
+    def _deserialize(self, params):
+        self._CommandIds = params.get("CommandIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteCommandsResponse(AbstractModel):
+    """DeleteCommands返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class DeleteInvokerRequest(AbstractModel):
     """DeleteInvoker请求参数结构体
 
@@ -976,6 +1261,122 @@ class DeleteInvokerRequest(AbstractModel):
 
 class DeleteInvokerResponse(AbstractModel):
     """DeleteInvoker返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class DeleteRegisterCodesRequest(AbstractModel):
+    """DeleteRegisterCodes请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegisterCodeIds: 注册码ID列表。限制输入的注册码ID数量大于0小于100。
+        :type RegisterCodeIds: list of str
+        """
+        self._RegisterCodeIds = None
+
+    @property
+    def RegisterCodeIds(self):
+        return self._RegisterCodeIds
+
+    @RegisterCodeIds.setter
+    def RegisterCodeIds(self, RegisterCodeIds):
+        self._RegisterCodeIds = RegisterCodeIds
+
+
+    def _deserialize(self, params):
+        self._RegisterCodeIds = params.get("RegisterCodeIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteRegisterCodesResponse(AbstractModel):
+    """DeleteRegisterCodes返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class DeleteRegisterInstanceRequest(AbstractModel):
+    """DeleteRegisterInstance请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceId: 实例ID。
+        :type InstanceId: str
+        """
+        self._InstanceId = None
+
+    @property
+    def InstanceId(self):
+        return self._InstanceId
+
+    @InstanceId.setter
+    def InstanceId(self, InstanceId):
+        self._InstanceId = InstanceId
+
+
+    def _deserialize(self, params):
+        self._InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteRegisterInstanceResponse(AbstractModel):
+    """DeleteRegisterInstance返回参数结构体
 
     """
 
@@ -1279,7 +1680,7 @@ class DescribeInvocationTasksRequest(AbstractModel):
         :type Limit: int
         :param _Offset: 偏移量，默认为0。关于 `Offset` 的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
         :type Offset: int
-        :param _HideOutput: 是否隐藏输出，取值范围：<br><li>True：隐藏输出 <br><li>False：不隐藏 <br>默认为 True。
+        :param _HideOutput: 是否隐藏输出，取值范围：<br><li>true：隐藏输出 <br><li>false：不隐藏 <br>默认为 false。
         :type HideOutput: bool
         """
         self._InvocationTaskIds = None
@@ -1779,6 +2180,81 @@ class DescribeInvokersResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeQuotasRequest(AbstractModel):
+    """DescribeQuotas请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ResourceNames: 资源名称，目前有"COMMAND","REGISTER_CODE" 这两个指标
+        :type ResourceNames: list of str
+        """
+        self._ResourceNames = None
+
+    @property
+    def ResourceNames(self):
+        return self._ResourceNames
+
+    @ResourceNames.setter
+    def ResourceNames(self, ResourceNames):
+        self._ResourceNames = ResourceNames
+
+
+    def _deserialize(self, params):
+        self._ResourceNames = params.get("ResourceNames")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeQuotasResponse(AbstractModel):
+    """DescribeQuotas返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _GeneralResourceQuotaSet: 资源额度列表
+        :type GeneralResourceQuotaSet: list of GeneralResourceQuotaSet
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._GeneralResourceQuotaSet = None
+        self._RequestId = None
+
+    @property
+    def GeneralResourceQuotaSet(self):
+        return self._GeneralResourceQuotaSet
+
+    @GeneralResourceQuotaSet.setter
+    def GeneralResourceQuotaSet(self, GeneralResourceQuotaSet):
+        self._GeneralResourceQuotaSet = GeneralResourceQuotaSet
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("GeneralResourceQuotaSet") is not None:
+            self._GeneralResourceQuotaSet = []
+            for item in params.get("GeneralResourceQuotaSet"):
+                obj = GeneralResourceQuotaSet()
+                obj._deserialize(item)
+                self._GeneralResourceQuotaSet.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeRegionsRequest(AbstractModel):
     """DescribeRegions请求参数结构体
 
@@ -1839,6 +2315,264 @@ class DescribeRegionsResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeRegisterCodesRequest(AbstractModel):
+    """DescribeRegisterCodes请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegisterCodeIds: 注册码ID。
+        :type RegisterCodeIds: list of str
+        :param _Offset: 偏移量，默认为 0。
+        :type Offset: int
+        :param _Limit: 返回数量，默认为 20，最大值为 100。
+        :type Limit: int
+        """
+        self._RegisterCodeIds = None
+        self._Offset = None
+        self._Limit = None
+
+    @property
+    def RegisterCodeIds(self):
+        return self._RegisterCodeIds
+
+    @RegisterCodeIds.setter
+    def RegisterCodeIds(self, RegisterCodeIds):
+        self._RegisterCodeIds = RegisterCodeIds
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+
+    def _deserialize(self, params):
+        self._RegisterCodeIds = params.get("RegisterCodeIds")
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRegisterCodesResponse(AbstractModel):
+    """DescribeRegisterCodes返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 查询到的注册码总数。
+        :type TotalCount: int
+        :param _RegisterCodeSet: 注册码信息列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegisterCodeSet: list of RegisterCodeInfo
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._TotalCount = None
+        self._RegisterCodeSet = None
+        self._RequestId = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def RegisterCodeSet(self):
+        return self._RegisterCodeSet
+
+    @RegisterCodeSet.setter
+    def RegisterCodeSet(self, RegisterCodeSet):
+        self._RegisterCodeSet = RegisterCodeSet
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("RegisterCodeSet") is not None:
+            self._RegisterCodeSet = []
+            for item in params.get("RegisterCodeSet"):
+                obj = RegisterCodeInfo()
+                obj._deserialize(item)
+                self._RegisterCodeSet.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeRegisterInstancesRequest(AbstractModel):
+    """DescribeRegisterInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceIds: 实例id。
+        :type InstanceIds: list of str
+        :param _Filters: 过滤器列表。
+
+- instance-name
+
+按照【实例名称】进行过滤。
+类型：String
+必选：否
+
+- instance-id
+
+按照【实例ID】进行过滤。
+类型：String
+必选：否
+
+- register-code-id
+
+按照【注册码ID】进行过滤。
+类型：String
+必选：否
+        :type Filters: list of Filter
+        :param _Offset: 偏移量，默认为 0。
+        :type Offset: int
+        :param _Limit: 返回数量，默认为 20，最大值为 100。
+        :type Limit: int
+        """
+        self._InstanceIds = None
+        self._Filters = None
+        self._Offset = None
+        self._Limit = None
+
+    @property
+    def InstanceIds(self):
+        return self._InstanceIds
+
+    @InstanceIds.setter
+    def InstanceIds(self, InstanceIds):
+        self._InstanceIds = InstanceIds
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+
+    def _deserialize(self, params):
+        self._InstanceIds = params.get("InstanceIds")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRegisterInstancesResponse(AbstractModel):
+    """DescribeRegisterInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 该实例注册过的注册码总数。
+        :type TotalCount: int
+        :param _RegisterInstanceSet: 被托管的实例信息的列表。
+        :type RegisterInstanceSet: list of RegisterInstanceInfo
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._TotalCount = None
+        self._RegisterInstanceSet = None
+        self._RequestId = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def RegisterInstanceSet(self):
+        return self._RegisterInstanceSet
+
+    @RegisterInstanceSet.setter
+    def RegisterInstanceSet(self, RegisterInstanceSet):
+        self._RegisterInstanceSet = RegisterInstanceSet
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("RegisterInstanceSet") is not None:
+            self._RegisterInstanceSet = []
+            for item in params.get("RegisterInstanceSet"):
+                obj = RegisterInstanceInfo()
+                obj._deserialize(item)
+                self._RegisterInstanceSet.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DisableInvokerRequest(AbstractModel):
     """DisableInvoker请求参数结构体
 
@@ -1874,6 +2608,64 @@ class DisableInvokerRequest(AbstractModel):
 
 class DisableInvokerResponse(AbstractModel):
     """DisableInvoker返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class DisableRegisterCodesRequest(AbstractModel):
+    """DisableRegisterCodes请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegisterCodeIds: 注册码ID。
+        :type RegisterCodeIds: list of str
+        """
+        self._RegisterCodeIds = None
+
+    @property
+    def RegisterCodeIds(self):
+        return self._RegisterCodeIds
+
+    @RegisterCodeIds.setter
+    def RegisterCodeIds(self, RegisterCodeIds):
+        self._RegisterCodeIds = RegisterCodeIds
+
+
+    def _deserialize(self, params):
+        self._RegisterCodeIds = params.get("RegisterCodeIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DisableRegisterCodesResponse(AbstractModel):
+    """DisableRegisterCodes返回参数结构体
 
     """
 
@@ -2001,6 +2793,66 @@ class Filter(AbstractModel):
     def _deserialize(self, params):
         self._Name = params.get("Name")
         self._Values = params.get("Values")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GeneralResourceQuotaSet(AbstractModel):
+    """GeneralResourceQuotaSet数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ResourceName: 资源名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceName: str
+        :param _ResourceQuotaUsed: 已使用额度
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceQuotaUsed: int
+        :param _ResourceQuotaTotal: 总额度
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceQuotaTotal: int
+        """
+        self._ResourceName = None
+        self._ResourceQuotaUsed = None
+        self._ResourceQuotaTotal = None
+
+    @property
+    def ResourceName(self):
+        return self._ResourceName
+
+    @ResourceName.setter
+    def ResourceName(self, ResourceName):
+        self._ResourceName = ResourceName
+
+    @property
+    def ResourceQuotaUsed(self):
+        return self._ResourceQuotaUsed
+
+    @ResourceQuotaUsed.setter
+    def ResourceQuotaUsed(self, ResourceQuotaUsed):
+        self._ResourceQuotaUsed = ResourceQuotaUsed
+
+    @property
+    def ResourceQuotaTotal(self):
+        return self._ResourceQuotaTotal
+
+    @ResourceQuotaTotal.setter
+    def ResourceQuotaTotal(self, ResourceQuotaTotal):
+        self._ResourceQuotaTotal = ResourceQuotaTotal
+
+
+    def _deserialize(self, params):
+        self._ResourceName = params.get("ResourceName")
+        self._ResourceQuotaUsed = params.get("ResourceQuotaUsed")
+        self._ResourceQuotaTotal = params.get("ResourceQuotaTotal")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2316,8 +3168,10 @@ class InvocationTask(AbstractModel):
         :param _TaskResult: 执行结果。
         :type TaskResult: :class:`tencentcloud.tat.v20201028.models.TaskResult`
         :param _StartTime: 执行任务开始时间。
+注意：此字段可能返回 null，表示取不到有效值。
         :type StartTime: str
         :param _EndTime: 执行任务结束时间。
+注意：此字段可能返回 null，表示取不到有效值。
         :type EndTime: str
         :param _CreatedTime: 创建时间。
         :type CreatedTime: str
@@ -2556,7 +3410,7 @@ class InvokeCommandRequest(AbstractModel):
         r"""
         :param _CommandId: 待触发的命令ID。
         :type CommandId: str
-        :param _InstanceIds: 待执行命令的实例ID列表，上限100。
+        :param _InstanceIds: 待执行命令的实例ID列表，上限200。
         :type InstanceIds: list of str
         :param _Parameters: Command 的自定义参数。字段类型为json encoded string。如：{\"varA\": \"222\"}。
 key为自定义参数名称，value为该参数的默认取值。kv均为字符串型。
@@ -2974,6 +3828,10 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
 自定义参数最多20个。
 自定义参数名称需符合以下规范：字符数目上限64，可选范围【a-zA-Z0-9-_】。
         :type DefaultParameters: str
+        :param _DefaultParameterConfs: 自定义参数数组。
+如果InvokeCommand时未提供参数取值，将使用这里的默认值进行替换。
+自定义参数最多20个。
+        :type DefaultParameterConfs: list of DefaultParameterConf
         :param _Username: 在 CVM 或 Lighthouse 实例中执行命令的用户名称。
 使用最小权限执行命令是权限管理的最佳实践，建议您以普通用户身份执行云助手命令。
         :type Username: str
@@ -2993,6 +3851,7 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
         self._WorkingDirectory = None
         self._Timeout = None
         self._DefaultParameters = None
+        self._DefaultParameterConfs = None
         self._Username = None
         self._OutputCOSBucketUrl = None
         self._OutputCOSKeyPrefix = None
@@ -3062,6 +3921,14 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
         self._DefaultParameters = DefaultParameters
 
     @property
+    def DefaultParameterConfs(self):
+        return self._DefaultParameterConfs
+
+    @DefaultParameterConfs.setter
+    def DefaultParameterConfs(self, DefaultParameterConfs):
+        self._DefaultParameterConfs = DefaultParameterConfs
+
+    @property
     def Username(self):
         return self._Username
 
@@ -3095,6 +3962,12 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
         self._WorkingDirectory = params.get("WorkingDirectory")
         self._Timeout = params.get("Timeout")
         self._DefaultParameters = params.get("DefaultParameters")
+        if params.get("DefaultParameterConfs") is not None:
+            self._DefaultParameterConfs = []
+            for item in params.get("DefaultParameterConfs"):
+                obj = DefaultParameterConf()
+                obj._deserialize(item)
+                self._DefaultParameterConfs.append(obj)
         self._Username = params.get("Username")
         self._OutputCOSBucketUrl = params.get("OutputCOSBucketUrl")
         self._OutputCOSKeyPrefix = params.get("OutputCOSKeyPrefix")
@@ -3277,6 +4150,76 @@ class ModifyInvokerResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class ModifyRegisterInstanceRequest(AbstractModel):
+    """ModifyRegisterInstance请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceId: 实例ID。
+        :type InstanceId: str
+        :param _InstanceName: 实例名。
+        :type InstanceName: str
+        """
+        self._InstanceId = None
+        self._InstanceName = None
+
+    @property
+    def InstanceId(self):
+        return self._InstanceId
+
+    @InstanceId.setter
+    def InstanceId(self, InstanceId):
+        self._InstanceId = InstanceId
+
+    @property
+    def InstanceName(self):
+        return self._InstanceName
+
+    @InstanceName.setter
+    def InstanceName(self, InstanceName):
+        self._InstanceName = InstanceName
+
+
+    def _deserialize(self, params):
+        self._InstanceId = params.get("InstanceId")
+        self._InstanceName = params.get("InstanceName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyRegisterInstanceResponse(AbstractModel):
+    """ModifyRegisterInstance返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class PreviewReplacedCommandContentRequest(AbstractModel):
     """PreviewReplacedCommandContent请求参数结构体
 
@@ -3434,6 +4377,327 @@ class RegionInfo(AbstractModel):
         
 
 
+class RegisterCodeInfo(AbstractModel):
+    """注册码信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegisterCodeId: 注册码ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegisterCodeId: str
+        :param _Description: 注册码描述。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
+        :param _InstanceNamePrefix: 注册实例名称前缀。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceNamePrefix: str
+        :param _RegisterLimit: 该注册码允许注册的实列数目。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegisterLimit: int
+        :param _ExpiredTime: 该注册码的过期时间，按照 ISO8601 标准表示，并且使用 UTC 时间。 
+格式为： YYYY-MM-DDThh:mm:ssZ。
+注意：此字段可能返回 null，表示取不到有效值。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExpiredTime: str
+        :param _IpAddressRange: 该注册码限制tat_agent只能从IpAddressRange所描述公网出口进行注册。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IpAddressRange: str
+        :param _Enabled: 该注册码是否可用。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Enabled: bool
+        :param _RegisteredCount: 该注册码已注册数目。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegisteredCount: int
+        :param _CreatedTime: 注册码创建时间，按照 ISO8601 标准表示，并且使用 UTC 时间。 
+格式为： YYYY-MM-DDThh:mm:ssZ。
+注意：此字段可能返回 null，表示取不到有效值。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreatedTime: str
+        :param _UpdatedTime: 注册码最近一次更新时间，按照 ISO8601 标准表示，并且使用 UTC 时间。 
+格式为： YYYY-MM-DDThh:mm:ssZ。
+注意：此字段可能返回 null，表示取不到有效值。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdatedTime: str
+        """
+        self._RegisterCodeId = None
+        self._Description = None
+        self._InstanceNamePrefix = None
+        self._RegisterLimit = None
+        self._ExpiredTime = None
+        self._IpAddressRange = None
+        self._Enabled = None
+        self._RegisteredCount = None
+        self._CreatedTime = None
+        self._UpdatedTime = None
+
+    @property
+    def RegisterCodeId(self):
+        return self._RegisterCodeId
+
+    @RegisterCodeId.setter
+    def RegisterCodeId(self, RegisterCodeId):
+        self._RegisterCodeId = RegisterCodeId
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+    @property
+    def InstanceNamePrefix(self):
+        return self._InstanceNamePrefix
+
+    @InstanceNamePrefix.setter
+    def InstanceNamePrefix(self, InstanceNamePrefix):
+        self._InstanceNamePrefix = InstanceNamePrefix
+
+    @property
+    def RegisterLimit(self):
+        return self._RegisterLimit
+
+    @RegisterLimit.setter
+    def RegisterLimit(self, RegisterLimit):
+        self._RegisterLimit = RegisterLimit
+
+    @property
+    def ExpiredTime(self):
+        return self._ExpiredTime
+
+    @ExpiredTime.setter
+    def ExpiredTime(self, ExpiredTime):
+        self._ExpiredTime = ExpiredTime
+
+    @property
+    def IpAddressRange(self):
+        return self._IpAddressRange
+
+    @IpAddressRange.setter
+    def IpAddressRange(self, IpAddressRange):
+        self._IpAddressRange = IpAddressRange
+
+    @property
+    def Enabled(self):
+        return self._Enabled
+
+    @Enabled.setter
+    def Enabled(self, Enabled):
+        self._Enabled = Enabled
+
+    @property
+    def RegisteredCount(self):
+        return self._RegisteredCount
+
+    @RegisteredCount.setter
+    def RegisteredCount(self, RegisteredCount):
+        self._RegisteredCount = RegisteredCount
+
+    @property
+    def CreatedTime(self):
+        return self._CreatedTime
+
+    @CreatedTime.setter
+    def CreatedTime(self, CreatedTime):
+        self._CreatedTime = CreatedTime
+
+    @property
+    def UpdatedTime(self):
+        return self._UpdatedTime
+
+    @UpdatedTime.setter
+    def UpdatedTime(self, UpdatedTime):
+        self._UpdatedTime = UpdatedTime
+
+
+    def _deserialize(self, params):
+        self._RegisterCodeId = params.get("RegisterCodeId")
+        self._Description = params.get("Description")
+        self._InstanceNamePrefix = params.get("InstanceNamePrefix")
+        self._RegisterLimit = params.get("RegisterLimit")
+        self._ExpiredTime = params.get("ExpiredTime")
+        self._IpAddressRange = params.get("IpAddressRange")
+        self._Enabled = params.get("Enabled")
+        self._RegisteredCount = params.get("RegisteredCount")
+        self._CreatedTime = params.get("CreatedTime")
+        self._UpdatedTime = params.get("UpdatedTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RegisterInstanceInfo(AbstractModel):
+    """注册实例信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegisterCodeId: 注册码ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegisterCodeId: str
+        :param _InstanceId: 实例ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceId: str
+        :param _InstanceName: 实例名。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceName: str
+        :param _MachineId: 机器ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineId: str
+        :param _SystemName: 系统名。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SystemName: str
+        :param _HostName: 主机IP。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostName: str
+        :param _LocalIp: 内网IP。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LocalIp: str
+        :param _PublicKey: 公钥。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PublicKey: str
+        :param _Status: 托管状态。
+返回Online表示实例正在托管，返回Offline表示实例未托管。
+        :type Status: str
+        :param _CreatedTime: 创建时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreatedTime: str
+        :param _UpdatedTime: 上次更新时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdatedTime: str
+        """
+        self._RegisterCodeId = None
+        self._InstanceId = None
+        self._InstanceName = None
+        self._MachineId = None
+        self._SystemName = None
+        self._HostName = None
+        self._LocalIp = None
+        self._PublicKey = None
+        self._Status = None
+        self._CreatedTime = None
+        self._UpdatedTime = None
+
+    @property
+    def RegisterCodeId(self):
+        return self._RegisterCodeId
+
+    @RegisterCodeId.setter
+    def RegisterCodeId(self, RegisterCodeId):
+        self._RegisterCodeId = RegisterCodeId
+
+    @property
+    def InstanceId(self):
+        return self._InstanceId
+
+    @InstanceId.setter
+    def InstanceId(self, InstanceId):
+        self._InstanceId = InstanceId
+
+    @property
+    def InstanceName(self):
+        return self._InstanceName
+
+    @InstanceName.setter
+    def InstanceName(self, InstanceName):
+        self._InstanceName = InstanceName
+
+    @property
+    def MachineId(self):
+        return self._MachineId
+
+    @MachineId.setter
+    def MachineId(self, MachineId):
+        self._MachineId = MachineId
+
+    @property
+    def SystemName(self):
+        return self._SystemName
+
+    @SystemName.setter
+    def SystemName(self, SystemName):
+        self._SystemName = SystemName
+
+    @property
+    def HostName(self):
+        return self._HostName
+
+    @HostName.setter
+    def HostName(self, HostName):
+        self._HostName = HostName
+
+    @property
+    def LocalIp(self):
+        return self._LocalIp
+
+    @LocalIp.setter
+    def LocalIp(self, LocalIp):
+        self._LocalIp = LocalIp
+
+    @property
+    def PublicKey(self):
+        return self._PublicKey
+
+    @PublicKey.setter
+    def PublicKey(self, PublicKey):
+        self._PublicKey = PublicKey
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def CreatedTime(self):
+        return self._CreatedTime
+
+    @CreatedTime.setter
+    def CreatedTime(self, CreatedTime):
+        self._CreatedTime = CreatedTime
+
+    @property
+    def UpdatedTime(self):
+        return self._UpdatedTime
+
+    @UpdatedTime.setter
+    def UpdatedTime(self, UpdatedTime):
+        self._UpdatedTime = UpdatedTime
+
+
+    def _deserialize(self, params):
+        self._RegisterCodeId = params.get("RegisterCodeId")
+        self._InstanceId = params.get("InstanceId")
+        self._InstanceName = params.get("InstanceName")
+        self._MachineId = params.get("MachineId")
+        self._SystemName = params.get("SystemName")
+        self._HostName = params.get("HostName")
+        self._LocalIp = params.get("LocalIp")
+        self._PublicKey = params.get("PublicKey")
+        self._Status = params.get("Status")
+        self._CreatedTime = params.get("CreatedTime")
+        self._UpdatedTime = params.get("UpdatedTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class RunCommandRequest(AbstractModel):
     """RunCommand请求参数结构体
 
@@ -3443,7 +4707,7 @@ class RunCommandRequest(AbstractModel):
         r"""
         :param _Content: Base64编码后的命令内容，长度不可超过64KB。
         :type Content: str
-        :param _InstanceIds: 待执行命令的实例ID列表，上限100。支持实例类型：
+        :param _InstanceIds: 待执行命令的实例ID列表，上限200。支持实例类型：
 <li> CVM
 <li> LIGHTHOUSE
         :type InstanceIds: list of str
@@ -3458,12 +4722,15 @@ class RunCommandRequest(AbstractModel):
         :param _Timeout: 命令超时时间，默认60秒。取值范围[1, 86400]。
         :type Timeout: int
         :param _SaveCommand: 是否保存命令，取值范围：
-<li> True：保存
-<li> False：不保存
-默认为 False。
+<li> true：保存
+<li> false：不保存
+默认为 false。
         :type SaveCommand: bool
         :param _EnableParameter: 是否启用自定义参数功能。
 一旦创建，此值不提供修改。
+取值范围：
+<li> true：启用
+<li> false：不启用
 默认值：false。
         :type EnableParameter: bool
         :param _DefaultParameters: 启用自定义参数功能时，自定义参数的默认取值。字段类型为json encoded string。如：{\"varA\": \"222\"}。
@@ -3472,6 +4739,8 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
 自定义参数最多20个。
 自定义参数名称需符合以下规范：字符数目上限64，可选范围【a-zA-Z0-9-_】。
         :type DefaultParameters: str
+        :param _DefaultParameterConfs: 自定义参数数组。 如果 Parameters 未提供，将使用这里的默认值进行替换。 自定义参数最多20个。
+        :type DefaultParameterConfs: list of DefaultParameterConf
         :param _Parameters: Command 的自定义参数。字段类型为json encoded string。如：{\"varA\": \"222\"}。
 key为自定义参数名称，value为该参数的默认取值。kv均为字符串型。
 如果未提供该参数取值，将使用 DefaultParameters 进行替换。
@@ -3501,6 +4770,7 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
         self._SaveCommand = None
         self._EnableParameter = None
         self._DefaultParameters = None
+        self._DefaultParameterConfs = None
         self._Parameters = None
         self._Tags = None
         self._Username = None
@@ -3588,6 +4858,14 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
         self._DefaultParameters = DefaultParameters
 
     @property
+    def DefaultParameterConfs(self):
+        return self._DefaultParameterConfs
+
+    @DefaultParameterConfs.setter
+    def DefaultParameterConfs(self, DefaultParameterConfs):
+        self._DefaultParameterConfs = DefaultParameterConfs
+
+    @property
     def Parameters(self):
         return self._Parameters
 
@@ -3639,6 +4917,12 @@ key为自定义参数名称，value为该参数的默认取值。kv均为字符�
         self._SaveCommand = params.get("SaveCommand")
         self._EnableParameter = params.get("EnableParameter")
         self._DefaultParameters = params.get("DefaultParameters")
+        if params.get("DefaultParameterConfs") is not None:
+            self._DefaultParameterConfs = []
+            for item in params.get("DefaultParameterConfs"):
+                obj = DefaultParameterConf()
+                obj._deserialize(item)
+                self._DefaultParameterConfs.append(obj)
         self._Parameters = params.get("Parameters")
         if params.get("Tags") is not None:
             self._Tags = []
@@ -3824,8 +5108,10 @@ class TaskResult(AbstractModel):
         :param _Output: Base64编码后的命令输出。最大长度24KB。
         :type Output: str
         :param _ExecStartTime: 命令执行开始时间。
+注意：此字段可能返回 null，表示取不到有效值。
         :type ExecStartTime: str
         :param _ExecEndTime: 命令执行结束时间。
+注意：此字段可能返回 null，表示取不到有效值。
         :type ExecEndTime: str
         :param _Dropped: 命令最终输出被截断的字节数。
         :type Dropped: int

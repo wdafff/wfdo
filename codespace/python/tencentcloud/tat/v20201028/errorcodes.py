@@ -89,6 +89,12 @@ INVALIDPARAMETERVALUE_INVALIDOUTPUTCOSBUCKETURL = 'InvalidParameterValue.Invalid
 # OutputCOSKeyPrefix 无效。
 INVALIDPARAMETERVALUE_INVALIDOUTPUTCOSKEYPREFIX = 'InvalidParameterValue.InvalidOutputCOSKeyPrefix'
 
+# 无效的注册码ID。
+INVALIDPARAMETERVALUE_INVALIDREGISTERCODEID = 'InvalidParameterValue.InvalidRegisterCodeId'
+
+# 无效的托管实例ID。
+INVALIDPARAMETERVALUE_INVALIDREGISTERINSTANCEID = 'InvalidParameterValue.InvalidRegisterInstanceId'
+
 # 无效的时间格式。
 INVALIDPARAMETERVALUE_INVALIDTIMEFORMAT = 'InvalidParameterValue.InvalidTimeFormat'
 
@@ -161,6 +167,12 @@ RESOURCENOTFOUND_INSTANCENOTFOUND = 'ResourceNotFound.InstanceNotFound'
 # 执行活动未找到。
 RESOURCENOTFOUND_INVOCATIONNOTFOUND = 'ResourceNotFound.InvocationNotFound'
 
+# 查询不到注册码。
+RESOURCENOTFOUND_REGISTERCODESNOTFOUNDCODE = 'ResourceNotFound.RegisterCodesNotFoundCode'
+
+# 查询不到注册实例。
+RESOURCENOTFOUND_REGISTERINSTANCENOTFOUNDCODE = 'ResourceNotFound.RegisterInstanceNotFoundCode'
+
 # 角色不存在。
 RESOURCENOTFOUND_ROLENOTFOUND = 'ResourceNotFound.RoleNotFound'
 
@@ -182,8 +194,14 @@ RESOURCEUNAVAILABLE_COMMANDININVOKER = 'ResourceUnavailable.CommandInInvoker'
 # 实例未处于运行中。
 RESOURCEUNAVAILABLE_INSTANCESTATENOTRUNNING = 'ResourceUnavailable.InstanceStateNotRunning'
 
+# 不存在的资源名称
+RESOURCEUNAVAILABLE_INVALIDRESOURCEQUOTARESOURCECODE = 'ResourceUnavailable.InvalidResourceQuotaResourceCode'
+
 # Lighthouse 尚不支持指定的地域。
 RESOURCEUNAVAILABLE_LIGHTHOUSEUNSUPPORTEDREGION = 'ResourceUnavailable.LighthouseUnsupportedRegion'
+
+# 角色扮演未授权。
+UNAUTHORIZEDOPERATION_ASSUMEROLEUNAUTHORIZED = 'UnauthorizedOperation.AssumeRoleUnauthorized'
 
 # CAM鉴权失败。
 UNAUTHORIZEDOPERATION_CAMAUTHFAILED = 'UnauthorizedOperation.CamAuthFailed'

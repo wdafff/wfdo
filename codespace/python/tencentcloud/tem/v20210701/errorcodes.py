@@ -167,6 +167,9 @@ INVALIDPARAMETERVALUE_ATLEASTONESCALERRULESHOULDBEAPPLIED = 'InvalidParameterVal
 # 只支持绑定一种弹性伸缩。
 INVALIDPARAMETERVALUE_AUTOSCALERLARGERTHANONE = 'InvalidParameterValue.AutoScalerLargerThanOne'
 
+# 弹性规则名称不合法, 长度必须小于20。
+INVALIDPARAMETERVALUE_AUTOSCALERNAMEINVALID = 'InvalidParameterValue.AutoScalerNameInvalid'
+
 # 不能覆盖其他应用的访问方式。
 INVALIDPARAMETERVALUE_CANNOTOVERWRITEOTHERAPPLICATIONSERVICE = 'InvalidParameterValue.CannotOverWriteOtherApplicationService'
 
@@ -178,6 +181,9 @@ INVALIDPARAMETERVALUE_CONFIGDATAALREADYEXIST = 'InvalidParameterValue.ConfigData
 
 # 配置不合法。
 INVALIDPARAMETERVALUE_CONFIGDATAINVALID = 'InvalidParameterValue.ConfigDataInvalid'
+
+# 创建环境createRegion参数错误。
+INVALIDPARAMETERVALUE_CREATENAMESPACEUNSUPPORTREGIONERROR = 'InvalidParameterValue.CreateNamespaceUnsupportRegionError'
 
 # 定时弹性伸缩目标实例数不合法。
 INVALIDPARAMETERVALUE_CRONHPAREPLICASINVALID = 'InvalidParameterValue.CronHpaReplicasInvalid'
@@ -263,6 +269,9 @@ INVALIDPARAMETERVALUE_PORTISRESERVED = 'InvalidParameterValue.PortIsReserved'
 # post start 不合法。
 INVALIDPARAMETERVALUE_POSTSTARTNOTVALID = 'InvalidParameterValue.PostStartNotValid'
 
+# pre stop 不合法。
+INVALIDPARAMETERVALUE_PRESTOPNOTVALID = 'InvalidParameterValue.PreStopNotValid'
+
 # 公有镜像参数错误。
 INVALIDPARAMETERVALUE_PUBLICREPOTYPEPARAMETERERROR = 'InvalidParameterValue.PublicRepoTypeParameterError'
 
@@ -340,6 +349,9 @@ MISSINGPARAMETER_NAMESPACEIDNULL = 'MissingParameter.NamespaceIdNull'
 
 # 包名不能为空。
 MISSINGPARAMETER_PKGNAMENULL = 'MissingParameter.PkgNameNull'
+
+# 镜像仓库服务器不能为空。
+MISSINGPARAMETER_REPOSERVERNULL = 'MissingParameter.RepoServerNull'
 
 # 弹性规则ID不能为空。
 MISSINGPARAMETER_SCALERIDNULL = 'MissingParameter.ScalerIdNull'

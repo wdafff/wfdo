@@ -73,7 +73,9 @@ class TeoClient(AbstractClient):
 
 
     def CreateAccelerationDomain(self, request):
-        """创建加速域名
+        """在创建完站点之后，您可以通过本接口创建加速域名。
+
+        CNAME 模式接入时，若您未完成站点归属权校验，本接口将为您返回域名归属权验证信息，您可以单独对域名进行归属权验证，详情参考 [站点/域名归属权验证](https://cloud.tencent.com/document/product/1552/70789)。
 
         :param request: Request instance for CreateAccelerationDomain.
         :type request: :class:`tencentcloud.teo.v20220901.models.CreateAccelerationDomainRequest`
@@ -164,29 +166,6 @@ class TeoClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def CreateOriginGroup(self, request):
-        """创建源站组
-
-        :param request: Request instance for CreateOriginGroup.
-        :type request: :class:`tencentcloud.teo.v20220901.models.CreateOriginGroupRequest`
-        :rtype: :class:`tencentcloud.teo.v20220901.models.CreateOriginGroupResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("CreateOriginGroup", params, headers=headers)
-            response = json.loads(body)
-            model = models.CreateOriginGroupResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def CreatePlanForZone(self, request):
         """为未购买套餐的站点购买套餐
 
@@ -236,7 +215,7 @@ class TeoClient(AbstractClient):
     def CreatePurgeTask(self, request):
         """当源站资源更新，但节点缓存 TTL 未过期时，用户仍会访问到旧的资源，此时可以通过该接口实现节点资源更新。触发更新的方法有以下两种：<li>直接删除：不做任何校验，直接删除节点缓存，用户请求时触发回源拉取；</li><li>标记过期：将节点资源置为过期，用户请求时触发回源校验，即发送带有 If-None-Match 和 If-Modified-Since 头部的 HTTP 条件请求。若源站响应 200，则节点会回源拉取新的资源并更新缓存；若源站响应 304，则节点不会更新缓存；</li>
 
-        清除缓存任务详情请查看[清除缓存](https://cloud.tencent.com/document/product/1552/70759)。</li>
+        清除缓存任务详情请查看[清除缓存](https://cloud.tencent.com/document/product/1552/70759)。
 
         :param request: Request instance for CreatePurgeTask.
         :type request: :class:`tencentcloud.teo.v20220901.models.CreatePurgeTaskRequest`
@@ -304,8 +283,33 @@ class TeoClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateSharedCNAME(self, request):
+        """创建共享 CNAME
+
+        :param request: Request instance for CreateSharedCNAME.
+        :type request: :class:`tencentcloud.teo.v20220901.models.CreateSharedCNAMERequest`
+        :rtype: :class:`tencentcloud.teo.v20220901.models.CreateSharedCNAMEResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateSharedCNAME", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateSharedCNAMEResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateZone(self, request):
-        """用于用户接入新的站点。
+        """EdgeOne 为您提供 CNAME、NS 和无域名接入三种接入方式，您需要先通过此接口完成站点创建。CNAME 和 NS 接入站点的场景可参考 [从零开始快速接入 EdgeOne](https://cloud.tencent.com/document/product/1552/87601); 无域名接入的场景可参考 [快速启用四层代理服务](https://cloud.tencent.com/document/product/1552/96051)。
+
+        > 建议您在账号下已存在套餐时调用本接口创建站点，请在入参时传入 PlanId ，直接将站点绑定至该套餐；不传入 PlanId 时，创建出来的站点会处于未激活状态，无法正常服务，您需要通过 [BindZoneToPlan](https://cloud.tencent.com/document/product/1552/83042) 完成套餐绑定之后，站点才可正常提供服务 。若您当前没有可绑定的套餐时，请前往控制台购买套餐完成站点创建。
 
         :param request: Request instance for CreateZone.
         :type request: :class:`tencentcloud.teo.v20220901.models.CreateZoneRequest`
@@ -419,29 +423,6 @@ class TeoClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def DeleteOriginGroup(self, request):
-        """删除源站组
-
-        :param request: Request instance for DeleteOriginGroup.
-        :type request: :class:`tencentcloud.teo.v20220901.models.DeleteOriginGroupRequest`
-        :rtype: :class:`tencentcloud.teo.v20220901.models.DeleteOriginGroupResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("DeleteOriginGroup", params, headers=headers)
-            response = json.loads(body)
-            model = models.DeleteOriginGroupResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def DeleteRules(self, request):
         """批量删除规则引擎规则。
 
@@ -512,7 +493,7 @@ class TeoClient(AbstractClient):
 
 
     def DescribeAccelerationDomains(self, request):
-        """查询加速域名列表，支持搜索、分页、排序、过滤。
+        """您可以通过本接口查看站点下的域名信息，包括加速域名、源站以及域名状态等信息。您可以查看站点下全部域名的信息，也可以指定过滤条件查询对应的域名信息。
 
         :param request: Request instance for DescribeAccelerationDomains.
         :type request: :class:`tencentcloud.teo.v20220901.models.DescribeAccelerationDomainsRequest`
@@ -1064,7 +1045,7 @@ class TeoClient(AbstractClient):
 
 
     def DescribeZones(self, request):
-        """用户查询用户站点信息列表，支持分页。
+        """该接口用于查询您有权限的站点信息。可根据不同查询条件筛选站点。
 
         :param request: Request instance for DescribeZones.
         :type request: :class:`tencentcloud.teo.v20220901.models.DescribeZonesRequest`
@@ -1340,7 +1321,9 @@ class TeoClient(AbstractClient):
 
 
     def ModifyHostsCertificate(self, request):
-        """用于修改域名证书
+        """完成域名创建之后，您可以为域名配置自有证书，也可以使用 EdgeOne 为您提供的 [免费证书](https://cloud.tencent.com/document/product/1552/90437)。
+        如果您需要配置自有证书，请先将证书上传至 [SSL证书控制台](https://console.cloud.tencent.com/certoverview)，然后在本接口中传入对应的证书 ID。详情参考 [部署自有证书至 EdgeOne 域名
+        ](https://cloud.tencent.com/document/product/1552/88874)。
 
         :param request: Request instance for ModifyHostsCertificate.
         :type request: :class:`tencentcloud.teo.v20220901.models.ModifyHostsCertificateRequest`
@@ -1353,29 +1336,6 @@ class TeoClient(AbstractClient):
             body = self.call("ModifyHostsCertificate", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyHostsCertificateResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
-    def ModifyOriginGroup(self, request):
-        """修改源站组
-
-        :param request: Request instance for ModifyOriginGroup.
-        :type request: :class:`tencentcloud.teo.v20220901.models.ModifyOriginGroupRequest`
-        :rtype: :class:`tencentcloud.teo.v20220901.models.ModifyOriginGroupResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("ModifyOriginGroup", params, headers=headers)
-            response = json.loads(body)
-            model = models.ModifyOriginGroupResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1514,6 +1474,31 @@ class TeoClient(AbstractClient):
             body = self.call("ModifyZoneStatus", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyZoneStatusResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def VerifyOwnership(self, request):
+        """在 CNAME 接入模式下，您需要对站点或者域名的归属权进行验证，可以通过本接口触发验证。若站点通过归属权验证后，后续添加域名无需再验证。详情参考 [站点/域名归属权验证](https://cloud.tencent.com/document/product/1552/70789)。
+
+        在 NS 接入模式下，您也可以通过本接口来查询 NS 服务器是否切换成功，详情参考 [修改 DNS 服务器](https://cloud.tencent.com/document/product/1552/90452)。
+
+        :param request: Request instance for VerifyOwnership.
+        :type request: :class:`tencentcloud.teo.v20220901.models.VerifyOwnershipRequest`
+        :rtype: :class:`tencentcloud.teo.v20220901.models.VerifyOwnershipResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("VerifyOwnership", params, headers=headers)
+            response = json.loads(body)
+            model = models.VerifyOwnershipResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

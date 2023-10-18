@@ -256,6 +256,29 @@ class DasbClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateResource(self, request):
+        """创建堡垒机实例
+
+        :param request: Request instance for CreateResource.
+        :type request: :class:`tencentcloud.dasb.v20191018.models.CreateResourceRequest`
+        :rtype: :class:`tencentcloud.dasb.v20191018.models.CreateResourceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateResource", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateResourceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateUser(self, request):
         """新建用户
 
@@ -900,6 +923,29 @@ class DasbClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ModifyCmdTemplate(self, request):
+        """修改高危命令模板
+
+        :param request: Request instance for ModifyCmdTemplate.
+        :type request: :class:`tencentcloud.dasb.v20191018.models.ModifyCmdTemplateRequest`
+        :rtype: :class:`tencentcloud.dasb.v20191018.models.ModifyCmdTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyCmdTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyCmdTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ModifyDevice(self, request):
         """修改资产信息
 
@@ -937,6 +983,29 @@ class DasbClient(AbstractClient):
             body = self.call("ModifyDeviceGroup", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyDeviceGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyResource(self, request):
+        """资源变配
+
+        :param request: Request instance for ModifyResource.
+        :type request: :class:`tencentcloud.dasb.v20191018.models.ModifyResourceRequest`
+        :rtype: :class:`tencentcloud.dasb.v20191018.models.ModifyResourceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyResource", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyResourceResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

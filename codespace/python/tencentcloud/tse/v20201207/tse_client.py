@@ -26,6 +26,29 @@ class TseClient(AbstractClient):
     _service = 'tse'
 
 
+    def CreateCloudNativeAPIGateway(self, request):
+        """创建云原生API网关实例
+
+        :param request: Request instance for CreateCloudNativeAPIGateway.
+        :type request: :class:`tencentcloud.tse.v20201207.models.CreateCloudNativeAPIGatewayRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.CreateCloudNativeAPIGatewayResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateCloudNativeAPIGateway", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateCloudNativeAPIGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateCloudNativeAPIGatewayCanaryRule(self, request):
         """创建云原生网关的灰度规则
 
@@ -40,6 +63,29 @@ class TseClient(AbstractClient):
             body = self.call("CreateCloudNativeAPIGatewayCanaryRule", params, headers=headers)
             response = json.loads(body)
             model = models.CreateCloudNativeAPIGatewayCanaryRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def CreateCloudNativeAPIGatewayCertificate(self, request):
+        """创建云原生网关证书
+
+        :param request: Request instance for CreateCloudNativeAPIGatewayCertificate.
+        :type request: :class:`tencentcloud.tse.v20201207.models.CreateCloudNativeAPIGatewayCertificateRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.CreateCloudNativeAPIGatewayCertificateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateCloudNativeAPIGatewayCertificate", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateCloudNativeAPIGatewayCertificateResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -164,6 +210,52 @@ class TseClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateNativeGatewayServerGroup(self, request):
+        """创建云原生网关引擎分组
+
+        :param request: Request instance for CreateNativeGatewayServerGroup.
+        :type request: :class:`tencentcloud.tse.v20201207.models.CreateNativeGatewayServerGroupRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.CreateNativeGatewayServerGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateNativeGatewayServerGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateNativeGatewayServerGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DeleteCloudNativeAPIGateway(self, request):
+        """删除云原生API网关实例
+
+        :param request: Request instance for DeleteCloudNativeAPIGateway.
+        :type request: :class:`tencentcloud.tse.v20201207.models.DeleteCloudNativeAPIGatewayRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.DeleteCloudNativeAPIGatewayResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteCloudNativeAPIGateway", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteCloudNativeAPIGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DeleteCloudNativeAPIGatewayCanaryRule(self, request):
         """删除云原生网关的灰度规则
 
@@ -178,6 +270,29 @@ class TseClient(AbstractClient):
             body = self.call("DeleteCloudNativeAPIGatewayCanaryRule", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteCloudNativeAPIGatewayCanaryRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DeleteCloudNativeAPIGatewayCertificate(self, request):
+        """删除云原生网关证书
+
+        :param request: Request instance for DeleteCloudNativeAPIGatewayCertificate.
+        :type request: :class:`tencentcloud.tse.v20201207.models.DeleteCloudNativeAPIGatewayCertificateRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.DeleteCloudNativeAPIGatewayCertificateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteCloudNativeAPIGatewayCertificate", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteCloudNativeAPIGatewayCertificateResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -302,6 +417,52 @@ class TseClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DeleteNativeGatewayServerGroup(self, request):
+        """删除网关实例分组
+
+        :param request: Request instance for DeleteNativeGatewayServerGroup.
+        :type request: :class:`tencentcloud.tse.v20201207.models.DeleteNativeGatewayServerGroupRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.DeleteNativeGatewayServerGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteNativeGatewayServerGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteNativeGatewayServerGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeCloudNativeAPIGateway(self, request):
+        """获取云原生API网关实例信息
+
+        :param request: Request instance for DescribeCloudNativeAPIGateway.
+        :type request: :class:`tencentcloud.tse.v20201207.models.DescribeCloudNativeAPIGatewayRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.DescribeCloudNativeAPIGatewayResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeCloudNativeAPIGateway", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeCloudNativeAPIGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeCloudNativeAPIGatewayCanaryRules(self, request):
         """查询云原生网关灰度规则列表
 
@@ -316,6 +477,75 @@ class TseClient(AbstractClient):
             body = self.call("DescribeCloudNativeAPIGatewayCanaryRules", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeCloudNativeAPIGatewayCanaryRulesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeCloudNativeAPIGatewayCertificateDetails(self, request):
+        """查询云原生网关单个证书详情
+
+        :param request: Request instance for DescribeCloudNativeAPIGatewayCertificateDetails.
+        :type request: :class:`tencentcloud.tse.v20201207.models.DescribeCloudNativeAPIGatewayCertificateDetailsRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.DescribeCloudNativeAPIGatewayCertificateDetailsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeCloudNativeAPIGatewayCertificateDetails", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeCloudNativeAPIGatewayCertificateDetailsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeCloudNativeAPIGatewayCertificates(self, request):
+        """查询云原生网关证书列表
+
+        :param request: Request instance for DescribeCloudNativeAPIGatewayCertificates.
+        :type request: :class:`tencentcloud.tse.v20201207.models.DescribeCloudNativeAPIGatewayCertificatesRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.DescribeCloudNativeAPIGatewayCertificatesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeCloudNativeAPIGatewayCertificates", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeCloudNativeAPIGatewayCertificatesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeCloudNativeAPIGatewayConfig(self, request):
+        """获取云原生API网关实例网络配置信息
+
+        :param request: Request instance for DescribeCloudNativeAPIGatewayConfig.
+        :type request: :class:`tencentcloud.tse.v20201207.models.DescribeCloudNativeAPIGatewayConfigRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.DescribeCloudNativeAPIGatewayConfigResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeCloudNativeAPIGatewayConfig", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeCloudNativeAPIGatewayConfigResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -463,6 +693,29 @@ class TseClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeCloudNativeAPIGateways(self, request):
+        """获取云原生API网关实例列表
+
+        :param request: Request instance for DescribeCloudNativeAPIGateways.
+        :type request: :class:`tencentcloud.tse.v20201207.models.DescribeCloudNativeAPIGatewaysRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.DescribeCloudNativeAPIGatewaysResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeCloudNativeAPIGateways", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeCloudNativeAPIGatewaysResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeNacosReplicas(self, request):
         """查询Nacos类型引擎实例副本信息
 
@@ -500,6 +753,29 @@ class TseClient(AbstractClient):
             body = self.call("DescribeNacosServerInterfaces", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeNacosServerInterfacesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeNativeGatewayServerGroups(self, request):
+        """查询云原生网关分组信息
+
+        :param request: Request instance for DescribeNativeGatewayServerGroups.
+        :type request: :class:`tencentcloud.tse.v20201207.models.DescribeNativeGatewayServerGroupsRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.DescribeNativeGatewayServerGroupsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeNativeGatewayServerGroups", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeNativeGatewayServerGroupsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -624,6 +900,29 @@ class TseClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ModifyCloudNativeAPIGateway(self, request):
+        """修改云原生API网关实例基础信息
+
+        :param request: Request instance for ModifyCloudNativeAPIGateway.
+        :type request: :class:`tencentcloud.tse.v20201207.models.ModifyCloudNativeAPIGatewayRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.ModifyCloudNativeAPIGatewayResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyCloudNativeAPIGateway", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyCloudNativeAPIGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ModifyCloudNativeAPIGatewayCanaryRule(self, request):
         """修改云原生网关的灰度规则
 
@@ -638,6 +937,29 @@ class TseClient(AbstractClient):
             body = self.call("ModifyCloudNativeAPIGatewayCanaryRule", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyCloudNativeAPIGatewayCanaryRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyCloudNativeAPIGatewayCertificate(self, request):
+        """更新云原生网关证书
+
+        :param request: Request instance for ModifyCloudNativeAPIGatewayCertificate.
+        :type request: :class:`tencentcloud.tse.v20201207.models.ModifyCloudNativeAPIGatewayCertificateRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.ModifyCloudNativeAPIGatewayCertificateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyCloudNativeAPIGatewayCertificate", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyCloudNativeAPIGatewayCertificateResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -730,6 +1052,75 @@ class TseClient(AbstractClient):
             body = self.call("ModifyCloudNativeAPIGatewayServiceRateLimit", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyCloudNativeAPIGatewayServiceRateLimitResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyNativeGatewayServerGroup(self, request):
+        """修改云原生API网关实例分组基础信息
+
+        :param request: Request instance for ModifyNativeGatewayServerGroup.
+        :type request: :class:`tencentcloud.tse.v20201207.models.ModifyNativeGatewayServerGroupRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.ModifyNativeGatewayServerGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyNativeGatewayServerGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyNativeGatewayServerGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def UpdateCloudNativeAPIGatewayCertificateInfo(self, request):
+        """修改云原生网关证书信息
+
+        :param request: Request instance for UpdateCloudNativeAPIGatewayCertificateInfo.
+        :type request: :class:`tencentcloud.tse.v20201207.models.UpdateCloudNativeAPIGatewayCertificateInfoRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.UpdateCloudNativeAPIGatewayCertificateInfoResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("UpdateCloudNativeAPIGatewayCertificateInfo", params, headers=headers)
+            response = json.loads(body)
+            model = models.UpdateCloudNativeAPIGatewayCertificateInfoResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def UpdateCloudNativeAPIGatewaySpec(self, request):
+        """修改云原生API网关实例的节点规格信息，比如节点扩缩容或者升降配
+
+        :param request: Request instance for UpdateCloudNativeAPIGatewaySpec.
+        :type request: :class:`tencentcloud.tse.v20201207.models.UpdateCloudNativeAPIGatewaySpecRequest`
+        :rtype: :class:`tencentcloud.tse.v20201207.models.UpdateCloudNativeAPIGatewaySpecResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("UpdateCloudNativeAPIGatewaySpec", params, headers=headers)
+            response = json.loads(body)
+            model = models.UpdateCloudNativeAPIGatewaySpecResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

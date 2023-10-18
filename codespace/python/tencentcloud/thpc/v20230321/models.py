@@ -1228,6 +1228,8 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         :type AutoScalingType: str
         :param _InitNodeScripts: 节点初始化脚本信息列表。
         :type InitNodeScripts: list of NodeScript
+        :param _HpcClusterId: 高性能计算集群ID。若创建的实例为高性能计算实例，需指定实例放置的集群，否则不可指定。
+        :type HpcClusterId: str
         """
         self._Placement = None
         self._ManagerNode = None
@@ -1249,6 +1251,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         self._Tags = None
         self._AutoScalingType = None
         self._InitNodeScripts = None
+        self._HpcClusterId = None
 
     @property
     def Placement(self):
@@ -1410,6 +1413,14 @@ false（默认）：发送正常请求，通过检查后直接创建实例
     def InitNodeScripts(self, InitNodeScripts):
         self._InitNodeScripts = InitNodeScripts
 
+    @property
+    def HpcClusterId(self):
+        return self._HpcClusterId
+
+    @HpcClusterId.setter
+    def HpcClusterId(self, HpcClusterId):
+        self._HpcClusterId = HpcClusterId
+
 
     def _deserialize(self, params):
         if params.get("Placement") is not None:
@@ -1456,6 +1467,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例
                 obj = NodeScript()
                 obj._deserialize(item)
                 self._InitNodeScripts.append(obj)
+        self._HpcClusterId = params.get("HpcClusterId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2537,6 +2549,72 @@ class DescribeQueuesResponse(AbstractModel):
                 self._QueueSet.append(obj)
         self._TotalCount = params.get("TotalCount")
         self._RequestId = params.get("RequestId")
+
+
+class EnhancedService(AbstractModel):
+    """描述了实例的增强服务启用情况与其设置，如云安全，云监控等实例 Agent
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SecurityService: 开启云安全服务。若不指定该参数，则默认开启云安全服务。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SecurityService: :class:`tencentcloud.thpc.v20230321.models.RunSecurityServiceEnabled`
+        :param _MonitorService: 开启云监控服务。若不指定该参数，则默认开启云监控服务。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MonitorService: :class:`tencentcloud.thpc.v20230321.models.RunMonitorServiceEnabled`
+        :param _AutomationService: 开启云自动化助手服务（TencentCloud Automation Tools，TAT）。若不指定该参数，默认开启云自动化助手服务。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutomationService: :class:`tencentcloud.thpc.v20230321.models.RunAutomationServiceEnabled`
+        """
+        self._SecurityService = None
+        self._MonitorService = None
+        self._AutomationService = None
+
+    @property
+    def SecurityService(self):
+        return self._SecurityService
+
+    @SecurityService.setter
+    def SecurityService(self, SecurityService):
+        self._SecurityService = SecurityService
+
+    @property
+    def MonitorService(self):
+        return self._MonitorService
+
+    @MonitorService.setter
+    def MonitorService(self, MonitorService):
+        self._MonitorService = MonitorService
+
+    @property
+    def AutomationService(self):
+        return self._AutomationService
+
+    @AutomationService.setter
+    def AutomationService(self, AutomationService):
+        self._AutomationService = AutomationService
+
+
+    def _deserialize(self, params):
+        if params.get("SecurityService") is not None:
+            self._SecurityService = RunSecurityServiceEnabled()
+            self._SecurityService._deserialize(params.get("SecurityService"))
+        if params.get("MonitorService") is not None:
+            self._MonitorService = RunMonitorServiceEnabled()
+            self._MonitorService._deserialize(params.get("MonitorService"))
+        if params.get("AutomationService") is not None:
+            self._AutomationService = RunAutomationServiceEnabled()
+            self._AutomationService._deserialize(params.get("AutomationService"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class ExpansionNodeConfig(AbstractModel):
@@ -3892,6 +3970,14 @@ class QueueConfig(AbstractModel):
         :type ScaleOutNodeThreshold: int
         :param _MaxNodesPerCycle: 每轮扩容最大节点个数。默认值：100。取值范围：1～100。
         :type MaxNodesPerCycle: int
+        :param _ScaleUpMemRatio: 扩容过程中，作业的内存在匹配实例机型时增大比例（不会影响作业提交的内存大小，只影响匹配计算过程）。<br/>
+针对场景：由于实例机型的总内存会大于实例内部的可用内存，16GB内存规格的实例，实例操作系统内的可用内存只有约14.9GB内存。假设此时提交一个需要15GB内存的作业，
+
+- 当ScaleUpMemRatio=0时，会匹配到16GB内存规格的实例,但是由于操作系统内的可用内存为14.9GB小于作业所需的15GB，扩容出来的实例作业无法运行起来。
+- 当ScaleUpMemRatio=10时，匹配实例规格会按照15*(1+10%)=16.5GB来进行实例规格匹配，则不会匹配到16GB的实例，而是更大内存规格的实例来保证作业能够被运行起来。
+        :type ScaleUpMemRatio: int
+        :param _EnhancedService: 增强服务。通过该参数可以指定是否开启云安全、云监控等服务。若不指定该参数，则默认开启云监控、云安全服务、自动化助手服务。
+        :type EnhancedService: :class:`tencentcloud.thpc.v20230321.models.EnhancedService`
         """
         self._QueueName = None
         self._MinSize = None
@@ -3907,6 +3993,8 @@ class QueueConfig(AbstractModel):
         self._ScaleOutRatio = None
         self._ScaleOutNodeThreshold = None
         self._MaxNodesPerCycle = None
+        self._ScaleUpMemRatio = None
+        self._EnhancedService = None
 
     @property
     def QueueName(self):
@@ -4020,6 +4108,22 @@ class QueueConfig(AbstractModel):
     def MaxNodesPerCycle(self, MaxNodesPerCycle):
         self._MaxNodesPerCycle = MaxNodesPerCycle
 
+    @property
+    def ScaleUpMemRatio(self):
+        return self._ScaleUpMemRatio
+
+    @ScaleUpMemRatio.setter
+    def ScaleUpMemRatio(self, ScaleUpMemRatio):
+        self._ScaleUpMemRatio = ScaleUpMemRatio
+
+    @property
+    def EnhancedService(self):
+        return self._EnhancedService
+
+    @EnhancedService.setter
+    def EnhancedService(self, EnhancedService):
+        self._EnhancedService = EnhancedService
+
 
     def _deserialize(self, params):
         self._QueueName = params.get("QueueName")
@@ -4050,6 +4154,10 @@ class QueueConfig(AbstractModel):
         self._ScaleOutRatio = params.get("ScaleOutRatio")
         self._ScaleOutNodeThreshold = params.get("ScaleOutNodeThreshold")
         self._MaxNodesPerCycle = params.get("MaxNodesPerCycle")
+        self._ScaleUpMemRatio = params.get("ScaleUpMemRatio")
+        if params.get("EnhancedService") is not None:
+            self._EnhancedService = EnhancedService()
+            self._EnhancedService._deserialize(params.get("EnhancedService"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -4094,6 +4202,13 @@ class QueueConfigOverview(AbstractModel):
         :param _MaxNodesPerCycle: 每轮扩容最大节点个数。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MaxNodesPerCycle: int
+        :param _ScaleUpMemRatio: 扩容过程中，作业的内存在匹配实例机型时增大比例（不会影响作业提交的内存大小，只影响匹配计算过程）。<br/>
+针对场景：由于实例机型的总内存会大于实例内部的可用内存，16GB内存规格的实例，实例操作系统内的可用内存只有约14.9GB内存。假设此时提交一个需要15GB内存的作业，
+
+- 当ScaleUpMemRatio=0时，会匹配到16GB内存规格的实例,但是由于操作系统内的可用内存为14.9GB小于作业所需的15GB，扩容出来的实例作业无法运行起来。
+- 当ScaleUpMemRatio=10时，匹配实例规格会按照15*(1+10%)=16.5GB来进行实例规格匹配，则不会匹配到16GB的实例，而是更大内存规格的实例来保证作业能够被运行起来。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ScaleUpMemRatio: int
         """
         self._QueueName = None
         self._MinSize = None
@@ -4105,6 +4220,7 @@ class QueueConfigOverview(AbstractModel):
         self._ScaleOutRatio = None
         self._ScaleOutNodeThreshold = None
         self._MaxNodesPerCycle = None
+        self._ScaleUpMemRatio = None
 
     @property
     def QueueName(self):
@@ -4186,6 +4302,14 @@ class QueueConfigOverview(AbstractModel):
     def MaxNodesPerCycle(self, MaxNodesPerCycle):
         self._MaxNodesPerCycle = MaxNodesPerCycle
 
+    @property
+    def ScaleUpMemRatio(self):
+        return self._ScaleUpMemRatio
+
+    @ScaleUpMemRatio.setter
+    def ScaleUpMemRatio(self, ScaleUpMemRatio):
+        self._ScaleUpMemRatio = ScaleUpMemRatio
+
 
     def _deserialize(self, params):
         self._QueueName = params.get("QueueName")
@@ -4203,6 +4327,7 @@ class QueueConfigOverview(AbstractModel):
         self._ScaleOutRatio = params.get("ScaleOutRatio")
         self._ScaleOutNodeThreshold = params.get("ScaleOutNodeThreshold")
         self._MaxNodesPerCycle = params.get("MaxNodesPerCycle")
+        self._ScaleUpMemRatio = params.get("ScaleUpMemRatio")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -4237,6 +4362,106 @@ class QueueOverview(AbstractModel):
 
     def _deserialize(self, params):
         self._QueueName = params.get("QueueName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RunAutomationServiceEnabled(AbstractModel):
+    """描述了 “云自动化助手” 服务相关的信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Enabled: 是否开启云自动化助手。取值范围：<br><li>TRUE：表示开启云自动化助手服务<br><li>FALSE：表示不开启云自动化助手服务<br><br>默认取值：TRUE。
+        :type Enabled: bool
+        """
+        self._Enabled = None
+
+    @property
+    def Enabled(self):
+        return self._Enabled
+
+    @Enabled.setter
+    def Enabled(self, Enabled):
+        self._Enabled = Enabled
+
+
+    def _deserialize(self, params):
+        self._Enabled = params.get("Enabled")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RunMonitorServiceEnabled(AbstractModel):
+    """描述了 “云监控” 服务相关的信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Enabled: 是否开启[云监控](/document/product/248)服务。取值范围：<br><li>TRUE：表示开启云监控服务<br><li>FALSE：表示不开启云监控服务<br><br>默认取值：TRUE。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Enabled: bool
+        """
+        self._Enabled = None
+
+    @property
+    def Enabled(self):
+        return self._Enabled
+
+    @Enabled.setter
+    def Enabled(self, Enabled):
+        self._Enabled = Enabled
+
+
+    def _deserialize(self, params):
+        self._Enabled = params.get("Enabled")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RunSecurityServiceEnabled(AbstractModel):
+    """描述了 “云安全” 服务相关的信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Enabled: 是否开启[云安全](/document/product/296)服务。取值范围：<br><li>TRUE：表示开启云安全服务<br><li>FALSE：表示不开启云安全服务<br><br>默认取值：TRUE。
+        :type Enabled: bool
+        """
+        self._Enabled = None
+
+    @property
+    def Enabled(self):
+        return self._Enabled
+
+    @Enabled.setter
+    def Enabled(self, Enabled):
+        self._Enabled = Enabled
+
+
+    def _deserialize(self, params):
+        self._Enabled = params.get("Enabled")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

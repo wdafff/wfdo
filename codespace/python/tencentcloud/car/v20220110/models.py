@@ -145,6 +145,9 @@ RunWithoutClient：允许无客户端连接的情况下仍保持云端 App 运�
 如果请求的是多应用共享项目，此参数生效；
 如果请求的是关闭预启动的单应用独享项目，此参数生效；
 如果请求的是开启预启动的单应用独享项目，此参数失效。
+
+注意：在此参数生效的情况下，将会被追加到控制台应用或项目配置的启动参数的后面。
+例如，对于某关闭预启动的单应用独享项目，若在控制台中项目配置的启动参数为bar=0，而ApplicationParameters参数为foo=1，则实际应用启动参数为bar=0 foo=1。
         :type ApplicationParameters: str
         :param _HostUserId: 【多人互动】房主用户ID，在多人互动模式下为必填字段。
 如果该用户是房主，HostUserId需要和UserId保持一致；
@@ -342,8 +345,11 @@ class StartPublishStreamRequest(AbstractModel):
         r"""
         :param _UserId: 唯一用户身份标识，由业务方自定义，平台不予理解。（UserId将作为StreamId进行推流，比如绑定推流域名为abc.livepush.myqcloud.com，那么推流地址为rtmp://abc.livepush.myqcloud.com/live/UserId?txSecret=xxx&txTime=xxx）
         :type UserId: str
+        :param _PublishStreamArgs: 推流参数，推流时携带自定义参数。
+        :type PublishStreamArgs: str
         """
         self._UserId = None
+        self._PublishStreamArgs = None
 
     @property
     def UserId(self):
@@ -353,9 +359,18 @@ class StartPublishStreamRequest(AbstractModel):
     def UserId(self, UserId):
         self._UserId = UserId
 
+    @property
+    def PublishStreamArgs(self):
+        return self._PublishStreamArgs
+
+    @PublishStreamArgs.setter
+    def PublishStreamArgs(self, PublishStreamArgs):
+        self._PublishStreamArgs = PublishStreamArgs
+
 
     def _deserialize(self, params):
         self._UserId = params.get("UserId")
+        self._PublishStreamArgs = params.get("PublishStreamArgs")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -368,6 +383,76 @@ class StartPublishStreamRequest(AbstractModel):
 
 class StartPublishStreamResponse(AbstractModel):
     """StartPublishStream返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class StartPublishStreamWithURLRequest(AbstractModel):
+    """StartPublishStreamWithURL请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _UserId: 唯一用户身份标识，由业务方自定义，平台不予理解。
+        :type UserId: str
+        :param _PublishStreamURL: 推流地址，仅支持rtmp协议。
+        :type PublishStreamURL: str
+        """
+        self._UserId = None
+        self._PublishStreamURL = None
+
+    @property
+    def UserId(self):
+        return self._UserId
+
+    @UserId.setter
+    def UserId(self, UserId):
+        self._UserId = UserId
+
+    @property
+    def PublishStreamURL(self):
+        return self._PublishStreamURL
+
+    @PublishStreamURL.setter
+    def PublishStreamURL(self, PublishStreamURL):
+        self._PublishStreamURL = PublishStreamURL
+
+
+    def _deserialize(self, params):
+        self._UserId = params.get("UserId")
+        self._PublishStreamURL = params.get("PublishStreamURL")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StartPublishStreamWithURLResponse(AbstractModel):
+    """StartPublishStreamWithURL返回参数结构体
 
     """
 

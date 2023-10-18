@@ -62,6 +62,9 @@ FAILEDOPERATION_CREATERECORDNOTEXIST = 'FailedOperation.CreateRecordNotExist'
 # 创建角色异常。
 FAILEDOPERATION_CREATEROLE = 'FailedOperation.CreateRole'
 
+# 删除授权策略异常。
+FAILEDOPERATION_DELETEPOLICY = 'FailedOperation.DeletePolicy'
+
 # 不能退出自己创建的企业组织。
 FAILEDOPERATION_DISABLEQUITSELFCREATEDORGANIZATION = 'FailedOperation.DisableQuitSelfCreatedOrganization'
 
@@ -85,6 +88,9 @@ FAILEDOPERATION_MEMBEREMAILEXIST = 'FailedOperation.MemberEmailExist'
 
 # 成员存在代付者,不允许删除。
 FAILEDOPERATION_MEMBEREXISTDELEGATEPAYERNOTALLOWDELETE = 'FailedOperation.MemberExistDelegatePayerNotAllowDelete'
+
+# 成员授权在使用。
+FAILEDOPERATION_MEMBERIDENTITYAUTHUSED = 'FailedOperation.MemberIdentityAuthUsed'
 
 # 成员是代付者，不允许删除。
 FAILEDOPERATION_MEMBERISDELEGATEPAYERNOTALLOWDELETE = 'FailedOperation.MemberIsDelegatePayerNotAllowDelete'
@@ -110,6 +116,12 @@ FAILEDOPERATION_OPERATEPOLICY = 'FailedOperation.OperatePolicy'
 # 成员是主体管理账号不允许删除。
 FAILEDOPERATION_ORGANIZATIONAUTHMANAGENOTALLOWDELETE = 'FailedOperation.OrganizationAuthManageNotAllowDelete'
 
+# 企业组织已经存在。
+FAILEDOPERATION_ORGANIZATIONEXISTALREADY = 'FailedOperation.OrganizationExistAlready'
+
+# 组织身份策略不合法。
+FAILEDOPERATION_ORGANIZATIONIDENTITYPOLICYERROR = 'FailedOperation.OrganizationIdentityPolicyError'
+
 # 成员名已存在。
 FAILEDOPERATION_ORGANIZATIONMEMBERNAMEUSED = 'FailedOperation.OrganizationMemberNameUsed'
 
@@ -125,20 +137,35 @@ FAILEDOPERATION_ORGANIZATIONNODENOTEMPTY = 'FailedOperation.OrganizationNodeNotE
 # 组织节点不存在。
 FAILEDOPERATION_ORGANIZATIONNODENOTEXIST = 'FailedOperation.OrganizationNodeNotExist'
 
+# 企业组织成员不为空。
+FAILEDOPERATION_ORGANIZATIONNOTEMPTY = 'FailedOperation.OrganizationNotEmpty'
+
 # 组织权限不合法。
 FAILEDOPERATION_ORGANIZATIONPERMISSIONILLEGAL = 'FailedOperation.OrganizationPermissionIllegal'
 
 # 组织策略不合法。
 FAILEDOPERATION_ORGANIZATIONPOLICYILLEGAL = 'FailedOperation.OrganizationPolicyIllegal'
 
+# 集团策略不是禁用状态。
+FAILEDOPERATION_ORGANIZATIONPOLICYISNOTDISABLED = 'FailedOperation.OrganizationPolicyIsNotDisabled'
+
 # 代付者不合法。
 FAILEDOPERATION_PAYUINILLEGAL = 'FailedOperation.PayUinIllegal'
+
+# 退出共享单元失败。
+FAILEDOPERATION_QUITSHAREUINT = 'FailedOperation.QuitShareUint'
 
 # 退出共享单元错误。
 FAILEDOPERATION_QUITSHAREUINTERROR = 'FailedOperation.QuitShareUintError'
 
+# 退出共享单元失败。
+FAILEDOPERATION_QUITESHAREUNIT = 'FailedOperation.QuiteShareUnit'
+
 # 成员正在使用共享资源。
 FAILEDOPERATION_SHARERESOURCEMEMBERINUSE = 'FailedOperation.ShareResourceMemberInUse'
+
+# 共享单元不为空。
+FAILEDOPERATION_SHAREUNITNOTEMPTY = 'FailedOperation.ShareUnitNotEmpty'
 
 # 存在不属于当前组织的uin。
 FAILEDOPERATION_SOMEUINSNOTINORGANIZATION = 'FailedOperation.SomeUinsNotInOrganization'
@@ -166,6 +193,12 @@ INVALIDPARAMETER_CODEEXPIRED = 'InvalidParameter.CodeExpired'
 
 # 无效的邮箱。
 INVALIDPARAMETER_INVALIDEMAIL = 'InvalidParameter.InvalidEmail'
+
+# 组织成员不存在。
+INVALIDPARAMETER_ORGANIZATIONMEMBERNOTEXIST = 'InvalidParameter.OrganizationMemberNotExist'
+
+# 组织节点不存在。
+INVALIDPARAMETER_ORGANIZATIONNODENOTEXIST = 'InvalidParameter.OrganizationNodeNotExist'
 
 # 密码不合法。
 INVALIDPARAMETER_PASSWORDILLEGAL = 'InvalidParameter.PasswordIllegal'
@@ -203,6 +236,9 @@ RESOURCENOTFOUND_MEMBERNOTEXIST = 'ResourceNotFound.MemberNotExist'
 # 组织成员策略不存在。
 RESOURCENOTFOUND_MEMBERPOLICYNOTEXIST = 'ResourceNotFound.MemberPolicyNotExist'
 
+# 组织身份不存在。
+RESOURCENOTFOUND_ORGANIZATIONIDENTITYNOTEXIST = 'ResourceNotFound.OrganizationIdentityNotExist'
+
 # 组织成员不存在。
 RESOURCENOTFOUND_ORGANIZATIONMEMBERNOTEXIST = 'ResourceNotFound.OrganizationMemberNotExist'
 
@@ -227,8 +263,14 @@ UNSUPPORTEDOPERATION_ADDDELEGATEPAYERNOTALLOW = 'UnsupportedOperation.AddDelegat
 # 不允许添加优惠继承关系。
 UNSUPPORTEDOPERATION_ADDDISCOUNTINHERITNOTALLOW = 'UnsupportedOperation.AddDiscountInheritNotAllow'
 
+# 创建的成员不允许创建组织。
+UNSUPPORTEDOPERATION_CREATEMEMBERNOTALLOWCREATEORGANIZATION = 'UnsupportedOperation.CreateMemberNotAllowCreateOrganization'
+
 # 创建的成员不允许删除。
 UNSUPPORTEDOPERATION_CREATEMEMBERNOTALLOWDELETE = 'UnsupportedOperation.CreateMemberNotAllowDelete'
+
+# 创建的成员不允许退出。
+UNSUPPORTEDOPERATION_CREATEMEMBERNOTALLOWQUIT = 'UnsupportedOperation.CreateMemberNotAllowQuit'
 
 # 不允许删除代付关系。
 UNSUPPORTEDOPERATION_DELETEDELEGATEPAYERNOTALLOW = 'UnsupportedOperation.DeleteDelegatePayerNotAllow'
@@ -260,7 +302,7 @@ UNSUPPORTEDOPERATION_MEMBEREXISTOPERATEPROCESSNOTALLOWDELETE = 'UnsupportedOpera
 # 组织成员被委派集团服务，不允许退出。
 UNSUPPORTEDOPERATION_MEMBEREXISTSERVICENOTALLOWDELETE = 'UnsupportedOperation.MemberExistServiceNotAllowDelete'
 
-# 成员是代理商或代客。
+# 账号是代理商或代客。
 UNSUPPORTEDOPERATION_MEMBERISAGENT = 'UnsupportedOperation.MemberIsAgent'
 
 # 成员没有绑卡。

@@ -134,22 +134,22 @@ INVALIDPARAMETERVALUE_CONTENTLENGTHLIMIT = 'InvalidParameterValue.ContentLengthL
 # 参数 EndTime 校验失败。
 INVALIDPARAMETERVALUE_ENDTIMEVERIFYFAIL = 'InvalidParameterValue.EndTimeVerifyFail'
 
-# 上传的转码图片格式错误，请参照 API 接口说明中对改字段的说明，如有需要请联系 [腾讯云短信小助手](https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81)。
+# 上传的转码图片格式错误，请参照 API 接口说明中对该字段的说明，如有需要请联系 [腾讯云短信小助手](https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81)。
 INVALIDPARAMETERVALUE_IMAGEINVALID = 'InvalidParameterValue.ImageInvalid'
 
 # 手机号格式错误。
 INVALIDPARAMETERVALUE_INCORRECTPHONENUMBER = 'InvalidParameterValue.IncorrectPhoneNumber'
 
-# DocumentType 字段校验错误，请参照 API 接口说明中对改字段的说明，如有需要请联系 [腾讯云短信小助手](https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81)。
+# DocumentType 字段校验错误，请参照 API 接口说明中对该字段的说明，如有需要请联系 [腾讯云短信小助手](https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81)。
 INVALIDPARAMETERVALUE_INVALIDDOCUMENTTYPE = 'InvalidParameterValue.InvalidDocumentType'
 
-# International 字段校验错误，请参照 API 接口说明中对改字段的说明，如有需要请联系 [腾讯云短信小助手](https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81)。
+# International 字段校验错误，请参照 API 接口说明中对该字段的说明，如有需要请联系 [腾讯云短信小助手](https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81)。
 INVALIDPARAMETERVALUE_INVALIDINTERNATIONAL = 'InvalidParameterValue.InvalidInternational'
 
 # 无效的拉取起始/截止时间，具体原因可能是请求的 SendDateTime 大于 EndDateTime。
 INVALIDPARAMETERVALUE_INVALIDSTARTTIME = 'InvalidParameterValue.InvalidStartTime'
 
-# UsedMethod 字段校验错误，请参照 API 接口说明中对改字段的说明，如有需要请联系 [腾讯云短信小助手](https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81)。
+# UsedMethod 字段校验错误，请参照 API 接口说明中对该字段的说明，如有需要请联系 [腾讯云短信小助手](https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81)。
 INVALIDPARAMETERVALUE_INVALIDUSEDMETHOD = 'InvalidParameterValue.InvalidUsedMethod'
 
 # 无法识别签名，请确认是否已有签名通过申请，一般是签名未通过申请，可以查看 [签名审核](https://cloud.tencent.com/document/product/382/37745#.E6.AD.A5.E9.AA.A43.EF.BC.9A.E7.AD.89.E5.BE.85.E5.AE.A1.E6.A0.B8) 。
@@ -234,7 +234,7 @@ UNAUTHORIZEDOPERATION_REQUESTPERMISSIONDENY = 'UnauthorizedOperation.RequestPerm
 UNAUTHORIZEDOPERATION_SDKAPPIDISDISABLED = 'UnauthorizedOperation.SdkAppIdIsDisabled'
 
 # 欠费被停止服务，可自行登录腾讯云充值来缴清欠款。
-UNAUTHORIZEDOPERATION_SERIVCESUSPENDDUETOARREARS = 'UnauthorizedOperation.SerivceSuspendDueToArrears'
+UNAUTHORIZEDOPERATION_SERVICESUSPENDDUETOARREARS = 'UnauthorizedOperation.ServiceSuspendDueToArrears'
 
 # SmsSdkAppId 校验失败，请检查 [SmsSdkAppId](https://console.cloud.tencent.com/smsv2/app-manage) 是否属于 [云API密钥](https://console.cloud.tencent.com/cam/capi) 的关联账户。
 UNAUTHORIZEDOPERATION_SMSSDKAPPIDVERIFYFAIL = 'UnauthorizedOperation.SmsSdkAppIdVerifyFail'
@@ -252,4 +252,4 @@ UNSUPPORTEDOPERATION_CONTAINDOMESTICANDINTERNATIONALPHONENUMBER = 'UnsupportedOp
 UNSUPPORTEDOPERATION_GLOBALTEMPLATETOCHINESEMAINLANDPHONE = 'UnsupportedOperation.GlobalTemplateToChineseMainlandPhone'
 
 # 不支持该地区短信下发。
-UNSUPPORTEDOPERATION_UNSUPORTEDREGION = 'UnsupportedOperation.UnsuportedRegion'
+UNSUPPORTEDOPERATION_UNSUPPORTEDREGION = 'UnsupportedOperation.UnsupportedRegion'

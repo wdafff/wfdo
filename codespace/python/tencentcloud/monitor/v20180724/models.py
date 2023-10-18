@@ -239,6 +239,9 @@ class AlarmHistory(AbstractModel):
         :param _Dimensions: 告警实例的维度信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type Dimensions: str
+        :param _AlarmLevel: 告警等级
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlarmLevel: str
         """
         self._AlarmId = None
         self._MonitorType = None
@@ -264,6 +267,7 @@ class AlarmHistory(AbstractModel):
         self._PolicyExists = None
         self._MetricsInfo = None
         self._Dimensions = None
+        self._AlarmLevel = None
 
     @property
     def AlarmId(self):
@@ -457,6 +461,14 @@ class AlarmHistory(AbstractModel):
     def Dimensions(self, Dimensions):
         self._Dimensions = Dimensions
 
+    @property
+    def AlarmLevel(self):
+        return self._AlarmLevel
+
+    @AlarmLevel.setter
+    def AlarmLevel(self, AlarmLevel):
+        self._AlarmLevel = AlarmLevel
+
 
     def _deserialize(self, params):
         self._AlarmId = params.get("AlarmId")
@@ -493,6 +505,7 @@ class AlarmHistory(AbstractModel):
                 obj._deserialize(item)
                 self._MetricsInfo.append(obj)
         self._Dimensions = params.get("Dimensions")
+        self._AlarmLevel = params.get("AlarmLevel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -909,6 +922,9 @@ class AlarmPolicy(AbstractModel):
         :param _Tags: 策略标签
 注意：此字段可能返回 null，表示取不到有效值。
         :type Tags: list of Tag
+        :param _IsSupportAlarmTag: 是否支持告警标签
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsSupportAlarmTag: int
         """
         self._PolicyId = None
         self._PolicyName = None
@@ -945,6 +961,7 @@ class AlarmPolicy(AbstractModel):
         self._AdvancedMetricNumber = None
         self._IsBindAll = None
         self._Tags = None
+        self._IsSupportAlarmTag = None
 
     @property
     def PolicyId(self):
@@ -1226,6 +1243,14 @@ class AlarmPolicy(AbstractModel):
     def Tags(self, Tags):
         self._Tags = Tags
 
+    @property
+    def IsSupportAlarmTag(self):
+        return self._IsSupportAlarmTag
+
+    @IsSupportAlarmTag.setter
+    def IsSupportAlarmTag(self, IsSupportAlarmTag):
+        self._IsSupportAlarmTag = IsSupportAlarmTag
+
 
     def _deserialize(self, params):
         self._PolicyId = params.get("PolicyId")
@@ -1289,6 +1314,7 @@ class AlarmPolicy(AbstractModel):
                 obj = Tag()
                 obj._deserialize(item)
                 self._Tags.append(obj)
+        self._IsSupportAlarmTag = params.get("IsSupportAlarmTag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -3598,13 +3624,13 @@ class CreateGrafanaInstanceRequest(AbstractModel):
         r"""
         :param _InstanceName: 实例名
         :type InstanceName: str
-        :param _VpcId: VPC ID
+        :param _VpcId: VPC ID (私有网络 ID)
         :type VpcId: str
-        :param _SubnetIds: 子网 ID 数组
+        :param _SubnetIds: 子网 ID 数组(VPC ID下的子网 ID，只取第一个)
         :type SubnetIds: list of str
         :param _EnableInternet: 是否启用外网
         :type EnableInternet: bool
-        :param _GrafanaInitPassword: Grafana 初始密码
+        :param _GrafanaInitPassword: Grafana 初始密码(国际站用户必填，国内站用户可不填，不填时会生成随机密码并给主账号发送通知)
         :type GrafanaInitPassword: str
         :param _TagSpecification: 标签
         :type TagSpecification: list of PrometheusTag
@@ -3733,7 +3759,7 @@ class CreateGrafanaIntegrationRequest(AbstractModel):
         r"""
         :param _InstanceId: Grafana 实例 ID，例如：grafana-abcdefgh
         :type InstanceId: str
-        :param _Kind: 集成类型，可在实例详情-云产品集成-集成列表查看。例如：tencent-cloud-prometheus
+        :param _Kind: 集成类型(接口DescribeGrafanaIntegrationOverviews返回的集成信息中的Code字段)
         :type Kind: str
         :param _Content: 集成配置
         :type Content: str
@@ -3830,9 +3856,9 @@ class CreateGrafanaNotificationChannelRequest(AbstractModel):
         :type InstanceId: str
         :param _ChannelName: 告警通道名称，例如：test
         :type ChannelName: str
-        :param _OrgId: 默认为1，已废弃，请使用 OrganizationIds
+        :param _OrgId: 默认为1，建议使用 OrganizationIds
         :type OrgId: int
-        :param _Receivers: 接受告警通道 ID 数组
+        :param _Receivers: 接受告警通道 ID 数组，值为告警管理/基础配置/通知模板中的模板 ID 
         :type Receivers: list of str
         :param _ExtraOrgIds: 额外组织 ID 数组，已废弃，请使用 OrganizationIds
         :type ExtraOrgIds: list of str
@@ -5324,7 +5350,7 @@ class CreateSSOAccountRequest(AbstractModel):
         :type InstanceId: str
         :param _UserId: 用户账号 ID ，例如：10000000
         :type UserId: str
-        :param _Role: 权限
+        :param _Role: 权限(只取数组中的第一个，其中 Organization 暂未使用，可不填)
         :type Role: list of GrafanaAccountRole
         :param _Notes: 备注
         :type Notes: str
@@ -5953,7 +5979,7 @@ class DeleteGrafanaInstanceRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _InstanceIDs: 实例名数组
+        :param _InstanceIDs: 实例ID数组
         :type InstanceIDs: list of str
         """
         self._InstanceIDs = None
@@ -6081,7 +6107,7 @@ class DeleteGrafanaNotificationChannelRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _ChannelIDs: 通道 ID 数组。例如：nchannel-abcd1234
+        :param _ChannelIDs: 通道 ID 数组。例如：nchannel-abcd1234，通过 DescribeGrafanaChannels 获取
         :type ChannelIDs: list of str
         :param _InstanceId: Grafana 实例 ID，例如：grafana-abcdefgh
         :type InstanceId: str
@@ -7504,7 +7530,7 @@ class DescribeAlarmHistoriesRequest(AbstractModel):
         :type Namespaces: list of MonitorTypeNamespace
         :param _MetricNames: 根据指标名过滤
         :type MetricNames: list of str
-        :param _PolicyName: 根据策略名称模糊搜索
+        :param _PolicyName: 根据策略名称模糊搜索,不支持大小写区分
         :type PolicyName: str
         :param _Content: 根据告警内容模糊搜索
         :type Content: str
@@ -7514,6 +7540,8 @@ class DescribeAlarmHistoriesRequest(AbstractModel):
         :type ReceiverGroups: list of int
         :param _PolicyIds: 根据告警策略 Id 列表搜索
         :type PolicyIds: list of str
+        :param _AlarmLevels: 告警等级,取值范围：Remind、Serious、Warn
+        :type AlarmLevels: list of str
         """
         self._Module = None
         self._PageNumber = None
@@ -7533,6 +7561,7 @@ class DescribeAlarmHistoriesRequest(AbstractModel):
         self._ReceiverUids = None
         self._ReceiverGroups = None
         self._PolicyIds = None
+        self._AlarmLevels = None
 
     @property
     def Module(self):
@@ -7678,6 +7707,14 @@ class DescribeAlarmHistoriesRequest(AbstractModel):
     def PolicyIds(self, PolicyIds):
         self._PolicyIds = PolicyIds
 
+    @property
+    def AlarmLevels(self):
+        return self._AlarmLevels
+
+    @AlarmLevels.setter
+    def AlarmLevels(self, AlarmLevels):
+        self._AlarmLevels = AlarmLevels
+
 
     def _deserialize(self, params):
         self._Module = params.get("Module")
@@ -7703,6 +7740,7 @@ class DescribeAlarmHistoriesRequest(AbstractModel):
         self._ReceiverUids = params.get("ReceiverUids")
         self._ReceiverGroups = params.get("ReceiverGroups")
         self._PolicyIds = params.get("PolicyIds")
+        self._AlarmLevels = params.get("AlarmLevels")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -10572,7 +10610,7 @@ class DescribeGrafanaChannelsRequest(AbstractModel):
         :type ChannelName: str
         :param _ChannelIds: 告警通道 ID，例如：nchannel-abcd1234
         :type ChannelIds: list of str
-        :param _ChannelState: 告警通道状态
+        :param _ChannelState: 告警通道状态(不用填写，目前只有可用和删除状态，默认只能查询可用的告警通道)
         :type ChannelState: int
         """
         self._InstanceId = None
@@ -16839,6 +16877,81 @@ class DescribePrometheusRecordRulesResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribePrometheusRegionsRequest(AbstractModel):
+    """DescribePrometheusRegions请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _PayMode: 1-预付费，2-后付费，3-全地域（不填默认全地域）
+        :type PayMode: int
+        """
+        self._PayMode = None
+
+    @property
+    def PayMode(self):
+        return self._PayMode
+
+    @PayMode.setter
+    def PayMode(self, PayMode):
+        self._PayMode = PayMode
+
+
+    def _deserialize(self, params):
+        self._PayMode = params.get("PayMode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePrometheusRegionsResponse(AbstractModel):
+    """DescribePrometheusRegions返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegionSet: 区域列表
+        :type RegionSet: list of PrometheusRegionItem
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RegionSet = None
+        self._RequestId = None
+
+    @property
+    def RegionSet(self):
+        return self._RegionSet
+
+    @RegionSet.setter
+    def RegionSet(self, RegionSet):
+        self._RegionSet = RegionSet
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("RegionSet") is not None:
+            self._RegionSet = []
+            for item in params.get("RegionSet"):
+                obj = PrometheusRegionItem()
+                obj._deserialize(item)
+                self._RegionSet.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DescribePrometheusScrapeJobsRequest(AbstractModel):
     """DescribePrometheusScrapeJobs请求参数结构体
 
@@ -18000,8 +18113,10 @@ class Dimension(AbstractModel):
     def __init__(self):
         r"""
         :param _Name: 实例维度名称
+注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
         :param _Value: 实例维度值
+注意：此字段可能返回 null，表示取不到有效值。
         :type Value: str
         """
         self._Name = None
@@ -19007,7 +19122,7 @@ class GrafanaAccountRole(AbstractModel):
         r"""
         :param _Organization: 组织
         :type Organization: str
-        :param _Role: 权限
+        :param _Role: 权限(Admin、Editor、Viewer)
         :type Role: str
         """
         self._Organization = None
@@ -19154,9 +19269,9 @@ class GrafanaInstanceInfo(AbstractModel):
         :type VpcId: str
         :param _SubnetIds: 子网 ID 数组
         :type SubnetIds: list of str
-        :param _InternetUrl: Grafana 内网地址
+        :param _InternetUrl: Grafana 公网地址
         :type InternetUrl: str
-        :param _InternalUrl: Grafana 公网地址
+        :param _InternalUrl: Grafana 内网地址
         :type InternalUrl: str
         :param _CreatedAt: 创建时间
         :type CreatedAt: str
@@ -19659,7 +19774,7 @@ class InstallPluginsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Plugins: 插件信息
+        :param _Plugins: 插件信息(可通过 DescribePluginOverviews 接口获取)
         :type Plugins: list of GrafanaPlugin
         :param _InstanceId: Grafana 实例 ID，例如：grafana-abcdefgh
         :type InstanceId: str
@@ -25583,6 +25698,111 @@ class PrometheusRecordRuleYamlItem(AbstractModel):
         
 
 
+class PrometheusRegionItem(AbstractModel):
+    """DescribePrometheusRegions 响应结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Region: 区域
+        :type Region: str
+        :param _RegionId: 区域 ID
+        :type RegionId: int
+        :param _RegionState: 区域状态( 0: 不可用；1: 可用)
+        :type RegionState: int
+        :param _RegionName: 区域名(中文)
+        :type RegionName: str
+        :param _RegionShortName: 区域名(英文缩写)
+        :type RegionShortName: str
+        :param _Area: 区域所在大区名
+        :type Area: str
+        :param _RegionPayMode: 1-仅支持预付费，2-仅支持后付费，3-支持两种计费模式实例
+        :type RegionPayMode: int
+        """
+        self._Region = None
+        self._RegionId = None
+        self._RegionState = None
+        self._RegionName = None
+        self._RegionShortName = None
+        self._Area = None
+        self._RegionPayMode = None
+
+    @property
+    def Region(self):
+        return self._Region
+
+    @Region.setter
+    def Region(self, Region):
+        self._Region = Region
+
+    @property
+    def RegionId(self):
+        return self._RegionId
+
+    @RegionId.setter
+    def RegionId(self, RegionId):
+        self._RegionId = RegionId
+
+    @property
+    def RegionState(self):
+        return self._RegionState
+
+    @RegionState.setter
+    def RegionState(self, RegionState):
+        self._RegionState = RegionState
+
+    @property
+    def RegionName(self):
+        return self._RegionName
+
+    @RegionName.setter
+    def RegionName(self, RegionName):
+        self._RegionName = RegionName
+
+    @property
+    def RegionShortName(self):
+        return self._RegionShortName
+
+    @RegionShortName.setter
+    def RegionShortName(self, RegionShortName):
+        self._RegionShortName = RegionShortName
+
+    @property
+    def Area(self):
+        return self._Area
+
+    @Area.setter
+    def Area(self, Area):
+        self._Area = Area
+
+    @property
+    def RegionPayMode(self):
+        return self._RegionPayMode
+
+    @RegionPayMode.setter
+    def RegionPayMode(self, RegionPayMode):
+        self._RegionPayMode = RegionPayMode
+
+
+    def _deserialize(self, params):
+        self._Region = params.get("Region")
+        self._RegionId = params.get("RegionId")
+        self._RegionState = params.get("RegionState")
+        self._RegionName = params.get("RegionName")
+        self._RegionShortName = params.get("RegionShortName")
+        self._Area = params.get("Area")
+        self._RegionPayMode = params.get("RegionPayMode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class PrometheusRuleKV(AbstractModel):
     """prometheus 报警规则 KV 参数
 
@@ -26432,12 +26652,16 @@ class PrometheusZoneItem(AbstractModel):
         :type RegionId: int
         :param _ZoneName: 可用区名（目前为中文）
         :type ZoneName: str
+        :param _ZoneResourceState: 可用区资源状态(0:资源不足，不可使用；1:资源足够)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ZoneResourceState: int
         """
         self._Zone = None
         self._ZoneId = None
         self._ZoneState = None
         self._RegionId = None
         self._ZoneName = None
+        self._ZoneResourceState = None
 
     @property
     def Zone(self):
@@ -26479,6 +26703,14 @@ class PrometheusZoneItem(AbstractModel):
     def ZoneName(self, ZoneName):
         self._ZoneName = ZoneName
 
+    @property
+    def ZoneResourceState(self):
+        return self._ZoneResourceState
+
+    @ZoneResourceState.setter
+    def ZoneResourceState(self, ZoneResourceState):
+        self._ZoneResourceState = ZoneResourceState
+
 
     def _deserialize(self, params):
         self._Zone = params.get("Zone")
@@ -26486,6 +26718,7 @@ class PrometheusZoneItem(AbstractModel):
         self._ZoneState = params.get("ZoneState")
         self._RegionId = params.get("RegionId")
         self._ZoneName = params.get("ZoneName")
+        self._ZoneResourceState = params.get("ZoneResourceState")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -28911,7 +29144,7 @@ class UpdateGrafanaConfigRequest(AbstractModel):
         r"""
         :param _InstanceId: 实例 ID
         :type InstanceId: str
-        :param _Config: JSON 编码后的字符串
+        :param _Config: JSON 编码后的字符串，如 "{"server":{"root_url":"http://custom.domain"}}"
         :type Config: str
         """
         self._InstanceId = None
@@ -28981,7 +29214,8 @@ class UpdateGrafanaEnvironmentsRequest(AbstractModel):
         r"""
         :param _InstanceId: Grafana 实例 ID，例如：grafana-12345678
         :type InstanceId: str
-        :param _Envs: 环境变量字符串
+        :param _Envs: JSON 序列化后的环境变量字符串，如 "{\"key1\":\"key2\"}"
+
         :type Envs: str
         """
         self._InstanceId = None
@@ -29055,7 +29289,7 @@ class UpdateGrafanaIntegrationRequest(AbstractModel):
         :type InstanceId: str
         :param _Kind: 集成类型，可在实例详情-云产品集成-集成列表查看。例如：tencent-cloud-prometheus
         :type Kind: str
-        :param _Content: 集成内容
+        :param _Content: 集成内容，请查看示例
         :type Content: str
         """
         self._IntegrationId = None
@@ -29263,7 +29497,8 @@ class UpdateGrafanaWhiteListRequest(AbstractModel):
         r"""
         :param _InstanceId: Grafana 实例 ID，例如：grafana-abcdefgh
         :type InstanceId: str
-        :param _Whitelist: 白名单数组，输入公网域名 IP ，例如：127.0.0.1，可通过接口 DescribeGrafanaWhiteList 查看
+        :param _Whitelist: 白名单数组，输入白名单 IP 或 CIDR，如：127.0.0.1或127.0.0.1/24
+如有多个 IP 可换行输入
         :type Whitelist: list of str
         """
         self._InstanceId = None
@@ -29944,7 +30179,7 @@ class UpgradeGrafanaInstanceRequest(AbstractModel):
         r"""
         :param _InstanceId: Grafana 实例 ID，例如：grafana-12345678
         :type InstanceId: str
-        :param _Alias: 版本别名，例如：v7.4.2
+        :param _Alias: 版本别名，目前固定为 v9.1.5
         :type Alias: str
         """
         self._InstanceId = None

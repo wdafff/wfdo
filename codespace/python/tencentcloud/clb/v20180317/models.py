@@ -1887,7 +1887,7 @@ class CloneLoadBalancerRequest(AbstractModel):
         :type ZoneId: str
         :param _InternetAccessible: 仅适用于公网负载均衡。负载均衡的网络计费模式。
         :type InternetAccessible: :class:`tencentcloud.clb.v20180317.models.InternetAccessible`
-        :param _VipIsp: 仅适用于公网负载均衡。CMCC | CTCC | CUCC，分别对应 移动 | 电信 | 联通，如果不指定本参数，则默认使用BGP。可通过 DescribeSingleIsp 接口查询一个地域所支持的Isp。如果指定运营商，则网络计费式只能使用按带宽包计费(BANDWIDTH_PACKAGE)。
+        :param _VipIsp: 仅适用于公网负载均衡。CMCC | CTCC | CUCC，分别对应 移动 | 电信 | 联通，如果不指定本参数，则默认使用BGP。可通过 [DescribeResources](https://cloud.tencent.com/document/api/214/70213)  接口查询一个地域所支持的Isp。如果指定运营商，则网络计费模式只能使用按带宽包计费(BANDWIDTH_PACKAGE)。
         :type VipIsp: str
         :param _Vip: 指定Vip申请负载均衡。
         :type Vip: str
@@ -2224,6 +2224,9 @@ class Cluster(AbstractModel):
         :param _DisasterRecoveryType: 集群容灾类型，如SINGLE-ZONE，DISASTER-RECOVERY，MUTUAL-DISASTER-RECOVERY
 注意：此字段可能返回 null，表示取不到有效值。
         :type DisasterRecoveryType: str
+        :param _Egress: 网络出口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Egress: str
         """
         self._ClusterId = None
         self._ClusterName = None
@@ -2248,6 +2251,7 @@ class Cluster(AbstractModel):
         self._ClustersZone = None
         self._ClustersVersion = None
         self._DisasterRecoveryType = None
+        self._Egress = None
 
     @property
     def ClusterId(self):
@@ -2433,6 +2437,14 @@ class Cluster(AbstractModel):
     def DisasterRecoveryType(self, DisasterRecoveryType):
         self._DisasterRecoveryType = DisasterRecoveryType
 
+    @property
+    def Egress(self):
+        return self._Egress
+
+    @Egress.setter
+    def Egress(self, Egress):
+        self._Egress = Egress
+
 
     def _deserialize(self, params):
         self._ClusterId = params.get("ClusterId")
@@ -2460,6 +2472,7 @@ class Cluster(AbstractModel):
             self._ClustersZone._deserialize(params.get("ClustersZone"))
         self._ClustersVersion = params.get("ClustersVersion")
         self._DisasterRecoveryType = params.get("DisasterRecoveryType")
+        self._Egress = params.get("Egress")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2890,14 +2903,14 @@ class CreateListenerRequest(AbstractModel):
         :type Protocol: str
         :param _ListenerNames: 要创建的监听器名称列表，名称与Ports数组按序一一对应，如不需立即命名，则无需提供此参数。
         :type ListenerNames: list of str
-        :param _HealthCheck: 健康检查相关参数，此参数仅适用于TCP/UDP/TCP_SSL监听器。
+        :param _HealthCheck: 健康检查相关参数，此参数仅适用于TCP/UDP/TCP_SSL/QUIC监听器。
         :type HealthCheck: :class:`tencentcloud.clb.v20180317.models.HealthCheck`
         :param _Certificate: 证书相关信息，此参数仅适用于TCP_SSL监听器和未开启SNI特性的HTTPS监听器。此参数和MultiCertInfo不能同时传入。
         :type Certificate: :class:`tencentcloud.clb.v20180317.models.CertificateInput`
         :param _SessionExpireTime: 会话保持时间，单位：秒。可选值：30~3600，默认 0，表示不开启。此参数仅适用于TCP/UDP监听器。
         :type SessionExpireTime: int
         :param _Scheduler: 监听器转发的方式。可选值：WRR、LEAST_CONN
-分别表示按权重轮询、最小连接数， 默认为 WRR。此参数仅适用于TCP/UDP/TCP_SSL监听器。
+分别表示按权重轮询、最小连接数， 默认为 WRR。此参数仅适用于TCP/UDP/TCP_SSL/QUIC监听器。
         :type Scheduler: str
         :param _SniSwitch: 是否开启SNI特性，此参数仅适用于HTTPS监听器。
         :type SniSwitch: int
@@ -3175,20 +3188,20 @@ OPEN：公网属性， INTERNAL：内网属性。
         :type VpcId: str
         :param _SubnetId: 在私有网络内购买内网负载均衡实例的情况下，必须指定子网 ID，内网负载均衡实例的 VIP 将从这个子网中产生。创建内网负载均衡实例时，此参数必填。
         :type SubnetId: str
-        :param _ProjectId: 负载均衡实例所属的项目 ID，可以通过 [DescribeProject](https://cloud.tencent.com/document/product/378/4400) 接口获取。不填此参数则视为默认项目。
+        :param _ProjectId: 负载均衡实例所属的项目 ID，可以通过 [DescribeProject](https://cloud.tencent.com/document/api/651/78725) 接口获取。不填此参数则视为默认项目。
         :type ProjectId: int
         :param _AddressIPVersion: 仅适用于公网负载均衡。IP版本，可取值：IPV4、IPV6、IPv6FullChain，不区分大小写，默认值 IPV4。说明：取值为IPV6表示为IPV6 NAT64版本；取值为IPv6FullChain，表示为IPv6版本。
         :type AddressIPVersion: str
         :param _Number: 创建负载均衡的个数，默认值 1。
         :type Number: int
         :param _MasterZoneId: 仅适用于公网负载均衡。设置跨可用区容灾时的主可用区ID，例如 100001 或 ap-guangzhou-1
-注：主可用区是需要承载流量的可用区，备可用区默认不承载流量，主可用区不可用时才使用备可用区，平台将为您自动选择最佳备可用区。可通过 [DescribeResources](https://cloud.tencent.com/document/api/214/70213) 接口查询一个地域的主可用区的列表。
+注：主可用区是需要承载流量的可用区，备可用区默认不承载流量，主可用区不可用时才使用备可用区。目前仅广州、上海、南京、北京、中国香港、首尔地域的 IPv4 版本的 CLB 支持主备可用区。可通过 [DescribeResources](https://cloud.tencent.com/document/api/214/70213) 接口查询一个地域的主可用区的列表。
         :type MasterZoneId: str
         :param _ZoneId: 仅适用于公网负载均衡。可用区ID，指定可用区以创建负载均衡实例。如：ap-guangzhou-1。
         :type ZoneId: str
         :param _InternetAccessible: 仅对内网属性的性能容量型实例和公网属性的所有实例生效。
         :type InternetAccessible: :class:`tencentcloud.clb.v20180317.models.InternetAccessible`
-        :param _VipIsp: 仅适用于公网负载均衡。CMCC | CTCC | CUCC，分别对应 移动 | 电信 | 联通，如果不指定本参数，则默认使用BGP。可通过 DescribeSingleIsp 接口查询一个地域所支持的Isp。如果指定运营商，则网络计费式只能使用按带宽包计费(BANDWIDTH_PACKAGE)。
+        :param _VipIsp: 仅适用于公网负载均衡。目前仅广州、上海、南京、济南、杭州、福州、北京、石家庄、武汉、长沙、成都、重庆地域支持静态单线 IP 线路类型，如需体验，请联系商务经理申请。申请通过后，即可选择中国移动（CMCC）、中国联通（CUCC）或中国电信（CTCC）的运营商类型，网络计费模式只能使用按带宽包计费(BANDWIDTH_PACKAGE)。 如果不指定本参数，则默认使用BGP。可通过 [DescribeResources](https://cloud.tencent.com/document/api/214/70213)  接口查询一个地域所支持的Isp。
         :type VipIsp: str
         :param _Tags: 购买负载均衡的同时，给负载均衡打上标签，最大支持20个标签键值对。
         :type Tags: list of TagInfo
@@ -3199,10 +3212,8 @@ OPEN：公网属性， INTERNAL：内网属性。
         :type BandwidthPackageId: str
         :param _ExclusiveCluster: 独占型实例信息。若创建独占型的内网负载均衡实例，则此参数必填。
         :type ExclusiveCluster: :class:`tencentcloud.clb.v20180317.models.ExclusiveCluster`
-        :param _SlaType: 创建性能容量型实例。
-<ul><li>若需要创建性能容量型实例，则此参数必填，且取值为：SLA，表示创建按量计费模式下的默认规格的性能容量型实例。
-<ul><li>默认为普通规格的性能容量型实例，SLA对应超强型1规格。
-<li>当您开通了超大型规格的性能容量型时，SLA对应超强型4规格。超大型规格的性能容量型正在内测中，请提交 [工单申请](https://console.cloud.tencent.com/workorder/category)。</li></ul></li><li>若需要创建共享型实例，则无需填写此参数。</li></ul>
+        :param _SlaType: 性能容量型规格。
+<ul><li>若需要创建性能容量型实例，则此参数必填，取值范围：<ul><li> SLA：超强型1规格。当您开通了超大型规格的性能容量型时，SLA对应超强型4规格 </li><li> clb.c2.medium：标准型规格 </li><li> clb.c3.small：高阶型1规格 </li><li> clb.c3.medium：高阶型2规格 </li><li> clb.c4.small：超强型1规格 </li><li> clb.c4.medium：超强型2规格 </li><li> clb.c4.large：超强型3规格 </li><li> clb.c4.xlarge：超强型4规格 </li>如需超大型规格（超强型2及以上），请提交[工单申请](https://console.cloud.tencent.com/workorder/category)。</ul></li><li>若需要创建共享型实例，则无需填写此参数。</li></ul>如需了解规格详情，请参见[实例规格对比](https://cloud.tencent.com/document/product/214/84689)。
         :type SlaType: str
         :param _ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。
         :type ClientToken: str
@@ -3221,6 +3232,8 @@ OPEN：公网属性， INTERNAL：内网属性。
         :type LoadBalancerPassToTarget: bool
         :param _DynamicVip: 创建域名化负载均衡。
         :type DynamicVip: bool
+        :param _Egress: 网络出口
+        :type Egress: str
         """
         self._LoadBalancerType = None
         self._Forward = None
@@ -3247,6 +3260,7 @@ OPEN：公网属性， INTERNAL：内网属性。
         self._EipAddressId = None
         self._LoadBalancerPassToTarget = None
         self._DynamicVip = None
+        self._Egress = None
 
     @property
     def LoadBalancerType(self):
@@ -3448,6 +3462,14 @@ OPEN：公网属性， INTERNAL：内网属性。
     def DynamicVip(self, DynamicVip):
         self._DynamicVip = DynamicVip
 
+    @property
+    def Egress(self):
+        return self._Egress
+
+    @Egress.setter
+    def Egress(self, Egress):
+        self._Egress = Egress
+
 
     def _deserialize(self, params):
         self._LoadBalancerType = params.get("LoadBalancerType")
@@ -3489,6 +3511,7 @@ OPEN：公网属性， INTERNAL：内网属性。
         self._EipAddressId = params.get("EipAddressId")
         self._LoadBalancerPassToTarget = params.get("LoadBalancerPassToTarget")
         self._DynamicVip = params.get("DynamicVip")
+        self._Egress = params.get("Egress")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -6475,7 +6498,7 @@ class DescribeListenersRequest(AbstractModel):
         :type LoadBalancerId: str
         :param _ListenerIds: 要查询的负载均衡监听器 ID 数组，最大为100个。
         :type ListenerIds: list of str
-        :param _Protocol: 要查询的监听器协议类型，取值 TCP | UDP | HTTP | HTTPS | TCP_SSL。
+        :param _Protocol: 要查询的监听器协议类型，取值 TCP | UDP | HTTP | HTTPS | TCP_SSL | QUIC。
         :type Protocol: str
         :param _Port: 要查询的监听器的端口。
         :type Port: int
@@ -6985,7 +7008,7 @@ OPEN：公网属性， INTERNAL：内网属性。
         :type Forward: int
         :param _LoadBalancerName: 负载均衡实例的名称。
         :type LoadBalancerName: str
-        :param _Domain: 腾讯云为负载均衡实例分配的域名，本参数仅对传统型公网负载均衡才有意义。
+        :param _Domain: 腾讯云为负载均衡实例分配的域名。
         :type Domain: str
         :param _LoadBalancerVips: 负载均衡实例的 VIP 地址，支持多个。
         :type LoadBalancerVips: list of str
@@ -8615,7 +8638,7 @@ class HealthCheck(AbstractModel):
         :param _HttpCheckPath: 健康检查路径（仅适用于HTTP/HTTPS转发规则、TCP监听器的HTTP健康检查方式）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type HttpCheckPath: str
-        :param _HttpCheckDomain: 健康检查域名（仅适用于HTTP/HTTPS监听器和TCP监听器的HTTP健康检查方式。针对TCP监听器，当使用HTTP健康检查方式时，建议该参数配置为必填项）。
+        :param _HttpCheckDomain: 健康检查域名（仅适用于HTTP/HTTPS监听器和TCP监听器的HTTP健康检查方式。针对TCP监听器，当使用HTTP健康检查方式时，该参数为必填项）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type HttpCheckDomain: str
         :param _HttpCheckMethod: 健康检查方法（仅适用于HTTP/HTTPS转发规则、TCP监听器的HTTP健康检查方式），默认值：HEAD，可选值HEAD或GET。
@@ -8633,13 +8656,13 @@ class HealthCheck(AbstractModel):
         :param _RecvContext: 自定义探测相关参数。健康检查协议CheckType的值取CUSTOM时，必填此字段，代表健康检查返回的结果，只允许ASCII可见字符，最大长度限制500。（仅适用于TCP/UDP监听器）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RecvContext: str
-        :param _CheckType: 自定义探测相关参数。健康检查使用的协议：TCP | HTTP | CUSTOM（仅适用于TCP/UDP监听器，其中UDP监听器只支持CUSTOM；如果使用自定义健康检查功能，则必传）。
+        :param _CheckType: 健康检查使用的协议。取值 TCP | HTTP | HTTPS | GRPC | PING | CUSTOM，UDP监听器支持PING/CUSTOM，TCP监听器支持TCP/HTTP/CUSTOM，TCP_SSL/QUIC监听器支持TCP/HTTP，HTTP规则支持HTTP/GRPC，HTTPS规则支持HTTP/HTTPS/GRPC。
 注意：此字段可能返回 null，表示取不到有效值。
         :type CheckType: str
-        :param _HttpVersion: 自定义探测相关参数。健康检查协议CheckType的值取HTTP时，必传此字段，代表后端服务的HTTP版本：HTTP/1.0、HTTP/1.1；（仅适用于TCP监听器）
+        :param _HttpVersion: HTTP版本。健康检查协议CheckType的值取HTTP时，必传此字段，代表后端服务的HTTP版本：HTTP/1.0、HTTP/1.1；（仅适用于TCP监听器）
 注意：此字段可能返回 null，表示取不到有效值。
         :type HttpVersion: str
-        :param _SourceIpType: 自定义探测相关参数。健康检查源IP类型：0（使用LB的VIP作为源IP），1（使用100.64网段IP作为源IP），默认值：0
+        :param _SourceIpType: 健康检查源IP类型：0（使用LB的VIP作为源IP），1（使用100.64网段IP作为源IP），默认值：0
 注意：此字段可能返回 null，表示取不到有效值。
         :type SourceIpType: int
         :param _ExtendedCode: GRPC健康检查状态码（仅适用于后端转发协议为GRPC的规则）。默认值为 12，可输入值为数值、多个数值、或者范围，例如 20 或 20,25 或 0-99
@@ -8948,6 +8971,422 @@ class IdleLoadBalancer(AbstractModel):
         
 
 
+class InquiryPriceCreateLoadBalancerRequest(AbstractModel):
+    """InquiryPriceCreateLoadBalancer请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _LoadBalancerType: 询价的负载均衡类型，OPEN为公网类型，INTERNAL为内网类型
+        :type LoadBalancerType: str
+        :param _LoadBalancerChargeType: 询价的收费类型，POSTPAID为按量计费，"PREPAID"为预付费包年包月
+        :type LoadBalancerChargeType: str
+        :param _LoadBalancerChargePrepaid: 询价的收费周期
+        :type LoadBalancerChargePrepaid: :class:`tencentcloud.clb.v20180317.models.LBChargePrepaid`
+        :param _InternetAccessible: 询价的网络计费方式
+        :type InternetAccessible: :class:`tencentcloud.clb.v20180317.models.InternetAccessible`
+        :param _GoodsNum: 询价的负载均衡实例个数，默认为1
+        :type GoodsNum: int
+        :param _ZoneId: 指定可用区询价。如：ap-guangzhou-1
+        :type ZoneId: str
+        :param _SlaType: 包年包月询价时传性能容量型规格，如：clb.c3.small。按量付费询价时传SLA
+        :type SlaType: str
+        :param _AddressIPVersion: IP版本，可取值：IPV4、IPV6、IPv6FullChain，不区分大小写，默认值 IPV4。说明：取值为IPV6表示为IPV6 NAT64版本；取值为IPv6FullChain，表示为IPv6版本。
+        :type AddressIPVersion: str
+        :param _VipIsp: 仅适用于公网负载均衡。CMCC | CTCC | CUCC，分别对应 移动 | 电信 | 联通，如果不指定本参数，则默认使用BGP。
+        :type VipIsp: str
+        """
+        self._LoadBalancerType = None
+        self._LoadBalancerChargeType = None
+        self._LoadBalancerChargePrepaid = None
+        self._InternetAccessible = None
+        self._GoodsNum = None
+        self._ZoneId = None
+        self._SlaType = None
+        self._AddressIPVersion = None
+        self._VipIsp = None
+
+    @property
+    def LoadBalancerType(self):
+        return self._LoadBalancerType
+
+    @LoadBalancerType.setter
+    def LoadBalancerType(self, LoadBalancerType):
+        self._LoadBalancerType = LoadBalancerType
+
+    @property
+    def LoadBalancerChargeType(self):
+        return self._LoadBalancerChargeType
+
+    @LoadBalancerChargeType.setter
+    def LoadBalancerChargeType(self, LoadBalancerChargeType):
+        self._LoadBalancerChargeType = LoadBalancerChargeType
+
+    @property
+    def LoadBalancerChargePrepaid(self):
+        return self._LoadBalancerChargePrepaid
+
+    @LoadBalancerChargePrepaid.setter
+    def LoadBalancerChargePrepaid(self, LoadBalancerChargePrepaid):
+        self._LoadBalancerChargePrepaid = LoadBalancerChargePrepaid
+
+    @property
+    def InternetAccessible(self):
+        return self._InternetAccessible
+
+    @InternetAccessible.setter
+    def InternetAccessible(self, InternetAccessible):
+        self._InternetAccessible = InternetAccessible
+
+    @property
+    def GoodsNum(self):
+        return self._GoodsNum
+
+    @GoodsNum.setter
+    def GoodsNum(self, GoodsNum):
+        self._GoodsNum = GoodsNum
+
+    @property
+    def ZoneId(self):
+        return self._ZoneId
+
+    @ZoneId.setter
+    def ZoneId(self, ZoneId):
+        self._ZoneId = ZoneId
+
+    @property
+    def SlaType(self):
+        return self._SlaType
+
+    @SlaType.setter
+    def SlaType(self, SlaType):
+        self._SlaType = SlaType
+
+    @property
+    def AddressIPVersion(self):
+        return self._AddressIPVersion
+
+    @AddressIPVersion.setter
+    def AddressIPVersion(self, AddressIPVersion):
+        self._AddressIPVersion = AddressIPVersion
+
+    @property
+    def VipIsp(self):
+        return self._VipIsp
+
+    @VipIsp.setter
+    def VipIsp(self, VipIsp):
+        self._VipIsp = VipIsp
+
+
+    def _deserialize(self, params):
+        self._LoadBalancerType = params.get("LoadBalancerType")
+        self._LoadBalancerChargeType = params.get("LoadBalancerChargeType")
+        if params.get("LoadBalancerChargePrepaid") is not None:
+            self._LoadBalancerChargePrepaid = LBChargePrepaid()
+            self._LoadBalancerChargePrepaid._deserialize(params.get("LoadBalancerChargePrepaid"))
+        if params.get("InternetAccessible") is not None:
+            self._InternetAccessible = InternetAccessible()
+            self._InternetAccessible._deserialize(params.get("InternetAccessible"))
+        self._GoodsNum = params.get("GoodsNum")
+        self._ZoneId = params.get("ZoneId")
+        self._SlaType = params.get("SlaType")
+        self._AddressIPVersion = params.get("AddressIPVersion")
+        self._VipIsp = params.get("VipIsp")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InquiryPriceCreateLoadBalancerResponse(AbstractModel):
+    """InquiryPriceCreateLoadBalancer返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Price: 该参数表示对应的价格。
+        :type Price: :class:`tencentcloud.clb.v20180317.models.Price`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Price = None
+        self._RequestId = None
+
+    @property
+    def Price(self):
+        return self._Price
+
+    @Price.setter
+    def Price(self, Price):
+        self._Price = Price
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Price") is not None:
+            self._Price = Price()
+            self._Price._deserialize(params.get("Price"))
+        self._RequestId = params.get("RequestId")
+
+
+class InquiryPriceModifyLoadBalancerRequest(AbstractModel):
+    """InquiryPriceModifyLoadBalancer请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _LoadBalancerId: 负载均衡实例ID
+        :type LoadBalancerId: str
+        :param _InternetAccessible: 修改后的网络带宽信息
+        :type InternetAccessible: :class:`tencentcloud.clb.v20180317.models.InternetAccessible`
+        """
+        self._LoadBalancerId = None
+        self._InternetAccessible = None
+
+    @property
+    def LoadBalancerId(self):
+        return self._LoadBalancerId
+
+    @LoadBalancerId.setter
+    def LoadBalancerId(self, LoadBalancerId):
+        self._LoadBalancerId = LoadBalancerId
+
+    @property
+    def InternetAccessible(self):
+        return self._InternetAccessible
+
+    @InternetAccessible.setter
+    def InternetAccessible(self, InternetAccessible):
+        self._InternetAccessible = InternetAccessible
+
+
+    def _deserialize(self, params):
+        self._LoadBalancerId = params.get("LoadBalancerId")
+        if params.get("InternetAccessible") is not None:
+            self._InternetAccessible = InternetAccessible()
+            self._InternetAccessible._deserialize(params.get("InternetAccessible"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InquiryPriceModifyLoadBalancerResponse(AbstractModel):
+    """InquiryPriceModifyLoadBalancer返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Price: 描述价格信息
+        :type Price: :class:`tencentcloud.clb.v20180317.models.Price`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Price = None
+        self._RequestId = None
+
+    @property
+    def Price(self):
+        return self._Price
+
+    @Price.setter
+    def Price(self, Price):
+        self._Price = Price
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Price") is not None:
+            self._Price = Price()
+            self._Price._deserialize(params.get("Price"))
+        self._RequestId = params.get("RequestId")
+
+
+class InquiryPriceRefundLoadBalancerRequest(AbstractModel):
+    """InquiryPriceRefundLoadBalancer请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _LoadBalancerId: 负载均衡实例ID
+        :type LoadBalancerId: str
+        """
+        self._LoadBalancerId = None
+
+    @property
+    def LoadBalancerId(self):
+        return self._LoadBalancerId
+
+    @LoadBalancerId.setter
+    def LoadBalancerId(self, LoadBalancerId):
+        self._LoadBalancerId = LoadBalancerId
+
+
+    def _deserialize(self, params):
+        self._LoadBalancerId = params.get("LoadBalancerId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InquiryPriceRefundLoadBalancerResponse(AbstractModel):
+    """InquiryPriceRefundLoadBalancer返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Price: 该参数表示对应的价格。
+        :type Price: :class:`tencentcloud.clb.v20180317.models.Price`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Price = None
+        self._RequestId = None
+
+    @property
+    def Price(self):
+        return self._Price
+
+    @Price.setter
+    def Price(self, Price):
+        self._Price = Price
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Price") is not None:
+            self._Price = Price()
+            self._Price._deserialize(params.get("Price"))
+        self._RequestId = params.get("RequestId")
+
+
+class InquiryPriceRenewLoadBalancerRequest(AbstractModel):
+    """InquiryPriceRenewLoadBalancer请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _LoadBalancerId: 负载均衡实例ID
+        :type LoadBalancerId: str
+        :param _LoadBalancerChargePrepaid: 续费周期
+        :type LoadBalancerChargePrepaid: :class:`tencentcloud.clb.v20180317.models.LBChargePrepaid`
+        """
+        self._LoadBalancerId = None
+        self._LoadBalancerChargePrepaid = None
+
+    @property
+    def LoadBalancerId(self):
+        return self._LoadBalancerId
+
+    @LoadBalancerId.setter
+    def LoadBalancerId(self, LoadBalancerId):
+        self._LoadBalancerId = LoadBalancerId
+
+    @property
+    def LoadBalancerChargePrepaid(self):
+        return self._LoadBalancerChargePrepaid
+
+    @LoadBalancerChargePrepaid.setter
+    def LoadBalancerChargePrepaid(self, LoadBalancerChargePrepaid):
+        self._LoadBalancerChargePrepaid = LoadBalancerChargePrepaid
+
+
+    def _deserialize(self, params):
+        self._LoadBalancerId = params.get("LoadBalancerId")
+        if params.get("LoadBalancerChargePrepaid") is not None:
+            self._LoadBalancerChargePrepaid = LBChargePrepaid()
+            self._LoadBalancerChargePrepaid._deserialize(params.get("LoadBalancerChargePrepaid"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InquiryPriceRenewLoadBalancerResponse(AbstractModel):
+    """InquiryPriceRenewLoadBalancer返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Price: 表示续费价格
+        :type Price: :class:`tencentcloud.clb.v20180317.models.Price`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Price = None
+        self._RequestId = None
+
+    @property
+    def Price(self):
+        return self._Price
+
+    @Price.setter
+    def Price(self, Price):
+        self._Price = Price
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Price") is not None:
+            self._Price = Price()
+            self._Price._deserialize(params.get("Price"))
+        self._RequestId = params.get("RequestId")
+
+
 class InternetAccessible(AbstractModel):
     """网络计费模式，最大出带宽
 
@@ -9003,6 +9442,107 @@ BANDWIDTH_PACKAGE 按带宽包计费;
         self._InternetChargeType = params.get("InternetChargeType")
         self._InternetMaxBandwidthOut = params.get("InternetMaxBandwidthOut")
         self._BandwidthpkgSubType = params.get("BandwidthpkgSubType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ItemPrice(AbstractModel):
+    """描述了单项的价格信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _UnitPrice: 后付费单价，单位：元。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UnitPrice: float
+        :param _ChargeUnit: 后续计价单元，可取值范围： 
+HOUR：表示计价单元是按每小时来计算。当前涉及该计价单元的场景有：实例按小时后付费（POSTPAID_BY_HOUR）、带宽按小时后付费（BANDWIDTH_POSTPAID_BY_HOUR）；
+GB：表示计价单元是按每GB来计算。当前涉及该计价单元的场景有：流量按小时后付费（TRAFFIC_POSTPAID_BY_HOUR）。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChargeUnit: str
+        :param _OriginalPrice: 预支费用的原价，单位：元。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OriginalPrice: float
+        :param _DiscountPrice: 预支费用的折扣价，单位：元。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DiscountPrice: float
+        :param _UnitPriceDiscount: 后付费的折扣单价，单位:元
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UnitPriceDiscount: float
+        :param _Discount: 折扣，如20.0代表2折。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Discount: float
+        """
+        self._UnitPrice = None
+        self._ChargeUnit = None
+        self._OriginalPrice = None
+        self._DiscountPrice = None
+        self._UnitPriceDiscount = None
+        self._Discount = None
+
+    @property
+    def UnitPrice(self):
+        return self._UnitPrice
+
+    @UnitPrice.setter
+    def UnitPrice(self, UnitPrice):
+        self._UnitPrice = UnitPrice
+
+    @property
+    def ChargeUnit(self):
+        return self._ChargeUnit
+
+    @ChargeUnit.setter
+    def ChargeUnit(self, ChargeUnit):
+        self._ChargeUnit = ChargeUnit
+
+    @property
+    def OriginalPrice(self):
+        return self._OriginalPrice
+
+    @OriginalPrice.setter
+    def OriginalPrice(self, OriginalPrice):
+        self._OriginalPrice = OriginalPrice
+
+    @property
+    def DiscountPrice(self):
+        return self._DiscountPrice
+
+    @DiscountPrice.setter
+    def DiscountPrice(self, DiscountPrice):
+        self._DiscountPrice = DiscountPrice
+
+    @property
+    def UnitPriceDiscount(self):
+        return self._UnitPriceDiscount
+
+    @UnitPriceDiscount.setter
+    def UnitPriceDiscount(self, UnitPriceDiscount):
+        self._UnitPriceDiscount = UnitPriceDiscount
+
+    @property
+    def Discount(self):
+        return self._Discount
+
+    @Discount.setter
+    def Discount(self, Discount):
+        self._Discount = Discount
+
+
+    def _deserialize(self, params):
+        self._UnitPrice = params.get("UnitPrice")
+        self._ChargeUnit = params.get("ChargeUnit")
+        self._OriginalPrice = params.get("OriginalPrice")
+        self._DiscountPrice = params.get("DiscountPrice")
+        self._UnitPriceDiscount = params.get("UnitPriceDiscount")
+        self._Discount = params.get("Discount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -9287,7 +9827,7 @@ class Listener(AbstractModel):
         :param _SessionExpireTime: 会话保持时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type SessionExpireTime: int
-        :param _SniSwitch: 是否开启SNI特性（本参数仅对于HTTPS监听器有意义）
+        :param _SniSwitch: 是否开启SNI特性，1：表示开启，0：表示不开启（本参数仅对于HTTPS监听器有意义）
 注意：此字段可能返回 null，表示取不到有效值。
         :type SniSwitch: int
         :param _Rules: 监听器下的全部转发规则（本参数仅对于HTTP/HTTPS监听器有意义）
@@ -10061,6 +10601,9 @@ OPEN：公网属性， INTERNAL：内网属性。
         :param _LoadBalancerDomain: 负载均衡实例的域名。
 注意：此字段可能返回 null，表示取不到有效值。
         :type LoadBalancerDomain: str
+        :param _Egress: 网络出口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Egress: str
         """
         self._LoadBalancerId = None
         self._LoadBalancerName = None
@@ -10116,6 +10659,7 @@ OPEN：公网属性， INTERNAL：内网属性。
         self._ClusterIds = None
         self._AttributeFlags = None
         self._LoadBalancerDomain = None
+        self._Egress = None
 
     @property
     def LoadBalancerId(self):
@@ -10549,6 +11093,14 @@ OPEN：公网属性， INTERNAL：内网属性。
     def LoadBalancerDomain(self, LoadBalancerDomain):
         self._LoadBalancerDomain = LoadBalancerDomain
 
+    @property
+    def Egress(self):
+        return self._Egress
+
+    @Egress.setter
+    def Egress(self, Egress):
+        self._Egress = Egress
+
 
     def _deserialize(self, params):
         self._LoadBalancerId = params.get("LoadBalancerId")
@@ -10632,6 +11184,7 @@ OPEN：公网属性， INTERNAL：内网属性。
         self._ClusterIds = params.get("ClusterIds")
         self._AttributeFlags = params.get("AttributeFlags")
         self._LoadBalancerDomain = params.get("LoadBalancerDomain")
+        self._Egress = params.get("Egress")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -10757,12 +11310,15 @@ Public：公网属性， Private：内网属性。
         :param _Zones: 内网负载均衡实例所在可用区，由白名单CLB_Internal_Zone控制
 注意：此字段可能返回 null，表示取不到有效值。
         :type Zones: list of str
-        :param _SniSwitch: 是否开启SNI特性（本参数仅对于HTTPS监听器有意义）。
+        :param _SniSwitch: 是否开启SNI特性，1：表示开启，0：表示不开启（本参数仅对于HTTPS监听器有意义）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type SniSwitch: int
         :param _LoadBalancerDomain: 负载均衡实例的域名。
 注意：此字段可能返回 null，表示取不到有效值。
         :type LoadBalancerDomain: str
+        :param _Egress: 网络出口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Egress: str
         """
         self._LoadBalancerId = None
         self._LoadBalancerName = None
@@ -10802,6 +11358,7 @@ Public：公网属性， Private：内网属性。
         self._Zones = None
         self._SniSwitch = None
         self._LoadBalancerDomain = None
+        self._Egress = None
 
     @property
     def LoadBalancerId(self):
@@ -11107,6 +11664,14 @@ Public：公网属性， Private：内网属性。
     def LoadBalancerDomain(self, LoadBalancerDomain):
         self._LoadBalancerDomain = LoadBalancerDomain
 
+    @property
+    def Egress(self):
+        return self._Egress
+
+    @Egress.setter
+    def Egress(self, Egress):
+        self._Egress = Egress
+
 
     def _deserialize(self, params):
         self._LoadBalancerId = params.get("LoadBalancerId")
@@ -11158,6 +11723,7 @@ Public：公网属性， Private：内网属性。
         self._Zones = params.get("Zones")
         self._SniSwitch = params.get("SniSwitch")
         self._LoadBalancerDomain = params.get("LoadBalancerDomain")
+        self._Egress = params.get("Egress")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -12047,9 +12613,9 @@ class ModifyListenerRequest(AbstractModel):
         :type ListenerName: str
         :param _SessionExpireTime: 会话保持时间，单位：秒。可选值：30~3600，默认 0，表示不开启。此参数仅适用于TCP/UDP监听器。
         :type SessionExpireTime: int
-        :param _HealthCheck: 健康检查相关参数，此参数仅适用于TCP/UDP/TCP_SSL监听器。
+        :param _HealthCheck: 健康检查相关参数，此参数仅适用于TCP/UDP/TCP_SSL/QUIC监听器。
         :type HealthCheck: :class:`tencentcloud.clb.v20180317.models.HealthCheck`
-        :param _Certificate: 证书相关信息，此参数仅适用于HTTPS/TCP_SSL监听器；此参数和MultiCertInfo不能同时传入。
+        :param _Certificate: 证书相关信息，此参数仅适用于HTTPS/TCP_SSL/QUIC监听器；此参数和MultiCertInfo不能同时传入。
         :type Certificate: :class:`tencentcloud.clb.v20180317.models.CertificateInput`
         :param _Scheduler: 监听器转发的方式。可选值：WRR、LEAST_CONN
 分别表示按权重轮询、最小连接数， 默认为 WRR。
@@ -12546,6 +13112,76 @@ class ModifyLoadBalancerSlaRequest(AbstractModel):
 
 class ModifyLoadBalancerSlaResponse(AbstractModel):
     """ModifyLoadBalancerSla返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyLoadBalancersProjectRequest(AbstractModel):
+    """ModifyLoadBalancersProject请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _LoadBalancerIds: 一个或多个待操作的负载均衡实例ID。
+        :type LoadBalancerIds: list of str
+        :param _ProjectId: 项目ID。
+        :type ProjectId: int
+        """
+        self._LoadBalancerIds = None
+        self._ProjectId = None
+
+    @property
+    def LoadBalancerIds(self):
+        return self._LoadBalancerIds
+
+    @LoadBalancerIds.setter
+    def LoadBalancerIds(self, LoadBalancerIds):
+        self._LoadBalancerIds = LoadBalancerIds
+
+    @property
+    def ProjectId(self):
+        return self._ProjectId
+
+    @ProjectId.setter
+    def ProjectId(self, ProjectId):
+        self._ProjectId = ProjectId
+
+
+    def _deserialize(self, params):
+        self._LoadBalancerIds = params.get("LoadBalancerIds")
+        self._ProjectId = params.get("ProjectId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyLoadBalancersProjectResponse(AbstractModel):
+    """ModifyLoadBalancersProject返回参数结构体
 
     """
 
@@ -13290,6 +13926,72 @@ class MultiCertInfo(AbstractModel):
         
 
 
+class Price(AbstractModel):
+    """表示负载均衡的价格
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstancePrice: 描述了实例价格。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstancePrice: :class:`tencentcloud.clb.v20180317.models.ItemPrice`
+        :param _BandwidthPrice: 描述了网络价格。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BandwidthPrice: :class:`tencentcloud.clb.v20180317.models.ItemPrice`
+        :param _LcuPrice: 描述了lcu价格。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LcuPrice: :class:`tencentcloud.clb.v20180317.models.ItemPrice`
+        """
+        self._InstancePrice = None
+        self._BandwidthPrice = None
+        self._LcuPrice = None
+
+    @property
+    def InstancePrice(self):
+        return self._InstancePrice
+
+    @InstancePrice.setter
+    def InstancePrice(self, InstancePrice):
+        self._InstancePrice = InstancePrice
+
+    @property
+    def BandwidthPrice(self):
+        return self._BandwidthPrice
+
+    @BandwidthPrice.setter
+    def BandwidthPrice(self, BandwidthPrice):
+        self._BandwidthPrice = BandwidthPrice
+
+    @property
+    def LcuPrice(self):
+        return self._LcuPrice
+
+    @LcuPrice.setter
+    def LcuPrice(self, LcuPrice):
+        self._LcuPrice = LcuPrice
+
+
+    def _deserialize(self, params):
+        if params.get("InstancePrice") is not None:
+            self._InstancePrice = ItemPrice()
+            self._InstancePrice._deserialize(params.get("InstancePrice"))
+        if params.get("BandwidthPrice") is not None:
+            self._BandwidthPrice = ItemPrice()
+            self._BandwidthPrice._deserialize(params.get("BandwidthPrice"))
+        if params.get("LcuPrice") is not None:
+            self._LcuPrice = ItemPrice()
+            self._LcuPrice._deserialize(params.get("LcuPrice"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Quota(AbstractModel):
     """描述配额信息，所有配额均指当前地域下的配额。
 
@@ -13958,7 +14660,7 @@ class RewriteLocationMap(AbstractModel):
         r"""
         :param _SourceLocationId: 源转发规则ID
         :type SourceLocationId: str
-        :param _TargetLocationId: 重定向至的目标转发规则ID
+        :param _TargetLocationId: 重定向目标转发规则的ID
         :type TargetLocationId: str
         :param _RewriteCode: 重定向状态码，可取值301,302,307
         :type RewriteCode: int
@@ -14313,7 +15015,7 @@ class RuleInput(AbstractModel):
         :param _Scheduler: 规则的请求转发方式，可选值：WRR、LEAST_CONN、IP_HASH
 分别表示按权重轮询、最小连接数、按IP哈希， 默认为 WRR。
         :type Scheduler: str
-        :param _ForwardType: 负载均衡与后端服务之间的转发协议，目前支持 HTTP/HTTPS/TRPC，TRPC暂未对外开放。
+        :param _ForwardType: 负载均衡与后端服务之间的转发协议，目前支持 HTTP/HTTPS/GRPC/TRPC，TRPC暂未对外开放，默认HTTP。
         :type ForwardType: str
         :param _DefaultServer: 是否将该域名设为默认域名，注意，一个监听器下只能设置一个默认域名。
         :type DefaultServer: bool
@@ -15371,9 +16073,15 @@ class SlaUpdateParam(AbstractModel):
         r"""
         :param _LoadBalancerId: lb的字符串ID
         :type LoadBalancerId: str
-        :param _SlaType: 升级为性能容量型，固定取值为SLA。SLA表示升级为默认规格的性能容量型实例。
-<ul><li>当您开通了普通规格的性能容量型时，SLA对应超强型1规格。普通规格的性能容量型正在内测中，请提交 [内测申请](https://cloud.tencent.com/apply/p/hf45esx99lf)。</li>
-<li>当您开通了超大型规格的性能容量型时，SLA对应超强型4规格。超大型规格的性能容量型正在内测中，请提交 [工单申请](https://console.cloud.tencent.com/workorder/category)。</li></ul>
+        :param _SlaType: 性能容量型规格，取值范围：
+<li> SLA：超强型1规格。当您开通了超大型规格的性能容量型时，SLA对应超强型4规格 </li>
+<li> clb.c2.medium：标准型规格 </li>
+<li> clb.c3.small：高阶型1规格 </li>
+<li> clb.c3.medium：高阶型2规格 </li>
+<li> clb.c4.small：超强型1规格 </li>
+<li> clb.c4.medium：超强型2规格 </li>
+<li> clb.c4.large：超强型3规格 </li>
+<li> clb.c4.xlarge：超强型4规格 </li>如需超大型规格（超强型2及以上），请提交[工单申请](https://console.cloud.tencent.com/workorder/category)。如需了解规格详情，请参见[实例规格对比](https://cloud.tencent.com/document/product/214/84689)
         :type SlaType: str
         """
         self._LoadBalancerId = None
@@ -16361,6 +17069,9 @@ class ZoneResource(AbstractModel):
         :type ZoneResourceType: str
         :param _EdgeZone: 可用区是否是EdgeZone可用区，如：false
         :type EdgeZone: bool
+        :param _Egress: 网络出口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Egress: str
         """
         self._MasterZone = None
         self._ResourceSet = None
@@ -16370,6 +17081,7 @@ class ZoneResource(AbstractModel):
         self._LocalZone = None
         self._ZoneResourceType = None
         self._EdgeZone = None
+        self._Egress = None
 
     @property
     def MasterZone(self):
@@ -16435,6 +17147,14 @@ class ZoneResource(AbstractModel):
     def EdgeZone(self, EdgeZone):
         self._EdgeZone = EdgeZone
 
+    @property
+    def Egress(self):
+        return self._Egress
+
+    @Egress.setter
+    def Egress(self, Egress):
+        self._Egress = Egress
+
 
     def _deserialize(self, params):
         self._MasterZone = params.get("MasterZone")
@@ -16450,6 +17170,7 @@ class ZoneResource(AbstractModel):
         self._LocalZone = params.get("LocalZone")
         self._ZoneResourceType = params.get("ZoneResourceType")
         self._EdgeZone = params.get("EdgeZone")
+        self._Egress = params.get("Egress")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

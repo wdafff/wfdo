@@ -303,27 +303,27 @@ class Application(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Command: 任务执行命令
-        :type Command: str
         :param _DeliveryForm: 应用程序的交付方式，包括PACKAGE、LOCAL 两种取值，分别指远程存储的软件包、计算环境本地。
+注意：此字段可能返回 null，表示取不到有效值。
         :type DeliveryForm: str
+        :param _Command: 任务执行命令。与Commands不能同时指定。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Command: str
         :param _PackagePath: 应用程序软件包的远程存储路径
+注意：此字段可能返回 null，表示取不到有效值。
         :type PackagePath: str
         :param _Docker: 应用使用Docker的相关配置。在使用Docker配置的情况下，DeliveryForm 为 LOCAL 表示直接使用Docker镜像内部的应用软件，通过Docker方式运行；DeliveryForm 为 PACKAGE，表示将远程应用包注入到Docker镜像后，通过Docker方式运行。为避免Docker不同版本的兼容性问题，Docker安装包及相关依赖由Batch统一负责，对于已安装Docker的自定义镜像，请卸载后再使用Docker特性。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Docker: :class:`tencentcloud.batch.v20170312.models.Docker`
+        :param _Commands: 任务执行命令信息。与Command不能同时指定。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Commands: list of CommandLine
         """
-        self._Command = None
         self._DeliveryForm = None
+        self._Command = None
         self._PackagePath = None
         self._Docker = None
-
-    @property
-    def Command(self):
-        return self._Command
-
-    @Command.setter
-    def Command(self, Command):
-        self._Command = Command
+        self._Commands = None
 
     @property
     def DeliveryForm(self):
@@ -332,6 +332,14 @@ class Application(AbstractModel):
     @DeliveryForm.setter
     def DeliveryForm(self, DeliveryForm):
         self._DeliveryForm = DeliveryForm
+
+    @property
+    def Command(self):
+        return self._Command
+
+    @Command.setter
+    def Command(self, Command):
+        self._Command = Command
 
     @property
     def PackagePath(self):
@@ -349,14 +357,28 @@ class Application(AbstractModel):
     def Docker(self, Docker):
         self._Docker = Docker
 
+    @property
+    def Commands(self):
+        return self._Commands
+
+    @Commands.setter
+    def Commands(self, Commands):
+        self._Commands = Commands
+
 
     def _deserialize(self, params):
-        self._Command = params.get("Command")
         self._DeliveryForm = params.get("DeliveryForm")
+        self._Command = params.get("Command")
         self._PackagePath = params.get("PackagePath")
         if params.get("Docker") is not None:
             self._Docker = Docker()
             self._Docker._deserialize(params.get("Docker"))
+        if params.get("Commands") is not None:
+            self._Commands = []
+            for item in params.get("Commands"):
+                obj = CommandLine()
+                obj._deserialize(item)
+                self._Commands.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -489,6 +511,40 @@ class Authentication(AbstractModel):
         self._Scene = params.get("Scene")
         self._SecretId = params.get("SecretId")
         self._SecretKey = params.get("SecretKey")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CommandLine(AbstractModel):
+    """任务执行信息描述。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Command: 任务执行命令。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Command: str
+        """
+        self._Command = None
+
+    @property
+    def Command(self):
+        return self._Command
+
+    @Command.setter
+    def Command(self, Command):
+        self._Command = Command
+
+
+    def _deserialize(self, params):
+        self._Command = params.get("Command")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1532,9 +1588,9 @@ class DataDisk(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type SnapshotId: str
         :param _Encrypt: 数据盘是加密。取值范围：
-<li>TRUE：加密
-<li>FALSE：不加密<br>
-默认取值：FALSE<br>
+<li>true：加密
+<li>false：不加密<br>
+默认取值：false<br>
 该参数目前仅用于 `RunInstances` 接口。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Encrypt: bool
@@ -5428,6 +5484,9 @@ class InstanceTypeQuotaItem(AbstractModel):
         :type GpuCount: float
         :param _Frequency: 实例的CPU主频信息
         :type Frequency: str
+        :param _StatusCategory: 描述库存情况。取值范围： <br><li> UnderStock：表示对应库存即将售罄<br><li> NormalStock：表示对应库存供应有保障<br><li> EnoughStock：表示对应库存非常充足<br><li> WithoutStock：表示对应库存已经售罄
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StatusCategory: str
         """
         self._Zone = None
         self._InstanceType = None
@@ -5451,6 +5510,7 @@ class InstanceTypeQuotaItem(AbstractModel):
         self._Remark = None
         self._GpuCount = None
         self._Frequency = None
+        self._StatusCategory = None
 
     @property
     def Zone(self):
@@ -5628,6 +5688,14 @@ class InstanceTypeQuotaItem(AbstractModel):
     def Frequency(self, Frequency):
         self._Frequency = Frequency
 
+    @property
+    def StatusCategory(self):
+        return self._StatusCategory
+
+    @StatusCategory.setter
+    def StatusCategory(self, StatusCategory):
+        self._StatusCategory = StatusCategory
+
 
     def _deserialize(self, params):
         self._Zone = params.get("Zone")
@@ -5661,6 +5729,7 @@ class InstanceTypeQuotaItem(AbstractModel):
         self._Remark = params.get("Remark")
         self._GpuCount = params.get("GpuCount")
         self._Frequency = params.get("Frequency")
+        self._StatusCategory = params.get("StatusCategory")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7438,15 +7507,12 @@ class Placement(AbstractModel):
         :type ProjectId: int
         :param _HostIds: 实例所属的专用宿主机ID列表，仅用于入参。如果您有购买专用宿主机并且指定了该参数，则您购买的实例就会随机的部署在这些专用宿主机上。
         :type HostIds: list of str
-        :param _HostIps: 指定母机IP生产子机
-        :type HostIps: list of str
         :param _HostId: 实例所属的专用宿主机ID，仅用于出参。
         :type HostId: str
         """
         self._Zone = None
         self._ProjectId = None
         self._HostIds = None
-        self._HostIps = None
         self._HostId = None
 
     @property
@@ -7474,14 +7540,6 @@ class Placement(AbstractModel):
         self._HostIds = HostIds
 
     @property
-    def HostIps(self):
-        return self._HostIps
-
-    @HostIps.setter
-    def HostIps(self, HostIps):
-        self._HostIps = HostIps
-
-    @property
     def HostId(self):
         return self._HostId
 
@@ -7494,7 +7552,6 @@ class Placement(AbstractModel):
         self._Zone = params.get("Zone")
         self._ProjectId = params.get("ProjectId")
         self._HostIds = params.get("HostIds")
-        self._HostIps = params.get("HostIps")
         self._HostId = params.get("HostId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -7709,7 +7766,7 @@ class RunAutomationServiceEnabled(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Enabled: 是否开启云自动化助手。取值范围：<br><li>TRUE：表示开启云自动化助手服务<br><li>FALSE：表示不开启云自动化助手服务<br><br>默认取值：FALSE。
+        :param _Enabled: 是否开启云自动化助手。取值范围：<br><li>true：表示开启云自动化助手服务<br><li>false：表示不开启云自动化助手服务<br><br>默认取值：false。
         :type Enabled: bool
         """
         self._Enabled = None
@@ -7742,7 +7799,8 @@ class RunMonitorServiceEnabled(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Enabled: 是否开启[云监控](/document/product/248)服务。取值范围：<br><li>TRUE：表示开启云监控服务<br><li>FALSE：表示不开启云监控服务<br><br>默认取值：TRUE。
+        :param _Enabled: 是否开启[云监控](/document/product/248)服务。取值范围：<br><li>true：表示开启云监控服务<br><li>false：表示不开启云监控服务<br><br>默认取值：true。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Enabled: bool
         """
         self._Enabled = None
@@ -8011,7 +8069,7 @@ class SystemDisk(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _DiskType: 系统盘类型。系统盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><li>CLOUD_BSSD：通用性SSD云硬盘<br><br>默认取值：当前有库存的硬盘类型。
+        :param _DiskType: 系统盘类型。系统盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><li>CLOUD_BSSD：通用性SSD云硬盘<br><li>CLOUD_HSSD：增强型SSD云硬盘<br><li>CLOUD_TSSD：极速型SSD云硬盘<br><br>默认取值：当前有库存的硬盘类型。
         :type DiskType: str
         :param _DiskId: 系统盘ID。LOCAL_BASIC 和 LOCAL_SSD 类型没有ID。暂时不支持该参数。
 该参数目前仅用于`DescribeInstances`等查询类接口的返回参数，不可用于`RunInstances`等写接口的入参。
@@ -9359,7 +9417,7 @@ class VirtualPrivateCloud(AbstractModel):
         :type VpcId: str
         :param _SubnetId: 私有网络子网ID，形如`subnet-xxx`。有效的私有网络子网ID可通过登录[控制台](https://console.cloud.tencent.com/vpc/subnet?rid=1)查询；也可以调用接口  [DescribeSubnets](/document/api/215/15784) ，从接口返回中的`unSubnetId`字段获取。若在创建子机时SubnetId与VpcId同时传入`DEFAULT`，则强制使用默认vpc网络。
         :type SubnetId: str
-        :param _AsVpcGateway: 是否用作公网网关。公网网关只有在实例拥有公网IP以及处于私有网络下时才能正常使用。取值范围：<br><li>TRUE：表示用作公网网关<br><li>FALSE：表示不作为公网网关<br><br>默认取值：FALSE。
+        :param _AsVpcGateway: 是否用作公网网关。公网网关只有在实例拥有公网IP以及处于私有网络下时才能正常使用。取值范围：<br><li>true：表示用作公网网关<br><li>false：表示不作为公网网关<br><br>默认取值：false。
         :type AsVpcGateway: bool
         :param _PrivateIpAddresses: 私有网络子网 IP 数组，在创建实例、修改实例vpc属性操作中可使用此参数。当前仅批量创建多台实例时支持传入相同子网的多个 IP。
         :type PrivateIpAddresses: list of str

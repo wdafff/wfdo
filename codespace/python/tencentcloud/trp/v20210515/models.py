@@ -673,6 +673,18 @@ class CodePack(AbstractModel):
         :param _PackSpec: 层级码配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type PackSpec: list of PackSpec
+        :param _ProductName: 商品名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProductName: str
+        :param _ProductSpecification: 商品规格
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProductSpecification: str
+        :param _ProductId: 商品ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProductId: str
+        :param _RelateType: 码关系是否预关联
+0:否, 1:是
+        :type RelateType: int
         """
         self._PackId = None
         self._CorpId = None
@@ -694,6 +706,10 @@ class CodePack(AbstractModel):
         self._PackType = None
         self._PackLevel = None
         self._PackSpec = None
+        self._ProductName = None
+        self._ProductSpecification = None
+        self._ProductId = None
+        self._RelateType = None
 
     @property
     def PackId(self):
@@ -855,6 +871,38 @@ class CodePack(AbstractModel):
     def PackSpec(self, PackSpec):
         self._PackSpec = PackSpec
 
+    @property
+    def ProductName(self):
+        return self._ProductName
+
+    @ProductName.setter
+    def ProductName(self, ProductName):
+        self._ProductName = ProductName
+
+    @property
+    def ProductSpecification(self):
+        return self._ProductSpecification
+
+    @ProductSpecification.setter
+    def ProductSpecification(self, ProductSpecification):
+        self._ProductSpecification = ProductSpecification
+
+    @property
+    def ProductId(self):
+        return self._ProductId
+
+    @ProductId.setter
+    def ProductId(self, ProductId):
+        self._ProductId = ProductId
+
+    @property
+    def RelateType(self):
+        return self._RelateType
+
+    @RelateType.setter
+    def RelateType(self, RelateType):
+        self._RelateType = RelateType
+
 
     def _deserialize(self, params):
         self._PackId = params.get("PackId")
@@ -882,6 +930,10 @@ class CodePack(AbstractModel):
                 obj = PackSpec()
                 obj._deserialize(item)
                 self._PackSpec.append(obj)
+        self._ProductName = params.get("ProductName")
+        self._ProductSpecification = params.get("ProductSpecification")
+        self._ProductId = params.get("ProductId")
+        self._RelateType = params.get("RelateType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1267,6 +1319,10 @@ class CreateCodePackRequest(AbstractModel):
         :type BatchId: str
         :param _SerialType: 是否有流水码 0:无 1:有
         :type SerialType: int
+        :param _ProductId: 关联产品ID
+        :type ProductId: str
+        :param _RelateType: 层级码时是否提前生成关联关系，默认为 1
+        :type RelateType: int
         """
         self._MerchantId = None
         self._CodeLength = None
@@ -1278,6 +1334,8 @@ class CreateCodePackRequest(AbstractModel):
         self._PackSpec = None
         self._BatchId = None
         self._SerialType = None
+        self._ProductId = None
+        self._RelateType = None
 
     @property
     def MerchantId(self):
@@ -1359,6 +1417,22 @@ class CreateCodePackRequest(AbstractModel):
     def SerialType(self, SerialType):
         self._SerialType = SerialType
 
+    @property
+    def ProductId(self):
+        return self._ProductId
+
+    @ProductId.setter
+    def ProductId(self, ProductId):
+        self._ProductId = ProductId
+
+    @property
+    def RelateType(self):
+        return self._RelateType
+
+    @RelateType.setter
+    def RelateType(self, RelateType):
+        self._RelateType = RelateType
+
 
     def _deserialize(self, params):
         self._MerchantId = params.get("MerchantId")
@@ -1376,6 +1450,8 @@ class CreateCodePackRequest(AbstractModel):
                 self._PackSpec.append(obj)
         self._BatchId = params.get("BatchId")
         self._SerialType = params.get("SerialType")
+        self._ProductId = params.get("ProductId")
+        self._RelateType = params.get("RelateType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1617,6 +1693,12 @@ class CreateCustomPackRequest(AbstractModel):
         :type BatchId: str
         :param _SerialType: 是否有流水码 0:无 1:有
         :type SerialType: int
+        :param _ProductId: 产品ID
+        :type ProductId: str
+        :param _RelateType: 是否预生成码关系
+0: 否, 1:是
+默认为1，仅对层级码有效
+        :type RelateType: int
         """
         self._MerchantId = None
         self._Amount = None
@@ -1628,6 +1710,8 @@ class CreateCustomPackRequest(AbstractModel):
         self._CodeParts = None
         self._BatchId = None
         self._SerialType = None
+        self._ProductId = None
+        self._RelateType = None
 
     @property
     def MerchantId(self):
@@ -1709,6 +1793,22 @@ class CreateCustomPackRequest(AbstractModel):
     def SerialType(self, SerialType):
         self._SerialType = SerialType
 
+    @property
+    def ProductId(self):
+        return self._ProductId
+
+    @ProductId.setter
+    def ProductId(self, ProductId):
+        self._ProductId = ProductId
+
+    @property
+    def RelateType(self):
+        return self._RelateType
+
+    @RelateType.setter
+    def RelateType(self, RelateType):
+        self._RelateType = RelateType
+
 
     def _deserialize(self, params):
         self._MerchantId = params.get("MerchantId")
@@ -1731,6 +1831,8 @@ class CreateCustomPackRequest(AbstractModel):
                 self._CodeParts.append(obj)
         self._BatchId = params.get("BatchId")
         self._SerialType = params.get("SerialType")
+        self._ProductId = params.get("ProductId")
+        self._RelateType = params.get("RelateType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -3349,6 +3451,165 @@ class DescribeCodeBatchByIdResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeCodeBatchesRequest(AbstractModel):
+    """DescribeCodeBatches请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _MerchantId: 查询商户ID
+        :type MerchantId: str
+        :param _ProductId: 查询商品ID
+        :type ProductId: str
+        :param _Keyword: 查询关键字
+        :type Keyword: str
+        :param _PageSize: 条数
+        :type PageSize: int
+        :param _PageNumber: 页数
+        :type PageNumber: int
+        :param _BatchType: 批次类型 0:溯源 1:营销
+        :type BatchType: str
+        :param _CorpId: 企业ID
+        :type CorpId: int
+        """
+        self._MerchantId = None
+        self._ProductId = None
+        self._Keyword = None
+        self._PageSize = None
+        self._PageNumber = None
+        self._BatchType = None
+        self._CorpId = None
+
+    @property
+    def MerchantId(self):
+        return self._MerchantId
+
+    @MerchantId.setter
+    def MerchantId(self, MerchantId):
+        self._MerchantId = MerchantId
+
+    @property
+    def ProductId(self):
+        return self._ProductId
+
+    @ProductId.setter
+    def ProductId(self, ProductId):
+        self._ProductId = ProductId
+
+    @property
+    def Keyword(self):
+        return self._Keyword
+
+    @Keyword.setter
+    def Keyword(self, Keyword):
+        self._Keyword = Keyword
+
+    @property
+    def PageSize(self):
+        return self._PageSize
+
+    @PageSize.setter
+    def PageSize(self, PageSize):
+        self._PageSize = PageSize
+
+    @property
+    def PageNumber(self):
+        return self._PageNumber
+
+    @PageNumber.setter
+    def PageNumber(self, PageNumber):
+        self._PageNumber = PageNumber
+
+    @property
+    def BatchType(self):
+        return self._BatchType
+
+    @BatchType.setter
+    def BatchType(self, BatchType):
+        self._BatchType = BatchType
+
+    @property
+    def CorpId(self):
+        return self._CorpId
+
+    @CorpId.setter
+    def CorpId(self, CorpId):
+        self._CorpId = CorpId
+
+
+    def _deserialize(self, params):
+        self._MerchantId = params.get("MerchantId")
+        self._ProductId = params.get("ProductId")
+        self._Keyword = params.get("Keyword")
+        self._PageSize = params.get("PageSize")
+        self._PageNumber = params.get("PageNumber")
+        self._BatchType = params.get("BatchType")
+        self._CorpId = params.get("CorpId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeCodeBatchesResponse(AbstractModel):
+    """DescribeCodeBatches返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CodeBatches: 批次列表
+        :type CodeBatches: list of CodeBatch
+        :param _TotalCount: 总条数
+        :type TotalCount: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._CodeBatches = None
+        self._TotalCount = None
+        self._RequestId = None
+
+    @property
+    def CodeBatches(self):
+        return self._CodeBatches
+
+    @CodeBatches.setter
+    def CodeBatches(self, CodeBatches):
+        self._CodeBatches = CodeBatches
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("CodeBatches") is not None:
+            self._CodeBatches = []
+            for item in params.get("CodeBatches"):
+                obj = CodeBatch()
+                obj._deserialize(item)
+                self._CodeBatches.append(obj)
+        self._TotalCount = params.get("TotalCount")
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeCodeBatchsRequest(AbstractModel):
     """DescribeCodeBatchs请求参数结构体
 
@@ -3719,12 +3980,18 @@ class DescribeCodePacksRequest(AbstractModel):
         :type CorpId: int
         :param _SerialType: 是否有流水码 0:无 1:有
         :type SerialType: int
+        :param _ResType: 资源类型 batch:批次, order_in 入库, order_out: 出入
+        :type ResType: str
+        :param _ResId: 资源ID ResType是 batch 时对应是批次ID, 是 order_in, order_out时，则是订单ID
+        :type ResId: str
         """
         self._PageSize = None
         self._PageNumber = None
         self._Keyword = None
         self._CorpId = None
         self._SerialType = None
+        self._ResType = None
+        self._ResId = None
 
     @property
     def PageSize(self):
@@ -3766,6 +4033,22 @@ class DescribeCodePacksRequest(AbstractModel):
     def SerialType(self, SerialType):
         self._SerialType = SerialType
 
+    @property
+    def ResType(self):
+        return self._ResType
+
+    @ResType.setter
+    def ResType(self, ResType):
+        self._ResType = ResType
+
+    @property
+    def ResId(self):
+        return self._ResId
+
+    @ResId.setter
+    def ResId(self, ResId):
+        self._ResId = ResId
+
 
     def _deserialize(self, params):
         self._PageSize = params.get("PageSize")
@@ -3773,6 +4056,8 @@ class DescribeCodePacksRequest(AbstractModel):
         self._Keyword = params.get("Keyword")
         self._CorpId = params.get("CorpId")
         self._SerialType = params.get("SerialType")
+        self._ResType = params.get("ResType")
+        self._ResId = params.get("ResId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7547,16 +7832,22 @@ class PhaseData(AbstractModel):
     def __init__(self):
         r"""
         :param _HeadEnabled: 启用头
+注意：此字段可能返回 null，表示取不到有效值。
         :type HeadEnabled: bool
         :param _HeadTitle: 标题
+注意：此字段可能返回 null，表示取不到有效值。
         :type HeadTitle: str
         :param _Key: 标识符
+注意：此字段可能返回 null，表示取不到有效值。
         :type Key: str
         :param _AppId: 小程序AppId
+注意：此字段可能返回 null，表示取不到有效值。
         :type AppId: str
         :param _AppPath: 小程序AppPath
+注意：此字段可能返回 null，表示取不到有效值。
         :type AppPath: str
         :param _AppName: 小程序名称AppName
+注意：此字段可能返回 null，表示取不到有效值。
         :type AppName: str
         """
         self._HeadEnabled = None

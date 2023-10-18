@@ -18,6 +18,66 @@ import warnings
 from tencentcloud.common.abstract_model import AbstractModel
 
 
+class ACTemplate(AbstractModel):
+    """权限控制模版对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TemplateId: 模版id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TemplateId: str
+        :param _TemplateName: 模版名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TemplateName: str
+        :param _Description: 模版描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
+        """
+        self._TemplateId = None
+        self._TemplateName = None
+        self._Description = None
+
+    @property
+    def TemplateId(self):
+        return self._TemplateId
+
+    @TemplateId.setter
+    def TemplateId(self, TemplateId):
+        self._TemplateId = TemplateId
+
+    @property
+    def TemplateName(self):
+        return self._TemplateName
+
+    @TemplateName.setter
+    def TemplateName(self, TemplateName):
+        self._TemplateName = TemplateName
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+
+    def _deserialize(self, params):
+        self._TemplateId = params.get("TemplateId")
+        self._TemplateName = params.get("TemplateName")
+        self._Description = params.get("Description")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Acl(AbstractModel):
     """访问权限
 
@@ -82,6 +142,12 @@ class Acl(AbstractModel):
         :param _Department: 所属部门的信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type Department: :class:`tencentcloud.dasb.v20191018.models.Department`
+        :param _AllowAccessCredential: 是否允许使用访问串，默认允许
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AllowAccessCredential: bool
+        :param _ACTemplateSet: 关联的数据库高危命令列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ACTemplateSet: list of ACTemplate
         """
         self._Id = None
         self._Name = None
@@ -110,6 +176,8 @@ class Acl(AbstractModel):
         self._ValidateTo = None
         self._Status = None
         self._Department = None
+        self._AllowAccessCredential = None
+        self._ACTemplateSet = None
 
     @property
     def Id(self):
@@ -327,6 +395,22 @@ class Acl(AbstractModel):
     def Department(self, Department):
         self._Department = Department
 
+    @property
+    def AllowAccessCredential(self):
+        return self._AllowAccessCredential
+
+    @AllowAccessCredential.setter
+    def AllowAccessCredential(self, AllowAccessCredential):
+        self._AllowAccessCredential = AllowAccessCredential
+
+    @property
+    def ACTemplateSet(self):
+        return self._ACTemplateSet
+
+    @ACTemplateSet.setter
+    def ACTemplateSet(self, ACTemplateSet):
+        self._ACTemplateSet = ACTemplateSet
+
 
     def _deserialize(self, params):
         self._Id = params.get("Id")
@@ -383,6 +467,13 @@ class Acl(AbstractModel):
         if params.get("Department") is not None:
             self._Department = Department()
             self._Department._deserialize(params.get("Department"))
+        self._AllowAccessCredential = params.get("AllowAccessCredential")
+        if params.get("ACTemplateSet") is not None:
+            self._ACTemplateSet = []
+            for item in params.get("ACTemplateSet"):
+                obj = ACTemplate()
+                obj._deserialize(item)
+                self._ACTemplateSet.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1295,6 +1386,8 @@ class CreateAclRequest(AbstractModel):
         :type ValidateTo: str
         :param _DepartmentId: 访问权限所属部门的ID
         :type DepartmentId: str
+        :param _AllowAccessCredential: 是否允许使用访问串，默认允许
+        :type AllowAccessCredential: bool
         """
         self._Name = None
         self._AllowDiskRedirect = None
@@ -1322,6 +1415,7 @@ class CreateAclRequest(AbstractModel):
         self._ValidateFrom = None
         self._ValidateTo = None
         self._DepartmentId = None
+        self._AllowAccessCredential = None
 
     @property
     def Name(self):
@@ -1531,6 +1625,14 @@ class CreateAclRequest(AbstractModel):
     def DepartmentId(self, DepartmentId):
         self._DepartmentId = DepartmentId
 
+    @property
+    def AllowAccessCredential(self):
+        return self._AllowAccessCredential
+
+    @AllowAccessCredential.setter
+    def AllowAccessCredential(self, AllowAccessCredential):
+        self._AllowAccessCredential = AllowAccessCredential
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
@@ -1559,6 +1661,7 @@ class CreateAclRequest(AbstractModel):
         self._ValidateFrom = params.get("ValidateFrom")
         self._ValidateTo = params.get("ValidateTo")
         self._DepartmentId = params.get("DepartmentId")
+        self._AllowAccessCredential = params.get("AllowAccessCredential")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1921,6 +2024,172 @@ class CreateDeviceGroupResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._Id = params.get("Id")
+        self._RequestId = params.get("RequestId")
+
+
+class CreateResourceRequest(AbstractModel):
+    """CreateResource请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _DeployRegion: 部署region
+        :type DeployRegion: str
+        :param _VpcId: 部署堡垒机的VpcId
+        :type VpcId: str
+        :param _SubnetId: 部署堡垒机的SubnetId
+        :type SubnetId: str
+        :param _ResourceEdition: 资源类型。取值:standard/pro
+        :type ResourceEdition: str
+        :param _ResourceNode: 资源节点数
+        :type ResourceNode: int
+        :param _TimeUnit: 计费周期
+        :type TimeUnit: str
+        :param _TimeSpan: 计费时长
+        :type TimeSpan: int
+        :param _PayMode: 计费模式 1预付费
+        :type PayMode: int
+        :param _AutoRenewFlag: 自动续费
+        :type AutoRenewFlag: int
+        :param _DeployZone: 部署zone
+        :type DeployZone: str
+        """
+        self._DeployRegion = None
+        self._VpcId = None
+        self._SubnetId = None
+        self._ResourceEdition = None
+        self._ResourceNode = None
+        self._TimeUnit = None
+        self._TimeSpan = None
+        self._PayMode = None
+        self._AutoRenewFlag = None
+        self._DeployZone = None
+
+    @property
+    def DeployRegion(self):
+        return self._DeployRegion
+
+    @DeployRegion.setter
+    def DeployRegion(self, DeployRegion):
+        self._DeployRegion = DeployRegion
+
+    @property
+    def VpcId(self):
+        return self._VpcId
+
+    @VpcId.setter
+    def VpcId(self, VpcId):
+        self._VpcId = VpcId
+
+    @property
+    def SubnetId(self):
+        return self._SubnetId
+
+    @SubnetId.setter
+    def SubnetId(self, SubnetId):
+        self._SubnetId = SubnetId
+
+    @property
+    def ResourceEdition(self):
+        return self._ResourceEdition
+
+    @ResourceEdition.setter
+    def ResourceEdition(self, ResourceEdition):
+        self._ResourceEdition = ResourceEdition
+
+    @property
+    def ResourceNode(self):
+        return self._ResourceNode
+
+    @ResourceNode.setter
+    def ResourceNode(self, ResourceNode):
+        self._ResourceNode = ResourceNode
+
+    @property
+    def TimeUnit(self):
+        return self._TimeUnit
+
+    @TimeUnit.setter
+    def TimeUnit(self, TimeUnit):
+        self._TimeUnit = TimeUnit
+
+    @property
+    def TimeSpan(self):
+        return self._TimeSpan
+
+    @TimeSpan.setter
+    def TimeSpan(self, TimeSpan):
+        self._TimeSpan = TimeSpan
+
+    @property
+    def PayMode(self):
+        return self._PayMode
+
+    @PayMode.setter
+    def PayMode(self, PayMode):
+        self._PayMode = PayMode
+
+    @property
+    def AutoRenewFlag(self):
+        return self._AutoRenewFlag
+
+    @AutoRenewFlag.setter
+    def AutoRenewFlag(self, AutoRenewFlag):
+        self._AutoRenewFlag = AutoRenewFlag
+
+    @property
+    def DeployZone(self):
+        return self._DeployZone
+
+    @DeployZone.setter
+    def DeployZone(self, DeployZone):
+        self._DeployZone = DeployZone
+
+
+    def _deserialize(self, params):
+        self._DeployRegion = params.get("DeployRegion")
+        self._VpcId = params.get("VpcId")
+        self._SubnetId = params.get("SubnetId")
+        self._ResourceEdition = params.get("ResourceEdition")
+        self._ResourceNode = params.get("ResourceNode")
+        self._TimeUnit = params.get("TimeUnit")
+        self._TimeSpan = params.get("TimeSpan")
+        self._PayMode = params.get("PayMode")
+        self._AutoRenewFlag = params.get("AutoRenewFlag")
+        self._DeployZone = params.get("DeployZone")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateResourceResponse(AbstractModel):
+    """CreateResource返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
         self._RequestId = params.get("RequestId")
 
 
@@ -2746,10 +3015,14 @@ class Department(AbstractModel):
         :param _Managers: 部门管理员账号ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type Managers: list of str
+        :param _ManagerUsers: 管理员用户
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ManagerUsers: list of DepartmentManagerUser
         """
         self._Id = None
         self._Name = None
         self._Managers = None
+        self._ManagerUsers = None
 
     @property
     def Id(self):
@@ -2775,11 +3048,72 @@ class Department(AbstractModel):
     def Managers(self, Managers):
         self._Managers = Managers
 
+    @property
+    def ManagerUsers(self):
+        return self._ManagerUsers
+
+    @ManagerUsers.setter
+    def ManagerUsers(self, ManagerUsers):
+        self._ManagerUsers = ManagerUsers
+
 
     def _deserialize(self, params):
         self._Id = params.get("Id")
         self._Name = params.get("Name")
         self._Managers = params.get("Managers")
+        if params.get("ManagerUsers") is not None:
+            self._ManagerUsers = []
+            for item in params.get("ManagerUsers"):
+                obj = DepartmentManagerUser()
+                obj._deserialize(item)
+                self._ManagerUsers.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DepartmentManagerUser(AbstractModel):
+    """部门管理员信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ManagerId: 管理员Id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ManagerId: str
+        :param _ManagerName: 管理员姓名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ManagerName: str
+        """
+        self._ManagerId = None
+        self._ManagerName = None
+
+    @property
+    def ManagerId(self):
+        return self._ManagerId
+
+    @ManagerId.setter
+    def ManagerId(self, ManagerId):
+        self._ManagerId = ManagerId
+
+    @property
+    def ManagerName(self):
+        return self._ManagerName
+
+    @ManagerName.setter
+    def ManagerName(self, ManagerName):
+        self._ManagerName = ManagerName
+
+
+    def _deserialize(self, params):
+        self._ManagerId = params.get("ManagerId")
+        self._ManagerName = params.get("ManagerName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -3850,6 +4184,8 @@ class DescribeDevicesRequest(AbstractModel):
         :type ResourceIdSet: list of str
         :param _KindSet: 可提供按照多种类型过滤, 1 - Linux, 2 - Windows, 3 - MySQL, 4 - SQLServer
         :type KindSet: list of int non-negative
+        :param _ManagedAccount: 资产是否包含托管账号。1，包含；0，不包含
+        :type ManagedAccount: str
         :param _DepartmentId: 过滤条件，可按照部门ID进行过滤
         :type DepartmentId: str
         :param _TagFilters: 过滤条件，可按照标签键、标签进行过滤。如果同时指定标签键和标签过滤条件，它们之间为“AND”的关系
@@ -3868,6 +4204,7 @@ BindingStatus 绑定状态
         self._AuthorizedUserIdSet = None
         self._ResourceIdSet = None
         self._KindSet = None
+        self._ManagedAccount = None
         self._DepartmentId = None
         self._TagFilters = None
         self._Filters = None
@@ -3953,6 +4290,14 @@ BindingStatus 绑定状态
         self._KindSet = KindSet
 
     @property
+    def ManagedAccount(self):
+        return self._ManagedAccount
+
+    @ManagedAccount.setter
+    def ManagedAccount(self, ManagedAccount):
+        self._ManagedAccount = ManagedAccount
+
+    @property
     def DepartmentId(self):
         return self._DepartmentId
 
@@ -3988,6 +4333,7 @@ BindingStatus 绑定状态
         self._AuthorizedUserIdSet = params.get("AuthorizedUserIdSet")
         self._ResourceIdSet = params.get("ResourceIdSet")
         self._KindSet = params.get("KindSet")
+        self._ManagedAccount = params.get("ManagedAccount")
         self._DepartmentId = params.get("DepartmentId")
         if params.get("TagFilters") is not None:
             self._TagFilters = []
@@ -4840,6 +5186,9 @@ class DescribeUsersRequest(AbstractModel):
         :type AuthTypeSet: list of int non-negative
         :param _DepartmentId: 部门ID，用于过滤属于某个部门的用户
         :type DepartmentId: str
+        :param _Filters: 参数过滤数组
+
+        :type Filters: list of Filter
         """
         self._IdSet = None
         self._Name = None
@@ -4851,6 +5200,7 @@ class DescribeUsersRequest(AbstractModel):
         self._AuthorizedDeviceIdSet = None
         self._AuthTypeSet = None
         self._DepartmentId = None
+        self._Filters = None
 
     @property
     def IdSet(self):
@@ -4932,6 +5282,14 @@ class DescribeUsersRequest(AbstractModel):
     def DepartmentId(self, DepartmentId):
         self._DepartmentId = DepartmentId
 
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
 
     def _deserialize(self, params):
         self._IdSet = params.get("IdSet")
@@ -4944,6 +5302,12 @@ class DescribeUsersRequest(AbstractModel):
         self._AuthorizedDeviceIdSet = params.get("AuthorizedDeviceIdSet")
         self._AuthTypeSet = params.get("AuthTypeSet")
         self._DepartmentId = params.get("DepartmentId")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self._Filters.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5047,6 +5411,9 @@ class Device(AbstractModel):
         :param _Department: 资产所属部门
 注意：此字段可能返回 null，表示取不到有效值。
         :type Department: :class:`tencentcloud.dasb.v20191018.models.Department`
+        :param _IpPortSet: 数据库资产的多节点
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IpPortSet: list of str
         """
         self._Id = None
         self._InstanceId = None
@@ -5063,6 +5430,7 @@ class Device(AbstractModel):
         self._SubnetId = None
         self._Resource = None
         self._Department = None
+        self._IpPortSet = None
 
     @property
     def Id(self):
@@ -5184,6 +5552,14 @@ class Device(AbstractModel):
     def Department(self, Department):
         self._Department = Department
 
+    @property
+    def IpPortSet(self):
+        return self._IpPortSet
+
+    @IpPortSet.setter
+    def IpPortSet(self, IpPortSet):
+        self._IpPortSet = IpPortSet
+
 
     def _deserialize(self, params):
         self._Id = params.get("Id")
@@ -5210,6 +5586,7 @@ class Device(AbstractModel):
         if params.get("Department") is not None:
             self._Department = Department()
             self._Department._deserialize(params.get("Department"))
+        self._IpPortSet = params.get("IpPortSet")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5318,12 +5695,15 @@ class ExternalDevice(AbstractModel):
         :type Name: str
         :param _DepartmentId: 资产所属的部门ID
         :type DepartmentId: str
+        :param _IpPortSet: 资产多节点：字段ip和端口
+        :type IpPortSet: list of str
         """
         self._OsName = None
         self._Ip = None
         self._Port = None
         self._Name = None
         self._DepartmentId = None
+        self._IpPortSet = None
 
     @property
     def OsName(self):
@@ -5365,6 +5745,14 @@ class ExternalDevice(AbstractModel):
     def DepartmentId(self, DepartmentId):
         self._DepartmentId = DepartmentId
 
+    @property
+    def IpPortSet(self):
+        return self._IpPortSet
+
+    @IpPortSet.setter
+    def IpPortSet(self, IpPortSet):
+        self._IpPortSet = IpPortSet
+
 
     def _deserialize(self, params):
         self._OsName = params.get("OsName")
@@ -5372,6 +5760,7 @@ class ExternalDevice(AbstractModel):
         self._Port = params.get("Port")
         self._Name = params.get("Name")
         self._DepartmentId = params.get("DepartmentId")
+        self._IpPortSet = params.get("IpPortSet")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5721,6 +6110,8 @@ class ModifyAclRequest(AbstractModel):
         :type ValidateTo: str
         :param _DepartmentId: 权限所属部门的ID，如：1.2.3
         :type DepartmentId: str
+        :param _AllowAccessCredential: 是否允许使用访问串
+        :type AllowAccessCredential: bool
         """
         self._Name = None
         self._AllowDiskRedirect = None
@@ -5749,6 +6140,7 @@ class ModifyAclRequest(AbstractModel):
         self._ValidateFrom = None
         self._ValidateTo = None
         self._DepartmentId = None
+        self._AllowAccessCredential = None
 
     @property
     def Name(self):
@@ -5966,6 +6358,14 @@ class ModifyAclRequest(AbstractModel):
     def DepartmentId(self, DepartmentId):
         self._DepartmentId = DepartmentId
 
+    @property
+    def AllowAccessCredential(self):
+        return self._AllowAccessCredential
+
+    @AllowAccessCredential.setter
+    def AllowAccessCredential(self, AllowAccessCredential):
+        self._AllowAccessCredential = AllowAccessCredential
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
@@ -5995,6 +6395,7 @@ class ModifyAclRequest(AbstractModel):
         self._ValidateFrom = params.get("ValidateFrom")
         self._ValidateTo = params.get("ValidateTo")
         self._DepartmentId = params.get("DepartmentId")
+        self._AllowAccessCredential = params.get("AllowAccessCredential")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -6007,6 +6408,101 @@ class ModifyAclRequest(AbstractModel):
 
 class ModifyAclResponse(AbstractModel):
     """ModifyAcl返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyCmdTemplateRequest(AbstractModel):
+    """ModifyCmdTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Name: 模板名，最长32字符，不能包含空白字符
+        :type Name: str
+        :param _CmdList: 命令列表，\n分隔，最长32768字节
+        :type CmdList: str
+        :param _Id: 命令模板ID
+        :type Id: int
+        :param _Encoding: CmdList字段前端是否base64传值。
+0：否，1：是
+        :type Encoding: int
+        """
+        self._Name = None
+        self._CmdList = None
+        self._Id = None
+        self._Encoding = None
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def CmdList(self):
+        return self._CmdList
+
+    @CmdList.setter
+    def CmdList(self, CmdList):
+        self._CmdList = CmdList
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+    @property
+    def Encoding(self):
+        return self._Encoding
+
+    @Encoding.setter
+    def Encoding(self, Encoding):
+        self._Encoding = Encoding
+
+
+    def _deserialize(self, params):
+        self._Name = params.get("Name")
+        self._CmdList = params.get("CmdList")
+        self._Id = params.get("Id")
+        self._Encoding = params.get("Encoding")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyCmdTemplateResponse(AbstractModel):
+    """ModifyCmdTemplate返回参数结构体
 
     """
 
@@ -6183,6 +6679,160 @@ class ModifyDeviceRequest(AbstractModel):
 
 class ModifyDeviceResponse(AbstractModel):
     """ModifyDevice返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyResourceRequest(AbstractModel):
+    """ModifyResource请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ResourceId: 需要开通服务的资源ID
+        :type ResourceId: str
+        :param _Status: 已废弃
+        :type Status: str
+        :param _ModuleSet: 已废弃
+        :type ModuleSet: list of str
+        :param _ResourceEdition: 实例版本
+        :type ResourceEdition: str
+        :param _ResourceNode: 资源节点数
+        :type ResourceNode: int
+        :param _AutoRenewFlag: 自动续费
+        :type AutoRenewFlag: int
+        :param _PackageBandwidth: 带宽扩展包个数(4M)
+        :type PackageBandwidth: int
+        :param _PackageNode: 授权点数扩展包个数(50点)
+        :type PackageNode: int
+        :param _LogDelivery: 日志投递
+        :type LogDelivery: int
+        """
+        self._ResourceId = None
+        self._Status = None
+        self._ModuleSet = None
+        self._ResourceEdition = None
+        self._ResourceNode = None
+        self._AutoRenewFlag = None
+        self._PackageBandwidth = None
+        self._PackageNode = None
+        self._LogDelivery = None
+
+    @property
+    def ResourceId(self):
+        return self._ResourceId
+
+    @ResourceId.setter
+    def ResourceId(self, ResourceId):
+        self._ResourceId = ResourceId
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def ModuleSet(self):
+        return self._ModuleSet
+
+    @ModuleSet.setter
+    def ModuleSet(self, ModuleSet):
+        self._ModuleSet = ModuleSet
+
+    @property
+    def ResourceEdition(self):
+        return self._ResourceEdition
+
+    @ResourceEdition.setter
+    def ResourceEdition(self, ResourceEdition):
+        self._ResourceEdition = ResourceEdition
+
+    @property
+    def ResourceNode(self):
+        return self._ResourceNode
+
+    @ResourceNode.setter
+    def ResourceNode(self, ResourceNode):
+        self._ResourceNode = ResourceNode
+
+    @property
+    def AutoRenewFlag(self):
+        return self._AutoRenewFlag
+
+    @AutoRenewFlag.setter
+    def AutoRenewFlag(self, AutoRenewFlag):
+        self._AutoRenewFlag = AutoRenewFlag
+
+    @property
+    def PackageBandwidth(self):
+        return self._PackageBandwidth
+
+    @PackageBandwidth.setter
+    def PackageBandwidth(self, PackageBandwidth):
+        self._PackageBandwidth = PackageBandwidth
+
+    @property
+    def PackageNode(self):
+        return self._PackageNode
+
+    @PackageNode.setter
+    def PackageNode(self, PackageNode):
+        self._PackageNode = PackageNode
+
+    @property
+    def LogDelivery(self):
+        return self._LogDelivery
+
+    @LogDelivery.setter
+    def LogDelivery(self, LogDelivery):
+        self._LogDelivery = LogDelivery
+
+
+    def _deserialize(self, params):
+        self._ResourceId = params.get("ResourceId")
+        self._Status = params.get("Status")
+        self._ModuleSet = params.get("ModuleSet")
+        self._ResourceEdition = params.get("ResourceEdition")
+        self._ResourceNode = params.get("ResourceNode")
+        self._AutoRenewFlag = params.get("AutoRenewFlag")
+        self._PackageBandwidth = params.get("PackageBandwidth")
+        self._PackageNode = params.get("PackageNode")
+        self._LogDelivery = params.get("LogDelivery")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyResourceResponse(AbstractModel):
+    """ModifyResource返回参数结构体
 
     """
 
@@ -9363,6 +10013,15 @@ class User(AbstractModel):
         :param _DepartmentId: 用户所属部门（用于入参）
 注意：此字段可能返回 null，表示取不到有效值。
         :type DepartmentId: str
+        :param _ActiveStatus: 激活状态 0 - 未激活 1 - 激活
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ActiveStatus: int
+        :param _LockStatus: 锁定状态 0 - 未锁定 1 - 锁定
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LockStatus: int
+        :param _Status: 状态 与Filter中一致
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
         """
         self._UserName = None
         self._RealName = None
@@ -9376,6 +10035,9 @@ class User(AbstractModel):
         self._ValidateTime = None
         self._Department = None
         self._DepartmentId = None
+        self._ActiveStatus = None
+        self._LockStatus = None
+        self._Status = None
 
     @property
     def UserName(self):
@@ -9473,6 +10135,30 @@ class User(AbstractModel):
     def DepartmentId(self, DepartmentId):
         self._DepartmentId = DepartmentId
 
+    @property
+    def ActiveStatus(self):
+        return self._ActiveStatus
+
+    @ActiveStatus.setter
+    def ActiveStatus(self, ActiveStatus):
+        self._ActiveStatus = ActiveStatus
+
+    @property
+    def LockStatus(self):
+        return self._LockStatus
+
+    @LockStatus.setter
+    def LockStatus(self, LockStatus):
+        self._LockStatus = LockStatus
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
 
     def _deserialize(self, params):
         self._UserName = params.get("UserName")
@@ -9494,6 +10180,9 @@ class User(AbstractModel):
             self._Department = Department()
             self._Department._deserialize(params.get("Department"))
         self._DepartmentId = params.get("DepartmentId")
+        self._ActiveStatus = params.get("ActiveStatus")
+        self._LockStatus = params.get("LockStatus")
+        self._Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

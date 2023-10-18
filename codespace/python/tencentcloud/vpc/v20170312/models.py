@@ -93,6 +93,64 @@ class AcceptAttachCcnInstancesResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class AcceptVpcPeeringConnectionRequest(AbstractModel):
+    """AcceptVpcPeeringConnection请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _PeeringConnectionId: 对等连接唯一ID。
+        :type PeeringConnectionId: str
+        """
+        self._PeeringConnectionId = None
+
+    @property
+    def PeeringConnectionId(self):
+        return self._PeeringConnectionId
+
+    @PeeringConnectionId.setter
+    def PeeringConnectionId(self, PeeringConnectionId):
+        self._PeeringConnectionId = PeeringConnectionId
+
+
+    def _deserialize(self, params):
+        self._PeeringConnectionId = params.get("PeeringConnectionId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AcceptVpcPeeringConnectionResponse(AbstractModel):
+    """AcceptVpcPeeringConnection返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class AccessPolicy(AbstractModel):
     """策略信息
 
@@ -541,7 +599,7 @@ class Address(AbstractModel):
         :type IsBlocked: bool
         :param _IsEipDirectConnection: eip是否支持直通模式。true表示eip支持直通模式，false表示资源不支持直通模式
         :type IsEipDirectConnection: bool
-        :param _AddressType: EIP 资源类型，包括CalcIP、WanIP、EIP和AnycastEIP、高防EIP。其中：`CalcIP` 表示设备 IP，`WanIP` 表示普通公网 IP，`EIP` 表示弹性公网 IP，`AnycastEip` 表示加速 EIP，`AntiDDoSEIP`表示高防EIP。
+        :param _AddressType: EIP 资源类型，包括CalcIP、WanIP、EIP和AnycastEIP、高防EIP。其中：`CalcIP` 表示设备 IP，`WanIP` 表示普通公网 IP，`EIP` 表示弹性公网 IP，`AnycastEIP` 表示加速 EIP，`AntiDDoSEIP`表示高防EIP。
         :type AddressType: str
         :param _CascadeRelease: eip是否在解绑后自动释放。true表示eip将会在解绑后自动释放，false表示eip在解绑后不会自动释放
         :type CascadeRelease: bool
@@ -576,6 +634,9 @@ class Address(AbstractModel):
         :param _InstanceType: EIP绑定的实例类型。
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceType: str
+        :param _Egress: 静态单线IP网络出口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Egress: str
         :param _AntiDDoSPackageId: 高防包ID,当EIP类型为高防EIP时，返回EIP绑定的高防包ID.
         :type AntiDDoSPackageId: str
         """
@@ -600,6 +661,7 @@ class Address(AbstractModel):
         self._TagSet = None
         self._DeadlineDate = None
         self._InstanceType = None
+        self._Egress = None
         self._AntiDDoSPackageId = None
 
     @property
@@ -771,6 +833,14 @@ class Address(AbstractModel):
         self._InstanceType = InstanceType
 
     @property
+    def Egress(self):
+        return self._Egress
+
+    @Egress.setter
+    def Egress(self, Egress):
+        self._Egress = Egress
+
+    @property
     def AntiDDoSPackageId(self):
         return self._AntiDDoSPackageId
 
@@ -808,6 +878,7 @@ class Address(AbstractModel):
                 self._TagSet.append(obj)
         self._DeadlineDate = params.get("DeadlineDate")
         self._InstanceType = params.get("InstanceType")
+        self._Egress = params.get("Egress")
         self._AntiDDoSPackageId = params.get("AntiDDoSPackageId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -1356,7 +1427,6 @@ class AllocateAddressesRequest(AbstractModel):
         :param _AddressType: EIP类型。默认值：EIP。
 <ul style="margin:0"><li>已开通Anycast公网加速白名单的用户，可选值：<ul><li>AnycastEIP：加速IP，可参见 [Anycast 公网加速](https://cloud.tencent.com/document/product/644)</li></ul>注意：仅部分地域支持加速IP。</li></ul>
 <ul style="margin:0"><li>已开通精品IP白名单的用户，可选值：<ul><li>HighQualityEIP：精品IP</li></ul>注意：仅部分地域支持精品IP。</li></ul>
-</ul>
 <ul style="margin:0"><li>已开高防IP白名单的用户，可选值：<ul><li>AntiDDoSEIP：高防IP</li></ul>注意：仅部分地域支持高防IP。</li></ul>
         :type AddressType: str
         :param _AnycastZone: Anycast发布域。
@@ -1373,7 +1443,7 @@ AnycastEIP是否用于绑定负载均衡。
         :type BandwidthPackageId: str
         :param _AddressName: EIP名称，用于申请EIP时用户自定义该EIP的个性化名称，默认值：未命名
         :type AddressName: str
-        :param _Egress: 网络出口，默认是：center_egress1
+        :param _Egress: 静态单线IP网络出口，默认值：center_egress1
         :type Egress: str
         :param _AntiDDoSPackageId: 高防包ID， 申请高防IP时，该字段必传。
         :type AntiDDoSPackageId: str
@@ -1988,11 +2058,14 @@ class AssignPrivateIpAddressesRequest(AbstractModel):
         :type SecondaryPrivateIpAddressCount: int
         :param _QosLevel: IP服务质量等级，和SecondaryPrivateIpAddressCount配合使用，可选值：PT、AU、AG、DEFAULT，分别代表云金、云银、云铜、默认四个等级。
         :type QosLevel: str
+        :param _ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。
+        :type ClientToken: str
         """
         self._NetworkInterfaceId = None
         self._PrivateIpAddresses = None
         self._SecondaryPrivateIpAddressCount = None
         self._QosLevel = None
+        self._ClientToken = None
 
     @property
     def NetworkInterfaceId(self):
@@ -2026,6 +2099,14 @@ class AssignPrivateIpAddressesRequest(AbstractModel):
     def QosLevel(self, QosLevel):
         self._QosLevel = QosLevel
 
+    @property
+    def ClientToken(self):
+        return self._ClientToken
+
+    @ClientToken.setter
+    def ClientToken(self, ClientToken):
+        self._ClientToken = ClientToken
+
 
     def _deserialize(self, params):
         self._NetworkInterfaceId = params.get("NetworkInterfaceId")
@@ -2037,6 +2118,7 @@ class AssignPrivateIpAddressesRequest(AbstractModel):
                 self._PrivateIpAddresses.append(obj)
         self._SecondaryPrivateIpAddressCount = params.get("SecondaryPrivateIpAddressCount")
         self._QosLevel = params.get("QosLevel")
+        self._ClientToken = params.get("ClientToken")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2874,10 +2956,13 @@ class AttachNetworkInterfaceRequest(AbstractModel):
         :type InstanceId: str
         :param _AttachType: 网卡的挂载类型：0 标准型，1扩展型，默认值0。
         :type AttachType: int
+        :param _ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。	
+        :type ClientToken: str
         """
         self._NetworkInterfaceId = None
         self._InstanceId = None
         self._AttachType = None
+        self._ClientToken = None
 
     @property
     def NetworkInterfaceId(self):
@@ -2903,11 +2988,20 @@ class AttachNetworkInterfaceRequest(AbstractModel):
     def AttachType(self, AttachType):
         self._AttachType = AttachType
 
+    @property
+    def ClientToken(self):
+        return self._ClientToken
+
+    @ClientToken.setter
+    def ClientToken(self, ClientToken):
+        self._ClientToken = ClientToken
+
 
     def _deserialize(self, params):
         self._NetworkInterfaceId = params.get("NetworkInterfaceId")
         self._InstanceId = params.get("InstanceId")
         self._AttachType = params.get("AttachType")
+        self._ClientToken = params.get("ClientToken")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -3168,6 +3262,9 @@ class BandwidthPackage(AbstractModel):
         :type ResourceSet: list of Resource
         :param _Bandwidth: 带宽包限速大小。单位：Mbps，-1表示不限速。
         :type Bandwidth: int
+        :param _Egress: 网络出口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Egress: str
         """
         self._BandwidthPackageId = None
         self._NetworkType = None
@@ -3177,6 +3274,7 @@ class BandwidthPackage(AbstractModel):
         self._Status = None
         self._ResourceSet = None
         self._Bandwidth = None
+        self._Egress = None
 
     @property
     def BandwidthPackageId(self):
@@ -3242,6 +3340,14 @@ class BandwidthPackage(AbstractModel):
     def Bandwidth(self, Bandwidth):
         self._Bandwidth = Bandwidth
 
+    @property
+    def Egress(self):
+        return self._Egress
+
+    @Egress.setter
+    def Egress(self, Egress):
+        self._Egress = Egress
+
 
     def _deserialize(self, params):
         self._BandwidthPackageId = params.get("BandwidthPackageId")
@@ -3257,6 +3363,7 @@ class BandwidthPackage(AbstractModel):
                 obj._deserialize(item)
                 self._ResourceSet.append(obj)
         self._Bandwidth = params.get("Bandwidth")
+        self._Egress = params.get("Egress")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5431,6 +5538,8 @@ class CreateAndAttachNetworkInterfaceRequest(AbstractModel):
         :type Tags: list of Tag
         :param _AttachType: 绑定类型：0 标准型 1 扩展型。
         :type AttachType: int
+        :param _ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。	
+        :type ClientToken: str
         """
         self._VpcId = None
         self._NetworkInterfaceName = None
@@ -5443,6 +5552,7 @@ class CreateAndAttachNetworkInterfaceRequest(AbstractModel):
         self._NetworkInterfaceDescription = None
         self._Tags = None
         self._AttachType = None
+        self._ClientToken = None
 
     @property
     def VpcId(self):
@@ -5532,6 +5642,14 @@ class CreateAndAttachNetworkInterfaceRequest(AbstractModel):
     def AttachType(self, AttachType):
         self._AttachType = AttachType
 
+    @property
+    def ClientToken(self):
+        return self._ClientToken
+
+    @ClientToken.setter
+    def ClientToken(self, ClientToken):
+        self._ClientToken = ClientToken
+
 
     def _deserialize(self, params):
         self._VpcId = params.get("VpcId")
@@ -5555,6 +5673,7 @@ class CreateAndAttachNetworkInterfaceRequest(AbstractModel):
                 obj._deserialize(item)
                 self._Tags.append(obj)
         self._AttachType = params.get("AttachType")
+        self._ClientToken = params.get("ClientToken")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5702,11 +5821,17 @@ class CreateBandwidthPackageRequest(AbstractModel):
         :param _NetworkType: 带宽包类型, 默认值: BGP, 可选值:
 <li>BGP: 普通BGP共享带宽包</li>
 <li>HIGH_QUALITY_BGP: 精品BGP共享带宽包</li>
+<li>SINGLEISP_CMCC: 中国移动共享带宽包</li>
+<li>SINGLEISP_CTCC: 中国电信共享带宽包</li>
+<li>SINGLEISP_CUCC: 中国联通共享带宽包</li>
         :type NetworkType: str
         :param _ChargeType: 带宽包计费类型, 默认为: TOP5_POSTPAID_BY_MONTH, 可选值:
 <li>TOP5_POSTPAID_BY_MONTH: 按月后付费TOP5计费</li>
 <li>PERCENT95_POSTPAID_BY_MONTH: 按月后付费月95计费</li>
 <li>FIXED_PREPAID_BY_MONTH: 包月预付费计费</li>
+<li>ENHANCED95_POSTPAID_BY_MONTH: 按月后付费增强型95计费</li>
+<li>PEAK_BANDWIDTH_POSTPAID_BY_DAY: 后付费日结按带宽计费</li>
+
         :type ChargeType: str
         :param _BandwidthPackageName: 带宽包名称。
         :type BandwidthPackageName: str
@@ -5720,6 +5845,8 @@ class CreateBandwidthPackageRequest(AbstractModel):
         :type Protocol: str
         :param _TimeSpan: 预付费包月带宽包的购买时长，单位: 月，取值范围: 1~60。
         :type TimeSpan: int
+        :param _Egress: 网络出口，默认值：center_egress1
+        :type Egress: str
         """
         self._NetworkType = None
         self._ChargeType = None
@@ -5729,6 +5856,7 @@ class CreateBandwidthPackageRequest(AbstractModel):
         self._Tags = None
         self._Protocol = None
         self._TimeSpan = None
+        self._Egress = None
 
     @property
     def NetworkType(self):
@@ -5794,6 +5922,14 @@ class CreateBandwidthPackageRequest(AbstractModel):
     def TimeSpan(self, TimeSpan):
         self._TimeSpan = TimeSpan
 
+    @property
+    def Egress(self):
+        return self._Egress
+
+    @Egress.setter
+    def Egress(self, Egress):
+        self._Egress = Egress
+
 
     def _deserialize(self, params):
         self._NetworkType = params.get("NetworkType")
@@ -5809,6 +5945,7 @@ class CreateBandwidthPackageRequest(AbstractModel):
                 self._Tags.append(obj)
         self._Protocol = params.get("Protocol")
         self._TimeSpan = params.get("TimeSpan")
+        self._Egress = params.get("Egress")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7215,6 +7352,8 @@ class CreateNatGatewayRequest(AbstractModel):
         :type PublicIpAddressesBandwidthOut: int
         :param _PublicIpFromSameZone: 公网IP是否强制与NAT网关来自同可用区，true表示需要与NAT网关同可用区；false表示可与NAT网关不是同一个可用区。此参数只有当参数Zone存在时才能生效。
         :type PublicIpFromSameZone: bool
+        :param _NatProductVersion: NAT网关大版本号，1是传统型，2是标准型，默认是1
+        :type NatProductVersion: int
         """
         self._NatGatewayName = None
         self._VpcId = None
@@ -7228,6 +7367,7 @@ class CreateNatGatewayRequest(AbstractModel):
         self._StockPublicIpAddressesBandwidthOut = None
         self._PublicIpAddressesBandwidthOut = None
         self._PublicIpFromSameZone = None
+        self._NatProductVersion = None
 
     @property
     def NatGatewayName(self):
@@ -7325,6 +7465,14 @@ class CreateNatGatewayRequest(AbstractModel):
     def PublicIpFromSameZone(self, PublicIpFromSameZone):
         self._PublicIpFromSameZone = PublicIpFromSameZone
 
+    @property
+    def NatProductVersion(self):
+        return self._NatProductVersion
+
+    @NatProductVersion.setter
+    def NatProductVersion(self, NatProductVersion):
+        self._NatProductVersion = NatProductVersion
+
 
     def _deserialize(self, params):
         self._NatGatewayName = params.get("NatGatewayName")
@@ -7344,6 +7492,7 @@ class CreateNatGatewayRequest(AbstractModel):
         self._StockPublicIpAddressesBandwidthOut = params.get("StockPublicIpAddressesBandwidthOut")
         self._PublicIpAddressesBandwidthOut = params.get("PublicIpAddressesBandwidthOut")
         self._PublicIpFromSameZone = params.get("PublicIpFromSameZone")
+        self._NatProductVersion = params.get("NatProductVersion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7641,6 +7790,78 @@ class CreateNetDetectResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class CreateNetworkAclEntriesRequest(AbstractModel):
+    """CreateNetworkAclEntries请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _NetworkAclId: 网络ACL实例ID。例如：acl-12345678。
+        :type NetworkAclId: str
+        :param _NetworkAclEntrySet: 网络三元组ACL规则集。
+        :type NetworkAclEntrySet: :class:`tencentcloud.vpc.v20170312.models.NetworkAclEntrySet`
+        """
+        self._NetworkAclId = None
+        self._NetworkAclEntrySet = None
+
+    @property
+    def NetworkAclId(self):
+        return self._NetworkAclId
+
+    @NetworkAclId.setter
+    def NetworkAclId(self, NetworkAclId):
+        self._NetworkAclId = NetworkAclId
+
+    @property
+    def NetworkAclEntrySet(self):
+        return self._NetworkAclEntrySet
+
+    @NetworkAclEntrySet.setter
+    def NetworkAclEntrySet(self, NetworkAclEntrySet):
+        self._NetworkAclEntrySet = NetworkAclEntrySet
+
+
+    def _deserialize(self, params):
+        self._NetworkAclId = params.get("NetworkAclId")
+        if params.get("NetworkAclEntrySet") is not None:
+            self._NetworkAclEntrySet = NetworkAclEntrySet()
+            self._NetworkAclEntrySet._deserialize(params.get("NetworkAclEntrySet"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateNetworkAclEntriesResponse(AbstractModel):
+    """CreateNetworkAclEntries返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class CreateNetworkAclQuintupleEntriesRequest(AbstractModel):
     """CreateNetworkAclQuintupleEntries请求参数结构体
 
@@ -7853,6 +8074,8 @@ class CreateNetworkInterfaceRequest(AbstractModel):
         :type Tags: list of Tag
         :param _TrunkingFlag: 网卡trunking模式设置，Enable-开启，Disable--关闭，默认关闭。
         :type TrunkingFlag: str
+        :param _ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。	
+        :type ClientToken: str
         """
         self._VpcId = None
         self._NetworkInterfaceName = None
@@ -7864,6 +8087,7 @@ class CreateNetworkInterfaceRequest(AbstractModel):
         self._PrivateIpAddresses = None
         self._Tags = None
         self._TrunkingFlag = None
+        self._ClientToken = None
 
     @property
     def VpcId(self):
@@ -7945,6 +8169,14 @@ class CreateNetworkInterfaceRequest(AbstractModel):
     def TrunkingFlag(self, TrunkingFlag):
         self._TrunkingFlag = TrunkingFlag
 
+    @property
+    def ClientToken(self):
+        return self._ClientToken
+
+    @ClientToken.setter
+    def ClientToken(self, ClientToken):
+        self._ClientToken = ClientToken
+
 
     def _deserialize(self, params):
         self._VpcId = params.get("VpcId")
@@ -7967,6 +8199,7 @@ class CreateNetworkInterfaceRequest(AbstractModel):
                 obj._deserialize(item)
                 self._Tags.append(obj)
         self._TrunkingFlag = params.get("TrunkingFlag")
+        self._ClientToken = params.get("ClientToken")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8228,7 +8461,7 @@ class CreateSecurityGroupPoliciesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过DescribeSecurityGroups获取。
+        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过<a href="https://cloud.tencent.com/document/product/215/15808">DescribeSecurityGroups</a>获取。
         :type SecurityGroupId: str
         :param _SecurityGroupPolicySet: 安全组规则集合。
         :type SecurityGroupPolicySet: :class:`tencentcloud.vpc.v20170312.models.SecurityGroupPolicySet`
@@ -8304,7 +8537,7 @@ class CreateSecurityGroupRequest(AbstractModel):
         :type GroupName: str
         :param _GroupDescription: 安全组备注，最多100个字符。
         :type GroupDescription: str
-        :param _ProjectId: 项目ID，默认0。可在qcloud控制台项目管理页面查询到。
+        :param _ProjectId: 项目ID，默认0。可在<a href="https://console.cloud.tencent.com/project">控制台项目管理页面</a>查询到。
         :type ProjectId: str
         :param _Tags: 指定绑定的标签列表，例如：[{"Key": "city", "Value": "shanghai"}]。
         :type Tags: list of Tag
@@ -8417,7 +8650,7 @@ class CreateSecurityGroupWithPoliciesRequest(AbstractModel):
         :type GroupName: str
         :param _GroupDescription: 安全组备注，最多100个字符。
         :type GroupDescription: str
-        :param _ProjectId: 项目ID，默认0。可在<a href="https://console.cloud.tencent.com/project">qcloud控制台项目管理页面</a>查询到。
+        :param _ProjectId: 项目ID，默认0。可在<a href="https://console.cloud.tencent.com/project">控制台项目管理页面</a>查询到。
         :type ProjectId: str
         :param _SecurityGroupPolicySet: 安全组规则集合。
         :type SecurityGroupPolicySet: :class:`tencentcloud.vpc.v20170312.models.SecurityGroupPolicySet`
@@ -9481,6 +9714,173 @@ class CreateVpcEndPointServiceWhiteListResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class CreateVpcPeeringConnectionRequest(AbstractModel):
+    """CreateVpcPeeringConnection请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SourceVpcId: 本端VPC唯一ID。
+        :type SourceVpcId: str
+        :param _PeeringConnectionName: 对等连接名称。
+        :type PeeringConnectionName: str
+        :param _DestinationVpcId: 对端VPC唯一ID。
+        :type DestinationVpcId: str
+        :param _DestinationUin: 对端用户UIN。
+        :type DestinationUin: str
+        :param _DestinationRegion: 对端地域。
+        :type DestinationRegion: str
+        :param _Bandwidth: 带宽上限，单位Mbps。
+        :type Bandwidth: int
+        :param _Type: 互通类型，VPC_PEER：VPC间互通；VPC_BM_PEER：VPC与黑石网络互通。
+        :type Type: str
+        :param _ChargeType: 计费模式，日峰值POSTPAID_BY_DAY_MAX，月95POSTPAID_BY_MONTH_95。
+        :type ChargeType: str
+        :param _QosLevel: 服务分级：PT、AU、AG。
+        :type QosLevel: str
+        """
+        self._SourceVpcId = None
+        self._PeeringConnectionName = None
+        self._DestinationVpcId = None
+        self._DestinationUin = None
+        self._DestinationRegion = None
+        self._Bandwidth = None
+        self._Type = None
+        self._ChargeType = None
+        self._QosLevel = None
+
+    @property
+    def SourceVpcId(self):
+        return self._SourceVpcId
+
+    @SourceVpcId.setter
+    def SourceVpcId(self, SourceVpcId):
+        self._SourceVpcId = SourceVpcId
+
+    @property
+    def PeeringConnectionName(self):
+        return self._PeeringConnectionName
+
+    @PeeringConnectionName.setter
+    def PeeringConnectionName(self, PeeringConnectionName):
+        self._PeeringConnectionName = PeeringConnectionName
+
+    @property
+    def DestinationVpcId(self):
+        return self._DestinationVpcId
+
+    @DestinationVpcId.setter
+    def DestinationVpcId(self, DestinationVpcId):
+        self._DestinationVpcId = DestinationVpcId
+
+    @property
+    def DestinationUin(self):
+        return self._DestinationUin
+
+    @DestinationUin.setter
+    def DestinationUin(self, DestinationUin):
+        self._DestinationUin = DestinationUin
+
+    @property
+    def DestinationRegion(self):
+        return self._DestinationRegion
+
+    @DestinationRegion.setter
+    def DestinationRegion(self, DestinationRegion):
+        self._DestinationRegion = DestinationRegion
+
+    @property
+    def Bandwidth(self):
+        return self._Bandwidth
+
+    @Bandwidth.setter
+    def Bandwidth(self, Bandwidth):
+        self._Bandwidth = Bandwidth
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+    @property
+    def ChargeType(self):
+        return self._ChargeType
+
+    @ChargeType.setter
+    def ChargeType(self, ChargeType):
+        self._ChargeType = ChargeType
+
+    @property
+    def QosLevel(self):
+        return self._QosLevel
+
+    @QosLevel.setter
+    def QosLevel(self, QosLevel):
+        self._QosLevel = QosLevel
+
+
+    def _deserialize(self, params):
+        self._SourceVpcId = params.get("SourceVpcId")
+        self._PeeringConnectionName = params.get("PeeringConnectionName")
+        self._DestinationVpcId = params.get("DestinationVpcId")
+        self._DestinationUin = params.get("DestinationUin")
+        self._DestinationRegion = params.get("DestinationRegion")
+        self._Bandwidth = params.get("Bandwidth")
+        self._Type = params.get("Type")
+        self._ChargeType = params.get("ChargeType")
+        self._QosLevel = params.get("QosLevel")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateVpcPeeringConnectionResponse(AbstractModel):
+    """CreateVpcPeeringConnection返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _PeeringConnectionId: 对等连接ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PeeringConnectionId: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._PeeringConnectionId = None
+        self._RequestId = None
+
+    @property
+    def PeeringConnectionId(self):
+        return self._PeeringConnectionId
+
+    @PeeringConnectionId.setter
+    def PeeringConnectionId(self, PeeringConnectionId):
+        self._PeeringConnectionId = PeeringConnectionId
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._PeeringConnectionId = params.get("PeeringConnectionId")
+        self._RequestId = params.get("RequestId")
+
+
 class CreateVpcRequest(AbstractModel):
     """CreateVpc请求参数结构体
 
@@ -9908,7 +10308,7 @@ class CreateVpnGatewayRequest(AbstractModel):
         :type VpcId: str
         :param _VpnGatewayName: VPN网关名称，最大长度不能超过60个字节。
         :type VpnGatewayName: str
-        :param _InternetMaxBandwidthOut: 公网带宽设置。可选带宽规格：5, 10, 20, 50, 100；单位：Mbps
+        :param _InternetMaxBandwidthOut: 公网带宽设置。可选带宽规格：5, 10, 20, 50, 100, 200, 500, 1000, 3000；单位：Mbps。
         :type InternetMaxBandwidthOut: int
         :param _InstanceChargeType: VPN网关计费模式，PREPAID：表示预付费，即包年包月，POSTPAID_BY_HOUR：表示后付费，即按量计费。默认：POSTPAID_BY_HOUR，如果指定预付费模式，参数InstanceChargePrepaid必填。
         :type InstanceChargeType: str
@@ -9916,13 +10316,13 @@ class CreateVpnGatewayRequest(AbstractModel):
         :type InstanceChargePrepaid: :class:`tencentcloud.vpc.v20170312.models.InstanceChargePrepaid`
         :param _Zone: 可用区，如：ap-guangzhou-2。
         :type Zone: str
-        :param _Type: VPN网关类型。值“CCN”云联网类型VPN网关，值SSL为SSL-VPN
+        :param _Type: VPN网关类型，默认为IPSEC。值“IPSEC”为VPC型IPSEC VPN网关，值“SSL”为VPC型SSL VPN网关，值“CCN”为云联网型IPSEC VPN网关，值“SSL_CCN”为云联网型SSL VPN网关。
         :type Type: str
-        :param _Tags: 指定绑定的标签列表，例如：[{"Key": "city", "Value": "shanghai"}]
+        :param _Tags: 指定绑定的标签列表，例如：[{"Key": "city", "Value": "shanghai"}]。
         :type Tags: list of Tag
-        :param _CdcId: CDC实例ID
+        :param _CdcId: CDC实例ID。
         :type CdcId: str
-        :param _MaxConnection: SSL-VPN 最大CLIENT 连接数。可选 [5, 10, 20, 50, 100]。仅SSL-VPN 需要选这个参数。
+        :param _MaxConnection: SSL VPN连接数设置，可选规格：5, 10, 20, 50, 100, 200, 500, 1000；单位：个。仅 SSL / SSL_CCN 类型需要选这个参数。
         :type MaxConnection: int
         """
         self._VpcId = None
@@ -12297,6 +12697,78 @@ class DeleteNetDetectResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DeleteNetworkAclEntriesRequest(AbstractModel):
+    """DeleteNetworkAclEntries请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _NetworkAclId: 三元组网络ACL实例ID。例如：acl-12345678。
+        :type NetworkAclId: str
+        :param _NetworkAclEntrySet: 三元组网络ACL规则集。
+        :type NetworkAclEntrySet: :class:`tencentcloud.vpc.v20170312.models.NetworkAclEntrySet`
+        """
+        self._NetworkAclId = None
+        self._NetworkAclEntrySet = None
+
+    @property
+    def NetworkAclId(self):
+        return self._NetworkAclId
+
+    @NetworkAclId.setter
+    def NetworkAclId(self, NetworkAclId):
+        self._NetworkAclId = NetworkAclId
+
+    @property
+    def NetworkAclEntrySet(self):
+        return self._NetworkAclEntrySet
+
+    @NetworkAclEntrySet.setter
+    def NetworkAclEntrySet(self, NetworkAclEntrySet):
+        self._NetworkAclEntrySet = NetworkAclEntrySet
+
+
+    def _deserialize(self, params):
+        self._NetworkAclId = params.get("NetworkAclId")
+        if params.get("NetworkAclEntrySet") is not None:
+            self._NetworkAclEntrySet = NetworkAclEntrySet()
+            self._NetworkAclEntrySet._deserialize(params.get("NetworkAclEntrySet"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteNetworkAclEntriesResponse(AbstractModel):
+    """DeleteNetworkAclEntries返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class DeleteNetworkAclQuintupleEntriesRequest(AbstractModel):
     """DeleteNetworkAclQuintupleEntries请求参数结构体
 
@@ -12642,7 +13114,7 @@ class DeleteSecurityGroupPoliciesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过DescribeSecurityGroups获取。
+        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过<a href="https://cloud.tencent.com/document/product/215/15808">DescribeSecurityGroups</a>获取。
         :type SecurityGroupId: str
         :param _SecurityGroupPolicySet: 安全组规则集合。一个请求中只能删除单个方向的一条或多条规则。支持指定索引（PolicyIndex） 匹配删除和安全组规则匹配删除两种方式，一个请求中只能使用一种匹配方式。
         :type SecurityGroupPolicySet: :class:`tencentcloud.vpc.v20170312.models.SecurityGroupPolicySet`
@@ -12714,7 +13186,7 @@ class DeleteSecurityGroupRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过DescribeSecurityGroups获取。
+        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过<a href="https://cloud.tencent.com/document/product/215/15808">DescribeSecurityGroups</a>获取。
         :type SecurityGroupId: str
         """
         self._SecurityGroupId = None
@@ -13316,6 +13788,64 @@ class DeleteVpcEndPointServiceWhiteListResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DeleteVpcPeeringConnectionRequest(AbstractModel):
+    """DeleteVpcPeeringConnection请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _PeeringConnectionId: 对等连接唯一ID。
+        :type PeeringConnectionId: str
+        """
+        self._PeeringConnectionId = None
+
+    @property
+    def PeeringConnectionId(self):
+        return self._PeeringConnectionId
+
+    @PeeringConnectionId.setter
+    def PeeringConnectionId(self, PeeringConnectionId):
+        self._PeeringConnectionId = PeeringConnectionId
+
+
+    def _deserialize(self, params):
+        self._PeeringConnectionId = params.get("PeeringConnectionId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteVpcPeeringConnectionResponse(AbstractModel):
+    """DeleteVpcPeeringConnection返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class DeleteVpcRequest(AbstractModel):
     """DeleteVpc请求参数结构体
 
@@ -13835,10 +14365,13 @@ class DescribeAddressTemplateGroupsRequest(AbstractModel):
         :type Offset: str
         :param _Limit: 返回数量，默认为20，最大值为100。
         :type Limit: str
+        :param _NeedMemberInfo: 是否查询IP地址模板成员标识。
+        :type NeedMemberInfo: bool
         """
         self._Filters = None
         self._Offset = None
         self._Limit = None
+        self._NeedMemberInfo = None
 
     @property
     def Filters(self):
@@ -13864,6 +14397,14 @@ class DescribeAddressTemplateGroupsRequest(AbstractModel):
     def Limit(self, Limit):
         self._Limit = Limit
 
+    @property
+    def NeedMemberInfo(self):
+        return self._NeedMemberInfo
+
+    @NeedMemberInfo.setter
+    def NeedMemberInfo(self, NeedMemberInfo):
+        self._NeedMemberInfo = NeedMemberInfo
+
 
     def _deserialize(self, params):
         if params.get("Filters") is not None:
@@ -13874,6 +14415,7 @@ class DescribeAddressTemplateGroupsRequest(AbstractModel):
                 self._Filters.append(obj)
         self._Offset = params.get("Offset")
         self._Limit = params.get("Limit")
+        self._NeedMemberInfo = params.get("NeedMemberInfo")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -13954,10 +14496,13 @@ class DescribeAddressTemplatesRequest(AbstractModel):
         :type Offset: str
         :param _Limit: 返回数量，默认为20，最大值为100。
         :type Limit: str
+        :param _NeedMemberInfo: 是否获取IP地址模板成员标识。
+        :type NeedMemberInfo: bool
         """
         self._Filters = None
         self._Offset = None
         self._Limit = None
+        self._NeedMemberInfo = None
 
     @property
     def Filters(self):
@@ -13983,6 +14528,14 @@ class DescribeAddressTemplatesRequest(AbstractModel):
     def Limit(self, Limit):
         self._Limit = Limit
 
+    @property
+    def NeedMemberInfo(self):
+        return self._NeedMemberInfo
+
+    @NeedMemberInfo.setter
+    def NeedMemberInfo(self, NeedMemberInfo):
+        self._NeedMemberInfo = NeedMemberInfo
+
 
     def _deserialize(self, params):
         if params.get("Filters") is not None:
@@ -13993,6 +14546,7 @@ class DescribeAddressTemplatesRequest(AbstractModel):
                 self._Filters.append(obj)
         self._Offset = params.get("Offset")
         self._Limit = params.get("Limit")
+        self._NeedMemberInfo = params.get("NeedMemberInfo")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -17928,7 +18482,7 @@ class DescribeNatGatewayDestinationIpPortTranslationNatRulesRequest(AbstractMode
         :param _NatGatewayIds: NAT网关ID。
         :type NatGatewayIds: list of str
         :param _Filters: 过滤条件:
-参数不支持同时指定NatGatewayIds和Filters。
+参数不支持同时指定NatGatewayIds和Filters。每次请求的Filters的上限为10，Filter.Values的上限为5
 <li> nat-gateway-id，NAT网关的ID，如`nat-0yi4hekt`</li>
 <li> vpc-id，私有网络VPC的ID，如`vpc-0yi4hekt`</li>
 <li> public-ip-address， 弹性IP，如`139.199.232.238`。</li>
@@ -18316,9 +18870,9 @@ class DescribeNatGatewaysRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _NatGatewayIds: NAT网关统一 ID，形如：`nat-123xx454`。
+        :param _NatGatewayIds: NAT网关统一 ID，形如：`nat-123xx454`。每次请求的实例上限为100。参数不支持同时指定NatGatewayIds和Filters。
         :type NatGatewayIds: list of str
-        :param _Filters: 过滤条件，参数不支持同时指定NatGatewayIds和Filters。
+        :param _Filters: 过滤条件，参数不支持同时指定NatGatewayIds和Filters。每次请求的Filters的上限为10，Filter.Values的上限为5。
 <li>nat-gateway-id - String - （过滤条件）协议端口模板实例ID，形如：`nat-123xx454`。</li>
 <li>vpc-id - String - （过滤条件）私有网络 唯一ID，形如：`vpc-123xx454`。</li>
 <li>nat-gateway-name - String - （过滤条件）协议端口模板实例ID，形如：`test_nat`。</li>
@@ -19500,7 +20054,7 @@ LOCAL_GATEWAY：本地网关。
         :type RouteTableIds: list of str
         :param _Offset: 偏移量。
         :type Offset: str
-        :param _Limit: 请求对象个数。
+        :param _Limit: 返回数量，默认为20，最大值为100。
         :type Limit: str
         """
         self._Filters = None
@@ -19622,7 +20176,7 @@ class DescribeSecurityGroupAssociationStatisticsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _SecurityGroupIds: 安全实例ID，例如sg-33ocnj9n，可通过DescribeSecurityGroups获取。
+        :param _SecurityGroupIds: 安全实例ID，例如sg-33ocnj9n，可通过<a href="https://cloud.tencent.com/document/product/215/15808">DescribeSecurityGroups</a>获取。
         :type SecurityGroupIds: list of str
         """
         self._SecurityGroupIds = None
@@ -19921,8 +20475,8 @@ class DescribeSecurityGroupsRequest(AbstractModel):
 <li>security-group-id - String - （过滤条件）安全组ID。</li>
 <li>project-id - Integer - （过滤条件）项目ID。</li>
 <li>security-group-name - String - （过滤条件）安全组名称。</li>
-<li>tag-key - String -是否必填：否- （过滤条件）按照标签键进行过滤。使用请参考示例2。</li>
-<li>tag:tag-key - String - 是否必填：否 - （过滤条件）按照标签键值对进行过滤。 tag-key使用具体的标签键进行替换。使用请参考示例3。</li>
+<li>tag-key - String -是否必填：否- （过滤条件）按照标签键进行过滤。</li>
+<li>tag:tag-key - String - 是否必填：否 - （过滤条件）按照标签键值对进行过滤。 其中 tag-key 请使用具体的标签键进行替换。</li>
         :type Filters: list of Filter
         :param _Offset: 偏移量，默认为0。
         :type Offset: str
@@ -20081,10 +20635,13 @@ class DescribeServiceTemplateGroupsRequest(AbstractModel):
         :type Offset: str
         :param _Limit: 返回数量，默认为20，最大值为100。
         :type Limit: str
+        :param _NeedMemberInfo: 是否获取协议端口模板成员标识。
+        :type NeedMemberInfo: bool
         """
         self._Filters = None
         self._Offset = None
         self._Limit = None
+        self._NeedMemberInfo = None
 
     @property
     def Filters(self):
@@ -20110,6 +20667,14 @@ class DescribeServiceTemplateGroupsRequest(AbstractModel):
     def Limit(self, Limit):
         self._Limit = Limit
 
+    @property
+    def NeedMemberInfo(self):
+        return self._NeedMemberInfo
+
+    @NeedMemberInfo.setter
+    def NeedMemberInfo(self, NeedMemberInfo):
+        self._NeedMemberInfo = NeedMemberInfo
+
 
     def _deserialize(self, params):
         if params.get("Filters") is not None:
@@ -20120,6 +20685,7 @@ class DescribeServiceTemplateGroupsRequest(AbstractModel):
                 self._Filters.append(obj)
         self._Offset = params.get("Offset")
         self._Limit = params.get("Limit")
+        self._NeedMemberInfo = params.get("NeedMemberInfo")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -20200,10 +20766,13 @@ class DescribeServiceTemplatesRequest(AbstractModel):
         :type Offset: str
         :param _Limit: 返回数量，默认为20，最大值为100。
         :type Limit: str
+        :param _NeedMemberInfo: 是否获取协议端口成员标识。
+        :type NeedMemberInfo: bool
         """
         self._Filters = None
         self._Offset = None
         self._Limit = None
+        self._NeedMemberInfo = None
 
     @property
     def Filters(self):
@@ -20229,6 +20798,14 @@ class DescribeServiceTemplatesRequest(AbstractModel):
     def Limit(self, Limit):
         self._Limit = Limit
 
+    @property
+    def NeedMemberInfo(self):
+        return self._NeedMemberInfo
+
+    @NeedMemberInfo.setter
+    def NeedMemberInfo(self, NeedMemberInfo):
+        self._NeedMemberInfo = NeedMemberInfo
+
 
     def _deserialize(self, params):
         if params.get("Filters") is not None:
@@ -20239,6 +20816,7 @@ class DescribeServiceTemplatesRequest(AbstractModel):
                 self._Filters.append(obj)
         self._Offset = params.get("Offset")
         self._Limit = params.get("Limit")
+        self._NeedMemberInfo = params.get("NeedMemberInfo")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -20884,6 +21462,182 @@ class DescribeSnapshotPoliciesResponse(AbstractModel):
                 obj._deserialize(item)
                 self._SnapshotPolicySet.append(obj)
         self._TotalCount = params.get("TotalCount")
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeSpecificTrafficPackageUsedDetailsRequest(AbstractModel):
+    """DescribeSpecificTrafficPackageUsedDetails请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TrafficPackageId: 共享流量包唯一ID
+        :type TrafficPackageId: str
+        :param _Filters: 每次请求的`Filters`的上限为10，`Filter.Values`的上限为5。详细的过滤条件如下：<li> resource-id - String - 是否必填：否 - （过滤条件）按照抵扣流量资源的唯一 ID 过滤。</li><li> resource-type - String - 是否必填：否 - （过滤条件）按照资源类型过滤，资源类型包括 CVM 和 EIP </li>
+        :type Filters: list of Filter
+        :param _OrderField: 排序条件。该参数仅支持根据抵扣量排序，传值为 deduction
+        :type OrderField: str
+        :param _OrderType: 排序类型，仅支持0和1，0-降序，1-升序。不传默认为0
+        :type OrderType: int
+        :param _StartTime: 开始时间。不传默认为当前时间往前推30天
+        :type StartTime: str
+        :param _EndTime: 结束时间。不传默认为当前时间
+        :type EndTime: str
+        :param _Offset: 分页参数
+        :type Offset: int
+        :param _Limit: 分页参数
+        :type Limit: int
+        """
+        self._TrafficPackageId = None
+        self._Filters = None
+        self._OrderField = None
+        self._OrderType = None
+        self._StartTime = None
+        self._EndTime = None
+        self._Offset = None
+        self._Limit = None
+
+    @property
+    def TrafficPackageId(self):
+        return self._TrafficPackageId
+
+    @TrafficPackageId.setter
+    def TrafficPackageId(self, TrafficPackageId):
+        self._TrafficPackageId = TrafficPackageId
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+    @property
+    def OrderField(self):
+        return self._OrderField
+
+    @OrderField.setter
+    def OrderField(self, OrderField):
+        self._OrderField = OrderField
+
+    @property
+    def OrderType(self):
+        return self._OrderType
+
+    @OrderType.setter
+    def OrderType(self, OrderType):
+        self._OrderType = OrderType
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+
+    def _deserialize(self, params):
+        self._TrafficPackageId = params.get("TrafficPackageId")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        self._OrderField = params.get("OrderField")
+        self._OrderType = params.get("OrderType")
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSpecificTrafficPackageUsedDetailsResponse(AbstractModel):
+    """DescribeSpecificTrafficPackageUsedDetails返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 符合查询条件的共享流量包用量明细的总数
+        :type TotalCount: int
+        :param _UsedDetailSet: 共享流量包用量明细列表
+        :type UsedDetailSet: list of UsedDetail
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._TotalCount = None
+        self._UsedDetailSet = None
+        self._RequestId = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def UsedDetailSet(self):
+        return self._UsedDetailSet
+
+    @UsedDetailSet.setter
+    def UsedDetailSet(self, UsedDetailSet):
+        self._UsedDetailSet = UsedDetailSet
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("UsedDetailSet") is not None:
+            self._UsedDetailSet = []
+            for item in params.get("UsedDetailSet"):
+                obj = UsedDetail()
+                obj._deserialize(item)
+                self._UsedDetailSet.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -21780,11 +22534,14 @@ class DescribeVpcEndPointServiceRequest(AbstractModel):
         :type Limit: int
         :param _EndPointServiceIds: 终端节点服务ID。不支持同时传入参数 EndPointServiceIds and Filters。
         :type EndPointServiceIds: list of str
+        :param _IsListAuthorizedEndPointService: <li>不支持同时传入参数 Filters 。</li> <li>列出授权给当前账号的的终端节点服务信息。可以配合EndPointServiceIds参数进行过滤，那些终端节点服务授权了该账户。</li>
+        :type IsListAuthorizedEndPointService: bool
         """
         self._Filters = None
         self._Offset = None
         self._Limit = None
         self._EndPointServiceIds = None
+        self._IsListAuthorizedEndPointService = None
 
     @property
     def Filters(self):
@@ -21818,6 +22575,14 @@ class DescribeVpcEndPointServiceRequest(AbstractModel):
     def EndPointServiceIds(self, EndPointServiceIds):
         self._EndPointServiceIds = EndPointServiceIds
 
+    @property
+    def IsListAuthorizedEndPointService(self):
+        return self._IsListAuthorizedEndPointService
+
+    @IsListAuthorizedEndPointService.setter
+    def IsListAuthorizedEndPointService(self, IsListAuthorizedEndPointService):
+        self._IsListAuthorizedEndPointService = IsListAuthorizedEndPointService
+
 
     def _deserialize(self, params):
         if params.get("Filters") is not None:
@@ -21829,6 +22594,7 @@ class DescribeVpcEndPointServiceRequest(AbstractModel):
         self._Offset = params.get("Offset")
         self._Limit = params.get("Limit")
         self._EndPointServiceIds = params.get("EndPointServiceIds")
+        self._IsListAuthorizedEndPointService = params.get("IsListAuthorizedEndPointService")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -21964,14 +22730,17 @@ class DescribeVpcEndPointServiceWhiteListResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _VpcEndpointServiceUserSet: 白名单对象数组。
+        :param _VpcEndpointServiceUserSet: 白名单对象数组。已废弃
         :type VpcEndpointServiceUserSet: list of VpcEndPointServiceUser
+        :param _VpcEndPointServiceUserSet: 白名单对象数组。
+        :type VpcEndPointServiceUserSet: list of VpcEndPointServiceUser
         :param _TotalCount: 符合条件的白名单个数。
         :type TotalCount: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._VpcEndpointServiceUserSet = None
+        self._VpcEndPointServiceUserSet = None
         self._TotalCount = None
         self._RequestId = None
 
@@ -21982,6 +22751,14 @@ class DescribeVpcEndPointServiceWhiteListResponse(AbstractModel):
     @VpcEndpointServiceUserSet.setter
     def VpcEndpointServiceUserSet(self, VpcEndpointServiceUserSet):
         self._VpcEndpointServiceUserSet = VpcEndpointServiceUserSet
+
+    @property
+    def VpcEndPointServiceUserSet(self):
+        return self._VpcEndPointServiceUserSet
+
+    @VpcEndPointServiceUserSet.setter
+    def VpcEndPointServiceUserSet(self, VpcEndPointServiceUserSet):
+        self._VpcEndPointServiceUserSet = VpcEndPointServiceUserSet
 
     @property
     def TotalCount(self):
@@ -22007,6 +22784,12 @@ class DescribeVpcEndPointServiceWhiteListResponse(AbstractModel):
                 obj = VpcEndPointServiceUser()
                 obj._deserialize(item)
                 self._VpcEndpointServiceUserSet.append(obj)
+        if params.get("VpcEndPointServiceUserSet") is not None:
+            self._VpcEndPointServiceUserSet = []
+            for item in params.get("VpcEndPointServiceUserSet"):
+                obj = VpcEndPointServiceUser()
+                obj._deserialize(item)
+                self._VpcEndPointServiceUserSet.append(obj)
         self._TotalCount = params.get("TotalCount")
         self._RequestId = params.get("RequestId")
 
@@ -22337,6 +23120,161 @@ class DescribeVpcLimitsResponse(AbstractModel):
                 obj = VpcLimit()
                 obj._deserialize(item)
                 self._VpcLimitSet.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeVpcPeeringConnectionsRequest(AbstractModel):
+    """DescribeVpcPeeringConnections请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _PeeringConnectionIds: 对等连接唯一ID数组。
+        :type PeeringConnectionIds: list of str
+        :param _Filters: 过滤条件，参数不支持同时指定PeeringConnectionIds和Filters。
+<li>vpc-id - String - （过滤条件）VPC实例ID，形如：vpc-f49l6u0z。</li>
+<li>state String - （过滤条件）对等连接状态，可选值有：PENDING，投放中；ACTIVE，使用中；EXPIRED，已过期；REJECTED，拒绝。</li>
+<li>peering-connection-name - String - （过滤条件）对等连接名称。</li>
+        :type Filters: list of Filter
+        :param _Offset: 偏移量。
+        :type Offset: int
+        :param _Limit: 请求对象个数。
+        :type Limit: int
+        :param _OrderField: 排序字段，可选值有：CreatedTime，PeeringConnectionName。
+        :type OrderField: str
+        :param _OrderDirection: 排序方式：DESC，降序；ASC，升序。
+        :type OrderDirection: str
+        """
+        self._PeeringConnectionIds = None
+        self._Filters = None
+        self._Offset = None
+        self._Limit = None
+        self._OrderField = None
+        self._OrderDirection = None
+
+    @property
+    def PeeringConnectionIds(self):
+        return self._PeeringConnectionIds
+
+    @PeeringConnectionIds.setter
+    def PeeringConnectionIds(self, PeeringConnectionIds):
+        self._PeeringConnectionIds = PeeringConnectionIds
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def OrderField(self):
+        return self._OrderField
+
+    @OrderField.setter
+    def OrderField(self, OrderField):
+        self._OrderField = OrderField
+
+    @property
+    def OrderDirection(self):
+        return self._OrderDirection
+
+    @OrderDirection.setter
+    def OrderDirection(self, OrderDirection):
+        self._OrderDirection = OrderDirection
+
+
+    def _deserialize(self, params):
+        self._PeeringConnectionIds = params.get("PeeringConnectionIds")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        self._OrderField = params.get("OrderField")
+        self._OrderDirection = params.get("OrderDirection")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeVpcPeeringConnectionsResponse(AbstractModel):
+    """DescribeVpcPeeringConnections返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 满足条件的对等连接实例个数。
+        :type TotalCount: int
+        :param _PeerConnectionSet: 对等连接实例列表。
+        :type PeerConnectionSet: list of PeerConnection
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._TotalCount = None
+        self._PeerConnectionSet = None
+        self._RequestId = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def PeerConnectionSet(self):
+        return self._PeerConnectionSet
+
+    @PeerConnectionSet.setter
+    def PeerConnectionSet(self, PeerConnectionSet):
+        self._PeerConnectionSet = PeerConnectionSet
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("PeerConnectionSet") is not None:
+            self._PeerConnectionSet = []
+            for item in params.get("PeerConnectionSet"):
+                obj = PeerConnection()
+                obj._deserialize(item)
+                self._PeerConnectionSet.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -23788,9 +24726,12 @@ class DetachNetworkInterfaceRequest(AbstractModel):
         :type NetworkInterfaceId: str
         :param _InstanceId: CVM实例ID。形如：ins-r8hr2upy。
         :type InstanceId: str
+        :param _ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。	
+        :type ClientToken: str
         """
         self._NetworkInterfaceId = None
         self._InstanceId = None
+        self._ClientToken = None
 
     @property
     def NetworkInterfaceId(self):
@@ -23808,10 +24749,19 @@ class DetachNetworkInterfaceRequest(AbstractModel):
     def InstanceId(self, InstanceId):
         self._InstanceId = InstanceId
 
+    @property
+    def ClientToken(self):
+        return self._ClientToken
+
+    @ClientToken.setter
+    def ClientToken(self, ClientToken):
+        self._ClientToken = ClientToken
+
 
     def _deserialize(self, params):
         self._NetworkInterfaceId = params.get("NetworkInterfaceId")
         self._InstanceId = params.get("InstanceId")
+        self._ClientToken = params.get("ClientToken")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -31744,10 +32694,13 @@ class ModifyNetworkAclEntriesRequest(AbstractModel):
         :type NetworkAclEntrySet: :class:`tencentcloud.vpc.v20170312.models.NetworkAclEntrySet`
         :param _NetworkAclQuintupleSet: 网络ACL五元组规则集。NetworkAclEntrySet和NetworkAclQuintupleSet只能输入一个。
         :type NetworkAclQuintupleSet: :class:`tencentcloud.vpc.v20170312.models.NetworkAclQuintupleEntries`
+        :param _EnableUpdateAclEntries: 三元组的增量更新。该接口的默认语义为全量覆盖。当需要实现增量更新语义时，设置该参数为True。
+        :type EnableUpdateAclEntries: bool
         """
         self._NetworkAclId = None
         self._NetworkAclEntrySet = None
         self._NetworkAclQuintupleSet = None
+        self._EnableUpdateAclEntries = None
 
     @property
     def NetworkAclId(self):
@@ -31773,6 +32726,14 @@ class ModifyNetworkAclEntriesRequest(AbstractModel):
     def NetworkAclQuintupleSet(self, NetworkAclQuintupleSet):
         self._NetworkAclQuintupleSet = NetworkAclQuintupleSet
 
+    @property
+    def EnableUpdateAclEntries(self):
+        return self._EnableUpdateAclEntries
+
+    @EnableUpdateAclEntries.setter
+    def EnableUpdateAclEntries(self, EnableUpdateAclEntries):
+        self._EnableUpdateAclEntries = EnableUpdateAclEntries
+
 
     def _deserialize(self, params):
         self._NetworkAclId = params.get("NetworkAclId")
@@ -31782,6 +32743,7 @@ class ModifyNetworkAclEntriesRequest(AbstractModel):
         if params.get("NetworkAclQuintupleSet") is not None:
             self._NetworkAclQuintupleSet = NetworkAclQuintupleEntries()
             self._NetworkAclQuintupleSet._deserialize(params.get("NetworkAclQuintupleSet"))
+        self._EnableUpdateAclEntries = params.get("EnableUpdateAclEntries")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -32229,7 +33191,7 @@ class ModifySecurityGroupAttributeRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过DescribeSecurityGroups获取。
+        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过<a href="https://cloud.tencent.com/document/product/215/15808">DescribeSecurityGroups</a>获取。
         :type SecurityGroupId: str
         :param _GroupName: 安全组名称，可任意命名，但不得超过60个字符。
         :type GroupName: str
@@ -32311,7 +33273,7 @@ class ModifySecurityGroupPoliciesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过DescribeSecurityGroups获取。
+        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过<a href="https://cloud.tencent.com/document/product/215/15808">DescribeSecurityGroups</a>获取。
         :type SecurityGroupId: str
         :param _SecurityGroupPolicySet: 安全组规则集合。 SecurityGroupPolicySet对象必须同时指定新的出（Egress）入（Ingress）站规则。 SecurityGroupPolicy对象不支持自定义索引（PolicyIndex）。
         :type SecurityGroupPolicySet: :class:`tencentcloud.vpc.v20170312.models.SecurityGroupPolicySet`
@@ -33194,6 +34156,100 @@ class ModifyVpcEndPointServiceWhiteListResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class ModifyVpcPeeringConnectionRequest(AbstractModel):
+    """ModifyVpcPeeringConnection请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _PeeringConnectionId: 对等连接ID。
+        :type PeeringConnectionId: str
+        :param _PeeringConnectionName: 对等连接名称。
+        :type PeeringConnectionName: str
+        :param _Bandwidth: 带宽上限，单位Mbps。
+        :type Bandwidth: int
+        :param _ChargeType: 计费模式，日峰值POSTPAID_BY_DAY_MAX，月95 POSTPAID_BY_MONTH_95。
+        :type ChargeType: str
+        """
+        self._PeeringConnectionId = None
+        self._PeeringConnectionName = None
+        self._Bandwidth = None
+        self._ChargeType = None
+
+    @property
+    def PeeringConnectionId(self):
+        return self._PeeringConnectionId
+
+    @PeeringConnectionId.setter
+    def PeeringConnectionId(self, PeeringConnectionId):
+        self._PeeringConnectionId = PeeringConnectionId
+
+    @property
+    def PeeringConnectionName(self):
+        return self._PeeringConnectionName
+
+    @PeeringConnectionName.setter
+    def PeeringConnectionName(self, PeeringConnectionName):
+        self._PeeringConnectionName = PeeringConnectionName
+
+    @property
+    def Bandwidth(self):
+        return self._Bandwidth
+
+    @Bandwidth.setter
+    def Bandwidth(self, Bandwidth):
+        self._Bandwidth = Bandwidth
+
+    @property
+    def ChargeType(self):
+        return self._ChargeType
+
+    @ChargeType.setter
+    def ChargeType(self, ChargeType):
+        self._ChargeType = ChargeType
+
+
+    def _deserialize(self, params):
+        self._PeeringConnectionId = params.get("PeeringConnectionId")
+        self._PeeringConnectionName = params.get("PeeringConnectionName")
+        self._Bandwidth = params.get("Bandwidth")
+        self._ChargeType = params.get("ChargeType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyVpcPeeringConnectionResponse(AbstractModel):
+    """ModifyVpcPeeringConnection返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class ModifyVpnConnectionAttributeRequest(AbstractModel):
     """ModifyVpnConnectionAttribute请求参数结构体
 
@@ -33806,6 +34862,12 @@ class NatGateway(AbstractModel):
         :param _NatProductVersion: NAT网关大版本号，传统型=1，标准型=2
 注意：此字段可能返回 null，表示取不到有效值。
         :type NatProductVersion: int
+        :param _SmartScheduleMode: 是否启用根据目的网段选择SNAT使用的EIP功能	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SmartScheduleMode: bool
+        :param _DedicatedClusterId: NAT实例归属的专属集群id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DedicatedClusterId: str
         """
         self._NatGatewayId = None
         self._NatGatewayName = None
@@ -33827,6 +34889,8 @@ class NatGateway(AbstractModel):
         self._ExclusiveGatewayBandwidth = None
         self._RestrictState = None
         self._NatProductVersion = None
+        self._SmartScheduleMode = None
+        self._DedicatedClusterId = None
 
     @property
     def NatGatewayId(self):
@@ -33988,6 +35052,22 @@ class NatGateway(AbstractModel):
     def NatProductVersion(self, NatProductVersion):
         self._NatProductVersion = NatProductVersion
 
+    @property
+    def SmartScheduleMode(self):
+        return self._SmartScheduleMode
+
+    @SmartScheduleMode.setter
+    def SmartScheduleMode(self, SmartScheduleMode):
+        self._SmartScheduleMode = SmartScheduleMode
+
+    @property
+    def DedicatedClusterId(self):
+        return self._DedicatedClusterId
+
+    @DedicatedClusterId.setter
+    def DedicatedClusterId(self, DedicatedClusterId):
+        self._DedicatedClusterId = DedicatedClusterId
+
 
     def _deserialize(self, params):
         self._NatGatewayId = params.get("NatGatewayId")
@@ -34030,6 +35110,8 @@ class NatGateway(AbstractModel):
         self._ExclusiveGatewayBandwidth = params.get("ExclusiveGatewayBandwidth")
         self._RestrictState = params.get("RestrictState")
         self._NatProductVersion = params.get("NatProductVersion")
+        self._SmartScheduleMode = params.get("SmartScheduleMode")
+        self._DedicatedClusterId = params.get("DedicatedClusterId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -34053,10 +35135,13 @@ class NatGatewayAddress(AbstractModel):
         :type PublicIpAddress: str
         :param _IsBlocked: 资源封堵状态。true表示弹性ip处于封堵状态，false表示弹性ip处于未封堵状态。
         :type IsBlocked: bool
+        :param _BlockType: 资源封堵类型。NORMAL表示未封禁，SECURITY表示安全封禁，USER表示用户封禁，OTHER表示其他封禁，多个原因封禁时用&连接，比如：SECURITY&USER&OTHER。
+        :type BlockType: str
         """
         self._AddressId = None
         self._PublicIpAddress = None
         self._IsBlocked = None
+        self._BlockType = None
 
     @property
     def AddressId(self):
@@ -34082,11 +35167,20 @@ class NatGatewayAddress(AbstractModel):
     def IsBlocked(self, IsBlocked):
         self._IsBlocked = IsBlocked
 
+    @property
+    def BlockType(self):
+        return self._BlockType
+
+    @BlockType.setter
+    def BlockType(self, BlockType):
+        self._BlockType = BlockType
+
 
     def _deserialize(self, params):
         self._AddressId = params.get("AddressId")
         self._PublicIpAddress = params.get("PublicIpAddress")
         self._IsBlocked = params.get("IsBlocked")
+        self._BlockType = params.get("BlockType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -34268,7 +35362,7 @@ NONEXTHOP：无下一跳；
 下一跳类型为NAT，取值Nat网关，形如：nat-12345678；
 下一跳类型为NORMAL_CVM，取值云服务器IPv4地址，形如：10.0.0.12；
 下一跳类型为CCN，取值云联网ID，形如：ccn-12345678；
-下一跳类型为NONEXTHOP，指定网络探测为无下一跳的网络探测；
+下一跳类型为NONEXTHOP，指定网络探测为无下一跳的网络探测，添加和修改时，不需要指定值，查询时值为空字符串；
         :type NextHopDestination: str
         :param _NextHopName: 下一跳网关名称。
 注意：此字段可能返回 null，表示取不到有效值。
@@ -34703,13 +35797,11 @@ class NetworkAclEntry(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _ModifyTime: 修改时间。
-        :type ModifyTime: str
         :param _Protocol: 协议, 取值: TCP,UDP, ICMP, ALL。
         :type Protocol: str
         :param _Port: 端口(all, 单个port,  range)。当Protocol为ALL或ICMP时，不能指定Port。
         :type Port: str
-        :param _CidrBlock: 网段或IP(互斥)。
+        :param _CidrBlock: 网段或IP(互斥)。增量创建ACL规则时，CidrBlock和Ipv6CidrBlock至少提供一个。
         :type CidrBlock: str
         :param _Ipv6CidrBlock: 网段或IPv6(互斥)。
         :type Ipv6CidrBlock: str
@@ -34717,22 +35809,27 @@ class NetworkAclEntry(AbstractModel):
         :type Action: str
         :param _Description: 规则描述，最大长度100。
         :type Description: str
+        :param _ModifyTime: 修改时间。
+        :type ModifyTime: str
+        :param _Priority: 优先级，从1开始。	
+        :type Priority: int
+        :param _NetworkAclIpv4EntryId: IPv4网络ACL条目唯一ID。当修改ACL条目时，NetworkAclIpv4EntryId和NetworkAclIpv6EntryID至少提供一个。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NetworkAclIpv4EntryId: str
+        :param _NetworkAclIpv6EntryId: IPv6网络ACL条目唯一ID。当修改ACL条目时，NetworkAclIpv4EntryId和NetworkAclIpv6EntryId至少提供一个。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NetworkAclIpv6EntryId: str
         """
-        self._ModifyTime = None
         self._Protocol = None
         self._Port = None
         self._CidrBlock = None
         self._Ipv6CidrBlock = None
         self._Action = None
         self._Description = None
-
-    @property
-    def ModifyTime(self):
-        return self._ModifyTime
-
-    @ModifyTime.setter
-    def ModifyTime(self, ModifyTime):
-        self._ModifyTime = ModifyTime
+        self._ModifyTime = None
+        self._Priority = None
+        self._NetworkAclIpv4EntryId = None
+        self._NetworkAclIpv6EntryId = None
 
     @property
     def Protocol(self):
@@ -34782,15 +35879,50 @@ class NetworkAclEntry(AbstractModel):
     def Description(self, Description):
         self._Description = Description
 
+    @property
+    def ModifyTime(self):
+        return self._ModifyTime
+
+    @ModifyTime.setter
+    def ModifyTime(self, ModifyTime):
+        self._ModifyTime = ModifyTime
+
+    @property
+    def Priority(self):
+        return self._Priority
+
+    @Priority.setter
+    def Priority(self, Priority):
+        self._Priority = Priority
+
+    @property
+    def NetworkAclIpv4EntryId(self):
+        return self._NetworkAclIpv4EntryId
+
+    @NetworkAclIpv4EntryId.setter
+    def NetworkAclIpv4EntryId(self, NetworkAclIpv4EntryId):
+        self._NetworkAclIpv4EntryId = NetworkAclIpv4EntryId
+
+    @property
+    def NetworkAclIpv6EntryId(self):
+        return self._NetworkAclIpv6EntryId
+
+    @NetworkAclIpv6EntryId.setter
+    def NetworkAclIpv6EntryId(self, NetworkAclIpv6EntryId):
+        self._NetworkAclIpv6EntryId = NetworkAclIpv6EntryId
+
 
     def _deserialize(self, params):
-        self._ModifyTime = params.get("ModifyTime")
         self._Protocol = params.get("Protocol")
         self._Port = params.get("Port")
         self._CidrBlock = params.get("CidrBlock")
         self._Ipv6CidrBlock = params.get("Ipv6CidrBlock")
         self._Action = params.get("Action")
         self._Description = params.get("Description")
+        self._ModifyTime = params.get("ModifyTime")
+        self._Priority = params.get("Priority")
+        self._NetworkAclIpv4EntryId = params.get("NetworkAclIpv4EntryId")
+        self._NetworkAclIpv6EntryId = params.get("NetworkAclIpv6EntryId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -35508,6 +36640,250 @@ class NotifyRoutesResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class PeerConnection(AbstractModel):
+    """对等连接实例信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SourceVpcId: 本端VPC唯一ID。
+        :type SourceVpcId: str
+        :param _PeerVpcId: 对端VPC唯一ID。
+        :type PeerVpcId: str
+        :param _PeeringConnectionId: 对等连接唯一ID。
+        :type PeeringConnectionId: str
+        :param _PeeringConnectionName: 对等连接名称。
+        :type PeeringConnectionName: str
+        :param _State: 对等连接状态，PENDING，投放中；ACTIVE，使用中；REJECTED，已拒绝‘DELETED，已删除；FAILED，失败；EXPIRED，已过期；ISOLATED，隔离中。
+        :type State: str
+        :param _IsNgw: 是否是新控制器，true: 是NewAfc；false:不是。
+        :type IsNgw: bool
+        :param _Bandwidth: 对等连接带宽值。
+        :type Bandwidth: int
+        :param _SourceRegion: 本端地域。
+        :type SourceRegion: str
+        :param _DestinationRegion: 对端地域。
+        :type DestinationRegion: str
+        :param _CreateTime: 创建时间。
+        :type CreateTime: str
+        :param _AppId: 本端APPID。
+        :type AppId: int
+        :param _PeerAppId: 对端APPID。
+        :type PeerAppId: int
+        :param _ChargeType: 计费类型，POSTPAID_BY_DAY_MAX：日峰值计费；POSTPAID_BY_MONTH_95：月95计费。
+        :type ChargeType: str
+        :param _SourceUin: 本端UIN。
+        :type SourceUin: int
+        :param _DestinationUin: 对端UIN。
+        :type DestinationUin: int
+        :param _TagSet: 资源标签数据。
+        :type TagSet: list of Tag
+        :param _QosLevel: 服务分级：PT、AU、AG。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type QosLevel: str
+        :param _Type: 互通类型，VPC_PEER：VPC间互通；VPC_BM_PEER：VPC与黑石网络互通。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        """
+        self._SourceVpcId = None
+        self._PeerVpcId = None
+        self._PeeringConnectionId = None
+        self._PeeringConnectionName = None
+        self._State = None
+        self._IsNgw = None
+        self._Bandwidth = None
+        self._SourceRegion = None
+        self._DestinationRegion = None
+        self._CreateTime = None
+        self._AppId = None
+        self._PeerAppId = None
+        self._ChargeType = None
+        self._SourceUin = None
+        self._DestinationUin = None
+        self._TagSet = None
+        self._QosLevel = None
+        self._Type = None
+
+    @property
+    def SourceVpcId(self):
+        return self._SourceVpcId
+
+    @SourceVpcId.setter
+    def SourceVpcId(self, SourceVpcId):
+        self._SourceVpcId = SourceVpcId
+
+    @property
+    def PeerVpcId(self):
+        return self._PeerVpcId
+
+    @PeerVpcId.setter
+    def PeerVpcId(self, PeerVpcId):
+        self._PeerVpcId = PeerVpcId
+
+    @property
+    def PeeringConnectionId(self):
+        return self._PeeringConnectionId
+
+    @PeeringConnectionId.setter
+    def PeeringConnectionId(self, PeeringConnectionId):
+        self._PeeringConnectionId = PeeringConnectionId
+
+    @property
+    def PeeringConnectionName(self):
+        return self._PeeringConnectionName
+
+    @PeeringConnectionName.setter
+    def PeeringConnectionName(self, PeeringConnectionName):
+        self._PeeringConnectionName = PeeringConnectionName
+
+    @property
+    def State(self):
+        return self._State
+
+    @State.setter
+    def State(self, State):
+        self._State = State
+
+    @property
+    def IsNgw(self):
+        return self._IsNgw
+
+    @IsNgw.setter
+    def IsNgw(self, IsNgw):
+        self._IsNgw = IsNgw
+
+    @property
+    def Bandwidth(self):
+        return self._Bandwidth
+
+    @Bandwidth.setter
+    def Bandwidth(self, Bandwidth):
+        self._Bandwidth = Bandwidth
+
+    @property
+    def SourceRegion(self):
+        return self._SourceRegion
+
+    @SourceRegion.setter
+    def SourceRegion(self, SourceRegion):
+        self._SourceRegion = SourceRegion
+
+    @property
+    def DestinationRegion(self):
+        return self._DestinationRegion
+
+    @DestinationRegion.setter
+    def DestinationRegion(self, DestinationRegion):
+        self._DestinationRegion = DestinationRegion
+
+    @property
+    def CreateTime(self):
+        return self._CreateTime
+
+    @CreateTime.setter
+    def CreateTime(self, CreateTime):
+        self._CreateTime = CreateTime
+
+    @property
+    def AppId(self):
+        return self._AppId
+
+    @AppId.setter
+    def AppId(self, AppId):
+        self._AppId = AppId
+
+    @property
+    def PeerAppId(self):
+        return self._PeerAppId
+
+    @PeerAppId.setter
+    def PeerAppId(self, PeerAppId):
+        self._PeerAppId = PeerAppId
+
+    @property
+    def ChargeType(self):
+        return self._ChargeType
+
+    @ChargeType.setter
+    def ChargeType(self, ChargeType):
+        self._ChargeType = ChargeType
+
+    @property
+    def SourceUin(self):
+        return self._SourceUin
+
+    @SourceUin.setter
+    def SourceUin(self, SourceUin):
+        self._SourceUin = SourceUin
+
+    @property
+    def DestinationUin(self):
+        return self._DestinationUin
+
+    @DestinationUin.setter
+    def DestinationUin(self, DestinationUin):
+        self._DestinationUin = DestinationUin
+
+    @property
+    def TagSet(self):
+        return self._TagSet
+
+    @TagSet.setter
+    def TagSet(self, TagSet):
+        self._TagSet = TagSet
+
+    @property
+    def QosLevel(self):
+        return self._QosLevel
+
+    @QosLevel.setter
+    def QosLevel(self, QosLevel):
+        self._QosLevel = QosLevel
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+
+    def _deserialize(self, params):
+        self._SourceVpcId = params.get("SourceVpcId")
+        self._PeerVpcId = params.get("PeerVpcId")
+        self._PeeringConnectionId = params.get("PeeringConnectionId")
+        self._PeeringConnectionName = params.get("PeeringConnectionName")
+        self._State = params.get("State")
+        self._IsNgw = params.get("IsNgw")
+        self._Bandwidth = params.get("Bandwidth")
+        self._SourceRegion = params.get("SourceRegion")
+        self._DestinationRegion = params.get("DestinationRegion")
+        self._CreateTime = params.get("CreateTime")
+        self._AppId = params.get("AppId")
+        self._PeerAppId = params.get("PeerAppId")
+        self._ChargeType = params.get("ChargeType")
+        self._SourceUin = params.get("SourceUin")
+        self._DestinationUin = params.get("DestinationUin")
+        if params.get("TagSet") is not None:
+            self._TagSet = []
+            for item in params.get("TagSet"):
+                obj = Tag()
+                obj._deserialize(item)
+                self._TagSet.append(obj)
+        self._QosLevel = params.get("QosLevel")
+        self._Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Price(AbstractModel):
     """价格
 
@@ -36012,6 +37388,64 @@ class RejectAttachCcnInstancesRequest(AbstractModel):
 
 class RejectAttachCcnInstancesResponse(AbstractModel):
     """RejectAttachCcnInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class RejectVpcPeeringConnectionRequest(AbstractModel):
+    """RejectVpcPeeringConnection请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _PeeringConnectionId: 对等连接唯一ID。
+        :type PeeringConnectionId: str
+        """
+        self._PeeringConnectionId = None
+
+    @property
+    def PeeringConnectionId(self):
+        return self._PeeringConnectionId
+
+    @PeeringConnectionId.setter
+    def PeeringConnectionId(self, PeeringConnectionId):
+        self._PeeringConnectionId = PeeringConnectionId
+
+
+    def _deserialize(self, params):
+        self._PeeringConnectionId = params.get("PeeringConnectionId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RejectVpcPeeringConnectionResponse(AbstractModel):
+    """RejectVpcPeeringConnection返回参数结构体
 
     """
 
@@ -36830,7 +38264,7 @@ class ReplaceSecurityGroupPolicyRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过DescribeSecurityGroups获取。
+        :param _SecurityGroupId: 安全组实例ID，例如sg-33ocnj9n，可通过<a href="https://cloud.tencent.com/document/product/215/15808">DescribeSecurityGroups</a>获取。
         :type SecurityGroupId: str
         :param _SecurityGroupPolicySet: 安全组规则集合对象。
         :type SecurityGroupPolicySet: :class:`tencentcloud.vpc.v20170312.models.SecurityGroupPolicySet`
@@ -40209,7 +41643,7 @@ class SslVpnClient(AbstractModel):
 2 更新中
 3 更新出错
 4 销毁中
-5 销毁出粗
+5 销毁出错
 6 已连通
 7 未知
         :type State: str
@@ -40308,7 +41742,7 @@ class SslVpnClient(AbstractModel):
 
 
 class SslVpnSever(AbstractModel):
-    """SSL-VPN-SERVER 信息 SET
+    """SSL-VPN-SERVER 出参
 
     """
 
@@ -40349,7 +41783,7 @@ class SslVpnSever(AbstractModel):
 2 更新中
 3 更新出错
 4 销毁中
-5 销毁出粗
+5 销毁出错
 6 已连通
 7 未知
         :type State: int
@@ -40977,6 +42411,65 @@ class TemplateLimit(AbstractModel):
         self._AddressTemplateGroupMemberLimit = params.get("AddressTemplateGroupMemberLimit")
         self._ServiceTemplateMemberLimit = params.get("ServiceTemplateMemberLimit")
         self._ServiceTemplateGroupMemberLimit = params.get("ServiceTemplateGroupMemberLimit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TrafficFlow(AbstractModel):
+    """流量描述。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Value: 实际流量，单位为 字节
+        :type Value: int
+        :param _FormatValue: 格式化后的流量，单位见参数 FormatUnit
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FormatValue: float
+        :param _FormatUnit: 格式化后流量的单位
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FormatUnit: str
+        """
+        self._Value = None
+        self._FormatValue = None
+        self._FormatUnit = None
+
+    @property
+    def Value(self):
+        return self._Value
+
+    @Value.setter
+    def Value(self, Value):
+        self._Value = Value
+
+    @property
+    def FormatValue(self):
+        return self._FormatValue
+
+    @FormatValue.setter
+    def FormatValue(self, FormatValue):
+        self._FormatValue = FormatValue
+
+    @property
+    def FormatUnit(self):
+        return self._FormatUnit
+
+    @FormatUnit.setter
+    def FormatUnit(self, FormatUnit):
+        self._FormatUnit = FormatUnit
+
+
+    def _deserialize(self, params):
+        self._Value = params.get("Value")
+        self._FormatValue = params.get("FormatValue")
+        self._FormatUnit = params.get("FormatUnit")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -41616,6 +43109,154 @@ class UnlockCcnsResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._RequestId = params.get("RequestId")
+
+
+class UsedDetail(AbstractModel):
+    """共享流量包用量明细
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TrafficPackageId: 流量包唯一ID
+        :type TrafficPackageId: str
+        :param _TrafficPackageName: 流量包名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TrafficPackageName: str
+        :param _TotalAmount: 流量包总量
+        :type TotalAmount: :class:`tencentcloud.vpc.v20170312.models.TrafficFlow`
+        :param _Deduction: 本次抵扣
+        :type Deduction: :class:`tencentcloud.vpc.v20170312.models.TrafficFlow`
+        :param _RemainingAmount: 本次抵扣后剩余量
+        :type RemainingAmount: :class:`tencentcloud.vpc.v20170312.models.TrafficFlow`
+        :param _Time: 抵扣时间
+        :type Time: str
+        :param _ResourceType: 资源类型。可能的值: CVM, LB, NAT, HAVIP, EIP
+        :type ResourceType: str
+        :param _ResourceId: 资源ID
+        :type ResourceId: str
+        :param _ResourceName: 资源名称
+        :type ResourceName: str
+        :param _Deadline: 流量包到期时间
+        :type Deadline: str
+        """
+        self._TrafficPackageId = None
+        self._TrafficPackageName = None
+        self._TotalAmount = None
+        self._Deduction = None
+        self._RemainingAmount = None
+        self._Time = None
+        self._ResourceType = None
+        self._ResourceId = None
+        self._ResourceName = None
+        self._Deadline = None
+
+    @property
+    def TrafficPackageId(self):
+        return self._TrafficPackageId
+
+    @TrafficPackageId.setter
+    def TrafficPackageId(self, TrafficPackageId):
+        self._TrafficPackageId = TrafficPackageId
+
+    @property
+    def TrafficPackageName(self):
+        return self._TrafficPackageName
+
+    @TrafficPackageName.setter
+    def TrafficPackageName(self, TrafficPackageName):
+        self._TrafficPackageName = TrafficPackageName
+
+    @property
+    def TotalAmount(self):
+        return self._TotalAmount
+
+    @TotalAmount.setter
+    def TotalAmount(self, TotalAmount):
+        self._TotalAmount = TotalAmount
+
+    @property
+    def Deduction(self):
+        return self._Deduction
+
+    @Deduction.setter
+    def Deduction(self, Deduction):
+        self._Deduction = Deduction
+
+    @property
+    def RemainingAmount(self):
+        return self._RemainingAmount
+
+    @RemainingAmount.setter
+    def RemainingAmount(self, RemainingAmount):
+        self._RemainingAmount = RemainingAmount
+
+    @property
+    def Time(self):
+        return self._Time
+
+    @Time.setter
+    def Time(self, Time):
+        self._Time = Time
+
+    @property
+    def ResourceType(self):
+        return self._ResourceType
+
+    @ResourceType.setter
+    def ResourceType(self, ResourceType):
+        self._ResourceType = ResourceType
+
+    @property
+    def ResourceId(self):
+        return self._ResourceId
+
+    @ResourceId.setter
+    def ResourceId(self, ResourceId):
+        self._ResourceId = ResourceId
+
+    @property
+    def ResourceName(self):
+        return self._ResourceName
+
+    @ResourceName.setter
+    def ResourceName(self, ResourceName):
+        self._ResourceName = ResourceName
+
+    @property
+    def Deadline(self):
+        return self._Deadline
+
+    @Deadline.setter
+    def Deadline(self, Deadline):
+        self._Deadline = Deadline
+
+
+    def _deserialize(self, params):
+        self._TrafficPackageId = params.get("TrafficPackageId")
+        self._TrafficPackageName = params.get("TrafficPackageName")
+        if params.get("TotalAmount") is not None:
+            self._TotalAmount = TrafficFlow()
+            self._TotalAmount._deserialize(params.get("TotalAmount"))
+        if params.get("Deduction") is not None:
+            self._Deduction = TrafficFlow()
+            self._Deduction._deserialize(params.get("Deduction"))
+        if params.get("RemainingAmount") is not None:
+            self._RemainingAmount = TrafficFlow()
+            self._RemainingAmount._deserialize(params.get("RemainingAmount"))
+        self._Time = params.get("Time")
+        self._ResourceType = params.get("ResourceType")
+        self._ResourceId = params.get("ResourceId")
+        self._ResourceName = params.get("ResourceName")
+        self._Deadline = params.get("Deadline")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class Vpc(AbstractModel):
@@ -42457,15 +44098,15 @@ class VpnGateway(AbstractModel):
         :type VpcId: str
         :param _VpnGatewayName: 网关实例名称。
         :type VpnGatewayName: str
-        :param _Type: 网关实例类型：'IPSEC', 'SSL','CCN'。
+        :param _Type: 网关实例类型：'IPSEC', 'SSL','CCN','SSL_CCN'。
         :type Type: str
-        :param _State: 网关实例状态， 'PENDING'：生产中，'DELETING'：删除中，'AVAILABLE'：运行中。
+        :param _State: 网关实例状态， 'PENDING'：生产中，'PENDING_ERROR'：生产失败，'DELETING'：删除中，'DELETING_ERROR'：删除失败，'AVAILABLE'：运行中。
         :type State: str
         :param _PublicIpAddress: 网关公网IP。
         :type PublicIpAddress: str
         :param _RenewFlag: 网关续费类型：'NOTIFY_AND_MANUAL_RENEW'：手动续费，'NOTIFY_AND_AUTO_RENEW'：自动续费，'NOT_NOTIFY_AND_NOT_RENEW'：到期不续费。
         :type RenewFlag: str
-        :param _InstanceChargeType: 网关付费类型：POSTPAID_BY_HOUR：按小时后付费，PREPAID：包年包月预付费，
+        :param _InstanceChargeType: 网关付费类型：POSTPAID_BY_HOUR：按量计费，PREPAID：包年包月预付费。
         :type InstanceChargeType: str
         :param _InternetMaxBandwidthOut: 网关出带宽。
         :type InternetMaxBandwidthOut: int
@@ -42477,17 +44118,17 @@ class VpnGateway(AbstractModel):
         :type IsAddressBlocked: bool
         :param _NewPurchasePlan: 计费模式变更，PREPAID_TO_POSTPAID：包年包月预付费到期转按小时后付费。
         :type NewPurchasePlan: str
-        :param _RestrictState: 网关计费装，PROTECTIVELY_ISOLATED：被安全隔离的实例，NORMAL：正常。
+        :param _RestrictState: 网关计费状态，PROTECTIVELY_ISOLATED：被安全隔离的实例，NORMAL：正常。
         :type RestrictState: str
-        :param _Zone: 可用区，如：ap-guangzhou-2
+        :param _Zone: 可用区，如：ap-guangzhou-2。
         :type Zone: str
-        :param _VpnGatewayQuotaSet: 网关带宽配额信息
+        :param _VpnGatewayQuotaSet: 网关带宽配额信息。
         :type VpnGatewayQuotaSet: list of VpnGatewayQuota
-        :param _Version: 网关实例版本信息
+        :param _Version: 网关实例版本信息。
         :type Version: str
-        :param _NetworkInstanceId: Type值为CCN时，该值表示云联网实例ID
+        :param _NetworkInstanceId: Type值为CCN时，该值表示云联网实例ID。
         :type NetworkInstanceId: str
-        :param _CdcId: CDC 实例ID
+        :param _CdcId: CDC 实例ID。
         :type CdcId: str
         :param _MaxConnection: SSL-VPN 客户端连接数。
         :type MaxConnection: int
